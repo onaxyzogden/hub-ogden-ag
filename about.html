@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Ogden — Digital Architect | ogden.ag</title>
+<meta name="description" content="A digital architect of ideas, balancing the precision of data with the fluidity of creative intuition. Here to help you build systems that breathe.">
+<link rel="canonical" href="https://ogden.ag/about">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090910;--bg-warm:#0e0d18;
+  --navy:#0a1628;--veil:#140f28;
+  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.65);
+  --amber:#c4853a;--amber-dim:rgba(196,133,58,0.65);
+  --cream:#f0e8d8;--cream-dim:rgba(240,232,216,0.55);
+  --silver:rgba(200,196,184,0.4);
+  --border-soft:rgba(255,255,255,0.06);
+  --border-gold:rgba(200,150,42,0.12);
+  --border-amber:rgba(196,133,58,0.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--cream);line-height:1.7;font-size:15px}
+
+/* NAV — blends both worlds */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,16,0.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-soft)}
+.nav-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.3em;text-transform:uppercase;text-decoration:none}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-link{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s}
+.nav-link:hover{color:rgba(255,255,255,0.7)}
+.nav-link.active{color:rgba(200,150,42,0.7)}
+
+/* HERO */
+.hero{min-height:85vh;display:flex;align-items:center;padding:120px 60px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 15% 50%,rgba(10,22,50,0.7) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 85% 30%,rgba(55,22,80,0.5) 0%,transparent 65%)}
+.split-line{position:absolute;top:15%;bottom:15%;width:1px;left:50%;background:linear-gradient(to bottom,transparent,rgba(200,150,42,0.2) 30%,rgba(196,133,58,0.2) 70%,transparent);pointer-events:none}
+
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1}
+.hero-text{}
+.hero-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold-dim);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+.hero-tag::before{content:'';width:32px;height:1px;background:var(--gold);opacity:0.45}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(58px,7.5vw,96px);font-weight:400;line-height:1.05;margin-bottom:8px}
+.hero-name em{font-style:italic;color:var(--gold);display:block}
+.hero-role{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2.4vw,28px);font-style:italic;font-weight:300;color:var(--cream-dim);margin-bottom:36px;line-height:1.4}
+.hero-bio{font-size:17px;color:rgba(240,232,216,0.5);line-height:1.9;max-width:480px;margin-bottom:44px}
+.hero-bio em{font-style:italic;color:var(--cream-dim)}
+.hero-links{display:flex;gap:16px;flex-wrap:wrap}
+.hero-btn{padding:12px 24px;font-size:11px;letter-spacing:0.13em;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:all 0.2s}
+.btn-bbos{border:1px solid rgba(200,150,42,0.3);color:var(--gold-dim)}
+.btn-bbos:hover{background:rgba(200,150,42,0.1);border-color:var(--gold);color:var(--gold)}
+.btn-moon{border:1px solid rgba(196,133,58,0.22);color:var(--amber-dim)}
+.btn-moon:hover{background:rgba(196,133,58,0.08);border-color:var(--amber);color:var(--amber)}
+
+/* Portrait / identity card */
+.identity-card{border:1px solid var(--border-soft);border-radius:8px;padding:40px 36px;background:rgba(255,255,255,0.02);position:relative}
+.identity-card::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,150,42,0.3),rgba(196,133,58,0.3),transparent)}
+.id-glyph{font-family:'Cormorant Garamond',serif;font-size:60px;font-style:italic;font-weight:300;color:rgba(200,150,42,0.12);line-height:1;margin-bottom:28px;display:block;text-align:center}
+.id-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px}
+.id-value{font-size:16px;color:rgba(240,232,216,0.65);margin-bottom:22px;line-height:1.6}
+.id-divider{height:1px;background:var(--border-soft);margin:8px 0 22px}
+
+/* PHILOSOPHY */
+.philosophy{padding:100px 60px;border-top:1px solid var(--border-soft)}
+.philosophy-inner{max-width:860px;margin:0 auto}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold-dim);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);opacity:0.45}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(34px,4.2vw,58px);font-weight:400;line-height:1.2;margin-bottom:40px}
+.section-title em{font-style:italic;color:var(--gold)}
+.pull-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.2vw,40px);font-style:italic;font-weight:300;line-height:1.55;color:rgba(240,232,216,0.85);border-left:2px solid var(--amber);padding-left:28px;margin:40px 0}
+.body-text{font-size:17px;color:rgba(240,232,216,0.48);line-height:1.9}
+.body-text p+p{margin-top:20px}
+.body-text strong{color:rgba(240,232,216,0.75);font-weight:500}
+
+/* BOTH WORLDS */
+.worlds{padding:80px 60px;background:rgba(255,255,255,0.015);border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)}
+.worlds-inner{max-width:1000px;margin:0 auto}
+.worlds-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px}
+.world-panel{padding:44px;position:relative;overflow:hidden}
+.world-panel-bbos{background:rgba(10,22,50,0.5);border:1px solid rgba(200,150,42,0.1);border-radius:6px 0 0 6px}
+.world-panel-moon{background:rgba(20,15,40,0.5);border:1px solid rgba(196,133,58,0.08);border-radius:0 6px 6px 0}
+.world-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px}
+.bbos-tag{color:var(--gold-dim)}
+.moon-tag{color:var(--amber-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px}
+.world-title{font-size:clamp(18px,2.2vw,26px);margin-bottom:12px;line-height:1.25}
+.world-panel-bbos .world-title{font-family:'Playfair Display',serif;font-weight:400;color:#fff}
+.world-panel-moon .world-title{font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--cream)}
+.world-body{font-size:16px;line-height:1.8;margin-bottom:28px}
+.world-panel-bbos .world-body{color:rgba(255,255,255,0.4)}
+.world-panel-moon .world-body{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(240,232,216,0.38)}
+.world-link{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:color 0.2s}
+.world-panel-bbos .world-link{color:var(--gold-dim)}
+.world-panel-bbos .world-link:hover{color:var(--gold)}
+.world-panel-moon .world-link{color:var(--amber-dim)}
+.world-panel-moon .world-link:hover{color:var(--amber)}
+
+/* FOOTER */
+footer{padding:40px 60px;border-top:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Cinzel',serif;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.28em;text-transform:uppercase}
+.footer-nav{display:flex;gap:28px}
+.footer-link{font-size:11px;color:rgba(255,255,255,0.22);text-decoration:none;letter-spacing:0.08em;transition:color 0.2s}
+.footer-link:hover{color:rgba(255,255,255,0.55)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.15)}
+
+@media(max-width:900px){
+  .nav{padding:18px 24px}
+  .hero,.philosophy,.worlds{padding:90px 24px 70px}
+  .hero-inner,.worlds-grid{grid-template-columns:1fr}
+  .split-line{display:none}
+  .identity-card{margin-top:0}
+  .world-panel-bbos,.world-panel-moon{border-radius:6px}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:32px 24px}
+}
+
+  .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:200}
+  .nav-hamburger span{display:block;width:22px;height:1.5px;background:rgba(255,255,255,0.55);transition:all 0.3s;transform-origin:center}
+  .nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .nav-hamburger.open span:nth-child(2){opacity:0}
+  .nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+  @media(max-width:768px){
+    .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;align-items:center;justify-content:center;gap:32px;background:rgba(7,6,15,0.97);backdrop-filter:blur(20px);z-index:150}
+    .nav-links.open{display:flex}
+    .nav-link{font-size:18px;color:rgba(255,255,255,0.65)}
+    .nav-link.active,.nav-link:hover{color:rgba(200,150,42,0.85)}
+    .nav-cta,.nav-join{font-size:14px;padding:12px 32px}
+    .nav-hamburger{display:flex}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ogden</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="bbos.html" class="nav-link">BBOS</a>
+    <a href="moontrance.html" class="nav-link">Moontrance</a>
+    <a href="about.html" class="nav-link active">About</a>
+  </div>
+  <button class="nav-hamburger" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="split-line"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Digital Architect</div>
+      <h1 class="hero-name">Ogden.<em>Grounded Alchemy.</em></h1>
+      <p class="hero-role">Balancing the precision of data with the fluidity of creative intuition.</p>
+      <p class="hero-bio">Here to help you build systems that breathe. Not because breathing is a nice metaphor — but because a business that suffocates its creator <em>isn't actually working.</em></p>
+      <div class="hero-links">
+        <a href="bbos.html" class="hero-btn btn-bbos">Explore BBOS</a>
+        <a href="moontrance.html" class="hero-btn btn-moon">The Collective</a>
+      </div>
+    </div>
+    <div class="identity-card">
+      <span class="id-glyph">O</span>
+      <div class="id-label">Operating From</div>
+      <div class="id-value">The intersection of structure and soul. Strategic precision. Creative depth. Both — not one or the other.</div>
+      <div class="id-divider"></div>
+      <div class="id-label">Approach</div>
+      <div class="id-value">Sophisticated, never cold. Warm, never vague. Observant, occasionally witty. Always direct.</div>
+      <div class="id-divider"></div>
+      <div class="id-label">The Two Worlds</div>
+      <div class="id-value">BBOS — the strategic operating system.<br>Moontrance — the creative frequency.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="philosophy-inner">
+    <div class="section-eyebrow">The Philosophy</div>
+    <h2 class="section-title">On building things<br><em>that actually last</em></h2>
+
+    <div class="pull-quote">"Your business is the altar where you share your work with the world. Build it like it matters — because it does."</div>
+
+    <div class="body-text">
+      <p>Most business frameworks are built on the implicit assumption that you are willing to trade your vitality for your vision. That somewhere in the execution, the life gets optimised out. That <strong>efficiency and aliveness are in tension.</strong></p>
+      <p>They aren't. That tension is a symptom of a framework that was never designed for someone like you — someone for whom the how of the work is inseparable from the what. Someone who knows that a client engagement delivered with integrity and presence is worth more than three rushed ones that technically met the brief.</p>
+      <p>This is what BBOS was built to address: <strong>a system precise enough to produce results, and honest enough to protect the person producing them.</strong></p>
+      <p>Moontrance came from a different question — not how to build better, but how to <em>remember what we're building toward.</em> The high-frequency aesthetics, the practical mysticism, the creative community: these aren't the dessert after the strategy. They're the operating atmosphere. The frequency from which everything else is generated.</p>
+      <p>Two worlds. One architect. One shared premise: <strong>depth and elegance are not the opposites of ambition.</strong> They are what makes ambition worth having.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOTH WORLDS -->
+<section class="worlds">
+  <div class="worlds-inner">
+    <div class="section-eyebrow">The Two Territories</div>
+    <h2 class="section-title">Where you'll find<br><em>the work</em></h2>
+    <div class="worlds-grid">
+      <div class="world-panel world-panel-bbos">
+        <div class="world-tag bbos-tag">BBOS · Strategic</div>
+        <h3 class="world-title">Build Business On Soul</h3>
+        <p class="world-body">The comprehensive operating system. Eight stages, one coherent framework. For seasoned entrepreneurs, creatives, and healers who are done with hustle templates — and ready to build something sustainable.</p>
+        <a href="bbos.html" class="world-link">Explore the system →</a>
+      </div>
+      <div class="world-panel world-panel-moon">
+        <div class="world-tag moon-tag">Moontrance · Creative</div>
+        <h3 class="world-title">The Moontrance Collective</h3>
+        <p class="world-body">A creative sanctuary and digital ecosystem. Where high-frequency aesthetics meet practical mysticism. The atmospheric counterpart to the architecture. Enter at any depth.</p>
+        <a href="moontrance.html" class="world-link">Enter the collective →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Ogden · ogden.ag</div>
+  <nav class="footer-nav">
+    <a href="index.html" class="footer-link">Home</a>
+    <a href="bbos.html" class="footer-link">BBOS</a>
+    <a href="moontrance.html" class="footer-link">Moontrance</a>
+    <a href="about.html" class="footer-link">About</a>
+    <a href="intake.html" class="footer-link">Apply</a>
+  </nav>
+  <div class="footer-copy">© 2025 Ogden. All rights reserved.</div>
+</footer>
+
+
+<script>
+(function(){
+  var toggle = document.getElementById('navToggle');
+  var links  = document.querySelector('.nav-links');
+  if(!toggle || !links) return;
+  toggle.addEventListener('click', function(){
+    toggle.classList.toggle('open');
+    links.classList.toggle('open');
+    document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+  });
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      toggle.classList.remove('open');
+      links.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>
