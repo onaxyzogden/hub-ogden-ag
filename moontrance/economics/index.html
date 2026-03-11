@@ -16,8 +16,12 @@
     --ivory:       #faf7f2;
     --bark:        #2c2416;
     --bark-mid:    #4a3f2f;
-    --rust:        #b85c38;
+    --soil:        #2d2218;
+    --clay:        #8b5e3c;
+    --moon:        #e8d9c4;
     --gold:        #c9a227;
+    --gold-light:  #dfc48a;
+    --rust:        #b85c38;
     --mist:        #e8ede5;
     --shadow:      rgba(44,36,22,0.08);
   }
@@ -25,6 +29,57 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 16px; scroll-behavior: smooth; }
   body { background: var(--ivory); color: var(--bark); font-family: 'Outfit', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+  /* ── NAV (master — matches moontrance-collective) ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: transparent;
+    transition: background 0.5s, padding 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(250, 246, 240, 0.96);
+    backdrop-filter: blur(12px);
+    padding: 0.8rem 4rem;
+    border-bottom: 1px solid var(--moon);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--ivory);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.4s;
+  }
+  nav.scrolled .nav-logo { color: var(--soil); }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.88);
+    text-decoration: none; transition: color 0.3s;
+  }
+  nav.scrolled .nav-links a { color: var(--bark); }
+  .nav-links a:hover { color: var(--gold-light); }
+  nav.scrolled .nav-links a:hover { color: var(--clay); }
+  .nav-cta {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; text-decoration: none;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid rgba(255,255,255,0.5);
+    color: var(--ivory);
+    border-radius: 100px;
+    transition: all 0.3s;
+  }
+  nav.scrolled .nav-cta { border-color: var(--clay); color: var(--clay); }
+  .nav-cta:hover { background: rgba(255,255,255,0.12); }
+  nav.scrolled .nav-cta:hover { background: var(--clay); color: var(--ivory); }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.8rem; }
+    nav.scrolled { padding: 0.7rem 1.8rem; }
+    .nav-links { display: none; }
+  }
 
   /* HERO */
   .hero { background: var(--bark); padding: 90px 6vw 80px; position: relative; overflow: hidden; }
@@ -148,6 +203,17 @@
 </style>
 </head>
 <body>
+
+<nav id="nav">
+  <a href="moontrance-collective.html" class="nav-logo">Moontrance Collective</a>
+  <ul class="nav-links">
+    <li><a href="moontrance-collective.html#experiences">Experiences</a></li>
+    <li><a href="offer_economics_showcase.html">Offer Economics</a></li>
+    <li><a href="moontrance_acquisition_hub.html">Acquisition Hub</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="moontrance-collective.html#cta-banner" class="nav-cta">Book a Visit</a>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
@@ -577,6 +643,13 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
 
 renderDetail(0);
 </script>

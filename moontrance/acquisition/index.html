@@ -7,16 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --moss:   #3a4a2e;
-    --sage:   #7a9068;
-    --cream:  #f5f0e8;
-    --flax:   #d9c99a;
-    --earth:  #8b6f4e;
-    --clay:   #c4845a;
-    --ink:    #1e2318;
-    --mist:   #e8ede0;
-    --gold:   #b89a4a;
-    --rust:   #9c4a2a;
+    --moss:       #3a4a2e;
+    --sage:       #7a9068;
+    --cream:      #f5f0e8;
+    --ivory:      #faf6f0;
+    --flax:       #d9c99a;
+    --earth:      #8b6f4e;
+    --clay:       #c4845a;
+    --soil:       #2d2218;
+    --bark:       #5c3d2e;
+    --ink:        #1e2318;
+    --mist:       #e8ede0;
+    --moon:       #e8d9c4;
+    --gold:       #b89a4a;
+    --gold-light: #dfc48a;
+    --rust:       #9c4a2a;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,49 +35,51 @@
     overflow-x: hidden;
   }
 
-  /* ── NAV ── */
+  /* ── NAV (master — matches moontrance-collective) ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 3rem;
-    background: rgba(245,240,232,0.92);
+    padding: 1.2rem 4rem;
+    background: transparent;
+    transition: background 0.5s, padding 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(250, 246, 240, 0.96);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(122,144,104,0.2);
+    padding: 0.8rem 4rem;
+    border-bottom: 1px solid var(--moon);
   }
   .nav-logo {
-    font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--moss);
-    letter-spacing: 0.02em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--ivory);
+    letter-spacing: 0.04em;
     text-decoration: none;
+    transition: color 0.4s;
   }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  nav.scrolled .nav-logo { color: var(--soil); }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
   .nav-links a {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--moss);
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.88);
+    text-decoration: none; transition: color 0.3s;
   }
-  .nav-links a:hover { opacity: 1; }
+  nav.scrolled .nav-links a { color: var(--bark); }
+  .nav-links a:hover { color: var(--gold-light); }
+  nav.scrolled .nav-links a:hover { color: var(--clay); }
   .nav-cta {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: var(--moss);
-    color: var(--cream);
-    padding: 0.6rem 1.4rem;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; text-decoration: none;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid rgba(255,255,255,0.5);
+    color: var(--ivory);
+    border-radius: 100px;
+    transition: all 0.3s;
   }
-  .nav-cta:hover { background: var(--sage); }
+  nav.scrolled .nav-cta { border-color: var(--clay); color: var(--clay); }
+  .nav-cta:hover { background: rgba(255,255,255,0.12); }
+  nav.scrolled .nav-cta:hover { background: var(--clay); color: var(--ivory); }
 
   /* ── HERO ── */
   .hero {
@@ -854,15 +861,15 @@
 <body>
 
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">The Moontrance Collective</a>
+<nav id="nav">
+  <a href="moontrance-collective.html" class="nav-logo">Moontrance Collective</a>
   <ul class="nav-links">
-    <li><a href="#toolkit">The Toolkit</a></li>
-    <li><a href="#workflow">How It Works</a></li>
-    <li><a href="#economics">Offer Economics</a></li>
-    <li><a href="#scoring">Scoring</a></li>
+    <li><a href="moontrance-collective.html#experiences">Experiences</a></li>
+    <li><a href="offer_economics_showcase.html">Offer Economics</a></li>
+    <li><a href="moontrance_acquisition_hub.html">Acquisition Hub</a></li>
+    <li><a href="about.html">About</a></li>
   </ul>
-  <a class="nav-cta" href="#download">Download Hub</a>
+  <a href="moontrance-collective.html#cta-banner" class="nav-cta">Book a Visit</a>
 </nav>
 
 <!-- HERO -->
@@ -1365,6 +1372,13 @@
 </footer>
 
 <script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
   // Intersection observer for fade-up animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

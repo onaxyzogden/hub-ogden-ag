@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moontrance Collective — Land, Learning & Remembrance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1610;
+    --soil: #2d2218;
+    --bark: #5c3d2e;
+    --clay: #8b5e3c;
+    --sage: #6b7c5e;
+    --sage-light: #9aad8c;
+    --wheat: #d4b896;
+    --cream: #f5ede0;
+    --ivory: #faf6f0;
+    --moon: #e8d9c4;
+    --gold: #c8a96e;
+    --gold-light: #dfc48a;
+    --mist: #eae5dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--ivory);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: transparent;
+    transition: background 0.5s, padding 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(250, 246, 240, 0.96);
+    backdrop-filter: blur(12px);
+    padding: 0.8rem 4rem;
+    border-bottom: 1px solid var(--moon);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--ivory);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.4s;
+  }
+  nav.scrolled .nav-logo { color: var(--soil); }
+  .nav-links {
+    display: flex; gap: 2.2rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.88);
+    text-decoration: none; transition: color 0.3s;
+  }
+  nav.scrolled .nav-links a { color: var(--bark); }
+  .nav-links a:hover { color: var(--gold-light); }
+  nav.scrolled .nav-links a:hover { color: var(--clay); }
+  .nav-cta {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; text-decoration: none;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid rgba(255,255,255,0.5);
+    color: var(--ivory);
+    border-radius: 100px;
+    transition: all 0.3s;
+  }
+  nav.scrolled .nav-cta {
+    border-color: var(--clay); color: var(--clay);
+  }
+  .nav-cta:hover {
+    background: rgba(255,255,255,0.12);
+  }
+  nav.scrolled .nav-cta:hover { background: var(--clay); color: var(--ivory); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; height: 100vh; min-height: 680px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 120% 100% at 60% 30%, rgba(107,124,94,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(45,34,24,0.4) 0%, transparent 50%),
+      linear-gradient(160deg, #1e1a14 0%, #2d2218 40%, #3d3020 65%, #4a3a28 100%);
+  }
+  /* Organic texture overlay */
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 75% 20%, rgba(200,169,110,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 25% 70%, rgba(154,173,140,0.06) 0%, transparent 35%);
+    pointer-events: none;
+  }
+  /* Grain */
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  /* Moon motif */
+  .hero-moon {
+    position: absolute;
+    top: 8%; right: 10%;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 38%, rgba(232,217,196,0.13) 0%, transparent 65%);
+    border: 1px solid rgba(232,217,196,0.15);
+    pointer-events: none;
+  }
+  .hero-moon::after {
+    content: '';
+    position: absolute;
+    top: 15%; left: 20%;
+    width: 170px; height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,217,196,0.06) 0%, transparent 60%);
+    border: 1px solid rgba(232,217,196,0.08);
+  }
+  /* Horizon line */
+  .hero-horizon {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 180px;
+    background: linear-gradient(to top, rgba(250,246,240,0.06) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 0 2rem;
+    max-width: 860px;
+    opacity: 0; transform: translateY(28px);
+    animation: fadeUp 1.2s 0.4s ease forwards;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.8rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block;
+    width: 36px; height: 1px; background: var(--gold); opacity: 0.6;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.4rem, 7vw, 6.2rem);
+    font-weight: 300;
+    line-height: 1.06;
+    color: var(--cream);
+    margin-bottom: 0.3em;
+    letter-spacing: -0.01em;
+  }
+  .hero-title em {
+    font-style: italic; color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-weight: 300;
+    color: rgba(245,237,224,0.7);
+    line-height: 1.7;
+    max-width: 560px; margin: 1.6rem auto 2.8rem;
+    letter-spacing: 0.02em;
+  }
+  .hero-ctas {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-block; text-decoration: none;
+    padding: 1rem 2.4rem; border-radius: 100px;
+    background: var(--gold); color: var(--soil);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s; border: none; cursor: pointer;
+  }
+  .btn-primary:hover {
+    background: var(--gold-light); transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(200,169,110,0.4);
+  }
+  .btn-outline {
+    display: inline-block; text-decoration: none;
+    padding: 1rem 2.4rem; border-radius: 100px;
+    border: 1px solid rgba(245,237,224,0.4); color: var(--cream);
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s; cursor: pointer;
+  }
+  .btn-outline:hover {
+    background: rgba(245,237,224,0.1); border-color: rgba(245,237,224,0.7);
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(245,237,224,0.4);
+    font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  .scroll-hint-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(245,237,224,0.4), transparent);
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  /* ── SECTIONS ── */
+  section { position: relative; }
+
+  .section-eyebrow {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--clay);
+    display: flex; align-items: center; gap: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-eyebrow::before {
+    content: ''; display: block;
+    width: 28px; height: 1px; background: var(--clay);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 400; line-height: 1.15;
+    color: var(--soil);
+  }
+  .section-title em { font-style: italic; color: var(--clay); }
+  .section-body {
+    font-size: 1.05rem; font-weight: 300; line-height: 1.85;
+    color: rgba(26,22,16,0.7); max-width: 560px;
+  }
+
+  /* ── WHY WE EXIST ── */
+  #why {
+    padding: 9rem 4rem;
+    background: var(--ivory);
+  }
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8rem;
+    max-width: 1200px; margin: 0 auto; align-items: center;
+  }
+  .why-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .why-visual-inner {
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 40% 30%, rgba(107,124,94,0.4) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(92,61,46,0.3) 0%, transparent 45%),
+      linear-gradient(160deg, #e8d9c4 0%, #d4b896 30%, #b8956a 60%, #8b5e3c 100%);
+  }
+  .why-visual-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(26,22,16,0.015) 3px,
+      rgba(26,22,16,0.015) 4px
+    );
+  }
+  /* Decorative frame */
+  .why-visual::before {
+    content: '';
+    position: absolute; inset: -1.2rem;
+    border: 1px solid var(--wheat);
+    border-radius: 4px; z-index: -1;
+  }
+  /* Floating label */
+  .why-visual-tag {
+    position: absolute; bottom: 1.8rem; left: 1.8rem;
+    background: rgba(250,246,240,0.95);
+    padding: 1rem 1.4rem; border-radius: 3px;
+    backdrop-filter: blur(8px);
+  }
+  .why-visual-tag p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 500; color: var(--soil);
+    font-style: italic;
+  }
+  .why-visual-tag span {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--clay); display: block; margin-top: 0.2rem;
+  }
+  .why-text { display: flex; flex-direction: column; gap: 2rem; }
+  .why-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 400; font-style: italic;
+    color: var(--soil); line-height: 1.4;
+    border-left: 2px solid var(--gold);
+    padding-left: 1.5rem; margin: 1rem 0;
+  }
+  .pillars {
+    display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;
+  }
+  .pillar {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem 1.2rem; border-radius: 3px;
+    border: 1px solid var(--moon); transition: border-color 0.3s;
+  }
+  .pillar:hover { border-color: var(--wheat); }
+  .pillar-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: var(--mist); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: var(--clay);
+  }
+  .pillar-label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--clay); margin-bottom: 0.2rem;
+  }
+  .pillar-desc {
+    font-size: 0.88rem; color: rgba(26,22,16,0.65); line-height: 1.6;
+  }
+
+  /* ── EXPERIENCES ── */
+  #experiences {
+    padding: 9rem 4rem;
+    background: var(--soil);
+    position: relative; overflow: hidden;
+  }
+  #experiences::before {
+    content: '';
+    position: absolute; top: -3rem; left: -3rem;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(107,124,94,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .experiences-header {
+    max-width: 1200px; margin: 0 auto 5rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .experiences-header .section-eyebrow { color: var(--sage-light); }
+  .experiences-header .section-eyebrow::before { background: var(--sage-light); }
+  .experiences-header .section-title { color: var(--cream); }
+  .experiences-header .section-title em { color: var(--gold-light); }
+  .experiences-header-right {
+    max-width: 360px;
+    font-size: 0.92rem; font-weight: 300; line-height: 1.8;
+    color: rgba(245,237,224,0.55);
+    text-align: right;
+  }
+
+  .exp-category { max-width: 1200px; margin: 0 auto 4rem; }
+  .exp-category-label {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold);
+    padding-bottom: 1rem; margin-bottom: 2.4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .exp-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .exp-cards.two-col { grid-template-columns: repeat(2, 1fr); }
+  .exp-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px; padding: 2.4rem;
+    transition: all 0.4s; cursor: pointer;
+    display: flex; flex-direction: column; gap: 1rem;
+    text-decoration: none;
+  }
+  .exp-card:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(200,169,110,0.3);
+    transform: translateY(-4px);
+  }
+  .exp-card-icon {
+    font-size: 1.5rem; width: 48px; height: 48px;
+    background: rgba(200,169,110,0.1);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  .exp-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 400; color: var(--cream);
+    line-height: 1.2;
+  }
+  .exp-card-desc {
+    font-size: 0.88rem; font-weight: 300;
+    color: rgba(245,237,224,0.55); line-height: 1.75;
+    flex: 1;
+  }
+  .exp-card-includes {
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+  .exp-card-include {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.78rem; color: rgba(245,237,224,0.45);
+  }
+  .exp-card-include::before {
+    content: ''; display: block;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0;
+  }
+  .exp-card-cta {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold);
+    margin-top: 0.5rem; transition: gap 0.3s;
+  }
+  .exp-card:hover .exp-card-cta { gap: 0.9rem; }
+  .exp-card-cta::after { content: '→'; }
+
+  /* ── FEEL / ATMOSPHERE ── */
+  #atmosphere {
+    padding: 9rem 4rem;
+    background: var(--cream);
+  }
+  .atmosphere-inner { max-width: 1200px; margin: 0 auto; }
+  .atmosphere-header { text-align: center; margin-bottom: 5rem; }
+  .atmosphere-header .section-eyebrow { justify-content: center; }
+  .atmosphere-header .section-eyebrow::before { display: none; }
+  .atmosphere-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4rem;
+  }
+  .atm-item {
+    display: flex; flex-direction: column; gap: 1rem;
+    padding: 2.8rem 2rem; text-align: center;
+    border-top: 1px solid var(--moon);
+    transition: border-color 0.3s;
+  }
+  .atm-item:hover { border-color: var(--clay); }
+  .atm-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 300; font-style: italic;
+    color: var(--moon); line-height: 1;
+  }
+  .atm-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 500; color: var(--soil);
+  }
+  .atm-body {
+    font-size: 0.88rem; font-weight: 300; line-height: 1.8;
+    color: rgba(26,22,16,0.6);
+  }
+  .atm-divider { max-width: 600px; margin: 5rem auto; text-align: center; }
+  .atm-divider-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: 300; font-style: italic;
+    color: var(--soil); line-height: 1.5;
+  }
+  .atm-divider-line {
+    width: 48px; height: 1px; background: var(--clay); margin: 2rem auto;
+  }
+
+  /* ── VALUES / HOSPITALITY ── */
+  #values {
+    padding: 9rem 4rem;
+    background: var(--mist);
+    position: relative;
+  }
+  #values::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.04));
+    pointer-events: none;
+  }
+  .values-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center; }
+  .values-list { display: flex; flex-direction: column; gap: 2rem; margin-top: 2.5rem; }
+  .value-item {
+    display: flex; gap: 1.5rem; padding-bottom: 2rem;
+    border-bottom: 1px solid var(--moon);
+  }
+  .value-item:last-child { border-bottom: none; }
+  .value-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 300; font-style: italic;
+    color: var(--gold); flex-shrink: 0; width: 28px;
+  }
+  .value-content {}
+  .value-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 500; color: var(--soil);
+    margin-bottom: 0.4rem;
+  }
+  .value-desc {
+    font-size: 0.88rem; font-weight: 300; color: rgba(26,22,16,0.62); line-height: 1.75;
+  }
+  .values-visual {
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .value-banner {
+    padding: 2.4rem; border-radius: 4px;
+    background: var(--soil); color: var(--cream);
+  }
+  .value-banner-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300; font-style: italic;
+    color: var(--gold-light); margin-bottom: 0.8rem;
+  }
+  .value-banner-body {
+    font-size: 0.9rem; font-weight: 300; line-height: 1.8;
+    color: rgba(245,237,224,0.65);
+  }
+  .value-tags {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem;
+  }
+  .value-tag {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold);
+    padding: 0.35rem 0.9rem; border: 1px solid rgba(200,169,110,0.35);
+    border-radius: 100px;
+  }
+
+  /* ── WHO IT'S FOR ── */
+  #audience {
+    padding: 9rem 4rem;
+    background: var(--ivory);
+  }
+  .audience-inner { max-width: 1200px; margin: 0 auto; }
+  .audience-header { text-align: center; margin-bottom: 5rem; }
+  .audience-header .section-eyebrow { justify-content: center; }
+  .audience-header .section-eyebrow::before { display: none; }
+  .paths-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .path-card {
+    background: var(--cream); border-radius: 4px;
+    padding: 2.8rem 2.2rem;
+    border: 1px solid var(--moon);
+    transition: all 0.4s;
+  }
+  .path-card:hover {
+    border-color: var(--wheat);
+    box-shadow: 0 12px 40px rgba(92,61,46,0.08);
+    transform: translateY(-4px);
+  }
+  .path-icon { font-size: 2rem; margin-bottom: 1.2rem; }
+  .path-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem; font-weight: 400; color: var(--soil); margin-bottom: 1rem;
+  }
+  .path-desc {
+    font-size: 0.88rem; font-weight: 300; line-height: 1.8;
+    color: rgba(26,22,16,0.62); margin-bottom: 1.8rem;
+  }
+  .path-steps {
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .path-step {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.8rem; color: rgba(26,22,16,0.6);
+  }
+  .path-step::before {
+    content: '→'; color: var(--clay); font-size: 0.75rem;
+  }
+
+  /* ── FAQ ── */
+  #faq {
+    padding: 9rem 4rem;
+    background: var(--soil);
+  }
+  .faq-inner { max-width: 760px; margin: 0 auto; }
+  .faq-header { margin-bottom: 4rem; }
+  .faq-header .section-eyebrow { color: var(--sage-light); }
+  .faq-header .section-eyebrow::before { background: var(--sage-light); }
+  .faq-header .section-title { color: var(--cream); }
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .faq-question {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.8rem 0; cursor: pointer; gap: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 400; color: var(--cream);
+    transition: color 0.3s; list-style: none;
+  }
+  .faq-question:hover { color: var(--gold-light); }
+  .faq-question .faq-icon {
+    font-size: 1.1rem; color: var(--gold); flex-shrink: 0;
+    transition: transform 0.3s; font-style: normal; font-family: 'Jost', sans-serif;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-answer {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    font-size: 0.9rem; font-weight: 300; line-height: 1.85;
+    color: rgba(245,237,224,0.55);
+  }
+  .faq-item.open .faq-answer {
+    max-height: 240px; padding-bottom: 1.8rem;
+  }
+
+  /* ── CTA BANNER ── */
+  #cta-banner {
+    padding: 9rem 4rem;
+    background: linear-gradient(135deg, #1a1610 0%, #2d2218 50%, #3d3020 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  #cta-banner::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,169,110,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-banner-inner { position: relative; max-width: 680px; margin: 0 auto; }
+  .cta-banner-eyebrow {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+  }
+  .cta-banner-eyebrow::before, .cta-banner-eyebrow::after {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--gold); opacity: 0.5;
+  }
+  .cta-banner-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300; font-style: italic;
+    color: var(--cream); line-height: 1.2; margin-bottom: 1.5rem;
+  }
+  .cta-banner-body {
+    font-size: 1rem; font-weight: 300; line-height: 1.8;
+    color: rgba(245,237,224,0.6); margin-bottom: 3rem; max-width: 480px; margin-left: auto; margin-right: auto;
+  }
+  .cta-banner-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 3rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 4rem;
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem;
+    margin-bottom: 4rem;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 500; color: var(--cream);
+    margin-bottom: 1rem; display: block;
+  }
+  .footer-tagline {
+    font-size: 0.85rem; font-weight: 300; line-height: 1.8;
+    color: rgba(245,237,224,0.4); max-width: 260px; margin-bottom: 1.5rem;
+  }
+  .footer-col-title {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem;
+  }
+  .footer-links { display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-links a {
+    font-size: 0.85rem; font-weight: 300; color: rgba(245,237,224,0.45);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copyright {
+    font-size: 0.75rem; color: rgba(245,237,224,0.25);
+  }
+  .footer-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem; font-style: italic;
+    color: rgba(200,169,110,0.3);
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.8rem; }
+    nav.scrolled { padding: 0.8rem 1.8rem; }
+    .nav-links { display: none; }
+    #why, #experiences, #atmosphere, #values, #audience, #faq, #cta-banner { padding: 5rem 1.8rem; }
+    footer { padding: 3rem 1.8rem; }
+    .why-grid, .values-grid { grid-template-columns: 1fr; gap: 4rem; }
+    .why-visual { display: none; }
+    .exp-cards { grid-template-columns: 1fr; }
+    .exp-cards.two-col { grid-template-columns: 1fr; }
+    .atmosphere-grid { grid-template-columns: 1fr; gap: 0; }
+    .paths-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .experiences-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .experiences-header-right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="moontrance-collective.html" class="nav-logo">Moontrance Collective</a>
+  <ul class="nav-links">
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="offer_economics_showcase.html">Offer Economics</a></li>
+    <li><a href="moontrance_acquisition_hub.html">Acquisition Hub</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="#cta-banner" class="nav-cta">Book a Visit</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-moon"></div>
+  <div class="hero-horizon"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Halton Hills, Ontario</p>
+    <h1 class="hero-title">
+      Land, <em>Learning</em><br>& Remembrance
+    </h1>
+    <p class="hero-sub">A faith-rooted destination where families, learners, and seekers experience the beauty of creation through guided visits, sustainable living workshops, and overnight stays.</p>
+    <div class="hero-ctas">
+      <a href="#experiences" class="btn-primary">Explore Experiences</a>
+      <a href="#why" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-hint-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- WHY WE EXIST -->
+<section id="why">
+  <div class="why-grid">
+    <div class="why-visual reveal">
+      <div class="why-visual-inner"></div>
+      <div class="why-visual-tag">
+        <p>Where beauty and values work together</p>
+        <span>Moontrance Collective</span>
+      </div>
+    </div>
+    <div class="why-text">
+      <div>
+        <p class="section-eyebrow reveal">Our Purpose</p>
+        <h2 class="section-title reveal reveal-delay-1">We exist to restore your <em>relationship with creation</em></h2>
+      </div>
+      <blockquote class="why-quote reveal reveal-delay-2">
+        "To cultivate a place of remembrance, learning, and stewardship where people encounter the beauty of Allah's creation."
+      </blockquote>
+      <p class="section-body reveal reveal-delay-2">
+        Moontrance Collective is a values-rooted agritourism destination in Halton Hills built around a simple belief: that time spent on the land — learning, resting, and reflecting — can restore something essential in us. We bring together hospitality, education, and Islamic values in one living, breathing place.
+      </p>
+      <div class="pillars reveal reveal-delay-3">
+        <div class="pillar">
+          <div class="pillar-icon">🌿</div>
+          <div>
+            <p class="pillar-label">Stewardship</p>
+            <p class="pillar-desc">Caring for the land as a trust, not a resource to exploit.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">📖</div>
+          <div>
+            <p class="pillar-label">Learning</p>
+            <p class="pillar-desc">Practical education rooted in sustainable living and Islamic principles.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🌙</div>
+          <div>
+            <p class="pillar-label">Remembrance</p>
+            <p class="pillar-desc">Creating space for reflection, gratitude, and connection to what matters most.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🏡</div>
+          <div>
+            <p class="pillar-label">Hospitality</p>
+            <p class="pillar-desc">Welcoming guests with dignity, care, and a commitment to halal values.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCES -->
+<section id="experiences">
+  <div class="experiences-header">
+    <div>
+      <p class="section-eyebrow reveal">What We Offer</p>
+      <h2 class="section-title reveal reveal-delay-1">Experiences for <em>Rest,<br>Learning & Reconnection</em></h2>
+    </div>
+    <p class="experiences-header-right reveal reveal-delay-2">From guided visits to overnight stays, each experience is designed to help guests connect with the land, learn sustainable ways of living, and experience hospitality rooted in Islamic values.</p>
+  </div>
+
+  <!-- VISIT -->
+  <div class="exp-category">
+    <p class="exp-category-label reveal">Visit — Day Experiences</p>
+    <div class="exp-cards">
+      <div class="exp-card reveal reveal-delay-1">
+        <div class="exp-card-icon">🗺️</div>
+        <h3 class="exp-card-name">Guided Farm & Land Tour</h3>
+        <p class="exp-card-desc">Step onto the land and discover the living systems, values, and vision behind our destination. A guided introduction to the gardens, animal systems, learning spaces, and the deeper principles that shape how everything is cared for.</p>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Guided land walk through key site zones</div>
+          <div class="exp-card-include">Sustainable living systems overview</div>
+          <div class="exp-card-include">Values-rooted educational framing</div>
+          <div class="exp-card-include">Optional tea and light hospitality</div>
+        </div>
+        <p class="exp-card-cta">Book a Guided Tour</p>
+      </div>
+
+      <div class="exp-card reveal reveal-delay-2">
+        <div class="exp-card-icon">🧡</div>
+        <h3 class="exp-card-name">Family Land Day</h3>
+        <p class="exp-card-desc">Family time should offer more than entertainment. A half-day experience for parents and children who want to spend meaningful time together in nature — learning about stewardship, food, and creation in a way that feels peaceful and grounded.</p>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Guided family-friendly land experience</div>
+          <div class="exp-card-include">Hands-on stewardship activity</div>
+          <div class="exp-card-include">Child-friendly learning segment</div>
+          <div class="exp-card-include">Light refreshments & family takeaway</div>
+        </div>
+        <p class="exp-card-cta">Reserve a Family Day</p>
+      </div>
+
+      <div class="exp-card reveal reveal-delay-3">
+        <div class="exp-card-icon">🌱</div>
+        <h3 class="exp-card-name">Seasonal Workshops</h3>
+        <p class="exp-card-desc">For those who want more than inspiration — practical, values-rooted sessions on soil health, food systems, composting, and stewardship. Guests engage with living systems, observe how they work, and leave with insights they can apply at home.</p>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Guided workshop with live demonstration</div>
+          <div class="exp-card-include">Handout, guide & practical takeaways</div>
+          <div class="exp-card-include">Tea and refreshments included</div>
+          <div class="exp-card-include">Invitation into deeper experiences</div>
+        </div>
+        <p class="exp-card-cta">View Upcoming Workshops</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAY -->
+  <div class="exp-category">
+    <p class="exp-category-label reveal">Stay — Overnight Experiences</p>
+    <div class="exp-cards two-col">
+      <div class="exp-card reveal reveal-delay-1">
+        <div class="exp-card-icon">🌙</div>
+        <h3 class="exp-card-name">Rest & Reconnect Stay</h3>
+        <p class="exp-card-desc">Set within a peaceful land-based environment, this overnight stay invites you to step away from overstimulation and settle into a space where reflection, simplicity, and hospitality are woven into every detail. A prayer-friendly, halal, values-aligned retreat in nature.</p>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Overnight accommodation in nature</div>
+          <div class="exp-card-include">Access to reflection and walking spaces</div>
+          <div class="exp-card-include">Prayer-friendly environment</div>
+          <div class="exp-card-include">Optional guided experiences & meal packages</div>
+        </div>
+        <p class="exp-card-cta">Plan Your Stay</p>
+      </div>
+
+      <div class="exp-card reveal reveal-delay-2">
+        <div class="exp-card-icon">👨‍👩‍👧‍👦</div>
+        <h3 class="exp-card-name">Family Stewardship Stay</h3>
+        <p class="exp-card-desc">A deeper kind of family getaway — bringing together peaceful accommodation, land-based learning, hands-on participation, and moments of reflection that help families reconnect with one another and with the signs of Allah in creation. Not a break, but a memory.</p>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Family accommodation on the land</div>
+          <div class="exp-card-include">Guided family farm experience</div>
+          <div class="exp-card-include">Hands-on stewardship activity</div>
+          <div class="exp-card-include">Family reflection materials & hospitality spaces</div>
+        </div>
+        <p class="exp-card-cta">Book a Family Stay</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATMOSPHERE -->
+<section id="atmosphere">
+  <div class="atmosphere-inner">
+    <div class="atmosphere-header">
+      <p class="section-eyebrow reveal">What a Visit Feels Like</p>
+      <h2 class="section-title reveal reveal-delay-1">Calm, beauty, and <em>intentional living</em></h2>
+    </div>
+    <div class="atmosphere-grid">
+      <div class="atm-item reveal">
+        <p class="atm-num">01</p>
+        <p class="atm-label">Arrive</p>
+        <p class="atm-body">You arrive to a setting shaped by calm and intention. Quiet spaces, living systems, and an atmosphere that invites you to breathe before you even begin.</p>
+      </div>
+      <div class="atm-item reveal reveal-delay-1">
+        <p class="atm-num">02</p>
+        <p class="atm-label">Engage</p>
+        <p class="atm-body">Move through gardens, animal systems, reflection areas, and hands-on experiences that blend learning with beauty. Every element has a purpose behind it.</p>
+      </div>
+      <div class="atm-item reveal reveal-delay-2">
+        <p class="atm-num">03</p>
+        <p class="atm-label">Reflect</p>
+        <p class="atm-body">Share a halal meal, sit in stillness, walk the land at dusk, or join your children in a moment of learning. Some of the best remembrance happens in between.</p>
+      </div>
+      <div class="atm-item reveal reveal-delay-1">
+        <p class="atm-num">04</p>
+        <p class="atm-label">Learn</p>
+        <p class="atm-body">Leave with practical insight you can carry home — about food systems, stewardship, seasonal rhythms, and what sustainable living actually looks like in practice.</p>
+      </div>
+      <div class="atm-item reveal reveal-delay-2">
+        <p class="atm-num">05</p>
+        <p class="atm-label">Rest</p>
+        <p class="atm-body">If you stay overnight, you are welcomed into thoughtfully prepared accommodations. No performance required. Simply rest, pray, and reconnect with what matters.</p>
+      </div>
+      <div class="atm-item reveal reveal-delay-3">
+        <p class="atm-num">06</p>
+        <p class="atm-label">Return</p>
+        <p class="atm-body">Many guests find themselves wanting to come back. Not for novelty — but because this kind of experience restores something that everyday life depletes.</p>
+      </div>
+    </div>
+    <div class="atm-divider reveal">
+      <div class="atm-divider-line"></div>
+      <p class="atm-divider-quote">"From every path, the goal is the same: to offer something restorative, rooted, and real."</p>
+      <div class="atm-divider-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section id="values">
+  <div class="values-grid">
+    <div>
+      <p class="section-eyebrow reveal">Our Hospitality Standard</p>
+      <h2 class="section-title reveal reveal-delay-1">Rooted in <em>Islamic Values</em>, shaped by care</h2>
+      <div class="values-list">
+        <div class="value-item reveal reveal-delay-1">
+          <span class="value-num">I</span>
+          <div class="value-content">
+            <p class="value-title">Halal, always</p>
+            <p class="value-desc">From food to atmosphere, every hospitality choice is made with halal standards at the centre. You will never need to check or compromise.</p>
+          </div>
+        </div>
+        <div class="value-item reveal reveal-delay-2">
+          <span class="value-num">II</span>
+          <div class="value-content">
+            <p class="value-title">Privacy-conscious design</p>
+            <p class="value-desc">Accommodations and shared spaces are designed with privacy, dignity, and family comfort in mind. Safety is built into the structure, not just the policy.</p>
+          </div>
+        </div>
+        <div class="value-item reveal reveal-delay-3">
+          <span class="value-num">III</span>
+          <div class="value-content">
+            <p class="value-title">Prayer-friendly rhythms</p>
+            <p class="value-desc">The experience is paced with salah in mind. Prayer spaces, direction, and quiet time are built naturally into the schedule, not squeezed in as an afterthought.</p>
+          </div>
+        </div>
+        <div class="value-item reveal reveal-delay-4">
+          <span class="value-num">IV</span>
+          <div class="value-content">
+            <p class="value-title">Values-safe for the whole family</p>
+            <p class="value-desc">Parents can relax knowing this is an environment built around the same values they bring to their homes. No filtering needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="values-visual reveal reveal-delay-2">
+      <div class="value-banner">
+        <p class="value-banner-title">A place where beauty and values are meant to work together</p>
+        <p class="value-banner-body">We believe the best hospitality does not ask you to compromise who you are. Our destination is designed so that Muslim families, couples, and individuals can experience something genuinely beautiful, genuinely restful, and genuinely aligned with their faith.</p>
+        <div class="value-tags">
+          <span class="value-tag">Halal Hospitality</span>
+          <span class="value-tag">Family Safe</span>
+          <span class="value-tag">Prayer Spaces</span>
+          <span class="value-tag">Values Aligned</span>
+          <span class="value-tag">Privacy First</span>
+          <span class="value-tag">Faith Rooted</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE / PATHS -->
+<section id="audience">
+  <div class="audience-inner">
+    <div class="audience-header">
+      <p class="section-eyebrow reveal">For Families, Learners & Seekers</p>
+      <h2 class="section-title reveal reveal-delay-1">Your path <em>through the land</em></h2>
+      <p class="section-body reveal reveal-delay-2" style="max-width:520px; margin: 1.2rem auto 0; text-align:center;">
+        Every guest comes for something different. We've shaped pathways that meet you where you are and carry you somewhere meaningful.
+      </p>
+    </div>
+    <div class="paths-grid">
+      <div class="path-card reveal">
+        <p class="path-icon">👨‍👩‍👧</p>
+        <h3 class="path-name">The Family Path</h3>
+        <p class="path-desc">For Muslim and values-conscious families seeking meaningful outings, nature-based learning, and memories that last beyond the weekend.</p>
+        <div class="path-steps">
+          <p class="path-step">Guided Farm & Land Tour</p>
+          <p class="path-step">Family Land Day</p>
+          <p class="path-step">Family Stewardship Stay</p>
+          <p class="path-step">Family Retreat (future)</p>
+        </div>
+      </div>
+      <div class="path-card reveal reveal-delay-1">
+        <p class="path-icon">🌙</p>
+        <h3 class="path-name">The Adult Path</h3>
+        <p class="path-desc">For couples, solo guests, and young professionals who want calm, beauty, and a values-aligned escape from the noise of daily life.</p>
+        <div class="path-steps">
+          <p class="path-step">Seasonal Workshop</p>
+          <p class="path-step">Rest & Reconnect Stay</p>
+          <p class="path-step">Seasonal Retreat (future)</p>
+          <p class="path-step">Membership (future)</p>
+        </div>
+      </div>
+      <div class="path-card reveal reveal-delay-2">
+        <p class="path-icon">📖</p>
+        <h3 class="path-name">The Learning Path</h3>
+        <p class="path-desc">For serious learners, homeschool families, and groups seeking practical, grounded education in sustainable living and Islamic stewardship.</p>
+        <div class="path-steps">
+          <p class="path-step">Seasonal Workshop</p>
+          <p class="path-step">Learn & Stay Weekend (future)</p>
+          <p class="path-step">Intensive (future)</p>
+          <p class="path-step">Membership (future)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <p class="section-eyebrow reveal">Common Questions</p>
+      <h2 class="section-title reveal reveal-delay-1">We're happy to <em>answer anything</em></h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          What kind of experiences do you offer?
+          <em class="faq-icon">+</em>
+        </div>
+        <div class="faq-answer">We offer guided farm and land tours, family half-day experiences, seasonal educational workshops, and overnight stays. Each experience is rooted in sustainable living, stewardship, and hospitality shaped by Islamic values. Whether you want a two-hour introduction or a full family weekend, there's a path for you.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Is the environment family-friendly?
+          <em class="faq-icon">+</em>
+        </div>
+        <div class="faq-answer">Yes — deeply so. Several of our experiences are specifically designed with families in mind, including child-friendly activities, values-conscious hospitality, and a setting built for parents who want to relax without compromising what they care about. Children are welcomed and included as full participants.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Is food halal?
+          <em class="faq-icon">+</em>
+        </div>
+        <div class="faq-answer">Our hospitality approach is rooted in Islamic values, which includes halal food standards wherever meals are offered. You will never need to ask or negotiate this. It is already built in.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Do I need any farming experience?
+          <em class="faq-icon">+</em>
+        </div>
+        <div class="faq-answer">Not at all. Our experiences are designed for guests at every level of familiarity — from people who have never set foot on a farm to those with a deep interest in sustainable systems. You will be guided, welcomed, and never made to feel unprepared.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Are stays private and modesty-friendly?
+          <em class="faq-icon">+</em>
+        </div>
+        <div class="faq-answer">Yes. Accommodations and shared spaces are designed with privacy, dignity, and guest comfort in mind from the ground up. We build privacy into the structure, not just the policy. Prayer spaces, direction, and quiet time are also integrated naturally into the stay experience.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Can schools or groups visit?
+          <em class="faq-icon">+</em>
+        </div>
+        <div class="faq-answer">Yes. We welcome Islamic schools, homeschool groups, family circles, educational organizations, and aligned retreat groups. Tailored visits and hosted group experiences are available. Please reach out through the contact form to discuss your group's needs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section id="cta-banner">
+  <div class="cta-banner-inner">
+    <p class="cta-banner-eyebrow reveal">Come Spend Time on the Land</p>
+    <h2 class="cta-banner-title reveal reveal-delay-1">A different kind of<br>time together awaits</h2>
+    <p class="cta-banner-body reveal reveal-delay-2">Join us for a guided visit, a workshop, or a stay designed to help you reconnect with creation, learn sustainable ways of living, and experience hospitality rooted in Islamic values.</p>
+    <div class="cta-banner-buttons reveal reveal-delay-3">
+      <a href="#experiences" class="btn-primary">Explore All Experiences</a>
+      <a href="#" class="btn-outline">Inquire About Group Visits</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">Moontrance Collective</span>
+      <p class="footer-tagline">A land-based destination rooted in faith, stewardship, and hospitality. Halton Hills, Ontario, Canada.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Experiences</p>
+      <div class="footer-links">
+        <a href="#">Guided Farm Tour</a>
+        <a href="#">Family Land Day</a>
+        <a href="#">Seasonal Workshops</a>
+        <a href="#">Rest & Reconnect Stay</a>
+        <a href="#">Family Stewardship Stay</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">Visit Us</p>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Our Values</a>
+        <a href="#">Group Visits</a>
+        <a href="#">FAQ</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">Stay Connected</p>
+      <div class="footer-links">
+        <a href="#">Newsletter</a>
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">Book a Visit</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copyright">© 2025 Moontrance Collective. All rights reserved.</p>
+    <p class="footer-ornament">Land, Learning & Remembrance</p>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // FAQ toggle
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
