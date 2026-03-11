@@ -864,7 +864,10 @@
       .mission-strip { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 2.5rem; }
       .portals { padding: 4rem 2.5rem; }
       .portal-grid { grid-template-columns: 1fr; max-width: 500px; }
-      .portal-card-inner { height: 360px; }
+      .portal-card-inner { height: auto !important; min-height: 0; justify-content: flex-start; padding: 2rem; }
+      .portal-card:nth-child(2) .portal-card-inner,
+      .portal-card:nth-child(3) .portal-card-inner { height: auto !important; }
+      .portal-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 60%); }
 
       .philosophy { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2.5rem; }
       .process { padding: 4rem 2.5rem; }
@@ -885,11 +888,11 @@
   <nav>
     <a class="nav-logo" href="index.html">Moon<span>trance</span></a>
     <ul class="nav-links">
-      <li><a href="moontrance-collective.html">The Collective</a></li>
-      <li><a href="offer_economics_showcase.html">Offer Economics</a></li>
-      <li><a href="moontrance_acquisition_hub.html">Acquisition Hub</a></li>
+      <li><a href="collective/index.html">The Collective</a></li>
+      <li><a href="economics/index.html">Offer Economics</a></li>
+      <li><a href="acquisition/index.html">Acquisition Hub</a></li>
     </ul>
-    <a class="nav-cta" href="moontrance_acquisition_hub.html">Start Your Search →</a>
+    <a class="nav-cta" href="acquisition/index.html">Start Your Search →</a>
   </nav>
 
   <!-- HERO -->
@@ -913,7 +916,7 @@
         <a class="btn-primary" href="#portals">
           ↓ &nbsp; Enter the Collective
         </a>
-        <a class="btn-ghost" href="moontrance_acquisition_hub.html">
+        <a class="btn-ghost" href="acquisition/index.html">
           Start your land search →
         </a>
       </div>
@@ -984,7 +987,7 @@
 
     <div class="portal-grid">
       <!-- Card 1: Moontrance Collective -->
-      <a class="portal-card portal-card-1" href="moontrance-collective.html">
+      <a class="portal-card portal-card-1" href="collective/index.html">
         <div class="portal-card-inner">
           <div class="portal-bg"></div>
           <div class="portal-pattern"></div>
@@ -998,7 +1001,7 @@
       </a>
 
       <!-- Card 2: Offer Economics -->
-      <a class="portal-card portal-card-2" href="offer_economics_showcase.html">
+      <a class="portal-card portal-card-2" href="economics/index.html">
         <div class="portal-card-inner">
           <div class="portal-bg"></div>
           <div class="portal-pattern"></div>
@@ -1012,7 +1015,7 @@
       </a>
 
       <!-- Card 3: Acquisition Hub -->
-      <a class="portal-card portal-card-3" href="moontrance_acquisition_hub.html">
+      <a class="portal-card portal-card-3" href="acquisition/index.html">
         <div class="portal-card-inner">
           <div class="portal-bg"></div>
           <div class="portal-pattern"></div>
@@ -1111,8 +1114,8 @@
       Whether you're at the early vision stage or actively making offers, every tool in this ecosystem is designed to help you move with clarity and confidence.
     </p>
     <div class="final-cta-buttons">
-      <a class="btn-cream" href="moontrance_acquisition_hub.html">Open the Acquisition Hub →</a>
-      <a class="btn-outline-cream" href="offer_economics_showcase.html">Explore Offer Economics</a>
+      <a class="btn-cream" href="acquisition/index.html">Open the Acquisition Hub →</a>
+      <a class="btn-outline-cream" href="economics/index.html">Explore Offer Economics</a>
     </div>
   </section>
 
@@ -1120,9 +1123,9 @@
   <footer>
     <div class="footer-logo">Moon<span>trance</span> Collective</div>
     <ul class="footer-links">
-      <li><a href="moontrance-collective.html">The Collective</a></li>
-      <li><a href="offer_economics_showcase.html">Offer Economics</a></li>
-      <li><a href="moontrance_acquisition_hub.html">Acquisition Hub</a></li>
+      <li><a href="collective/index.html">The Collective</a></li>
+      <li><a href="economics/index.html">Offer Economics</a></li>
+      <li><a href="acquisition/index.html">Acquisition Hub</a></li>
     </ul>
     <div class="footer-copy">Ontario Agritourism · Halton & Beyond</div>
   </footer>
