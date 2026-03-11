@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBOS Operator Intake — Charter v3.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy: #1a2f5a;
+    --navy-dark: #0f1c38;
+    --navy-mid: #2a4070;
+    --gold: #c8962a;
+    --gold-light: #f0c96a;
+    --cream: #faf7f2;
+    --cream-dark: #f0ebe0;
+    --ink: #1a1a1a;
+    --ink-mid: #3a3a3a;
+    --ink-light: #666;
+    --red: #b93a2a;
+    --red-light: #fdf1ef;
+    --green: #1a5c3a;
+    --green-light: #edf7f2;
+    --amber-light: #fef8ec;
+    --border: #d8d0c4;
+    --border-dark: #a89880;
+    --progress-h: 4px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-rail {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--progress-h);
+    background: var(--cream-dark); z-index: 100;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--navy), var(--gold));
+    width: 0%; transition: width 0.5s ease;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy-dark);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(200,150,42,0.3);
+  }
+  .logo-mark {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--gold-light); letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .form-title-group { text-align: center; }
+  .form-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; color: #fff; font-weight: 400;
+  }
+  .form-subtitle { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+  .version-tag {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(200,150,42,0.6); letter-spacing: 0.08em;
+  }
+
+  /* ── STAGE NAV ── */
+  .stage-nav {
+    background: var(--navy);
+    padding: 0 48px;
+    display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    overflow-x: auto;
+  }
+  .stage-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.35);
+    padding: 14px 20px; border: none; background: none; cursor: pointer;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .stage-btn:hover { color: rgba(255,255,255,0.7); }
+  .stage-btn.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+  .stage-btn.completed { color: rgba(100,200,140,0.7); }
+  .stage-btn.blocked { color: rgba(200,80,60,0.6); cursor: not-allowed; }
+
+  /* ── MAIN LAYOUT ── */
+  .form-shell {
+    max-width: 860px; margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ── SECTION PANEL ── */
+  .section-panel {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+  .section-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex; align-items: flex-start; gap: 20px;
+    margin-bottom: 36px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    font-family: 'DM Serif Display', serif; font-size: 52px;
+    color: var(--cream-dark); line-height: 1; flex-shrink: 0;
+    width: 56px; text-align: center;
+  }
+  .section-meta { flex: 1; }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif; font-size: 26px;
+    color: var(--navy-dark); line-height: 1.25; margin-bottom: 8px;
+  }
+  .section-mandate {
+    font-size: 13px; color: var(--ink-light); font-style: italic;
+    border-left: 2px solid var(--gold); padding-left: 12px;
+  }
+
+  /* ── FIELD GROUP ── */
+  .field-group {
+    margin-bottom: 28px;
+  }
+  .field-label {
+    display: block; font-weight: 600; font-size: 14px;
+    color: var(--navy); margin-bottom: 4px;
+  }
+  .field-label .required { color: var(--red); margin-left: 3px; }
+  .field-hint {
+    font-size: 12px; color: var(--ink-light); margin-bottom: 10px;
+    font-style: italic;
+  }
+  .field-example {
+    font-size: 11px; font-family: 'DM Mono', monospace;
+    color: var(--green); background: var(--green-light);
+    padding: 6px 10px; border-radius: 4px; margin-bottom: 10px;
+    border-left: 3px solid var(--green);
+  }
+  .field-warn {
+    font-size: 11px; font-family: 'DM Mono', monospace;
+    color: var(--red); background: var(--red-light);
+    padding: 6px 10px; border-radius: 4px; margin-bottom: 10px;
+    border-left: 3px solid var(--red);
+  }
+
+  textarea, input[type="text"], input[type="url"], input[type="number"] {
+    width: 100%; padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--ink); background: #fff;
+    border: 1.5px solid var(--border); border-radius: 6px;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+  }
+  textarea:focus, input:focus {
+    border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26,47,90,0.08);
+  }
+  textarea.error, input.error { border-color: var(--red); }
+  textarea.valid, input.valid { border-color: var(--green); }
+
+  .char-count { font-size: 11px; color: var(--ink-light); text-align: right; margin-top: 4px; }
+  .char-count.warn { color: var(--amber-light); }
+  .char-count.over { color: var(--red); }
+
+  /* ── RADIO / CHECKBOX ── */
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: 10px; }
+  .radio-opt, .check-opt {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; border: 1.5px solid var(--border);
+    border-radius: 6px; cursor: pointer; transition: all 0.15s;
+    background: #fff;
+  }
+  .radio-opt:hover, .check-opt:hover { border-color: var(--navy); }
+  .radio-opt.selected, .check-opt.selected {
+    border-color: var(--navy); background: rgba(26,47,90,0.04);
+  }
+  .radio-opt input, .check-opt input { margin-top: 2px; accent-color: var(--navy); flex-shrink: 0; }
+  .opt-label { font-weight: 600; font-size: 14px; color: var(--navy); }
+  .opt-desc { font-size: 13px; color: var(--ink-light); margin-top: 2px; }
+
+  /* ── INLINE AVERSION LIST ── */
+  .aversion-inputs { display: flex; flex-direction: column; gap: 8px; }
+  .aversion-row { display: flex; gap: 8px; align-items: center; }
+  .aversion-row input { flex: 1; }
+  .aversion-num {
+    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink-light);
+    width: 22px; text-align: right; flex-shrink: 0;
+  }
+
+  /* ── PROOF LINK ROWS ── */
+  .proof-rows { display: flex; flex-direction: column; gap: 10px; }
+  .proof-row { display: flex; gap: 10px; align-items: center; }
+  .proof-row input { flex: 1; }
+  .proof-status { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    padding: 16px 20px; border-radius: 8px; margin: 20px 0;
+    border-left: 4px solid;
+  }
+  .callout.amanah { background: rgba(26,47,90,0.05); border-color: var(--navy); }
+  .callout.warning { background: var(--amber-light); border-color: var(--gold); }
+  .callout.critical { background: var(--red-light); border-color: var(--red); }
+  .callout.success { background: var(--green-light); border-color: var(--green); }
+  .callout-title {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .callout.amanah .callout-title { color: var(--navy); }
+  .callout.warning .callout-title { color: var(--gold); }
+  .callout.critical .callout-title { color: var(--red); }
+  .callout.success .callout-title { color: var(--green); }
+  .callout p { font-size: 13px; }
+
+  /* ── DISQUALIFIER PANEL ── */
+  .disqualifier-panel {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,28,56,0.92); z-index: 1000;
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .disqualifier-panel.show { display: flex; }
+  .dq-card {
+    background: var(--cream); max-width: 520px; width: 100%;
+    border-radius: 12px; padding: 40px;
+    border-top: 6px solid var(--red);
+  }
+  .dq-icon { font-size: 32px; margin-bottom: 16px; }
+  .dq-title {
+    font-family: 'DM Serif Display', serif; font-size: 22px;
+    color: var(--navy-dark); margin-bottom: 12px;
+  }
+  .dq-body { font-size: 14px; color: var(--ink-mid); line-height: 1.7; margin-bottom: 24px; }
+  .dq-reason {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--red); background: var(--red-light);
+    padding: 8px 12px; border-radius: 4px; margin-bottom: 20px;
+  }
+  .dq-back-btn {
+    padding: 10px 20px; border-radius: 6px;
+    background: transparent; border: 1.5px solid var(--border);
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    font-weight: 500; cursor: pointer; color: var(--ink-mid);
+    transition: all 0.15s;
+  }
+  .dq-back-btn:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* ── VALIDATION ERROR ── */
+  .field-error {
+    font-size: 12px; color: var(--red); margin-top: 5px;
+    display: none; align-items: center; gap: 5px;
+  }
+  .field-error.show { display: flex; }
+
+  /* ── SECTION DIVIDER ── */
+  .sub-divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── NAV BUTTONS ── */
+  .form-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 48px; padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-prev, .btn-next, .btn-submit {
+    padding: 13px 28px; border-radius: 6px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; border: none;
+  }
+  .btn-prev {
+    background: transparent; border: 1.5px solid var(--border);
+    color: var(--ink-mid);
+  }
+  .btn-prev:hover { border-color: var(--navy); color: var(--navy); }
+  .btn-next {
+    background: var(--navy); color: #fff;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-next:hover { background: var(--navy-mid); }
+  .btn-submit {
+    background: var(--gold); color: var(--navy-dark);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-submit:hover { background: var(--gold-light); }
+  .section-progress {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--ink-light);
+  }
+
+  /* ── AMANAH SCREENING (hidden section for operators) ── */
+  .amanah-section { background: rgba(26,47,90,0.03); border-radius: 10px; padding: 24px; margin-top: 20px; border: 1px solid rgba(26,47,90,0.12); }
+  .amanah-section-title {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--navy); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── ROUTING INDICATOR ── */
+  .routing-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .routing-tag.fast { background: #e8f5e9; color: var(--green); }
+  .routing-tag.standard { background: #e3f2fd; color: #1565c0; }
+  .routing-tag.review { background: var(--amber-light); color: var(--gold); }
+
+  /* ── CONFIRMATION SCREEN ── */
+  .confirm-screen { display: none; text-align: center; padding: 60px 24px; }
+  .confirm-screen.show { display: block; }
+  .confirm-icon { font-size: 48px; margin-bottom: 20px; }
+  .confirm-title {
+    font-family: 'DM Serif Display', serif; font-size: 30px;
+    color: var(--navy-dark); margin-bottom: 16px;
+  }
+  .confirm-body { font-size: 15px; color: var(--ink-mid); max-width: 480px; margin: 0 auto 32px; }
+  .confirm-routing-block {
+    background: var(--navy-dark); border-radius: 10px;
+    padding: 24px 32px; max-width: 420px; margin: 0 auto;
+    text-align: left;
+  }
+  .crb-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .crb-value { font-size: 16px; font-weight: 600; color: var(--gold-light); }
+  .crb-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 6px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .site-header { padding: 20px 20px; }
+    .form-shell { padding: 32px 16px 60px; }
+    .section-header { flex-direction: column; gap: 12px; }
+    .section-number { font-size: 36px; }
+    .stage-nav { padding: 0 16px; }
+    .stage-btn { padding: 12px 14px; font-size: 9px; }
+  }
+
+  .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:200}
+  .nav-hamburger span{display:block;width:22px;height:1.5px;background:rgba(255,255,255,0.55);transition:all 0.3s;transform-origin:center}
+  .nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .nav-hamburger.open span:nth-child(2){opacity:0}
+  .nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+  @media(max-width:768px){
+    .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;align-items:center;justify-content:center;gap:32px;background:rgba(7,6,15,0.97);backdrop-filter:blur(20px);z-index:150}
+    .nav-links.open{display:flex}
+    .nav-link{font-size:18px;color:rgba(255,255,255,0.65)}
+    .nav-link.active,.nav-link:hover{color:rgba(200,150,42,0.85)}
+    .nav-cta,.nav-join{font-size:14px;padding:12px 32px}
+    .nav-hamburger{display:flex}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo-mark">BBOS</div>
+  <div class="form-title-group">
+    <div class="form-title">Operator Intake — Charter</div>
+    <div class="form-subtitle">Stage 00 · Pre-Strategy · Mandatory Input</div>
+  </div>
+  <div class="version-tag">v3.0</div>
+</header>
+
+<!-- STAGE NAV -->
+<nav class="stage-nav" id="stageNav">
+  <button class="stage-btn active" data-section="0">00 · Start</button>
+  <button class="stage-btn" data-section="1">01 · Skills</button>
+  <button class="stage-btn" data-section="2">02 · Proof</button>
+  <button class="stage-btn" data-section="3">03 · Geography</button>
+  <button class="stage-btn" data-section="4">04 · Runway</button>
+  <button class="stage-btn" data-section="5">05 · Energy</button>
+  <button class="stage-btn" data-section="6">06 · Assets</button>
+  <button class="stage-btn" data-section="7">07 · Review</button>
+</nav>
+
+<main class="form-shell">
+
+  <!-- DISQUALIFIER OVERLAY -->
+  <div class="disqualifier-panel" id="dqPanel">
+    <div class="dq-card">
+      <div class="dq-icon">⛔</div>
+      <h2 class="dq-title">Not the right moment — yet.</h2>
+      <p class="dq-body">The BBOS intake process has identified a condition that makes proceeding into Stage 01 inadvisable right now. This is not a permanent judgment — it is a checkpoint that protects both you and the integrity of the work.</p>
+      <div class="dq-reason" id="dqReason">Auto-disqualifier condition detected.</div>
+      <p class="dq-body" style="font-size:13px">What happens next: Your intake data is retained. Your Operator is notified and will reach out within 48 hours with specific re-entry conditions and recommended steps.</p>
+      <button class="dq-back-btn" onclick="closeDQ()">← Review my answers</button>
+    </div>
+  </div>
+
+  <!-- SECTION 0: INTRO -->
+  <div class="section-panel active" id="section-0">
+    <div class="section-header">
+      <div class="section-number" style="color: var(--navy); opacity:0.18">00</div>
+      <div class="section-meta">
+        <div class="section-label">Pre-Flight</div>
+        <div class="section-title">Before You Begin</div>
+        <div class="section-mandate">This form is your foundational charter. Every field feeds directly into your Strategic Mandate (S1–S6). Vague inputs produce vague strategy.</div>
+      </div>
+    </div>
+
+    <div class="callout amanah">
+      <div class="callout-title">🔒 Amanah Standard</div>
+      <p>Every section of this form has an integrity checkpoint. Answers that cannot be substantiated with evidence will be flagged during the Stage 01 Proof Audit. Complete it honestly — not optimistically.</p>
+    </div>
+
+    <div style="height:24px"></div>
+
+    <div class="field-group">
+      <label class="field-label">Full Name <span class="required">*</span></label>
+      <input type="text" id="f-name" placeholder="Your full name" oninput="checkProgress()">
+      <div class="field-error" id="e-name">Please enter your name.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Date <span class="required">*</span></label>
+      <input type="text" id="f-date" placeholder="DD / MM / YYYY" oninput="checkProgress()">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Which best describes your current situation? <span class="required">*</span></label>
+      <div class="hint" style="font-size:12px;color:var(--ink-light);margin-bottom:10px">This routes your intake to the correct Stage 01 pathway. It is not a judgment.</div>
+      <div class="radio-group" id="situation-group">
+        <label class="radio-opt" onclick="selectRadio('situation','starting')">
+          <input type="radio" name="situation" value="starting"> 
+          <div><div class="opt-label">Starting from scratch</div><div class="opt-desc">No active business revenue yet. Building for the first time.</div></div>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('situation','rebuilding')">
+          <input type="radio" name="situation" value="rebuilding">
+          <div><div class="opt-label">Rebuilding or pivoting</div><div class="opt-desc">Previous business experience, but changing direction or restarting.</div></div>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('situation','scaling')">
+          <input type="radio" name="situation" value="scaling">
+          <div><div class="opt-label">Active business, seeking to scale</div><div class="opt-desc">Existing revenue and clients. Optimising or expanding.</div></div>
+        </label>
+      </div>
+      <div class="field-error" id="e-situation">Please select your situation.</div>
+    </div>
+
+    <div class="form-nav">
+      <div class="section-progress" id="sp-0">Section 1 of 7</div>
+      <button class="btn-next" onclick="goTo(1)">Core Skills →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 1: SKILLS -->
+  <div class="section-panel" id="section-1">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-meta">
+        <div class="section-label">S1 · S2 Input</div>
+        <div class="section-title">Core Competence &amp; Trustworthy Stewardship</div>
+        <div class="section-mandate">Define what you reliably deliver and what makes you genuinely different. This establishes the bedrock of your Amanah (professional trust).</div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠ What Fails Here</div>
+      <p>Generic answers like "good communicator," "results-driven," or "10+ years experience" cannot be used in BBOS assets. Every answer here must be specific enough to be testable.</p>
+    </div>
+
+    <div style="height:24px"></div>
+
+    <div class="field-group">
+      <label class="field-label">The Asymmetry List <span class="required">*</span></label>
+      <div class="field-hint">2–3 capabilities that set you apart. What hard-won expertise do most peers in your field lack? This is your unfair advantage — the thing you do that is genuinely difficult to replicate.</div>
+      <div class="field-example">✓ "I can read and annotate engineering drawings to tolerance level — most business consultants can't." | ✓ "I have closed B2B SaaS contracts at the $150k+ level repeatedly."</div>
+      <div class="field-warn">✗ "I'm very organised." | ✗ "I have strong communication skills." | ✗ "I'm a quick learner."</div>
+      <textarea id="f-asymmetry" rows="5" placeholder="Describe 2–3 capabilities with specific context..." oninput="updateChar(this,'cc-asymmetry',400)"></textarea>
+      <div class="char-count" id="cc-asymmetry">0 / 400</div>
+      <div class="field-error" id="e-asymmetry">Required. Minimum 80 characters for a meaningful answer.</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">The Reliability Ledger <span class="required">*</span></label>
+      <div class="field-hint">3 things you have done repeatedly and reliably for others, with measurable impact. Proven — not theoretical. This feeds directly into the Stage 01 Proof Audit.</div>
+      <div class="field-example">✓ "Completed 30 client landscape projects over 3 years, all within budget." | ✓ "Trained 12 junior staff on CNC operation, zero safety incidents."</div>
+      <textarea id="f-reliability" rows="5" placeholder="List 3 specific, repeated actions you've delivered for others..." oninput="updateChar(this,'cc-reliability',400)"></textarea>
+      <div class="char-count" id="cc-reliability">0 / 400</div>
+      <div class="field-error" id="e-reliability">Required. Minimum 80 characters.</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">The Domain Mastery Audit <span class="required">*</span></label>
+      <div class="field-hint">Specific, high-stakes problems you have personally solved — ideally in a paid or professional context — that others in your niche still struggle to solve. This defines the depth of your S1.</div>
+      <div class="field-example">✓ "Diagnosed and resolved a recurring conveyor belt misalignment issue that three previous contractors couldn't fix." | ✓ "Built a client onboarding process that reduced churn from 40% to 12% in 6 months."</div>
+      <textarea id="f-domain" rows="5" placeholder="Describe 1–2 specific problems you've solved that others couldn't..." oninput="updateChar(this,'cc-domain',400)"></textarea>
+      <div class="char-count" id="cc-domain">0 / 400</div>
+      <div class="field-error" id="e-domain">Required. Minimum 80 characters.</div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(0)">← Back</button>
+      <div class="section-progress">Section 2 of 7</div>
+      <button class="btn-next" onclick="goTo(2)">Proof Record →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PROOF -->
+  <div class="section-panel" id="section-2">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-meta">
+        <div class="section-label">S3 Input · Amanah Check</div>
+        <div class="section-title">Verifiable Track Record</div>
+        <div class="section-mandate">The Amanah Check. Document results that others can independently verify. Unverifiable claims cannot underpin G1 or G2 assets later in the system.</div>
+      </div>
+    </div>
+
+    <div class="callout amanah">
+      <div class="callout-title">🔒 Integrity Gate</div>
+      <p>Proof that cannot be independently verified — screenshots that cannot be traced, testimonials without a named contact, revenue figures without documentation — will be downgraded to G3 (Conditional) in your asset pack. Be honest about what you can and cannot substantiate.</p>
+    </div>
+
+    <div style="height:24px"></div>
+
+    <div class="field-group">
+      <label class="field-label">Quantifiable Proof of Work <span class="required">*</span></label>
+      <div class="field-hint">Outcomes with precise, verifiable numbers. Estimated numbers are acceptable if clearly labelled as estimated.</div>
+      <div class="field-example">✓ "Secured 30 client projects in 18 months (invoices available)." | ✓ "Generated approx. $12k in revenue in Q3 2024 (estimated, no formal records)."</div>
+      <textarea id="f-pow" rows="5" placeholder="List 3–5 specific outcomes with numbers..." oninput="updateChar(this,'cc-pow',400)"></textarea>
+      <div class="char-count" id="cc-pow">0 / 400</div>
+      <div class="field-error" id="e-pow">Required. Minimum 60 characters.</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">Public Proof Links</label>
+      <div class="field-hint">Paste links to portfolios, LinkedIn profiles, Google reviews, case studies, published work, or third-party endorsements. At least one link is strongly recommended. Enter "none" if you have no public-facing proof yet.</div>
+      <div class="proof-rows" id="proof-links">
+        <div class="proof-row">
+          <span class="proof-status" id="ps-0">🔗</span>
+          <input type="url" id="pl-0" placeholder="https://..." oninput="validateUrl(0)">
+        </div>
+        <div class="proof-row">
+          <span class="proof-status" id="ps-1">🔗</span>
+          <input type="url" id="pl-1" placeholder="https://..." oninput="validateUrl(1)">
+        </div>
+        <div class="proof-row">
+          <span class="proof-status" id="ps-2">🔗</span>
+          <input type="url" id="pl-2" placeholder="https://..." oninput="validateUrl(2)">
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--ink-light)">No public proof yet? Note that in the text field above and explain what evidence exists offline. Proof gaps are documented — not penalised — at this stage.</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">Proof Confidence Self-Rating <span class="required">*</span></label>
+      <div class="field-hint">How would you rate the strength of your available proof — honestly?</div>
+      <div class="radio-group" id="proof-confidence-group">
+        <label class="radio-opt" onclick="selectRadio('proofconf','strong')">
+          <input type="radio" name="proofconf" value="strong">
+          <div><div class="opt-label">Strong — independently verifiable, documented, linkable</div></div>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('proofconf','partial')">
+          <input type="radio" name="proofconf" value="partial">
+          <div><div class="opt-label">Partial — some documented, some based on memory or informal records</div></div>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('proofconf','early')">
+          <input type="radio" name="proofconf" value="early">
+          <div><div class="opt-label">Early — limited formal proof; competence is real but not yet well-documented</div></div>
+        </label>
+      </div>
+      <div class="field-error" id="e-proofconf">Please select your proof confidence level.</div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(1)">← Back</button>
+      <div class="section-progress">Section 3 of 7</div>
+      <button class="btn-next" onclick="goTo(3)">Geography →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: GEOGRAPHY -->
+  <div class="section-panel" id="section-3">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-meta">
+        <div class="section-label">S6 Input · Regulatory Baseline</div>
+        <div class="section-title">Geographic Thesis &amp; Operating Context</div>
+        <div class="section-mandate">Define where your operation holds ground. Stewardship begins with knowing the terrain — including its legal and regulatory boundaries.</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Operating Base <span class="required">*</span></label>
+      <div class="field-hint">Your primary city or region, and the maximum reach you are willing to commit to. Be specific — this determines which regulatory framework applies.</div>
+      <div class="field-example">✓ "Oakville, Ontario — 60 km radius for in-person work, fully remote for consulting." | ✓ "Dubai, UAE — GCC region only, no North American clients."</div>
+      <input type="text" id="f-base" placeholder="City / region + reach commitment..." oninput="checkProgress()">
+      <div class="field-error" id="e-base">Required.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Client Context Thesis <span class="required">*</span></label>
+      <div class="field-hint">Describe the tangible or virtual environment your ideal client operates within. Not who they are — what their world looks like. This feeds the Enemy Narrative in Strategy.</div>
+      <div class="field-example">✓ "Owner-operated residential landscape companies in affluent suburbs — 1–5 staff, seasonal cash-flow pressure, no admin systems." | ✓ "Independent physiotherapists in solo clinics — time-poor, insurance billing is a recurring pain, no business development training."</div>
+      <div class="field-warn">✗ "Small business owners." | ✗ "Entrepreneurs." | ✗ "Anyone who needs help."</div>
+      <textarea id="f-clientctx" rows="5" placeholder="Describe the specific world your ideal client operates in..." oninput="updateChar(this,'cc-clientctx',400)"></textarea>
+      <div class="char-count" id="cc-clientctx">0 / 400</div>
+      <div class="field-error" id="e-clientctx">Required. Minimum 80 characters.</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">Regulatory Pre-Check <span class="required">*</span></label>
+      <div class="field-hint">Does your proposed service or business model require any of the following in your target geography?</div>
+      <div class="check-group" id="reg-group">
+        <label class="check-opt" onclick="toggleCheck(this,'reg-none')">
+          <input type="checkbox" id="reg-none" value="none" onchange="clearOtherRegs(this)">
+          <div><div class="opt-label">None of the below — no regulated credentials required</div></div>
+        </label>
+        <label class="check-opt" onclick="toggleCheck(this,'reg-licence')">
+          <input type="checkbox" id="reg-licence" value="licence" onchange="clearNoneReg()">
+          <div><div class="opt-label">Trade or professional licence</div><div class="opt-desc">e.g., contractor licence, financial advice licence, health professional registration</div></div>
+        </label>
+        <label class="check-opt" onclick="toggleCheck(this,'reg-permit')">
+          <input type="checkbox" id="reg-permit" value="permit" onchange="clearNoneReg()">
+          <div><div class="opt-label">Operating permits or zoning clearance</div><div class="opt-desc">e.g., home-based business permit, food handler permit, commercial zoning</div></div>
+        </label>
+        <label class="check-opt" onclick="toggleCheck(this,'reg-insurance')">
+          <input type="checkbox" id="reg-insurance" value="insurance" onchange="clearNoneReg()">
+          <div><div class="opt-label">Specific insurance coverage</div><div class="opt-desc">e.g., professional indemnity, general liability above a minimum threshold</div></div>
+        </label>
+        <label class="check-opt" onclick="toggleCheck(this,'reg-uncertain')">
+          <input type="checkbox" id="reg-uncertain" value="uncertain" onchange="clearNoneReg()">
+          <div><div class="opt-label">Unsure — I haven't checked yet</div></div>
+        </label>
+      </div>
+      <div class="field-error" id="e-reg">Please select at least one option.</div>
+    </div>
+
+    <div id="reg-warning" style="display:none">
+      <div class="callout warning">
+        <div class="callout-title">⚠ Regulatory Flag — Stage 01 Review Required</div>
+        <p>You've indicated regulatory requirements may apply. Your intake will be flagged for a Regulatory Baseline review (S6) before Stage 01 proceeds. This is not a disqualification — it ensures no gaps are missed. If you've already cleared these requirements, note that in the Proof section.</p>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(2)">← Back</button>
+      <div class="section-progress">Section 4 of 7</div>
+      <button class="btn-next" onclick="goTo(4)">Runway →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: RUNWAY -->
+  <div class="section-panel" id="section-4">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-meta">
+        <div class="section-label">S5 Input · Constraint Map</div>
+        <div class="section-title">Financial Runway &amp; Cashflow Direction</div>
+        <div class="section-mandate">Unflinching honesty about time and capital position. This is the gravity well that shapes the entire strategic path and determines how fast the system must move.</div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠ Why This Section Matters</div>
+      <p>Overestimating your runway leads to strategies that are technically sound but practically unachievable. Underestimating it leads to unnecessary panic decisions. Be precise.</p>
+    </div>
+
+    <div style="height:24px"></div>
+
+    <div class="field-group">
+      <label class="field-label">Available Hours per Week <span class="required">*</span></label>
+      <div class="field-hint">The realistic, sustainable number of hours you can commit to the business each week — without burnout or sacrificing non-negotiable commitments.</div>
+      <input type="number" id="f-hours" min="1" max="80" placeholder="e.g. 15" oninput="checkRunway()">
+      <div class="field-error" id="e-hours">Required. Enter a number between 1 and 80.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Financial Runway (months) <span class="required">*</span></label>
+      <div class="field-hint">How many months of personal living expenses do you have secured before income becomes essential? This is your true operational window — not your target date.</div>
+      <input type="number" id="f-runway" min="0" max="120" placeholder="e.g. 4" oninput="checkRunway()">
+      <div id="runway-feedback" style="margin-top:8px;font-size:12px;display:none"></div>
+      <div class="field-error" id="e-runway">Required. Enter 0 if income is needed immediately.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Cashflow Direction <span class="required">*</span></label>
+      <div class="field-hint">Select the statement that dictates your strategy and briefly explain why.</div>
+      <div class="radio-group" id="cashflow-group">
+        <label class="radio-opt" onclick="selectRadio('cashflow','fast'); document.getElementById('cashflow-explain').style.display='block'">
+          <input type="radio" name="cashflow" value="fast">
+          <div>
+            <div class="opt-label">Income Injection <span class="routing-tag fast">Fast Path</span></div>
+            <div class="opt-desc">I need profitable income as fast as possible. Speed of first revenue is the primary constraint.</div>
+          </div>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('cashflow','invest'); document.getElementById('cashflow-explain').style.display='block'">
+          <input type="radio" name="cashflow" value="invest">
+          <div>
+            <div class="opt-label">Strategic Investment <span class="routing-tag standard">Standard Path</span></div>
+            <div class="opt-desc">I can invest time and capital now for greater, more leveraged returns later. I have the runway to build properly.</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-error" id="e-cashflow">Please select a direction.</div>
+    </div>
+
+    <div id="cashflow-explain" style="display:none">
+      <div class="field-group">
+        <label class="field-label">Briefly explain why this direction is accurate</label>
+        <textarea id="f-cashflow-explain" rows="3" placeholder="e.g. I have a mortgage payment due in 3 months and no savings buffer..." oninput="checkProgress()"></textarea>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(3)">← Back</button>
+      <div class="section-progress">Section 5 of 7</div>
+      <button class="btn-next" onclick="goTo(5)">Energy Profile →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5: ENERGY -->
+  <div class="section-panel" id="section-5">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-meta">
+        <div class="section-label">S4 Input · Energy Profile</div>
+        <div class="section-title">Energy Signature &amp; Aversion Thesis</div>
+        <div class="section-mandate">A sustainable business must be aligned with your energy. Define what fuels you and what depletes you. Stewardship is also self-preservation.</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">The Boundary List (Anti-List) <span class="required">*</span></label>
+      <div class="field-hint">3–5 tasks, approaches, or business models you will definitively not pursue — regardless of the financial opportunity. These are your non-negotiable boundaries and become hard stops in the system.</div>
+      <div class="field-example">✓ "Cold-calling or door-to-door sales." | ✓ "Managing internal teams larger than 5 people." | ✓ "Purely commission-based income with no retainer floor."</div>
+      <div class="aversion-inputs" id="aversion-list">
+        <div class="aversion-row"><span class="aversion-num">1.</span><input type="text" id="av-1" placeholder="Aversion #1..."></div>
+        <div class="aversion-row"><span class="aversion-num">2.</span><input type="text" id="av-2" placeholder="Aversion #2..."></div>
+        <div class="aversion-row"><span class="aversion-num">3.</span><input type="text" id="av-3" placeholder="Aversion #3..."></div>
+        <div class="aversion-row"><span class="aversion-num">4.</span><input type="text" id="av-4" placeholder="Aversion #4 (optional)..."></div>
+        <div class="aversion-row"><span class="aversion-num">5.</span><input type="text" id="av-5" placeholder="Aversion #5 (optional)..."></div>
+      </div>
+      <div class="field-error" id="e-aversions">At least 3 aversions are required.</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">Genuine Energy Drivers <span class="required">*</span></label>
+      <div class="field-hint">The specific tasks, environments, and modes of work that authentically recharge you and draw out your best performance. These map to your Rated Frequency.</div>
+      <div class="field-example">✓ "Deep research and writing alone." | ✓ "One-on-one coaching conversations." | ✓ "Hands-on fabrication and problem-solving on-site."</div>
+      <textarea id="f-energy" rows="5" placeholder="List 3–5 specific activities or modes of work that genuinely give you energy..." oninput="updateChar(this,'cc-energy',350)"></textarea>
+      <div class="char-count" id="cc-energy">0 / 350</div>
+      <div class="field-error" id="e-energy">Required. Minimum 60 characters.</div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(4)">← Back</button>
+      <div class="section-progress">Section 6 of 7</div>
+      <button class="btn-next" onclick="goTo(6)">Assets & Network →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 6: ASSETS & NETWORK -->
+  <div class="section-panel" id="section-6">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div class="section-meta">
+        <div class="section-label">Starting Capital Inventory</div>
+        <div class="section-title">Existing Assets &amp; Warm Network</div>
+        <div class="section-mandate">Inventory what you already have. Tools, relationships, and accessible leads are your immediate starting capital. Build from what exists — not what you plan to acquire.</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Tools, Systems &amp; Intellectual Capital</label>
+      <div class="field-hint">Equipment, proprietary software, professional credentials, vehicles, IP, or processes you currently own or control. List only what exists now.</div>
+      <div class="field-example">✓ "Licensed Salesforce CRM (paid). Own a van and trailer ($18k value). Certified in OSHA 30. Proprietary 14-step onboarding checklist."</div>
+      <textarea id="f-tools" rows="4" placeholder="List equipment, credentials, systems, or IP you currently own or have access to..." oninput="updateChar(this,'cc-tools',350)"></textarea>
+      <div class="char-count" id="cc-tools">0 / 350</div>
+    </div>
+
+    <hr class="sub-divider">
+
+    <div class="field-group">
+      <label class="field-label">Warm Network Capital <span class="required">*</span></label>
+      <div class="field-hint">Specific individuals or groups you could genuinely reach out to within 30 days — people likely to refer, hire, or collaborate. No cold contacts. Quantity and specificity matter here.</div>
+      <div class="field-example">✓ "3 former employers who know my work. 12 LinkedIn connections in the target niche. A professional association of 60 members I've attended for 2 years."</div>
+      <div class="field-warn">✗ "I have lots of contacts." | ✗ "My social media following." | ✗ "People I could reach if I tried."</div>
+      <textarea id="f-network" rows="5" placeholder="Be specific: name the groups, estimated count, and your relationship to them..." oninput="updateChar(this,'cc-network',400)"></textarea>
+      <div class="char-count" id="cc-network">0 / 400</div>
+      <div class="field-error" id="e-network">Required. Minimum 40 characters.</div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(5)">← Back</button>
+      <div class="section-progress">Section 7 of 7</div>
+      <button class="btn-next" onclick="goTo(7)">Review & Submit →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 7: REVIEW -->
+  <div class="section-panel" id="section-7">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div class="section-meta">
+        <div class="section-label">Amanah Gate · Pre-Check</div>
+        <div class="section-title">Integrity Review &amp; Submission</div>
+        <div class="section-mandate">Before submission, confirm that your answers meet the Amanah standard. This final check protects both you and the integrity of the strategy that follows.</div>
+      </div>
+    </div>
+
+    <div class="amanah-section">
+      <div class="amanah-section-title">
+        <span>🔒</span> Amanah Self-Declaration — Required Before Submission
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">I confirm that: <span class="required">*</span></label>
+        <div class="check-group" id="declaration-group">
+          <label class="check-opt" onclick="toggleCheck(this,'dec-honest')">
+            <input type="checkbox" id="dec-honest">
+            <div><div class="opt-label">My answers reflect honest, current reality — not aspirational projections.</div></div>
+          </label>
+          <label class="check-opt" onclick="toggleCheck(this,'dec-proof')">
+            <input type="checkbox" id="dec-proof">
+            <div><div class="opt-label">The proof I have described or linked to is genuinely available and attributable to my work.</div></div>
+          </label>
+          <label class="check-opt" onclick="toggleCheck(this,'dec-runway')">
+            <input type="checkbox" id="dec-runway">
+            <div><div class="opt-label">My stated financial runway and available hours are accurate as of today, not my target state.</div></div>
+          </label>
+          <label class="check-opt" onclick="toggleCheck(this,'dec-review')">
+            <input type="checkbox" id="dec-review">
+            <div><div class="opt-label">I understand this intake will be reviewed for viability before Stage 01 begins, and I accept that outcome.</div></div>
+          </label>
+        </div>
+        <div class="field-error" id="e-declaration">All four declarations are required to proceed.</div>
+      </div>
+    </div>
+
+    <div style="height:24px"></div>
+
+    <div class="field-group">
+      <label class="field-label">Anything else the Operator should know?</label>
+      <div class="field-hint">Context that doesn't fit the sections above — constraints, sensitivities, specific goals, or anything that would change how your intake is read.</div>
+      <textarea id="f-notes" rows="4" placeholder="Optional — add any context that would help your Operator understand your situation..."></textarea>
+    </div>
+
+    <!-- ROUTING PREVIEW -->
+    <div id="routing-preview" style="margin: 28px 0;">
+      <div class="callout success">
+        <div class="callout-title">📋 Intake Routing Preview</div>
+        <p id="routing-text">Complete all required fields to see your routing.</p>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="goTo(6)">← Back</button>
+      <div></div>
+      <button class="btn-submit" onclick="submitForm()">Submit Charter →</button>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div class="confirm-screen" id="confirmScreen">
+    <div class="confirm-icon">✅</div>
+    <h2 class="confirm-title">Charter Received.</h2>
+    <p class="confirm-body">Your Operator Intake Charter (v3.0) has been submitted to Stage 00 processing. Your Operator will review your Strategic Mandate inputs and confirm your Amanah Gate status within 48 hours.</p>
+    <div class="confirm-routing-block" id="confirmRouting">
+      <div class="crb-label">Stage 01 Routing</div>
+      <div class="crb-value" id="crb-route">Pending review</div>
+      <div class="crb-note" id="crb-note">Your operator will confirm this routing.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+let currentSection = 0;
+const totalSections = 8;
+
+function updateProgress() {
+  const pct = (currentSection / (totalSections - 1)) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.querySelectorAll('.stage-btn').forEach((btn, i) => {
+    btn.classList.remove('active','completed');
+    if (i === currentSection) btn.classList.add('active');
+    else if (i < currentSection) btn.classList.add('completed');
+  });
+}
+
+function goTo(n) {
+  if (n > currentSection && !validateSection(currentSection)) return;
+  document.getElementById('section-' + currentSection).classList.remove('active');
+  currentSection = n;
+  document.getElementById('section-' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+  if (n === 7) buildRoutingPreview();
+}
+
+function selectRadio(name, value) {
+  document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+    r.checked = (r.value === value);
+    r.closest('.radio-opt').classList.toggle('selected', r.value === value);
+  });
+  checkRunway();
+  checkProgress();
+}
+
+function toggleCheck(el, id) {
+  const cb = document.getElementById(id);
+  cb.checked = !cb.checked;
+  el.classList.toggle('selected', cb.checked);
+  // Handle regulatory warning
+  if (id.startsWith('reg-')) updateRegWarning();
+}
+
+function clearOtherRegs(el) {
+  if (el.checked) {
+    ['reg-licence','reg-permit','reg-insurance','reg-uncertain'].forEach(id => {
+      const cb = document.getElementById(id);
+      if (cb) { cb.checked = false; cb.closest('.check-opt').classList.remove('selected'); }
+    });
+  }
+  updateRegWarning();
+}
+
+function clearNoneReg() {
+  const none = document.getElementById('reg-none');
+  if (none) { none.checked = false; none.closest('.check-opt').classList.remove('selected'); }
+  updateRegWarning();
+}
+
+function updateRegWarning() {
+  const hasRegIssue = ['reg-licence','reg-permit','reg-insurance','reg-uncertain'].some(id => {
+    const cb = document.getElementById(id);
+    return cb && cb.checked;
+  });
+  document.getElementById('reg-warning').style.display = hasRegIssue ? 'block' : 'none';
+}
+
+function updateChar(el, countId, max) {
+  const len = el.value.length;
+  const el2 = document.getElementById(countId);
+  el2.textContent = len + ' / ' + max;
+  el2.className = 'char-count' + (len > max ? ' over' : len > max * 0.85 ? ' warn' : '');
+  checkProgress();
+}
+
+function validateUrl(i) {
+  const inp = document.getElementById('pl-' + i);
+  const status = document.getElementById('ps-' + i);
+  const val = inp.value.trim();
+  if (!val) { status.textContent = '🔗'; return; }
+  try {
+    new URL(val);
+    status.textContent = '✅';
+    inp.classList.remove('error'); inp.classList.add('valid');
+  } catch {
+    status.textContent = '❌';
+    inp.classList.remove('valid'); inp.classList.add('error');
+  }
+}
+
+function checkRunway() {
+  const runway = parseInt(document.getElementById('f-runway').value) || -1;
+  const cashflow = document.querySelector('input[name="cashflow"]:checked');
+  const fb = document.getElementById('runway-feedback');
+  if (runway < 0) { fb.style.display='none'; return; }
+  fb.style.display = 'block';
+  if (runway === 0) {
+    fb.innerHTML = '<span style="color:var(--red)">⚠ Zero runway — income is immediately critical. Your intake will be routed to the Income Injection path regardless of other selections.</span>';
+    // Auto-select fast if runway is 0
+    selectRadio('cashflow','fast');
+  } else if (runway <= 2) {
+    fb.innerHTML = '<span style="color:var(--gold)">⚠ Short runway (' + runway + ' months). System will prioritise fastest viable path to first revenue.</span>';
+  } else if (runway >= 12) {
+    fb.innerHTML = '<span style="color:var(--green)">✓ Substantial runway (' + runway + ' months). Strategic Investment path is viable.</span>';
+  } else {
+    fb.innerHTML = '<span style="color:var(--ink-light)">Runway: ' + runway + ' months — your strategic path will be calibrated to this window.</span>';
+  }
+}
+
+function checkProgress() { /* no-op for now, validation on next */ }
+
+function validateSection(n) {
+  let ok = true;
+
+  if (n === 0) {
+    const name = document.getElementById('f-name').value.trim();
+    const sit = document.querySelector('input[name="situation"]:checked');
+    showErr('e-name', !name); if (!name) ok = false;
+    showErr('e-situation', !sit); if (!sit) ok = false;
+  }
+  if (n === 1) {
+    const a = document.getElementById('f-asymmetry').value.trim();
+    const r = document.getElementById('f-reliability').value.trim();
+    const d = document.getElementById('f-domain').value.trim();
+    showErr('e-asymmetry', a.length < 80); if (a.length < 80) ok = false;
+    showErr('e-reliability', r.length < 80); if (r.length < 80) ok = false;
+    showErr('e-domain', d.length < 80); if (d.length < 80) ok = false;
+  }
+  if (n === 2) {
+    const pow = document.getElementById('f-pow').value.trim();
+    const pc = document.querySelector('input[name="proofconf"]:checked');
+    showErr('e-pow', pow.length < 60); if (pow.length < 60) ok = false;
+    showErr('e-proofconf', !pc); if (!pc) ok = false;
+  }
+  if (n === 3) {
+    const base = document.getElementById('f-base').value.trim();
+    const ctx = document.getElementById('f-clientctx').value.trim();
+    const regAny = document.querySelectorAll('#reg-group input:checked').length > 0;
+    showErr('e-base', !base); if (!base) ok = false;
+    showErr('e-clientctx', ctx.length < 80); if (ctx.length < 80) ok = false;
+    showErr('e-reg', !regAny); if (!regAny) ok = false;
+
+    // Check for auto-DQ: regulatory uncertainty with 0 runway
+    const runway = parseInt(document.getElementById('f-runway').value) || 99;
+    const uncertain = document.getElementById('reg-uncertain');
+    if (uncertain && uncertain.checked && runway <= 1) {
+      showDQ("Auto-Disqualifier: Unresolved regulatory status combined with a runway of 0–1 months creates a Fiduciary Barrier (S6). Proceeding without regulatory clarity in this timeframe is a hard stop under the BBOS Stewardship Canon.");
+      ok = false;
+    }
+  }
+  if (n === 4) {
+    const h = document.getElementById('f-hours').value;
+    const r = document.getElementById('f-runway').value;
+    const cf = document.querySelector('input[name="cashflow"]:checked');
+    const hNum = parseInt(h);
+    const rNum = parseInt(r);
+
+    const hoursInvalid = !h || hNum < 1 || hNum > 80;
+    const runwayInvalid = r === '' || rNum < 0;
+    showErr('e-hours', hoursInvalid); if (hoursInvalid) ok = false;
+    showErr('e-runway', runwayInvalid); if (runwayInvalid) ok = false;
+    showErr('e-cashflow', !cf); if (!cf) ok = false;
+
+    // Auto-DQ: zero hours
+    if (hNum === 0) {
+      showDQ("Auto-Disqualifier: Zero available hours per week — the system cannot operate without a minimum commitment of time. This intake cannot proceed until a realistic time commitment is available.");
+      ok = false;
+    }
+  }
+  if (n === 5) {
+    const av1 = document.getElementById('av-1').value.trim();
+    const av2 = document.getElementById('av-2').value.trim();
+    const av3 = document.getElementById('av-3').value.trim();
+    const energy = document.getElementById('f-energy').value.trim();
+    showErr('e-aversions', !av1 || !av2 || !av3); if (!av1 || !av2 || !av3) ok = false;
+    showErr('e-energy', energy.length < 60); if (energy.length < 60) ok = false;
+  }
+  if (n === 6) {
+    const net = document.getElementById('f-network').value.trim();
+    showErr('e-network', net.length < 40); if (net.length < 40) ok = false;
+  }
+
+  if (!ok) {
+    const firstErr = document.querySelector('.field-error.show');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return ok;
+}
+
+function showErr(id, condition) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('show', !!condition);
+}
+
+function showDQ(reason) {
+  document.getElementById('dqReason').textContent = reason;
+  document.getElementById('dqPanel').classList.add('show');
+}
+
+function closeDQ() {
+  document.getElementById('dqPanel').classList.remove('show');
+}
+
+function buildRoutingPreview() {
+  const runway = parseInt(document.getElementById('f-runway').value) || 0;
+  const cf = document.querySelector('input[name="cashflow"]:checked');
+  const sit = document.querySelector('input[name="situation"]:checked');
+  const proofConf = document.querySelector('input[name="proofconf"]:checked');
+  const hasRegFlag = ['reg-licence','reg-permit','reg-insurance','reg-uncertain'].some(id => {
+    const cb = document.getElementById(id); return cb && cb.checked;
+  });
+
+  let route = "Standard Path → Stage 01 Qualification";
+  let note = "Full S1–S6 synthesis. Amanah Gate review within 48 hours.";
+
+  if (cf && cf.value === 'fast' || runway <= 2) {
+    route = "Income Injection Path → Stage 01 (Fast Track)";
+    note = "Viability gates prioritised for fastest viable niche identification. Full S1–S6 still required.";
+  }
+  if (sit && sit.value === 'scaling') {
+    route = "Scale Path → Stage 01 (Optimisation Entry)";
+    note = "Existing revenue context acknowledged. S3 Proof Audit will carry higher weighting.";
+  }
+  if (hasRegFlag) {
+    route += " + Regulatory Flag";
+    note += " Regulatory Baseline (S6) will be reviewed before Stage 01 proceeds.";
+  }
+  if (proofConf && proofConf.value === 'early') {
+    note += " Early-stage proof noted — G-label restrictions will be applied at Strategy stage.";
+  }
+
+  document.getElementById('routing-text').textContent = route + ". " + note;
+}
+
+// ── PASTE YOUR APPS SCRIPT WEB APP URL BELOW ──────────────────
+const APPS_SCRIPT_ENDPOINT = "YOUR_APPS_SCRIPT_URL_HERE";
+// ──────────────────────────────────────────────────────────────
+
+function collectFormData(route) {
+  const regFlags = ['reg-licence','reg-permit','reg-insurance','reg-uncertain']
+    .filter(id => { const cb = document.getElementById(id); return cb && cb.checked; })
+    .join(', ') || 'None';
+
+  const proofLinks = [0,1,2]
+    .map(i => document.getElementById('pl-'+i)?.value?.trim())
+    .filter(Boolean).join(' | ') || 'None provided';
+
+  return {
+    name:            document.getElementById('f-name')?.value?.trim() || '',
+    date:            document.getElementById('f-date')?.value?.trim() || '',
+    situation:       document.querySelector('input[name="situation"]:checked')?.value || '',
+    asymmetry:       document.getElementById('f-asymmetry')?.value?.trim() || '',
+    reliability:     document.getElementById('f-reliability')?.value?.trim() || '',
+    domain:          document.getElementById('f-domain')?.value?.trim() || '',
+    pow:             document.getElementById('f-pow')?.value?.trim() || '',
+    proofLinks,
+    proofConfidence: document.querySelector('input[name="proofconf"]:checked')?.value || '',
+    base:            document.getElementById('f-base')?.value?.trim() || '',
+    clientContext:   document.getElementById('f-clientctx')?.value?.trim() || '',
+    regulatoryFlags: regFlags,
+    hours:           document.getElementById('f-hours')?.value || '',
+    runway:          document.getElementById('f-runway')?.value || '',
+    cashflow:        document.querySelector('input[name="cashflow"]:checked')?.value || '',
+    cashflowExplain: document.getElementById('f-cashflow-explain')?.value?.trim() || '',
+    av1:             document.getElementById('av-1')?.value?.trim() || '',
+    av2:             document.getElementById('av-2')?.value?.trim() || '',
+    av3:             document.getElementById('av-3')?.value?.trim() || '',
+    av4:             document.getElementById('av-4')?.value?.trim() || '',
+    av5:             document.getElementById('av-5')?.value?.trim() || '',
+    energy:          document.getElementById('f-energy')?.value?.trim() || '',
+    tools:           document.getElementById('f-tools')?.value?.trim() || '',
+    network:         document.getElementById('f-network')?.value?.trim() || '',
+    notes:           document.getElementById('f-notes')?.value?.trim() || '',
+    routing:         route,
+    autoDQ:          'No'
+  };
+}
+
+function showConfirmation(route, routeNote) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('stageNav').style.display = 'none';
+  document.getElementById('confirmScreen').classList.add('show');
+  document.getElementById('crb-route').textContent = route;
+  document.getElementById('crb-note').textContent = routeNote;
+  document.getElementById('progressFill').style.width = '100%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function submitForm() {
+  if (!validateSection(7)) return;
+  const decChecked = document.querySelectorAll('#declaration-group input:checked').length;
+  if (decChecked < 4) {
+    showErr('e-declaration', true);
+    document.getElementById('e-declaration').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  // Build routing decision
+  const runway = parseInt(document.getElementById('f-runway').value) || 0;
+  const cf = document.querySelector('input[name="cashflow"]:checked');
+  let route = "Standard Path → Stage 01 Qualification";
+  let routeNote = "Your Operator will confirm Stage 01 timing within 48 hours.";
+  if ((cf && cf.value === 'fast') || runway <= 2) {
+    route = "Income Injection → Stage 01 Fast Track";
+    routeNote = "Prioritised for fastest viable niche identification.";
+  }
+
+  // Disable submit button while sending
+  const submitBtn = document.querySelector('.btn-submit');
+  if (submitBtn) { submitBtn.textContent = 'Submitting…'; submitBtn.disabled = true; }
+
+  // Send to Google Apps Script if endpoint is configured
+  if (APPS_SCRIPT_ENDPOINT && APPS_SCRIPT_ENDPOINT !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    try {
+      const payload = collectFormData(route);
+      await fetch(APPS_SCRIPT_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors', // required for Apps Script
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      // Submission still shows confirmation even if fetch fails
+      console.warn('Submission error:', err);
+    }
+  }
+
+  showConfirmation(route, routeNote);
+}
+
+// Stage nav clicks
+document.querySelectorAll('.stage-btn').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    if (i <= currentSection) goTo(i);
+  });
+});
+
+updateProgress();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('navToggle');
+  var links  = document.querySelector('.nav-links');
+  if(!toggle || !links) return;
+  toggle.addEventListener('click', function(){
+    toggle.classList.toggle('open');
+    links.classList.toggle('open');
+    document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+  });
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      toggle.classList.remove('open');
+      links.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>

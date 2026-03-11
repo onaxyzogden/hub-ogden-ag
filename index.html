@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN — Build Business On Soul · The Moontrance Collective</title>
+<meta name="description" content="OGDEN is a digital entrepreneur bridging strategic precision with soul-led execution. Home of BBOS and The Moontrance Collective.">
+<link rel="canonical" href="https://ogden.ag">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
+
+.cursor{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s}
+
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:0.5}
+
+.gateway{display:flex;height:100vh;width:100vw;position:relative;overflow:hidden;animation:reveal 1s ease forwards}
+@keyframes reveal{from{opacity:0}to{opacity:1}}
+
+.panel{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;transition:flex 0.85s cubic-bezier(0.77,0,0.175,1);cursor:none}
+.panel:hover{flex:1.65}
+.gateway:has(.panel-bbos:hover) .panel-moon{flex:0.55}
+.gateway:has(.panel-moon:hover) .panel-bbos{flex:0.55}
+
+.panel-bbos{background:#060d1a}
+.panel-bbos::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 35% 50%,rgba(20,40,85,0.95) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 75% 15%,rgba(200,150,42,0.06) 0%,transparent 60%)}
+
+.bbos-grid{position:absolute;inset:0;overflow:hidden;opacity:0.08}
+.bbos-grid::before{content:'';position:absolute;inset:-50%;background-image:linear-gradient(rgba(200,150,42,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(200,150,42,0.8) 1px,transparent 1px);background-size:55px 55px;transform:perspective(500px) rotateX(28deg) rotateZ(-4deg);animation:gridDrift 25s linear infinite}
+@keyframes gridDrift{from{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(0)}to{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(55px)}}
+
+/* Moontrance palette: --sage:#7A8C6E  --earth:#6B4F3A  --gold:#C4A35A  --dark-green:#3A4A32  --cream:#F5F0E8 */
+.panel-moon{background:#1e2a18}
+.panel-moon::before{content:'';position:absolute;inset:0;background:
+  /* warm gold moon-glow at centre */
+  radial-gradient(ellipse 55% 50% at 50% 50%, rgba(196,163,90,0.13) 0%, transparent 55%),
+  /* sage-green mid atmosphere */
+  radial-gradient(ellipse 85% 75% at 48% 48%, rgba(122,140,110,0.18) 0%, transparent 65%),
+  /* earth-brown lower warmth */
+  radial-gradient(ellipse 60% 45% at 30% 75%, rgba(107,79,58,0.12) 0%, transparent 55%),
+  /* deep forest-green edge */
+  radial-gradient(ellipse 140% 120% at 50% 52%, rgba(58,74,50,0.55) 0%, transparent 88%)}
+
+.stars{position:absolute;inset:0;overflow:hidden}
+.star{position:absolute;background:rgba(245,240,232,0.9);border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--mn,0.1);transform:scale(1)}50%{opacity:var(--mx,0.5);transform:scale(1.4)}}
+
+.moon-orb{position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(196,163,90,0.14);top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04);animation:moonPulse 9s ease-in-out infinite}
+.moon-orb::before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(196,163,90,0.08)}
+@keyframes moonPulse{0%,100%{box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04)}50%{box-shadow:0 0 110px rgba(196,163,90,0.12),0 0 220px rgba(58,74,50,0.16),inset 0 0 80px rgba(196,163,90,0.07)}}
+
+.divider{position:absolute;top:0;bottom:0;left:50%;width:1px;z-index:10;background:linear-gradient(to bottom,transparent,rgba(200,150,42,0.5) 20%,rgba(200,150,42,0.65) 50%,rgba(196,133,58,0.5) 80%,transparent);transform:translateX(-50%);pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
+.gateway:has(.panel-bbos:hover) .divider{left:62%}
+.gateway:has(.panel-moon:hover) .divider{left:38%}
+
+.ogden-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;text-align:center;pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
+.gateway:has(.panel-bbos:hover) .ogden-mark{left:62%}
+.gateway:has(.panel-moon:hover) .ogden-mark{left:38%}
+
+.ogden-ring{width:70px;height:70px;border-radius:50%;background:#080810;border:1px solid rgba(200,150,42,0.3);display:flex;align-items:center;justify-content:center;position:relative}
+.ogden-ring::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(200,150,42,0.1)}
+.ogden-letter{font-family:'Cinzel',serif;font-size:21px;font-weight:600;color:rgba(200,150,42,0.85);letter-spacing:0.05em}
+
+.panel-content{position:relative;z-index:5;text-align:center;padding:48px;pointer-events:none}
+.panel:hover .panel-content{pointer-events:auto}
+
+.bbos-eyebrow,.moon-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:18px;opacity:0;transform:translateY(10px);transition:opacity 0.5s 0.1s,transform 0.5s 0.1s}
+.bbos-eyebrow{font-family:'DM Sans',sans-serif;color:rgba(200,150,42,0.7)}
+.moon-eyebrow{font-family:'Cormorant Garamond',serif;color:rgba(163,180,143,0.65);font-style:italic;letter-spacing:0.28em}
+.panel-bbos:hover .bbos-eyebrow,.panel-moon:hover .moon-eyebrow{opacity:1;transform:none}
+
+.bbos-title{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#fff;line-height:1.2;margin-bottom:14px}
+.bbos-title em{font-style:italic;color:rgba(200,150,42,0.9)}
+.moon-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#f0ebe0;line-height:1.2;margin-bottom:14px;letter-spacing:0.02em}
+.moon-title em{font-style:italic;color:rgba(196,163,90,0.9)}
+
+.panel-tagline{max-width:300px;margin:0 auto 36px;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.2s,transform 0.5s 0.2s;line-height:1.75}
+.panel:hover .panel-tagline{opacity:1;transform:none}
+.bbos-tagline{font-size:13px;color:rgba(255,255,255,0.42)}
+.moon-tagline{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:rgba(200,215,185,0.45)}
+
+.panel-cta{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:3px;font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;cursor:none;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.3s,transform 0.5s 0.3s,background 0.2s,color 0.2s,border-color 0.2s}
+.panel:hover .panel-cta{opacity:1;transform:none}
+.cta-bbos{background:rgba(200,150,42,0.1);color:rgba(200,150,42,0.85);border:1px solid rgba(200,150,42,0.28)}
+.cta-bbos:hover{background:rgba(200,150,42,0.2);color:#c8962a;border-color:rgba(200,150,42,0.55)}
+.cta-moon{background:rgba(122,140,110,0.1);color:rgba(196,163,90,0.85);border:1px solid rgba(122,140,110,0.28)}
+.cta-moon:hover{background:rgba(122,140,110,0.2);color:#c4a35a;border-color:rgba(196,163,90,0.5)}
+
+.panel-idle-label{font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;transition:opacity 0.4s}
+.panel-bbos .panel-idle-label{color:rgba(200,150,42,0.4)}
+.panel-moon .panel-idle-label{color:rgba(163,180,143,0.4)}
+.panel:hover .panel-idle-label{opacity:0}
+
+.top-nav{position:fixed;top:0;left:0;right:0;padding:26px 48px;display:flex;align-items:center;justify-content:space-between;z-index:50;pointer-events:none}
+.nav-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.3em;text-transform:uppercase}
+.nav-about{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;pointer-events:auto;cursor:none;transition:color 0.2s}
+.nav-about:hover{color:rgba(255,255,255,0.65)}
+
+@media(max-width:768px){
+  html,body{overflow:auto}
+  .gateway{flex-direction:column;height:auto;min-height:100vh}
+  .panel{flex:none!important;min-height:55vh}
+  .panel-content{padding:40px 28px}
+  .bbos-eyebrow,.moon-eyebrow,.panel-tagline,.panel-cta{opacity:1!important;transform:none!important}
+  .ogden-mark{display:none}
+  .divider{display:none}
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+  .top-nav{padding:20px 24px}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="top-nav">
+  <div class="nav-logo">Ogden</div>
+  <a href="about.html" class="nav-about">About</a>
+</nav>
+
+<div class="gateway">
+
+  <div class="panel panel-bbos" onclick="window.location='https://bbos.ogden.ag'">
+    <div class="bbos-grid"></div>
+    <div class="panel-content">
+      <div class="bbos-eyebrow">Strategy · Systems · Soul</div>
+      <h2 class="bbos-title">Build Business<br><em>On Soul</em></h2>
+      <p class="panel-tagline bbos-tagline">A comprehensive operating system for the soul-centered entrepreneur. Precision without the cage.</p>
+      <a href="https://bbos.ogden.ag" class="panel-cta cta-bbos">Enter BBOS →</a>
+    </div>
+    <div class="panel-idle-label">BBOS</div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="ogden-mark">
+    <div class="ogden-ring"><span class="ogden-letter">O</span></div>
+  </div>
+
+  <div class="panel panel-moon" onclick="window.location='https://mtc.ogden.ag'">
+    <div class="stars" id="stars"></div>
+    <div class="moon-orb"></div>
+    <div class="panel-content">
+      <div class="moon-eyebrow">Agritourism · Land · Ontario</div>
+      <h2 class="moon-title">The Moontrance<br><em>Collective</em></h2>
+      <p class="panel-tagline moon-tagline">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors.</p>
+      <a href="https://mtc.ogden.ag" class="panel-cta cta-moon">Enter the Collective →</a>
+    </div>
+    <div class="panel-idle-label">Moontrance</div>
+  </div>
+
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+document.querySelectorAll('.panel,a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='58px';ring.style.height='58px';ring.style.borderColor='rgba(200,150,42,0.45)'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(255,255,255,0.4)'});
+});
+const sc=document.getElementById('stars');
+for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
+</script>
+</body>
+</html>

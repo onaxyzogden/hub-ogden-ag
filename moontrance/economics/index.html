@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Offer Economics · Sanctuary Land Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --sage:        #5a6b4e;
+    --sage-light:  #8fa382;
+    --sage-pale:   #d4dccf;
+    --earth:       #8b6a47;
+    --earth-light: #c4a882;
+    --cream:       #f5f0e8;
+    --ivory:       #faf7f2;
+    --bark:        #2c2416;
+    --bark-mid:    #4a3f2f;
+    --rust:        #b85c38;
+    --gold:        #c9a227;
+    --mist:        #e8ede5;
+    --shadow:      rgba(44,36,22,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body { background: var(--ivory); color: var(--bark); font-family: 'Outfit', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+  /* HERO */
+  .hero { background: var(--bark); padding: 90px 6vw 80px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(90,107,78,0.25) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 10% 80%, rgba(201,162,39,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sage-light); margin-bottom: 1.4rem; opacity: 0; animation: fadeUp 0.8s 0.1s ease forwards; }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2.8rem, 6vw, 5.2rem); color: var(--cream); line-height: 1.08; max-width: 720px; opacity: 0; animation: fadeUp 0.9s 0.2s ease forwards; }
+  .hero h1 em { font-style: italic; color: var(--earth-light); }
+  .hero-sub { margin-top: 1.6rem; font-size: 1.05rem; color: var(--sage-pale); max-width: 560px; font-weight: 300; opacity: 0; animation: fadeUp 0.9s 0.35s ease forwards; }
+  .hero-kpis { display: flex; gap: 2.5rem; margin-top: 3.5rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 1s 0.5s ease forwards; }
+  .hero-kpi { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1rem; }
+  .hero-kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 500; color: var(--cream); line-height: 1; }
+  .hero-kpi-val span { font-size: 1.4rem; color: var(--earth-light); }
+  .hero-kpi-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-light); margin-top: 0.4rem; }
+
+  /* SECTIONS */
+  .section { padding: 80px 6vw; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.7rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(1.9rem, 3.5vw, 2.8rem); line-height: 1.15; color: var(--bark); margin-bottom: 1.2rem; }
+  .section-title em { font-style: italic; color: var(--earth); }
+  .section-body { font-size: 1rem; color: var(--bark-mid); max-width: 600px; line-height: 1.75; }
+
+  /* PORTFOLIO CARDS */
+  .portfolio-strip { background: var(--mist); padding: 70px 6vw; }
+  .strip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+  .offer-card { background: var(--ivory); border-radius: 4px; padding: 1.6rem 1.4rem 1.4rem; border-left: 3px solid var(--sage-pale); cursor: pointer; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s; }
+  .offer-card:hover { border-left-color: var(--sage); transform: translateY(-3px); box-shadow: 0 10px 30px var(--shadow); }
+  .offer-card.active { border-left-color: var(--earth); box-shadow: 0 8px 28px var(--shadow); }
+  .card-badge { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.6rem; }
+  .card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 500; color: var(--bark); line-height: 1.2; margin-bottom: 1rem; }
+  .card-rev { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--bark); }
+  .card-rev-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-light); margin-top: 0.2rem; margin-bottom: 0.9rem; }
+  .card-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .pill { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.05em; padding: 0.2rem 0.55rem; border-radius: 20px; font-weight: 500; }
+  .pill-green { background: #e4ede0; color: #3d5c34; }
+  .pill-amber { background: #f5edd9; color: #7c5a1a; }
+
+  /* TABLE */
+  .table-section { background: var(--ivory); }
+  .table-wrapper { overflow-x: auto; margin-top: 2.5rem; }
+  table { width: 100%; border-collapse: collapse; min-width: 700px; }
+  thead th { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--sage); padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--sage-pale); background: var(--mist); }
+  tbody tr { border-bottom: 1px solid rgba(90,107,78,0.1); transition: background 0.15s; }
+  tbody tr:hover { background: var(--mist); }
+  tbody td { padding: 1rem 1rem; font-size: 0.92rem; color: var(--bark-mid); vertical-align: middle; }
+  tbody td:first-child { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: var(--bark); }
+  .mono { font-family: 'DM Mono', monospace; font-size: 0.82rem; }
+  .role-tag { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--mist); color: var(--sage); padding: 0.2rem 0.5rem; border-radius: 3px; white-space: nowrap; }
+  .bar-wrap { display: flex; align-items: center; gap: 0.5rem; min-width: 110px; }
+  .bar-bg { height: 6px; background: var(--sage-pale); border-radius: 3px; flex: 1; }
+  .bar-fill { height: 6px; border-radius: 3px; }
+  .bar-val { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--bark-mid); white-space: nowrap; }
+  .thresholds { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 1.8rem; padding: 1.4rem 1.6rem; background: var(--mist); border-radius: 4px; }
+  .thresh-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--bark-mid); }
+  .thresh-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* MONTHLY */
+  .monthly-section { background: var(--bark); }
+  .monthly-section .section-title { color: var(--cream); }
+  .monthly-section .section-label { color: var(--sage-light); }
+  .monthly-section .section-body { color: var(--sage-pale); }
+  .monthly-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+  .monthly-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 1.6rem; }
+  .monthly-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; color: var(--cream); margin-bottom: 1.2rem; }
+  .monthly-row { display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .monthly-row:last-child { border-bottom: none; }
+  .monthly-row .mlabel { color: rgba(212,220,207,0.6); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .monthly-row .mval { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--cream); }
+  .util-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 0.8rem; overflow: hidden; }
+  .util-fill { height: 100%; background: var(--sage-light); border-radius: 2px; }
+  .util-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--sage-light); margin-top: 0.3rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .monthly-totals { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .total-cell { background: rgba(255,255,255,0.03); padding: 1.4rem 1.6rem; }
+  .total-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage-light); margin-bottom: 0.5rem; }
+  .total-val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--cream); }
+
+  /* DETAIL */
+  .detail-section { background: var(--cream); }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+  @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
+  .detail-panel-title { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--sage-pale); }
+  .detail-row { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid rgba(90,107,78,0.1); font-size: 0.88rem; }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row .dk { color: var(--bark-mid); }
+  .detail-row .dv { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--bark); font-weight: 500; text-align: right; }
+  .detail-row.subtotal { background: var(--mist); margin: 0 -0.5rem; padding: 0.55rem 0.5rem; }
+  .stars-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+  .star-item-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.2rem; }
+  .stars { color: var(--gold); font-size: 0.75rem; }
+  .tip-box { margin-top: 2rem; padding: 1rem 1.2rem; background: var(--mist); border-left: 3px solid var(--earth-light); border-radius: 0 4px 4px 0; font-size: 0.88rem; color: var(--bark-mid); font-style: italic; }
+  .offer-selector { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .sel-btn { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.45rem 0.9rem; border-radius: 3px; border: 1px solid var(--sage-pale); background: transparent; color: var(--sage); cursor: pointer; transition: all 0.2s; }
+  .sel-btn:hover { background: var(--mist); }
+  .sel-btn.active { background: var(--sage); color: var(--cream); border-color: var(--sage); }
+  .net-highlight { background: rgba(90,107,78,0.1); margin: 0 -0.5rem; padding: 1rem 0.5rem; display: flex; justify-content: space-between; border-radius: 3px; }
+  .net-highlight .dk { font-size: 1rem; font-weight: 600; color: var(--bark); }
+  .net-highlight .dv { font-size: 1.15rem; color: var(--sage); font-weight: 600; font-family: 'DM Mono', monospace; }
+
+  /* STRATEGY */
+  .strategy-section { background: var(--mist); }
+  .strategy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.4rem; margin-top: 2.5rem; }
+  .strat-card { background: var(--ivory); border-radius: 4px; padding: 1.6rem; }
+  .strat-number { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--sage-pale); line-height: 1; margin-bottom: 0.8rem; }
+  .strat-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; color: var(--bark); margin-bottom: 0.6rem; }
+  .strat-body { font-size: 0.88rem; color: var(--bark-mid); line-height: 1.65; }
+
+  footer { background: var(--bark); padding: 2.5rem 6vw; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(212,220,207,0.4); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .hero-kpis { gap: 1.5rem; }
+    .hero-kpi-val { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Sanctuary Land Co. · Offer Economics</p>
+  <h1>Five offers.<br /><em>One coherent business.</em></h1>
+  <p class="hero-sub">A transparent look at what each experience generates — in revenue, in labour, and in margin — so you understand exactly what you're building before the first guest arrives.</p>
+  <div class="hero-kpis">
+    <div class="hero-kpi">
+      <div class="hero-kpi-val"><span>$</span>18,489</div>
+      <div class="hero-kpi-label">Monthly Gross Revenue</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-val"><span>$</span>9,188</div>
+      <div class="hero-kpi-label">Monthly Net Contribution</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-val">49.7<span>%</span></div>
+      <div class="hero-kpi-label">Portfolio Net Margin</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-val">169 <span style="font-size:1rem">hrs</span></div>
+      <div class="hero-kpi-label">Monthly Labour</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO CARDS -->
+<section class="portfolio-strip">
+  <div class="reveal">
+    <p class="section-label">The Offer Portfolio</p>
+    <h2 class="section-title">Five distinct <em>experiences</em>,<br />each with its own role</h2>
+    <p class="section-body">Every offer serves a different guest, a different moment, and a different commercial function. Click any card to explore its full economics.</p>
+  </div>
+  <div class="strip-grid reveal">
+    <div class="offer-card" onclick="selectOffer(0)">
+      <div class="card-badge">Entry Experience</div>
+      <div class="card-name">Guided Tour</div>
+      <div class="card-rev">$280</div>
+      <div class="card-rev-label">Gross / booking</div>
+      <div class="card-pills"><span class="pill pill-green">65.6% contrib</span><span class="pill pill-green">45.9% net</span></div>
+    </div>
+    <div class="offer-card" onclick="selectOffer(1)">
+      <div class="card-badge">Educational Workshop</div>
+      <div class="card-name">Seasonal Workshop</div>
+      <div class="card-rev">$996</div>
+      <div class="card-rev-label">Gross / booking</div>
+      <div class="card-pills"><span class="pill pill-green">65.0% contrib</span><span class="pill pill-green">54.4% net</span></div>
+    </div>
+    <div class="offer-card" onclick="selectOffer(2)">
+      <div class="card-badge">Family Day</div>
+      <div class="card-name">Family Land Day</div>
+      <div class="card-rev">$1,255</div>
+      <div class="card-rev-label">Gross / booking</div>
+      <div class="card-pills"><span class="pill pill-amber">55.5% contrib</span><span class="pill pill-amber">44.3% net</span></div>
+    </div>
+    <div class="offer-card" onclick="selectOffer(3)">
+      <div class="card-badge">Overnight Stay</div>
+      <div class="card-name">Rest &amp; Reconnect Stay</div>
+      <div class="card-rev">$850</div>
+      <div class="card-rev-label">Gross / booking</div>
+      <div class="card-pills"><span class="pill pill-green">68.4% contrib</span><span class="pill pill-green">54.8% net</span></div>
+    </div>
+    <div class="offer-card" onclick="selectOffer(4)">
+      <div class="card-badge">Hosted Family Stay</div>
+      <div class="card-name">Family Stewardship Stay</div>
+      <div class="card-rev">$1,130</div>
+      <div class="card-rev-label">Gross / booking</div>
+      <div class="card-pills"><span class="pill pill-green">58.0% contrib</span><span class="pill pill-amber">45.1% net</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="section table-section">
+  <div class="reveal">
+    <p class="section-label">Side-by-Side Comparison</p>
+    <h2 class="section-title">Where the <em>numbers</em> separate</h2>
+    <p class="section-body">Revenue per staff hour is the clearest signal of operational efficiency. Margin tells you pricing health. Together, they reveal which offers earn their place in the portfolio.</p>
+  </div>
+  <div class="table-wrapper reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Offer</th>
+          <th>Gross / Booking</th>
+          <th>Net / Booking</th>
+          <th>Contrib %</th>
+          <th>Net %</th>
+          <th>Rev / Staff Hr</th>
+          <th>Labour Hrs</th>
+          <th>Strategic Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Guided Tour</td>
+          <td class="mono">$280</td>
+          <td class="mono">$128.60</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:65.6%;background:#5a6b4e"></div></div><span class="bar-val">65.6%</span></div></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:45.9%;background:#5a6b4e"></div></div><span class="bar-val">45.9%</span></div></td>
+          <td class="mono">$112.00</td>
+          <td class="mono">2.5 hrs</td>
+          <td><span class="role-tag">Lead-in</span></td>
+        </tr>
+        <tr>
+          <td>Seasonal Workshop</td>
+          <td class="mono">$996</td>
+          <td class="mono">$542.12</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:65%;background:#5a6b4e"></div></div><span class="bar-val">65.0%</span></div></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:54.4%;background:#5a6b4e"></div></div><span class="bar-val">54.4%</span></div></td>
+          <td class="mono">$124.50</td>
+          <td class="mono">8 hrs</td>
+          <td><span class="role-tag">Education</span></td>
+        </tr>
+        <tr>
+          <td>Family Land Day</td>
+          <td class="mono">$1,255</td>
+          <td class="mono">$556.35</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:55.5%;background:#c9a227"></div></div><span class="bar-val">55.5%</span></div></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:44.3%;background:#c9a227"></div></div><span class="bar-val">44.3%</span></div></td>
+          <td class="mono">$96.54</td>
+          <td class="mono">13 hrs</td>
+          <td><span class="role-tag">Flagship</span></td>
+        </tr>
+        <tr style="background:rgba(90,107,78,0.04)">
+          <td><strong>Rest &amp; Reconnect Stay</strong></td>
+          <td class="mono">$850</td>
+          <td class="mono">$466.00</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:68.4%;background:#5a6b4e"></div></div><span class="bar-val">68.4%</span></div></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:54.8%;background:#5a6b4e"></div></div><span class="bar-val">54.8%</span></div></td>
+          <td class="mono"><strong>$141.67 ★</strong></td>
+          <td class="mono">6 hrs</td>
+          <td><span class="role-tag">Profit Anchor</span></td>
+        </tr>
+        <tr>
+          <td>Family Stewardship Stay</td>
+          <td class="mono">$1,130</td>
+          <td class="mono">$510.10</td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:58%;background:#5a6b4e"></div></div><span class="bar-val">58.0%</span></div></td>
+          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:45.1%;background:#c9a227"></div></div><span class="bar-val">45.1%</span></div></td>
+          <td class="mono">$86.92</td>
+          <td class="mono">13 hrs</td>
+          <td><span class="role-tag">Flagship</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="thresholds reveal">
+    <div class="thresh-item"><div class="thresh-dot" style="background:#5a6b4e"></div> Contribution ≥ 60% · Excellent</div>
+    <div class="thresh-item"><div class="thresh-dot" style="background:#c9a227"></div> Contribution 50–60% · Healthy</div>
+    <div class="thresh-item"><div class="thresh-dot" style="background:#b85c38"></div> Contribution &lt; 40% · Investigate</div>
+    <div class="thresh-item" style="margin-left:auto;font-style:italic;color:#8b6a47">★ Highest revenue per staff hour</div>
+  </div>
+</section>
+
+<!-- MONTHLY MODEL -->
+<section class="section monthly-section">
+  <div class="reveal">
+    <p class="section-label">Monthly Operating Model</p>
+    <h2 class="section-title">What a <em>typical month</em> looks like</h2>
+    <p class="section-body">At current planned utilisation — 67–100% across all offers — the portfolio generates strong, diversified monthly revenue with manageable labour demands.</p>
+  </div>
+  <div class="monthly-grid reveal">
+    <div class="monthly-card">
+      <div class="monthly-card-name">Guided Tour</div>
+      <div class="monthly-row"><span class="mlabel">Available</span><span class="mval">4 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Booked</span><span class="mval">4 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Gross</span><span class="mval">$1,120</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Net</span><span class="mval">$514</span></div>
+      <div class="monthly-row"><span class="mlabel">Labour Hours</span><span class="mval">10 hrs</span></div>
+      <div class="util-bar"><div class="util-fill" style="width:100%"></div></div>
+      <div class="util-label">100% Utilisation · On Plan</div>
+    </div>
+    <div class="monthly-card">
+      <div class="monthly-card-name">Seasonal Workshop</div>
+      <div class="monthly-row"><span class="mlabel">Available</span><span class="mval">4 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Booked</span><span class="mval">4 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Gross</span><span class="mval">$3,984</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Net</span><span class="mval">$2,168</span></div>
+      <div class="monthly-row"><span class="mlabel">Labour Hours</span><span class="mval">32 hrs</span></div>
+      <div class="util-bar"><div class="util-fill" style="width:100%"></div></div>
+      <div class="util-label">100% Utilisation · On Plan</div>
+    </div>
+    <div class="monthly-card">
+      <div class="monthly-card-name">Family Land Day</div>
+      <div class="monthly-row"><span class="mlabel">Available</span><span class="mval">4 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Booked</span><span class="mval">3 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Gross</span><span class="mval">$3,765</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Net</span><span class="mval">$1,669</span></div>
+      <div class="monthly-row"><span class="mlabel">Labour Hours</span><span class="mval">39 hrs</span></div>
+      <div class="util-bar"><div class="util-fill" style="width:75%"></div></div>
+      <div class="util-label">75% Utilisation · On Plan</div>
+    </div>
+    <div class="monthly-card">
+      <div class="monthly-card-name">Rest &amp; Reconnect Stay</div>
+      <div class="monthly-row"><span class="mlabel">Available</span><span class="mval">8 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Booked</span><span class="mval">6 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Gross</span><span class="mval">$5,100</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Net</span><span class="mval">$2,796</span></div>
+      <div class="monthly-row"><span class="mlabel">Labour Hours</span><span class="mval">36 hrs</span></div>
+      <div class="util-bar"><div class="util-fill" style="width:75%"></div></div>
+      <div class="util-label">75% Utilisation · On Plan</div>
+    </div>
+    <div class="monthly-card">
+      <div class="monthly-card-name">Family Stewardship Stay</div>
+      <div class="monthly-row"><span class="mlabel">Available</span><span class="mval">6 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Booked</span><span class="mval">4 slots</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Gross</span><span class="mval">$4,520</span></div>
+      <div class="monthly-row"><span class="mlabel">Monthly Net</span><span class="mval">$2,040</span></div>
+      <div class="monthly-row"><span class="mlabel">Labour Hours</span><span class="mval">52 hrs</span></div>
+      <div class="util-bar"><div class="util-fill" style="width:67%"></div></div>
+      <div class="util-label">67% Utilisation · On Plan</div>
+    </div>
+  </div>
+  <div class="monthly-totals reveal">
+    <div class="total-cell"><div class="total-label">Total Monthly Gross</div><div class="total-val">$18,489</div></div>
+    <div class="total-cell"><div class="total-label">Total Monthly Net</div><div class="total-val">$9,188</div></div>
+    <div class="total-cell"><div class="total-label">Net Margin</div><div class="total-val">49.7%</div></div>
+    <div class="total-cell"><div class="total-label">Total Labour Hours</div><div class="total-val">169 hrs</div></div>
+    <div class="total-cell"><div class="total-label">Gross / Labour Hour</div><div class="total-val">$109.40</div></div>
+    <div class="total-cell"><div class="total-label">Net / Labour Hour</div><div class="total-val">$54.37</div></div>
+  </div>
+</section>
+
+<!-- DEEP-DIVE DETAIL -->
+<section class="section detail-section">
+  <div class="reveal">
+    <p class="section-label">Offer Deep-Dive</p>
+    <h2 class="section-title">Every line item, <em>laid bare</em></h2>
+    <p class="section-body">Transparency is the foundation of trust. Below you'll find the complete cost breakdown for each offer — from labour and food to overhead and processing fees.</p>
+  </div>
+  <div class="offer-selector reveal" id="offerSelector">
+    <button class="sel-btn active" onclick="selectOffer(0)">Guided Tour</button>
+    <button class="sel-btn" onclick="selectOffer(1)">Seasonal Workshop</button>
+    <button class="sel-btn" onclick="selectOffer(2)">Family Land Day</button>
+    <button class="sel-btn" onclick="selectOffer(3)">Rest &amp; Reconnect</button>
+    <button class="sel-btn" onclick="selectOffer(4)">Family Stewardship</button>
+  </div>
+  <div id="detailPanel"></div>
+</section>
+
+<!-- STRATEGY -->
+<section class="section strategy-section">
+  <div class="reveal">
+    <p class="section-label">Portfolio Strategy</p>
+    <h2 class="section-title">How the offers <em>work together</em></h2>
+    <p class="section-body">No single offer carries the business. Each plays a role — converting strangers, educating communities, anchoring revenue, and deepening belonging.</p>
+  </div>
+  <div class="strategy-grid reveal">
+    <div class="strat-card">
+      <div class="strat-number">01</div>
+      <div class="strat-title">The Conversion Engine</div>
+      <div class="strat-body">The Guided Tour runs at 100% utilisation and is the front door — where first-time visitors become repeat guests and future workshop attendees. It's the simplest offer to operate and the most important to fill.</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-number">02</div>
+      <div class="strat-title">The Education Flywheel</div>
+      <div class="strat-body">The Seasonal Workshop earns the highest net per staff hour among day offers ($67.77). Monthly workshops build local credibility, local press, and a repeating, loyal audience that becomes your most powerful marketing channel.</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-number">03</div>
+      <div class="strat-title">The Profit Anchor</div>
+      <div class="strat-body">The Rest &amp; Reconnect Stay is the portfolio's cleanest commercial engine — $141.67 gross revenue per staff hour, at 68.4% contribution margin. Lower touch, higher yield. Prioritise lodging quality to justify the rate.</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-number">04</div>
+      <div class="strat-title">The Mission Flagships</div>
+      <div class="strat-body">Both Family offers carry five-star Mission Alignment and five-star Repeat Booking Potential. They generate the highest gross revenues and are the experiences guests will tell others about — the ones that build a community, not just a clientele.</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-number">05</div>
+      <div class="strat-title">The Labour Reality</div>
+      <div class="strat-body">Family offers each require 13 labour hours per booking — the most intensive in the portfolio. Streamlining setup and logistics is the single biggest lever for improving their already-healthy margins without touching pricing.</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-number">06</div>
+      <div class="strat-title">The Untapped Upside</div>
+      <div class="strat-body">Add-on revenue is currently at zero in the Guided Tour. A take-home product bundle could add $30–60 per booking with near-zero marginal labour cost — a meaningful lift to what is already a well-structured offer.</div>
+    </div>
+  </div>
+</section>
+
+<footer>Sanctuary Land Co. · Offer Economics Model · Phase 1 Pre-Launch Planning · Halton Region, Ontario</footer>
+
+<script>
+const offers = [
+  {
+    name:"Guided Tour", type:"Entry Experience", audience:"First-time visitors, families, couples, local guests",
+    capacity:"8 adults + 4 children", duration:"75 minutes", frequency:"Weekly / public schedule", role:"Awareness and conversion engine",
+    revenue:[{l:"Adult tickets (8 × $28)",v:"$224"},{l:"Child tickets (4 × $14)",v:"$56"},{l:"Add-ons (untapped)",v:"$0"}],
+    grossRevenue:"$280",
+    labor:[{l:"Lead guide (2 hrs × $30)",v:"$60"},{l:"Support staff (0.5 hrs × $22)",v:"$11"}],
+    laborTotal:"$71",
+    otherCosts:[{l:"Tea / refreshment",v:"$12"},{l:"Printed materials",v:"$5"},{l:"Payment processing (3%)",v:"$8.40"}],
+    directTotal:"$96.40", contribMargin:"$183.60", contribPct:"65.6%",
+    allocated:[{l:"Marketing",v:"$15"},{l:"Site overhead",v:"$20"},{l:"Insurance / maintenance",v:"$20"}],
+    allocatedTotal:"$55", netContrib:"$128.60", netPct:"45.9%",
+    laborHrs:"2.5 hrs", revPerHr:"$112.00", netPerHr:"$51.44",
+    stars:{conversion:"★★★★★",repeat:"★★★☆☆",simplicity:"★★★★★",mission:"★★★★☆"},
+    tip:"Keep simple, high-quality, and conversion-focused. Add-on revenue is untapped here — test a take-home product bundle."
+  },
+  {
+    name:"Seasonal Workshop", type:"Educational Workshop", audience:"Adults, couples, serious learners",
+    capacity:"12 attendees", duration:"2.5 hours", frequency:"Monthly / seasonal calendar", role:"Education credibility and repeat local traffic",
+    revenue:[{l:"Workshop tickets (12 × $75)",v:"$900"},{l:"Tea upgrades (3 × $12)",v:"$36"},{l:"Product baskets (2 × $30)",v:"$60"}],
+    grossRevenue:"$996",
+    labor:[{l:"Lead educator (4 hrs × $35)",v:"$140"},{l:"Support staff (2.5 hrs × $22)",v:"$55"},{l:"Setup / cleanup (1.5 hrs × $22)",v:"$33"}],
+    laborTotal:"$228",
+    otherCosts:[{l:"Tea / refreshment (12 × $3)",v:"$36"},{l:"Handouts / materials",v:"$30"},{l:"Demo materials",v:"$25"},{l:"Payment processing (3%)",v:"$29.88"}],
+    directTotal:"$348.88", contribMargin:"$647.12", contribPct:"65.0%",
+    allocated:[{l:"Marketing",v:"$30"},{l:"Site overhead",v:"$35"},{l:"Insurance / maintenance",v:"$40"}],
+    allocatedTotal:"$105", netContrib:"$542.12", netPct:"54.4%",
+    laborHrs:"8 hrs", revPerHr:"$124.50", netPerHr:"$67.77",
+    stars:{conversion:"★★★★☆",repeat:"★★★★☆",simplicity:"★★★★☆",mission:"★★★★★"},
+    tip:"Strong education engine if attendance remains healthy. Protect the 12-person minimum — below 8 attendees, margins tighten quickly."
+  },
+  {
+    name:"Family Land Day", type:"Hosted Family Day", audience:"Muslim families, homeschool families",
+    capacity:"5 families (example mix)", duration:"4 hours", frequency:"Selected weekends", role:"Family resonance and trust-building",
+    revenue:[{l:"Base family package (3 × $185)",v:"$555"},{l:"Larger family package (2 × $245)",v:"$490"},{l:"Lunch upgrade (3 × $50)",v:"$150"},{l:"Take-home family kit (2 × $30)",v:"$60"}],
+    grossRevenue:"$1,255",
+    labor:[{l:"Lead facilitator (5 hrs × $30)",v:"$150"},{l:"Support staff (5 hrs × $22)",v:"$110"},{l:"Setup / cleanup (2 hrs × $22)",v:"$44"},{l:"Admin / booking (1 hr × $22)",v:"$22"}],
+    laborTotal:"$326",
+    otherCosts:[{l:"Refreshments / light food",v:"$80"},{l:"Lunch food cost (2 × $30)",v:"$60"},{l:"Activity materials",v:"$40"},{l:"Consumables / supplies",v:"$15"},{l:"Payment processing (3%)",v:"$37.65"}],
+    directTotal:"$558.65", contribMargin:"$696.35", contribPct:"55.5%",
+    allocated:[{l:"Marketing",v:"$40"},{l:"Site overhead",v:"$50"},{l:"Insurance / maintenance",v:"$50"}],
+    allocatedTotal:"$140", netContrib:"$556.35", netPct:"44.3%",
+    laborHrs:"13 hrs", revPerHr:"$96.54", netPerHr:"$42.80",
+    stars:{conversion:"★★★★★",repeat:"★★★★★",simplicity:"★★★☆☆",mission:"★★★★★"},
+    tip:"Excellent flagship day offer. Monitor pacing and logistics — 13 labour hours is significant. Streamlining setup can improve net margins."
+  },
+  {
+    name:"Rest & Reconnect Stay", type:"Overnight Hospitality Stay", audience:"Couples, solo guests, young professionals",
+    capacity:"1 booking / 2-night stay", duration:"2 nights", frequency:"Regular availability", role:"Premium hospitality anchor and lower-touch profit engine",
+    revenue:[{l:"2-night weekend stay",v:"$660"},{l:"Dinner add-on",v:"$85"},{l:"Breakfast basket",v:"$40"},{l:"Evening reflection experience",v:"$65"}],
+    grossRevenue:"$850",
+    labor:[{l:"Check-in / guest handling (1 hr × $25)",v:"$25"},{l:"Cleaning turnover (2 hrs × $22)",v:"$44"},{l:"Laundry handling (0.75 hrs × $20)",v:"$15"},{l:"Guided experience (1.5 hrs × $30)",v:"$45"},{l:"Admin / booking (0.75 hrs × $22)",v:"$16.50"}],
+    laborTotal:"$145.50",
+    otherCosts:[{l:"Dinner food cost",v:"$35"},{l:"Breakfast basket food cost",v:"$15"},{l:"Welcome consumables",v:"$10"},{l:"Laundry supplies",v:"$8"},{l:"Utilities estimate",v:"$18"},{l:"Restock / consumables",v:"$12"},{l:"Payment processing (3%)",v:"$25.50"}],
+    directTotal:"$269.00", contribMargin:"$581.00", contribPct:"68.4%",
+    allocated:[{l:"Marketing",v:"$35"},{l:"Site overhead",v:"$45"},{l:"Insurance / maintenance",v:"$35"}],
+    allocatedTotal:"$115", netContrib:"$466.00", netPct:"54.8%",
+    laborHrs:"6 hrs", revPerHr:"$141.67", netPerHr:"$77.67",
+    stars:{conversion:"★★★☆☆",repeat:"★★★★☆",simplicity:"★★★★☆",mission:"★★★★☆"},
+    tip:"One of the cleanest commercial engines — highest revenue per staff hour in the portfolio. Focus on lodging quality to justify the rate and drive repeat bookings."
+  },
+  {
+    name:"Family Stewardship Stay", type:"Hosted Family Overnight Package", audience:"Muslim families",
+    capacity:"1 family booking / 2-night stay", duration:"2 nights", frequency:"Selected weekends / regular booking", role:"Premium hosted flagship and strongest differentiation offer",
+    revenue:[{l:"2-night family package",v:"$925"},{l:"Meal bundle",v:"$165"},{l:"Seasonal basket",v:"$40"}],
+    grossRevenue:"$1,130",
+    labor:[{l:"Check-in / orientation (1 hr × $25)",v:"$25"},{l:"Lead family facilitator (3 hrs × $30)",v:"$90"},{l:"Support staff (2.5 hrs × $22)",v:"$55"},{l:"Cleaning turnover (2.5 hrs × $22)",v:"$55"},{l:"Laundry handling (1 hr × $20)",v:"$20"},{l:"Kitchen / food prep (2 hrs × $22)",v:"$44"},{l:"Admin / booking (1 hr × $22)",v:"$22"}],
+    laborTotal:"$311.00",
+    otherCosts:[{l:"Meal bundle food cost",v:"$70"},{l:"Activity materials",v:"$20"},{l:"Welcome / reflection materials",v:"$10"},{l:"Laundry / utilities / consumables",v:"$30"},{l:"Payment processing (3%)",v:"$33.90"}],
+    directTotal:"$474.90", contribMargin:"$655.10", contribPct:"58.0%",
+    allocated:[{l:"Marketing",v:"$45"},{l:"Site overhead",v:"$55"},{l:"Insurance / maintenance",v:"$45"}],
+    allocatedTotal:"$145", netContrib:"$510.10", netPct:"45.1%",
+    laborHrs:"13 hrs", revPerHr:"$86.92", netPerHr:"$39.24",
+    stars:{conversion:"★★★★☆",repeat:"★★★★★",simplicity:"★★★☆☆",mission:"★★★★★"},
+    tip:"High-value family flagship with excellent mission alignment. Monitor staffing intensity carefully — 13 hours per booking is the highest of any offer."
+  }
+];
+
+function selectOffer(idx) {
+  document.querySelectorAll('.offer-card').forEach((c,i)=>c.classList.toggle('active',i===idx));
+  document.querySelectorAll('.sel-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  renderDetail(idx);
+  document.querySelector('.detail-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderDetail(idx) {
+  const o = offers[idx];
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-grid">
+      <div>
+        <div class="detail-panel-title">Offer Identity</div>
+        <div class="detail-row"><span class="dk">Type</span><span class="dv">${o.type}</span></div>
+        <div class="detail-row"><span class="dk">Audience</span><span class="dv">${o.audience}</span></div>
+        <div class="detail-row"><span class="dk">Capacity</span><span class="dv">${o.capacity}</span></div>
+        <div class="detail-row"><span class="dk">Duration</span><span class="dv">${o.duration}</span></div>
+        <div class="detail-row"><span class="dk">Frequency</span><span class="dv">${o.frequency}</span></div>
+        <div class="detail-row"><span class="dk">Strategic Role</span><span class="dv">${o.role}</span></div>
+        <br/>
+        <div class="detail-panel-title">Revenue Breakdown</div>
+        ${o.revenue.map(r=>`<div class="detail-row"><span class="dk">${r.l}</span><span class="dv">${r.v}</span></div>`).join('')}
+        <div class="detail-row subtotal"><span class="dk"><strong>Gross Revenue</strong></span><span class="dv" style="color:var(--earth)">${o.grossRevenue}</span></div>
+        <br/>
+        <div class="detail-panel-title">Key Operating Metrics</div>
+        <div class="detail-row"><span class="dk">Total Labour Hours</span><span class="dv">${o.laborHrs}</span></div>
+        <div class="detail-row"><span class="dk">Gross Revenue / Staff Hour</span><span class="dv">${o.revPerHr}</span></div>
+        <div class="detail-row"><span class="dk">Net Contribution / Staff Hour</span><span class="dv">${o.netPerHr}</span></div>
+        <div class="stars-row">
+          <div class="star-item"><div class="star-item-label">Conversion</div><div class="stars">${o.stars.conversion}</div></div>
+          <div class="star-item"><div class="star-item-label">Repeat Booking</div><div class="stars">${o.stars.repeat}</div></div>
+          <div class="star-item"><div class="star-item-label">Simplicity</div><div class="stars">${o.stars.simplicity}</div></div>
+          <div class="star-item"><div class="star-item-label">Mission</div><div class="stars">${o.stars.mission}</div></div>
+        </div>
+        <div class="tip-box">${o.tip}</div>
+      </div>
+      <div>
+        <div class="detail-panel-title">Labour Costs</div>
+        ${o.labor.map(r=>`<div class="detail-row"><span class="dk">${r.l}</span><span class="dv">${r.v}</span></div>`).join('')}
+        <div class="detail-row subtotal"><span class="dk">Total Labour</span><span class="dv">${o.laborTotal}</span></div>
+        <br/>
+        <div class="detail-panel-title">Other Direct Costs</div>
+        ${o.otherCosts.map(r=>`<div class="detail-row"><span class="dk">${r.l}</span><span class="dv">${r.v}</span></div>`).join('')}
+        <div class="detail-row subtotal"><span class="dk">Total Direct Costs</span><span class="dv">${o.directTotal}</span></div>
+        <br/>
+        <div class="detail-panel-title">Margin Summary</div>
+        <div class="detail-row"><span class="dk">Gross Revenue</span><span class="dv">${o.grossRevenue}</span></div>
+        <div class="detail-row"><span class="dk">Direct Costs</span><span class="dv">${o.directTotal}</span></div>
+        <div class="detail-row subtotal"><span class="dk">Contribution Margin</span><span class="dv" style="color:var(--earth)">${o.contribMargin} <small style="color:#8fa382">(${o.contribPct})</small></span></div>
+        <br/>
+        <div class="detail-panel-title">Allocated Operating Costs</div>
+        ${o.allocated.map(r=>`<div class="detail-row"><span class="dk">${r.l}</span><span class="dv">${r.v}</span></div>`).join('')}
+        <div class="detail-row subtotal"><span class="dk">Total Allocated</span><span class="dv">${o.allocatedTotal}</span></div>
+        <br/>
+        <div class="net-highlight">
+          <span class="dk">NET CONTRIBUTION</span>
+          <span class="dv">${o.netContrib} <small style="font-size:0.75rem;color:#8fa382">(${o.netPct})</small></span>
+        </div>
+      </div>
+    </div>`;
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+renderDetail(0);
+</script>
+</body>
+</html>
