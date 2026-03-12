@@ -473,6 +473,44 @@
   }
   .skip-link:focus { top: 0; }
 
+
+  /* ── RELATED STRIP ─────────────────────────────────────────── */
+  .eco-related {
+    background: var(--mist);
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(90,107,78,0.15);
+  }
+  .eco-related-inner { max-width: 1100px; margin: 0 auto; }
+  .eco-related-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--sage);
+    margin-bottom: 1.5rem;
+  }
+  .eco-related-cards {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
+  }
+  @media (max-width: 768px) { .eco-related-cards { grid-template-columns: 1fr; } }
+  .eco-related-card {
+    background: var(--ivory); border: 1px solid rgba(90,107,78,0.16);
+    border-radius: 8px; padding: 1.5rem; text-decoration: none;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .eco-related-card:hover {
+    border-color: var(--sage); transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+  }
+  .eco-related-icon { font-size: 1.2rem; }
+  .eco-related-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 600; color: var(--bark);
+  }
+  .eco-related-desc {
+    font-size: 0.82rem; color: var(--bark-mid);
+    opacity: 0.75; line-height: 1.6;
+    font-family: 'Outfit', sans-serif;
+  }
 </style>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hub.ogden.ag/moontrance/economics/">
@@ -497,7 +535,7 @@
     <li><a href="#monthly">Monthly View</a></li>
     <li><a href="#strategy">Strategy</a></li>
   </ul>
-  <a href="../" class="nav-cta">← Home</a>
+  <a href="../connect/" class="nav-cta">Connect</a>
   <button class="nav-hamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -795,6 +833,30 @@
   </div>
 </section>
 
+
+<section class="eco-related" aria-label="Related resources">
+  <div class="eco-related-inner">
+    <p class="eco-related-label">Continue exploring</p>
+    <div class="eco-related-cards">
+      <a href="../collective/" class="eco-related-card">
+        <span class="eco-related-icon">🌿</span>
+        <span class="eco-related-title">The Collective</span>
+        <span class="eco-related-desc">The guest experience and community vision behind the numbers you've just been looking at.</span>
+      </a>
+      <a href="../acquisition/" class="eco-related-card">
+        <span class="eco-related-icon">🗺</span>
+        <span class="eco-related-title">Acquisition Hub</span>
+        <span class="eco-related-desc">Once the economics work, the next question is land. A structured toolkit for finding the right parcel in Ontario.</span>
+      </a>
+      <a href="../../bbos/" class="eco-related-card">
+        <span class="eco-related-icon">✦</span>
+        <span class="eco-related-title">BBOS Framework</span>
+        <span class="eco-related-desc">The operating system for building a business that holds its intention — including the one that will run on this land.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer" role="contentinfo" aria-label="Site footer">
   <div class="site-footer-inner">
     <div class="site-footer-brand">
@@ -807,6 +869,7 @@
         <li><a href="../collective/">The Collective</a></li>
         <li><a href="../economics/">Offer Economics</a></li>
         <li><a href="../acquisition/">Acquisition Hub</a></li>
+        <li><a href="../connect/">Connect</a></li>
       </ul>
     </div>
     <div>

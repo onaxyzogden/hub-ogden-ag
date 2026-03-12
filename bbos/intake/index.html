@@ -242,8 +242,9 @@
   .radio-opt input, .check-opt input {
     margin-top: 3px; accent-color: var(--gold); flex-shrink: 0;
   }
-  .opt-label { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); }
-  .opt-desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 3px; line-height: 1.5; }
+  .radio-opt > div, .check-opt > div { flex: 1; min-width: 0; }
+  .opt-label { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); word-wrap: break-word; }
+  .opt-desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 3px; line-height: 1.5; word-wrap: break-word; }
 
   /* ── AVERSION INPUTS ─────────────────────────────────────────────── */
   .aversion-inputs { display: flex; flex-direction: column; gap: 10px; }
@@ -383,8 +384,29 @@
   .routing-tag.review   { background: var(--amber-surface); color: var(--gold); }
 
   /* ── CONFIRMATION SCREEN ─────────────────────────────────────────── */
-  .confirm-screen { display: none; text-align: center; padding: 80px 24px; }
-  .confirm-screen.show { display: block; }
+  /* Inline confirm screen hidden — redirect handles post-submit UX */
+  .confirm-screen { display: none !important; }
+  /* Full-screen sending overlay */
+  .submit-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9000;
+    background: var(--warm-white);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 1.25rem;
+  }
+  .submit-overlay.show { display: flex; }
+  .submit-spinner {
+    width: 36px; height: 36px;
+    border: 2px solid rgba(58,74,50,0.15);
+    border-top-color: var(--dark-green);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .submit-overlay-msg {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 400;
+    color: var(--ink-light); letter-spacing: 0.04em;
+  }
   .confirm-icon { font-size: 3rem; margin-bottom: 24px; }
   .confirm-title {
     font-family: 'Playfair Display', serif; font-size: 2rem;
@@ -1251,6 +1273,12 @@
   </div>
 
 
+  <!-- SUBMIT OVERLAY -->
+  <div class="submit-overlay" id="submitOverlay" role="status" aria-live="polite">
+    <div class="submit-spinner" aria-hidden="true"></div>
+    <p class="submit-overlay-msg">Submitting your intake…</p>
+  </div>
+
   <!-- SAVE BAR -->
   <div class="save-bar hidden" id="saveBar">
     <div class="save-bar-left">
@@ -1540,7 +1568,7 @@ function buildRoutingPreview() {
 }
 
 // ── SUBMISSION ─────────────────────────────────────────────────────────────
-const APPS_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbysi3pKoZ5vTJvFYvVm3jNlaqv2ri8XMP-B_DF9n9VKqEdv2c1eA-mg89IK3qrQgAje/exec";
+const APPS_SCRIPT_ENDPOINT = "YOUR_APPS_SCRIPT_URL_HERE";
 
 function collectFormData(route) {
   const regFlags = ['reg-licence','reg-permit','reg-insurance','reg-uncertain']
@@ -1610,31 +1638,41 @@ async function submitForm() {
     return;
   }
 
+  // Determine routing
   const runway = parseInt(document.getElementById('f-runway').value) || 0;
   const cf = document.querySelector('input[name="cashflow"]:checked');
-  let route     = "Standard Path → Under Review";
-  let routeNote = "The team will be in touch within 48 hours to confirm next steps.";
-  if ((cf && cf.value === 'fast') || runway <= 2) {
-    route     = "Income Injection → Fast Track Review";
-    routeNote = "Your urgency has been noted. The team will prioritise your review accordingly.";
-  }
+  let route = "Standard Path → Under Review";
+  if ((cf && cf.value === 'fast') || runway <= 2) route = "Income Injection → Fast Track Review";
 
+  // Lock submit button + show full-screen sending overlay immediately
   const submitBtn = document.querySelector('.btn-submit');
-  if (submitBtn) { submitBtn.textContent = 'Submitting…'; submitBtn.disabled = true; }
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+  const overlay = document.getElementById('submitOverlay');
+  if (overlay) overlay.classList.add('show');
 
+  // Clear draft — submission is complete
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+  isDirty = false;
+
+  // Send to Google Sheet (fire-and-forget — no-cors means we can't read the response)
   if (APPS_SCRIPT_ENDPOINT && APPS_SCRIPT_ENDPOINT !== 'YOUR_APPS_SCRIPT_URL_HERE') {
     try {
       await fetch(APPS_SCRIPT_ENDPOINT, {
-        method: 'POST', mode: 'no-cors',
+        method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(collectFormData(route))
       });
-    } catch (err) { console.warn('Submission error:', err); }
+    } catch (err) {
+      console.warn('Submission network error:', err);
+      // Don't block the redirect — Apps Script may still have received it
+    }
+  } else {
+    console.warn('BBOS intake: APPS_SCRIPT_ENDPOINT not configured. Set the constant at the top of the script block.');
   }
 
-  showConfirmation(route, routeNote);
-  // Redirect to dedicated thank-you page after brief confirmation moment
-  setTimeout(function() { window.location.href = '../thank-you/'; }, 2800);
+  // Redirect to thank-you page — no inline confirmation screen shown
+  window.location.href = '../thank-you/';
 }
 
 
