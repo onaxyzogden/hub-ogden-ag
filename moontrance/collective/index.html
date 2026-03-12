@@ -798,6 +798,34 @@
   }
   #page-veil.cleared { opacity: 0; }
 
+
+  /* ── ACTIVE NAV INDICATOR ── */
+  .nav-links a {
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold-light, #D9BC7C);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a.nav-active::after {
+    transform: scaleX(1);
+  }
+  .nav-links a.nav-active {
+    color: var(--gold-light, #D9BC7C) !important;
+  }
+  nav.scrolled .nav-links a.nav-active {
+    color: var(--clay, #8b5e3c) !important;
+  }
+  nav.scrolled .nav-links a.nav-active::after {
+    background: var(--clay, #8b5e3c);
+  }
+
 </style>
 </head>
 <body>
@@ -1367,6 +1395,37 @@
       });
     });
   })();
+</script>
+<script>
+  // ── ACTIVE NAV SECTION TRACKING ──
+  (function () {
+    var sectionMap = {"experiences": "#experiences", "values": "#values", "audience": "#audience", "faq": "#faq", "cta-banner": "#cta-banner", "why": "#experiences", "hero": "#experiences"};
+    var navLinks = document.querySelectorAll('.nav-links a');
+
+    function setActive(href) {
+      navLinks.forEach(function(a) {
+        a.classList.remove('nav-active');
+        if (a.getAttribute('href') === href) {
+          a.classList.add('nav-active');
+        }
+      });
+    }
+
+    var sectionObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var href = sectionMap[entry.target.id];
+          if (href) setActive(href);
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+    Object.keys(sectionMap).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+  })();
+
 </script>
 </body>
 </html>

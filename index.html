@@ -95,10 +95,61 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
 .panel-moon .panel-idle-label{color:rgba(163,180,143,0.4)}
 .panel:hover .panel-idle-label{opacity:0}
 
-.top-nav{position:fixed;top:0;left:0;right:0;padding:26px 48px;display:flex;align-items:center;justify-content:space-between;z-index:50;pointer-events:none}
-.nav-logo{font-family:'Cinzel',serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.3em;text-transform:uppercase}
-.nav-about{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;pointer-events:auto;cursor:none;transition:color 0.2s}
-.nav-about:hover{color:rgba(255,255,255,0.65)}
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 0 48px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100;
+  background: rgba(8,8,16,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(200,150,42,0.12);
+  pointer-events: auto;
+}
+.nav-brand {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 600;
+  color: rgba(200,150,42,0.55);
+  letter-spacing: 0.3em; text-transform: uppercase;
+  text-decoration: none;
+  pointer-events: auto;
+  transition: color 0.2s;
+  flex: 0 0 auto;
+}
+.nav-brand:hover { color: rgba(200,150,42,0.9); }
+.nav-side {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+  flex: 1;
+}
+.nav-side.nav-left { justify-content: flex-start; margin-right: 2rem; }
+.nav-side.nav-right { justify-content: flex-end; margin-left: 2rem; }
+.nav-side a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none;
+  pointer-events: auto; cursor: none;
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-side.nav-left a  { color: rgba(200,150,42,0.55); }
+.nav-side.nav-right a { color: rgba(163,180,143,0.55); }
+.nav-side a::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-side.nav-left  a::after { background: rgba(200,150,42,0.7); }
+.nav-side.nav-right a::after { background: rgba(163,180,143,0.7); }
+.nav-side a:hover { color: rgba(255,255,255,0.75); }
+.nav-side a:hover::after { transform: scaleX(1); }
+/* Active state */
+.nav-side a.nav-active { color: rgba(255,255,255,0.85); }
+.nav-side a.nav-active::after { transform: scaleX(1); }
 
 @media(max-width:768px){
   html,body{overflow:auto}
@@ -110,14 +161,13 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   .divider{display:none}
   body{cursor:auto}
   .cursor,.cursor-ring{display:none}
-  .top-nav{
-    padding:16px 20px;
-    background:rgba(8,8,16,0.85);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    border-bottom:1px solid rgba(200,150,42,0.12);
-  }
-  .panel-bbos{ padding-top: 70px; }
+  .top-nav { padding: 0 20px; height: 56px; }
+  .nav-side { gap: 1rem; }
+  .nav-side.nav-left { margin-right: 0.5rem; }
+  .nav-side.nav-right { margin-left: 0.5rem; }
+  .nav-side a { font-size: 9.5px; letter-spacing: 0.1em; }
+  .nav-brand { font-size: 10px; }
+  .panel-bbos { padding-top: 56px; }
 }
 
   /* ── PAGE TRANSITION VEIL ── */
@@ -140,7 +190,17 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
 <body>
 <div id="page-veil"></div>
 
-<div id="site-header"></div>
+<nav class="top-nav">
+  <ul class="nav-side nav-left">
+    <li><a href="bbos/index.html">What is BBOS</a></li>
+    <li><a href="bbos/index.html">Systems</a></li>
+  </ul>
+  <a href="index.html" class="nav-brand">Ogden</a>
+  <ul class="nav-side nav-right">
+    <li><a href="moontrance/index.html">Moontrance</a></li>
+    <li><a href="moontrance/acquisition/index.html">Find Land</a></li>
+  </ul>
+</nav>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
@@ -241,6 +301,31 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
       });
     });
   })();
+</script>
+<script>
+  // ── HUB NAV ACTIVE STATE ON PANEL HOVER ──
+  (function () {
+    var bbosLinks  = document.querySelectorAll('.nav-left a');
+    var moonLinks  = document.querySelectorAll('.nav-right a');
+    var bboPanel   = document.querySelector('.panel-bbos');
+    var moonPanel  = document.querySelector('.panel-moon');
+
+    function setActive(links) {
+      bbosLinks.forEach(function(a) { a.classList.remove('nav-active'); });
+      moonLinks.forEach(function(a) { a.classList.remove('nav-active'); });
+      if (links) links.forEach(function(a) { a.classList.add('nav-active'); });
+    }
+
+    if (bboPanel) {
+      bboPanel.addEventListener('mouseenter', function() { setActive(bbosLinks); });
+      bboPanel.addEventListener('mouseleave', function() { setActive(null); });
+    }
+    if (moonPanel) {
+      moonPanel.addEventListener('mouseenter', function() { setActive(moonLinks); });
+      moonPanel.addEventListener('mouseleave', function() { setActive(null); });
+    }
+  })();
+
 </script>
 </body>
 </html>
