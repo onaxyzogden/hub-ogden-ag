@@ -1,187 +1,991 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OGDEN — Build Business On Soul · The Moontrance Collective</title>
-<meta name="description" content="OGDEN is a digital entrepreneur bridging strategic precision with soul-led execution. Home of BBOS and The Moontrance Collective.">
-<link rel="canonical" href="https://hub.ogden.ag">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moontrance Collective — Where Land Meets Vision</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
+    :root {
+      --sage:       #7A8C6E;
+      --sage-light: #A3B48F;
+      --earth:      #6B4F3A;
+      --cream:      #F5F0E8;
+      --warm-white: #FDFAF5;
+      --charcoal:   #2C2C2C;
+      --gold:       #C4A35A;
+      --gold-light: #D9BC7C;
+      --mist:       #E8EDE3;
+      --dark-green: #3A4A32;
+    }
 
-.cursor{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
-.cursor-ring{width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s}
+    html { scroll-behavior: smooth; }
 
-body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:0.5}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--warm-white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
 
-.gateway{display:flex;height:100vh;width:100vw;position:relative;overflow:hidden;opacity:1}
+    /* ── NAVIGATION ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(28,42,21,0.7);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(196,163,90,0.12);
+      transition: padding 0.3s ease, background 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .nav-cta {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dark-green) !important;
+      background: var(--gold);
+      padding: 0.6rem 1.4rem;
+      border-radius: 2px;
+      text-decoration: none;
+      opacity: 1 !important;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold-light) !important;
+    }
+
+    /* ── HERO — full-bleed, centred, atmospheric ── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #1C2A15;
+    }
+
+    /* Layered radial glows: warm gold core, sage mid, dark-green edge */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 53%, rgba(196,163,90,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 75% at 50% 56%, rgba(122,140,110,0.11) 0%, transparent 72%),
+        radial-gradient(ellipse 150% 110% at 50% 60%, rgba(30,42,21,0.6) 0%, transparent 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Star canvas — scattered gold dots drawn by inline JS */
+    .hero-stars {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Thin gold rule at very top of hero */
+    .hero-top-rule {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent 5%, rgba(196,163,90,0.45) 40%, rgba(196,163,90,0.45) 60%, transparent 95%);
+      z-index: 3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.875rem;
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 0.28em;
+      color: rgba(196,163,90,0.85);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-title .title-line1 { display: block; }
+    .hero-title .title-line2 {
+      display: block;
+      font-style: italic;
+      color: var(--gold-light);
+      font-weight: 400;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.75;
+      color: rgba(245,240,232,0.88);
+      max-width: 560px;
+      margin: 0 auto 3rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: transparent;
+      border: 1px solid rgba(196,163,90,0.5);
+      color: var(--cream);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+    }
+
+    .btn-primary:hover {
+      background: rgba(196,163,90,0.1);
+      border-color: rgba(196,163,90,0.85);
+      color: var(--gold-light);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #907E6E;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: rgba(245,240,232,0.7); }
+
+    /* Scroll hint centred at bottom of hero */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #808070;
+      font-size: 0.875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    .scroll-line {
+      width: 28px;
+      height: 1px;
+      background: rgba(245,240,232,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--gold);
+      animation: scrollLine 2.2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%   { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-label::after {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    /* ── MISSION STRIP ── */
+    .mission-strip {
+      background: var(--mist);
+      padding: 5rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .mission-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--dark-green);
+    }
+
+    .mission-heading em {
+      font-style: italic;
+      color: var(--earth);
+    }
+
+    .mission-body {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: rgba(44,44,44,0.75);
+      font-weight: 300;
+    }
+
+    .mission-body p + p { margin-top: 1rem; }
+
+    /* ── THREE PORTALS ── */
+    .portals {
+      padding: 6rem;
+      background: var(--warm-white);
+    }
+
+    .portals-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .portals-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.5rem);
+      font-weight: 300;
+      color: var(--dark-green);
+      margin-bottom: 1rem;
+    }
+
+    .portals-subtitle {
+      font-size: 1rem;
+      color: rgba(44,44,44,0.55);
+      font-weight: 300;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    .portal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .portal-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .portal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(58,74,50,0.15);
+    }
+
+    .portal-card-inner {
+      height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-card:nth-child(2) .portal-card-inner,
+    .portal-card:nth-child(3) .portal-card-inner {
+      height: 520px;
+    }
+
+    /* Card backgrounds using CSS gradients + SVG patterns */
+    .portal-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .portal-card-1 .portal-bg {
+      background: linear-gradient(145deg, #2C3D24 0%, #3A4A32 40%, #4A5E3A 100%);
+    }
+
+    .portal-card-2 .portal-bg {
+      background: linear-gradient(145deg, #4A3525 0%, #6B4F3A 50%, #8B6A52 100%);
+    }
+
+    .portal-card-3 .portal-bg {
+      background: linear-gradient(145deg, #3A4A5A 0%, #2C3C4C 60%, #1E2C3A 100%);
+    }
+
+    .portal-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.07;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.5) 0px,
+        rgba(255,255,255,0.5) 1px,
+        transparent 1px,
+        transparent 40px
+      );
+    }
+
+    .portal-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+      font-size: 1.4rem;
+    }
+
+    .portal-tag {
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 0.6rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-desc {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.82);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      position: relative;
+      z-index: 1;
+      border-bottom: 1px solid rgba(196,163,90,0.4);
+      padding-bottom: 0.2rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .portal-card:hover .portal-link {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .portal-link-arrow {
+      transition: transform 0.2s;
+    }
+
+    .portal-card:hover .portal-link-arrow {
+      transform: translateX(4px);
+    }
+
+    /* Gradient overlay on cards */
+    .portal-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
+      z-index: 0;
+    }
+
+    /* ── PHILOSOPHY ── */
+    .philosophy {
+      background: var(--dark-green);
+      padding: 7rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .philosophy-text .section-label { /* override gold */ }
+
+    .philosophy-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
+
+    .philosophy-heading em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .philosophy-body {
+      font-size: 1rem;
+      line-height: 1.95;
+      color: rgba(245,240,232,0.82);
+      font-weight: 300;
+    }
+
+    .philosophy-body p + p { margin-top: 1rem; }
+
+    .philosophy-principles {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .principle {
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.08);
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .principle:first-child { padding-top: 0; }
+
+    .principle-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--gold);
+      opacity: 0.4;
+      line-height: 1;
+      min-width: 40px;
+    }
+
+    .principle-content {}
+
+    .principle-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+
+    .principle-body {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(245,240,232,0.5);
+      font-weight: 300;
+    }
+
+    /* ── PROCESS STRIP ── */
+    .process {
+      padding: 6rem;
+      background: var(--cream);
+    }
+
+    .process-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .process-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 300;
+      color: var(--dark-green);
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 1px;
+      background: var(--sage-light);
+      opacity: 0.4;
+    }
+
+    .step {
+      text-align: center;
+      padding: 0 1.5rem;
+    }
+
+    .step-dot {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--warm-white);
+      border: 2px solid var(--sage-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--sage);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dark-green);
+      margin-bottom: 0.6rem;
+    }
+
+    .step-body {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(44,44,44,0.55);
+      font-weight: 300;
+    }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      background: var(--earth);
+      padding: 7rem 6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(196,163,90,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(58,74,50,0.2) 0%, transparent 60%);
+    }
+
+    .final-cta-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .final-cta-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.15;
+      max-width: 680px;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .final-cta-heading em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .final-cta-sub {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(245,240,232,0.65);
+      font-weight: 300;
+      max-width: 500px;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .final-cta-buttons {
+      display: flex;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-cream {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--cream);
+      color: var(--earth);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+
+    .btn-cream:hover { background: var(--warm-white); }
+
+    .btn-outline-cream {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      border: 1px solid rgba(245,240,232,0.35);
+      color: var(--cream);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-outline-cream:hover {
+      border-color: rgba(245,240,232,0.7);
+      background: rgba(245,240,232,0.07);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      padding: 3rem 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--cream);
+      opacity: 0.85;
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #A09888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: rgba(245,240,232,0.8); }
+
+    .footer-copy {
+      font-size: 0.875rem;
+      color: #808070;
+    }
+
+    /* ── DECORATIVE ELEMENTS ── */
+    .moon-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(196,163,90,0.15);
+      pointer-events: none;
+    }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #A09888;
+      font-size: 0.875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .scroll-line {
+      width: 30px;
+      height: 1px;
+      background: rgba(245,240,232,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--gold);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 1.25rem 2rem; }
+      .nav-links { display: none; }
+
+      .hero-content { padding: 6rem 1.5rem 3rem; }
+
+      .mission-strip { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 2.5rem; }
+      .portals { padding: 4rem 2.5rem; }
+      .portal-grid { grid-template-columns: 1fr; max-width: 500px; }
+      .portal-card-inner { height: auto !important; min-height: 0; justify-content: flex-start; padding: 2rem; }
+      .portal-card:nth-child(2) .portal-card-inner,
+      .portal-card:nth-child(3) .portal-card-inner { height: auto !important; }
+      .portal-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 60%); }
+
+      .philosophy { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2.5rem; }
+      .process { padding: 4rem 2.5rem; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .process-steps::before { display: none; }
+
+      .final-cta { padding: 5rem 2.5rem; }
+      .final-cta-buttons { flex-direction: column; align-items: center; }
+
+      footer { flex-direction: column; gap: 2rem; padding: 2.5rem; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  
+  /* ── HAMBURGER BUTTON ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none;
+    cursor: pointer; padding: 4px;
+    z-index: 200; position: relative;
+  }
+  .nav-hamburger span {
+    display: block; width: 100%; height: 1.5px;
+    background: rgba(245,240,232,0.85); border-radius: 2px;
+    transition: transform 0.35s cubic-bezier(0.77,0,0.175,1), opacity 0.25s, background 0.3s;
+    transform-origin: center;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--soil, #2d2218); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ── MOBILE DRAWER ── */
+  .nav-drawer {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(30,26,20,0.97);
+    backdrop-filter: blur(18px);
+    z-index: 150;
+    padding: 5rem 2.5rem 3rem;
+    flex-direction: column; gap: 0;
+    transform: translateY(-100%);
+    transition: transform 0.45s cubic-bezier(0.77,0,0.175,1);
+    border-bottom: 1px solid rgba(196,163,90,0.15);
+  }
+  .nav-drawer.open { transform: translateY(0); }
+  .nav-drawer a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 400;
+    color: rgba(245,240,232,0.88);
+    text-decoration: none; letter-spacing: 0.04em;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(196,163,90,0.1);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+  .nav-drawer a:last-child { border-bottom: none; }
+  .nav-drawer a:hover { color: rgba(196,163,90,0.9); padding-left: 0.5rem; }
+  .nav-drawer .drawer-cta {
+    margin-top: 1.5rem;
+    font-size: 1rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(196,163,90,0.85) !important;
+    border: 1px solid rgba(196,163,90,0.3) !important;
+    border-radius: 100px;
+    padding: 0.75rem 1.8rem;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem !important; }
+    nav.scrolled { padding: 0.7rem 1.5rem !important; }
+    .nav-links { display: none !important; }
+    .nav-cta { display: none !important; }
+    .nav-hamburger { display: flex; }
+    .nav-drawer { display: flex; }
+  }
 
 
-.panel{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;transition:flex 0.85s cubic-bezier(0.77,0,0.175,1);cursor:none}
-.panel:hover{flex:1.65}
-.gateway:has(.panel-bbos:hover) .panel-moon{flex:0.55}
-.gateway:has(.panel-moon:hover) .panel-bbos{flex:0.55}
-
-.panel-bbos{background:#060d1a}
-.panel-bbos::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 35% 50%,rgba(20,40,85,0.95) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 75% 15%,rgba(200,150,42,0.06) 0%,transparent 60%)}
-
-.bbos-grid{position:absolute;inset:0;overflow:hidden;opacity:0.22}
-.bbos-grid::before{content:'';position:absolute;inset:-50%;background-image:linear-gradient(rgba(200,150,42,1) 1px,transparent 1px),linear-gradient(90deg,rgba(200,150,42,1) 1px,transparent 1px);background-size:55px 55px;transform:perspective(500px) rotateX(28deg) rotateZ(-4deg);animation:gridDrift 25s linear infinite}
-@keyframes gridDrift{from{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(0)}to{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(55px)}}
-
-/* Moontrance palette: --sage:#7A8C6E  --earth:#6B4F3A  --gold:#C4A35A  --dark-green:#3A4A32  --cream:#F5F0E8 */
-.panel-moon{background:#1e2a18}
-.panel-moon::before{content:'';position:absolute;inset:0;background:
-  /* warm gold moon-glow at centre */
-  radial-gradient(ellipse 55% 50% at 50% 50%, rgba(196,163,90,0.13) 0%, transparent 55%),
-  /* sage-green mid atmosphere */
-  radial-gradient(ellipse 85% 75% at 48% 48%, rgba(122,140,110,0.18) 0%, transparent 65%),
-  /* earth-brown lower warmth */
-  radial-gradient(ellipse 60% 45% at 30% 75%, rgba(107,79,58,0.12) 0%, transparent 55%),
-  /* deep forest-green edge */
-  radial-gradient(ellipse 140% 120% at 50% 52%, rgba(58,74,50,0.55) 0%, transparent 88%)}
-
-.stars{position:absolute;inset:0;overflow:hidden}
-.star{position:absolute;background:rgba(245,240,232,0.9);border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
-@keyframes twinkle{0%,100%{opacity:var(--mn,0.1);transform:scale(1)}50%{opacity:var(--mx,0.5);transform:scale(1.4)}}
-
-.moon-orb{position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(196,163,90,0.14);top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04);animation:moonPulse 9s ease-in-out infinite}
-.moon-orb::before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(196,163,90,0.08)}
-@keyframes moonPulse{0%,100%{box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04)}50%{box-shadow:0 0 110px rgba(196,163,90,0.12),0 0 220px rgba(58,74,50,0.16),inset 0 0 80px rgba(196,163,90,0.07)}}
-
-.divider{position:absolute;top:0;bottom:0;left:50%;width:1px;z-index:10;background:linear-gradient(to bottom,transparent,rgba(200,150,42,0.5) 20%,rgba(200,150,42,0.65) 50%,rgba(196,133,58,0.5) 80%,transparent);transform:translateX(-50%);pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
-.gateway:has(.panel-bbos:hover) .divider{left:62%}
-.gateway:has(.panel-moon:hover) .divider{left:38%}
-
-.ogden-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;text-align:center;pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
-.gateway:has(.panel-bbos:hover) .ogden-mark{left:62%}
-.gateway:has(.panel-moon:hover) .ogden-mark{left:38%}
-
-.ogden-ring{width:70px;height:70px;border-radius:50%;background:#080810;border:1px solid rgba(200,150,42,0.3);display:flex;align-items:center;justify-content:center;position:relative}
-.ogden-ring::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(200,150,42,0.1)}
-.ogden-letter{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;color:#C4973A;letter-spacing:0.05em}
-
-.panel-content{position:relative;z-index:5;text-align:center;padding:48px;pointer-events:none}
-.panel:hover .panel-content{pointer-events:auto}
-
-.bbos-eyebrow,.moon-eyebrow{font-size:0.875rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:18px;opacity:0;transform:translateY(10px);transition:opacity 0.5s 0.1s,transform 0.5s 0.1s}
-.bbos-eyebrow{font-family:'DM Sans',sans-serif;color:rgba(200,150,42,0.7)}
-.moon-eyebrow{font-family:'DM Sans',sans-serif;font-weight:500;color:rgba(163,180,143,0.9);font-style:normal;letter-spacing:0.22em}
-.panel-bbos:hover .bbos-eyebrow,.panel-moon:hover .moon-eyebrow{opacity:1;transform:none}
-
-.bbos-title{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#fff;line-height:1.2;margin-bottom:14px}
-.bbos-title em{font-style:italic;color:rgba(200,150,42,0.9)}
-.moon-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#f0ebe0;line-height:1.2;margin-bottom:14px;letter-spacing:0.02em}
-.moon-title em{font-style:italic;color:rgba(196,163,90,0.9)}
-
-.panel-tagline{max-width:300px;margin:0 auto 36px;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.2s,transform 0.5s 0.2s;line-height:1.75}
-.panel:hover .panel-tagline{opacity:1;transform:none}
-.bbos-tagline{font-size:1rem;color:#8A8A8A}
-.moon-tagline{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;font-style:normal;color:rgba(200,220,190,0.82);line-height:1.7}
-
-.panel-cta{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:3px;font-size:0.875rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;cursor:none;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.3s,transform 0.5s 0.3s,background 0.2s,color 0.2s,border-color 0.2s}
-.panel:hover .panel-cta{opacity:1;transform:none}
-.cta-bbos{background:rgba(200,150,42,0.1);color:#C4973A;border:1px solid rgba(200,150,42,0.28)}
-.cta-bbos:hover{background:rgba(200,150,42,0.2);color:#c8962a;border-color:#B8891A}
-.cta-moon{background:rgba(122,140,110,0.1);color:rgba(196,163,90,0.85);border:1px solid rgba(122,140,110,0.28)}
-.cta-moon:hover{background:rgba(122,140,110,0.2);color:#c4a35a;border-color:rgba(196,163,90,0.5)}
-
-.panel-idle-label{font-family:'Cinzel',serif;font-size:0.875rem;letter-spacing:0.22em;text-transform:uppercase;position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;transition:opacity 0.4s}
-.panel-bbos .panel-idle-label{color:#A07820}
-.panel-moon .panel-idle-label{color:#6A8A60}
-.panel:hover .panel-idle-label{opacity:0}
-
-.top-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  padding: 0 48px;
-  height: 64px;
-  display: flex; align-items: center; justify-content: space-between;
-  z-index: 100;
-  background: rgba(8,8,16,0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(200,150,42,0.12);
-  pointer-events: auto;
-}
-.nav-brand {
-  font-family: 'Cinzel', serif;
-  font-size: 0.875rem; font-weight: 600;
-  color: rgba(200,150,42,0.55);
-  letter-spacing: 0.3em; text-transform: uppercase;
-  text-decoration: none;
-  pointer-events: auto;
-  transition: color 0.2s;
-  flex: 0 0 auto;
-}
-.nav-brand:hover { color: rgba(200,150,42,0.9); }
-.nav-side {
-  display: flex; align-items: center; gap: 2rem;
-  list-style: none;
-  flex: 1;
-}
-.nav-side.nav-left { justify-content: flex-start; margin-right: 2rem; }
-.nav-side.nav-right { justify-content: flex-end; margin-left: 2rem; }
-.nav-side a {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  text-decoration: none;
-  pointer-events: auto; cursor: none;
-  position: relative;
-  transition: color 0.2s;
-}
-.nav-side.nav-left a  { color: #B8891A; }
-.nav-side.nav-right a { color: #7A9A70; }
-.nav-side a::after {
-  content: '';
-  position: absolute; bottom: -3px; left: 0; right: 0;
-  height: 1px;
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.25s ease;
-}
-.nav-side.nav-left  a::after { background: rgba(200,150,42,0.7); }
-.nav-side.nav-right a::after { background: rgba(163,180,143,0.7); }
-.nav-side a:hover { color: rgba(255,255,255,0.75); }
-.nav-side a:hover::after { transform: scaleX(1); }
-/* Active state */
-.nav-side a.nav-active { color: rgba(255,255,255,0.85); }
-.nav-side a.nav-active::after { transform: scaleX(1); }
-
-@media(max-width:768px){
-  html,body{overflow:auto}
-  .gateway{flex-direction:column;height:auto;min-height:100vh}
-  .panel{flex:none!important;min-height:55vh}
-  .panel-content{padding:40px 28px}
-  .bbos-eyebrow,.moon-eyebrow,.panel-tagline,.panel-cta{opacity:1!important;transform:none!important}
-  .ogden-mark{display:none}
-  .divider{display:none}
-  body{cursor:auto}
-  .cursor,.cursor-ring{display:none}
-  .top-nav { padding: 0 20px; height: 56px; }
-  /* Hide nav links on mobile — logo + hamburger only */
-  .nav-side { display: none; }
-  .nav-brand { font-size: 0.875rem; }
-  .panel-bbos { padding-top: 56px; }
-  /* Hide idle labels on mobile — CTA buttons are already visible */
-  .panel-idle-label { display: none; }
-}
-
-  /* ── PAGE TRANSITION VEIL ── */
+  /* ── PAGE TRANSITION OVERLAY ── */
   #page-veil {
     position: fixed; inset: 0; z-index: 9999;
-    background: #080810;
+    background: #1a1610;
     opacity: 1;
     pointer-events: none;
-    transition: none;
+    transition: opacity 0.55s cubic-bezier(0.77, 0, 0.175, 1);
   }
-  #page-veil.fade-active {
-    transition: opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  #page-veil.cleared { opacity: 0; }
+
+
+  /* ── ACTIVE NAV INDICATOR ── */
+  .nav-links a {
+    position: relative;
   }
-  #page-veil.cleared { opacity: 0; pointer-events: none; }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold-light, #D9BC7C);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a.nav-active::after {
+    transform: scaleX(1);
+  }
+  .nav-links a.nav-active {
+    color: var(--gold-light, #D9BC7C) !important;
+  }
+  nav.scrolled .nav-links a.nav-active {
+    color: var(--clay, #8b5e3c) !important;
+  }
+  nav.scrolled .nav-links a.nav-active::after {
+    background: var(--clay, #8b5e3c);
+  }
 
 
   /* ── PREFERS REDUCED MOTION ── */
@@ -198,6 +1002,72 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
       transition: none !important;
     }
     #page-veil { display: none !important; }
+  }
+
+
+  /* ── SITE FOOTER ── */
+  .site-footer {
+    background: #111008;
+    border-top: 1px solid rgba(196,163,90,0.12);
+    padding: 4rem 4rem 2.5rem;
+    font-family: inherit;
+  }
+  .hub-footer { background: #060d1a; border-top-color: rgba(200,150,42,0.12); }
+  .site-footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 3rem;
+  }
+  .site-footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 500;
+    color: #C4A35A; text-decoration: none;
+    display: block; margin-bottom: 0.9rem;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .site-footer-logo:hover { color: #D9BC7C; }
+  .hub-footer .site-footer-logo { font-family: 'Cinzel', serif; letter-spacing: 0.2em; }
+  .site-footer-tagline {
+    font-size: 1rem; font-weight: 400; line-height: 1.75;
+    color: #7A7060; max-width: 280px;
+  }
+  .site-footer-col-title {
+    font-size: 0.875rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #C4A35A; margin-bottom: 1rem;
+  }
+  .hub-footer .site-footer-col-title { color: #C4973A; }
+  .site-footer-links {
+    list-style: none; display: flex;
+    flex-direction: column; gap: 0.6rem;
+  }
+  .site-footer-links a {
+    font-size: 1rem; font-weight: 400;
+    color: #7A7060; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .site-footer-links a:hover { color: #C4A35A; }
+  .hub-footer .site-footer-links a:hover { color: #C4973A; }
+  .site-footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+  .site-footer-copyright {
+    font-size: 0.875rem; color: #5A5040;
+  }
+  .site-footer-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.875rem; font-style: italic;
+    color: #6A5A3A;
+  }
+  @media (max-width: 768px) {
+    .site-footer { padding: 3rem 1.5rem 2rem; }
+    .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .site-footer-brand { grid-column: 1 / -1; }
   }
 
 
@@ -258,141 +1128,324 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   }
   .skip-link:focus { top: 0; }
 
-
-  /* ── HUB FOOTER ── */
-  .hub-footer {
-    background: #040a14;
-    border-top: 1px solid rgba(200,150,42,0.1);
-    padding: 2.5rem 3rem;
-    text-align: center;
-  }
-  .hub-footer-inner {
-    max-width: 900px; margin: 0 auto;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 1rem;
-  }
-  .hub-footer-logo {
-    font-family: 'Cinzel', serif;
-    font-size: 1rem; font-weight: 600;
-    letter-spacing: 0.28em; text-transform: uppercase;
-    color: rgba(200,150,42,0.7); text-decoration: none;
-    transition: color 0.2s;
-  }
-  .hub-footer-logo:hover { color: rgba(200,150,42,0.95); }
-  .hub-footer-tagline {
-    font-size: 0.875rem; font-weight: 300;
-    color: #3a4a5c; letter-spacing: 0.04em;
-  }
-  .hub-footer-nav {
-    display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 0.3rem 1.8rem;
-  }
-  .hub-footer-nav a {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: #3a4a5c; text-decoration: none;
-    transition: color 0.2s;
-  }
-  .hub-footer-nav a:hover { color: rgba(200,150,42,0.8); }
-  .hub-footer-copy {
-    font-size: 0.75rem; color: #2a3444;
-    letter-spacing: 0.05em;
-  }
 </style>
-
-<link rel="stylesheet" href="/assets/css/site.css">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://hub.ogden.ag">
-<meta property="og:title" content="OGDEN — Build Business On Soul">
-<meta property="og:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
-<meta property="og:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
+<meta property="og:url" content="https://hub.ogden.ag/moontrance/">
+<meta property="og:title" content="Moontrance Collective — Agritourism Land in Ontario">
+<meta property="og:description" content="A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors.">
+<meta property="og:image" content="https://hub.ogden.ag/assets/og/moontrance-index.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="OGDEN — Build Business On Soul">
-<meta name="twitter:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
-<meta name="twitter:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
-<meta name="theme-color" content="#080810">
+<meta name="twitter:title" content="Moontrance Collective — Agritourism Land in Ontario">
+<meta name="twitter:description" content="A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors.">
+<meta name="twitter:image" content="https://hub.ogden.ag/assets/og/moontrance-index.jpg">
+<meta name="theme-color" content="#1e2a18">
+<link rel="canonical" href="https://hub.ogden.ag/moontrance/">
 </head>
 <body>
 <div id="page-veil"></div>
 
-<nav class="top-nav" role="navigation" aria-label="Main navigation">
-  <ul class="nav-side nav-left">
-    <li><a href="bbos/index.html">What is BBOS</a></li>
-    <li><a href="bbos/index.html">Systems</a></li>
-  </ul>
-  <a href="index.html" class="nav-brand">OGDEN</a>
-  <ul class="nav-side nav-right">
-    <li><a href="moontrance/index.html">Moontrance</a></li>
-    <li><a href="moontrance/acquisition/index.html">Find Land</a></li>
-  </ul>
+
+  <!-- NAVIGATION -->
+  <nav role="navigation" aria-label="Main navigation">
+    <a class="nav-logo" href="../index.html">OGDEN</a>
+    <ul class="nav-links">
+      <li><a href="#portals">Our Pages</a></li>
+      <li><a href="collective/index.html">The Collective</a></li>
+      <li><a href="economics/index.html">Offer Economics</a></li>
+      <li><a href="acquisition/index.html">Acquisition Hub</a></li>
+    </ul>
+    <a class="nav-cta" href="acquisition/index.html">Start Your Search →</a>
+    <button class="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
-
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-
-
-<main id="main-content" aria-label="Main content">
-<div class="gateway">
-
-  <div class="panel panel-bbos" data-href="bbos/index.html">
-    <div class="bbos-grid"></div>
-    <div class="panel-content">
-      <div class="bbos-eyebrow">Strategy · Systems · Soul</div>
-      <h2 class="bbos-title">Build Business<br><em>On Soul</em></h2>
-      <p class="panel-tagline bbos-tagline">A comprehensive operating system for the soul-centered entrepreneur. Precision without the cage.</p>
-      <a href="bbos/index.html" class="panel-cta cta-bbos">Enter BBOS →</a>
-    </div>
-    <div class="panel-idle-label">BBOS</div>
-  </div>
-
-  <div class="divider"></div>
-  <div class="ogden-mark">
-    <div class="ogden-ring"><span class="ogden-letter">O</span></div>
-  </div>
-
-  <div class="panel panel-moon" data-href="moontrance/index.html">
-    <div class="stars" id="stars"></div>
-    <div class="moon-orb"></div>
-    <div class="panel-content">
-      <div class="moon-eyebrow">Agritourism · Land · Ontario</div>
-      <h2 class="moon-title">The Moontrance<br><em>Collective</em></h2>
-      <p class="panel-tagline moon-tagline">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors.</p>
-      <a href="moontrance/index.html" class="panel-cta cta-moon">Enter the Collective →</a>
-    </div>
-    <div class="panel-idle-label">Moontrance</div>
-  </div>
-
+<div class="nav-drawer">
+  <button class="drawer-close-btn" aria-label="Close menu">&#10005;</button>
+    <a href="#portals">Our Pages</a>
+    <a href="collective/index.html">The Collective</a>
+    <a href="economics/index.html">Offer Economics</a>
+    <a href="acquisition/index.html">Acquisition Hub</a>
+    <a href="acquisition/index.html" class="drawer-cta">Start Your Search →</a>
 </div>
 
+
+  <!-- HERO -->
+  <main id="main-content" aria-label="Main content">
+  <section class="hero">
+    <div class="hero-top-rule"></div>
+
+    <!-- Star field canvas -->
+    <canvas class="hero-stars" id="heroStars"></canvas>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Agritourism &nbsp;·&nbsp; Land &nbsp;·&nbsp; Ontario</div>
+      <h1 class="hero-title">
+        <span class="title-line1">The Moontrance</span>
+        <span class="title-line2">Collective</span>
+      </h1>
+      <p class="hero-subtitle">
+        Find it. Evaluate it. Activate it.<br>
+        Tools, frameworks, and community for the rural entrepreneur building something that lasts.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#portals">
+          ↓ &nbsp; Enter the Collective
+        </a>
+        <a class="btn-ghost" href="acquisition/index.html">
+          Start your land search →
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span class="scroll-line"></span>
+      Scroll to explore
+    </div>
+  </section>
+
+  <script>
+    // Draw scattered star dots onto the hero canvas
+    (function() {
+      const canvas = document.getElementById('heroStars');
+      if (!canvas) return;
+      function draw() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const stars = [
+          // [x%, y%, radius, opacity]
+          [8,12,1.2,0.45],[14,6,0.8,0.3],[22,18,1,0.35],[31,8,1.4,0.5],
+          [38,14,0.7,0.25],[47,4,1.1,0.4],[55,10,0.9,0.3],[63,7,1.3,0.45],
+          [71,15,0.8,0.3],[79,5,1.5,0.55],[86,11,1,0.35],[93,8,0.7,0.25],
+          [4,28,0.9,0.2],[18,35,1.2,0.4],[27,22,0.7,0.2],[42,30,1,0.3],
+          [58,25,1.4,0.45],[67,32,0.8,0.25],[77,27,1.1,0.35],[91,23,1,0.3],
+          [10,45,0.7,0.18],[35,42,1,0.28],[52,48,0.8,0.2],[74,44,1.2,0.32],
+          [88,40,0.9,0.22],[3,60,0.6,0.15],[25,58,1.1,0.3],[61,62,0.7,0.18],
+          [82,55,1,0.25],[96,65,0.8,0.2]
+        ];
+        stars.forEach(([xp, yp, r, a]) => {
+          const x = (xp / 100) * canvas.width;
+          const y = (yp / 100) * canvas.height;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(196,163,90,${a})`;
+          ctx.fill();
+        });
+      }
+      draw();
+      window.addEventListener('resize', draw);
+    })();
+  </script>
+
+  <!-- MISSION STRIP -->
+  <section class="mission-strip">
+    <div>
+      <div class="section-label">Our Purpose</div>
+      <h2 class="mission-heading">
+        Not just property.<br><em>Possibility</em><br>with a plan.
+      </h2>
+    </div>
+    <div class="mission-body">
+      <p>Moontrance Collective exists at the intersection of regenerative land stewardship, experiential hospitality, and rural economic resilience. We believe that the right parcel of land — found thoughtfully, evaluated rigorously, and activated creatively — can sustain a livelihood and a legacy.</p>
+      <p>This website is our working studio: a place to think out loud about land, economics, and the kind of business that grows from both roots and vision. Each section is a different lens on the same question — how do we build something real, here, on this land?</p>
+    </div>
+  </section>
+
+  <!-- THREE PORTALS -->
+  <section class="portals" id="portals">
+    <div class="portals-header">
+      <div class="section-label" style="justify-content: center; margin-bottom: 1rem;">Three Ways In</div>
+      <h2 class="portals-title">Choose your entry point</h2>
+      <p class="portals-subtitle">Each page is a self-contained resource. Together, they form a complete picture of what it takes to move from vision to viable agritourism business.</p>
+    </div>
+
+    <div class="portal-grid">
+      <!-- Card 1: Moontrance Collective -->
+      <a class="portal-card portal-card-1" href="collective/index.html">
+        <div class="portal-card-inner">
+          <div class="portal-bg"></div>
+          <div class="portal-pattern"></div>
+          <div class="portal-overlay"></div>
+          <div class="portal-icon">🌙</div>
+          <div class="portal-tag">Brand & Vision</div>
+          <div class="portal-name">Moontrance<br>Collective</div>
+          <p class="portal-desc">The soul of the project. Who we are, what we believe, and what kind of land-based business we're building — grounded in hospitality, ecology, and economic realism.</p>
+          <span class="portal-link">Explore the Vision <span class="portal-link-arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- Card 2: Offer Economics -->
+      <a class="portal-card portal-card-2" href="economics/index.html">
+        <div class="portal-card-inner">
+          <div class="portal-bg"></div>
+          <div class="portal-pattern"></div>
+          <div class="portal-overlay"></div>
+          <div class="portal-icon">📊</div>
+          <div class="portal-tag">Revenue Modelling</div>
+          <div class="portal-name">Offer<br>Economics</div>
+          <p class="portal-desc">The numbers behind the dream. Explore three Phase 1 offer stacks — pricing architecture, guest capacity, and real revenue ranges — so every decision is grounded in math.</p>
+          <span class="portal-link">View the Models <span class="portal-link-arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- Card 3: Acquisition Hub -->
+      <a class="portal-card portal-card-3" href="acquisition/index.html">
+        <div class="portal-card-inner">
+          <div class="portal-bg"></div>
+          <div class="portal-pattern"></div>
+          <div class="portal-overlay"></div>
+          <div class="portal-icon">🗺</div>
+          <div class="portal-tag">Land Strategy</div>
+          <div class="portal-name">Acquisition<br>Hub</div>
+          <p class="portal-desc">The operational engine. Corridors to target, parcel criteria, red flags to avoid, and the full six-channel land search strategy — everything you need to find the right property.</p>
+          <span class="portal-link">Start Your Search <span class="portal-link-arrow">→</span></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <div>
+      <div class="section-label">How We Think</div>
+      <h2 class="philosophy-heading">
+        Land is not a<br>backdrop. It's the<br><em>whole premise.</em>
+      </h2>
+      <div class="philosophy-body">
+        <p>Too many agritourism ventures treat the land as scenery for Instagram and the business as an afterthought. We think the opposite way: start with the land's actual capacity, build offers that honour what it can support, and let the experience grow from what's genuinely there.</p>
+        <p>That means being honest about acreage, water, access, zoning, and soil before we fall in love with a price. It means running the numbers before we book the architect. And it means choosing corridors where the municipality is a partner, not an obstacle.</p>
+      </div>
+    </div>
+    <div class="philosophy-principles">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <div class="principle-content">
+          <div class="principle-title">Land First, Always</div>
+          <div class="principle-body">Every offer, every experience, every revenue projection starts from what the parcel can physically and legally support. Full stop.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <div class="principle-content">
+          <div class="principle-title">Economics Before Aesthetics</div>
+          <div class="principle-body">Beautiful properties that can't sustain a livelihood are a trap. We model the math first and let the design follow.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <div class="principle-content">
+          <div class="principle-title">Phase 1 Over Grand Plans</div>
+          <div class="principle-body">Start with three strong, monetizable offers you can activate in year one. Build Phase 2 from what you learn, not from what you hoped.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <div class="principle-content">
+          <div class="principle-title">Proximity Drives Viability</div>
+          <div class="principle-body">Within 90 minutes of Toronto is the sweet spot. Far enough for escape, close enough for consistent weekend traffic from a population of six million.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS STRIP -->
+  <section class="process">
+    <div class="process-header">
+      <div class="section-label" style="justify-content: center;">The Sequence</div>
+      <h2 class="process-title">From search to open day</h2>
+    </div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-title">Find the Land</div>
+        <div class="step-body">Six-channel search strategy across MLS, off-market, direct outreach, and rural networks to surface the right parcels.</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-title">Evaluate the Parcel</div>
+        <div class="step-body">Parcel reality check, seven key characteristics, municipal pre-check, and site masterplan framework before any offer goes in.</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-title">Model the Economics</div>
+        <div class="step-body">Three-offer stacks with pricing architecture, capacity tables, and realistic revenue ranges across conservative to optimistic scenarios.</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">4</div>
+        <div class="step-title">Activate Phase 1</div>
+        <div class="step-body">Launch with what the land can support now. Gather real guest data and refine before expanding to Phase 2 and beyond.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="final-cta-label">Ready to Begin</div>
+    <h2 class="final-cta-heading">
+      The right land is out there.<br>Let's find it <em>together.</em>
+    </h2>
+    <p class="final-cta-sub">
+      Whether you're at the early vision stage or actively making offers, every tool in this ecosystem is designed to help you move with clarity and confidence.
+    </p>
+    <div class="final-cta-buttons">
+      <a class="btn-cream" href="acquisition/index.html">Open the Acquisition Hub →</a>
+      <a class="btn-outline-cream" href="economics/index.html">Explore Offer Economics</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo" aria-label="Site footer">
+    <div class="footer-logo">Moon<span>trance</span> Collective</div>
+    <ul class="footer-links">
+      <li><a href="collective/index.html">The Collective</a></li>
+      <li><a href="economics/index.html">Offer Economics</a></li>
+      <li><a href="acquisition/index.html">Acquisition Hub</a></li>
+    </ul>
+    <div class="footer-copy">Ontario Agritourism · Halton & Beyond</div>
+  </main>
+  </footer>
+
 <script>
-const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
-(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
-document.querySelectorAll('.panel,a').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='58px';ring.style.height='58px';ring.style.borderColor='rgba(200,150,42,0.45)'});
-  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(255,255,255,0.4)'});
-});
-const sc=document.getElementById('stars');
-for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
+    // ── HAMBURGER MENU ──
+  (function() {
+    const btn    = document.querySelector('.nav-hamburger');
+    const drawer = document.querySelector('.nav-drawer');
+    if (!btn || !drawer) return;
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      btn.classList.add('open');
+      btn.setAttribute('aria-label', 'Close menu');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-label', 'Open menu');
+      document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', () => {
+      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+
+    // Close on any link click
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', closeDrawer);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    });
+
+    // Close on backdrop click (outside the drawer content)
+    drawer.addEventListener('click', (e) => {
+      if (e.target === drawer) closeDrawer();
+    });
+  })();
 </script>
-
-<footer class="hub-footer" role="contentinfo" aria-label="Site footer">
-  <div class="hub-footer-inner">
-    <a href="index.html" class="hub-footer-logo">OGDEN</a>
-    <p class="hub-footer-tagline">Build Business On Soul · The Moontrance Collective</p>
-    <nav class="hub-footer-nav" aria-label="Footer navigation">
-      <a href="bbos/index.html">BBOS</a>
-      <a href="moontrance/index.html">Moontrance</a>
-      <a href="moontrance/collective/index.html">The Collective</a>
-      <a href="moontrance/acquisition/index.html">Acquisition Hub</a>
-    </nav>
-    <p class="hub-footer-copy">© 2026 OGDEN. All rights reserved.</p>
-  </div>
-</footer>
-
 
 
 <script>
@@ -401,11 +1454,9 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
     var veil = document.getElementById('page-veil');
     if (!veil) return;
 
-        function clearVeil() {
-      veil.classList.remove('cleared');
-      veil.classList.remove('fade-active');
-      // Force browser repaint so opacity:1 is committed before transition starts
-      void veil.offsetHeight;
+    function clearVeil() {
+      veil.classList.remove('cleared', 'fade-active');
+      void veil.offsetHeight; // force repaint so opacity:1 is committed
       veil.classList.add('fade-active');
       setTimeout(function () { veil.classList.add('cleared'); }, 30);
     }
@@ -441,27 +1492,33 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
   })();
 </script>
 <script>
-  // ── HUB NAV ACTIVE STATE ON PANEL HOVER ──
+  // ── ACTIVE NAV SECTION TRACKING ──
   (function () {
-    var bbosLinks  = document.querySelectorAll('.nav-left a');
-    var moonLinks  = document.querySelectorAll('.nav-right a');
-    var bboPanel   = document.querySelector('.panel-bbos');
-    var moonPanel  = document.querySelector('.panel-moon');
+    var sectionMap = {"portals": "#portals"};
+    var navLinks = document.querySelectorAll('.nav-links a');
 
-    function setActive(links) {
-      bbosLinks.forEach(function(a) { a.classList.remove('nav-active'); });
-      moonLinks.forEach(function(a) { a.classList.remove('nav-active'); });
-      if (links) links.forEach(function(a) { a.classList.add('nav-active'); });
+    function setActive(href) {
+      navLinks.forEach(function(a) {
+        a.classList.remove('nav-active');
+        if (a.getAttribute('href') === href) {
+          a.classList.add('nav-active');
+        }
+      });
     }
 
-    if (bboPanel) {
-      bboPanel.addEventListener('mouseenter', function() { setActive(bbosLinks); });
-      bboPanel.addEventListener('mouseleave', function() { setActive(null); });
-    }
-    if (moonPanel) {
-      moonPanel.addEventListener('mouseenter', function() { setActive(moonLinks); });
-      moonPanel.addEventListener('mouseleave', function() { setActive(null); });
-    }
+    var sectionObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var href = sectionMap[entry.target.id];
+          if (href) setActive(href);
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+    Object.keys(sectionMap).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
   })();
 
 </script>
