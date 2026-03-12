@@ -1,0 +1,129 @@
+
+html { scroll-behavior: smooth; }
+
+body {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  will-change: opacity, transform;
+}
+
+body.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+body.page-leave {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.site-nav-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease, padding 0.3s ease;
+}
+
+.site-nav-shell.scrolled {
+  background: rgba(250, 246, 240, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.site-nav-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.nav-logo {
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  text-decoration: none;
+  opacity: 0.72;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 4px;
+  color: inherit;
+}
+
+.nav-link:hover { opacity: 1; }
+
+.nav-link.active {
+  opacity: 1;
+  border-bottom-color: currentColor;
+  font-weight: 600;
+}
+
+.site-footer {
+  margin-top: 5rem;
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.5);
+}
+
+.site-footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.footer-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.footer-copy { opacity: 0.7; }
+
+.footer-heading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.footer-links-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.footer-links-group a {
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.footer-links-group a:hover { opacity: 1; }
+
+@media (max-width: 900px) {
+  .site-nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-links { gap: 1rem; }
+}

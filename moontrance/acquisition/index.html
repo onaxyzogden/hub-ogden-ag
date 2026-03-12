@@ -856,9 +856,90 @@
     .kpi-grid { grid-template-columns: 1fr 1fr 1fr; }
     .econ-totals { grid-template-columns: 1fr; }
   }
+
+  /* ── HAMBURGER BUTTON ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none;
+    cursor: pointer; padding: 4px;
+    z-index: 200; position: relative;
+  }
+  .nav-hamburger span {
+    display: block; width: 100%; height: 1.5px;
+    background: rgba(245,240,232,0.85); border-radius: 2px;
+    transition: transform 0.35s cubic-bezier(0.77,0,0.175,1), opacity 0.25s, background 0.3s;
+    transform-origin: center;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--soil, #2d2218); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ── MOBILE DRAWER ── */
+  .nav-drawer {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(30,26,20,0.97);
+    backdrop-filter: blur(18px);
+    z-index: 150;
+    padding: 5rem 2.5rem 3rem;
+    flex-direction: column; gap: 0;
+    transform: translateY(-100%);
+    transition: transform 0.45s cubic-bezier(0.77,0,0.175,1);
+    border-bottom: 1px solid rgba(196,163,90,0.15);
+  }
+  .nav-drawer.open { transform: translateY(0); }
+  .nav-drawer a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 400;
+    color: rgba(245,240,232,0.88);
+    text-decoration: none; letter-spacing: 0.04em;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(196,163,90,0.1);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+  .nav-drawer a:last-child { border-bottom: none; }
+  .nav-drawer a:hover { color: rgba(196,163,90,0.9); padding-left: 0.5rem; }
+  .nav-drawer .drawer-cta {
+    margin-top: 1.5rem;
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(196,163,90,0.85) !important;
+    border: 1px solid rgba(196,163,90,0.3) !important;
+    border-radius: 100px;
+    padding: 0.75rem 1.8rem;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem !important; }
+    nav.scrolled { padding: 0.7rem 1.5rem !important; }
+    .nav-links { display: none !important; }
+    .nav-cta { display: none !important; }
+    .nav-hamburger { display: flex; }
+    .nav-drawer { display: flex; }
+  }
+
+
+  /* ── PAGE TRANSITION OVERLAY ── */
+  #page-veil {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #1a1610;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  #page-veil.cleared { opacity: 0; }
+
 </style>
 </head>
 <body>
+<div id="page-veil"></div>
+
 
 <!-- NAV -->
 <nav id="nav">
@@ -871,7 +952,19 @@
     <li><a href="#download">Download</a></li>
   </ul>
   <a href="../index.html" class="nav-cta">← Home</a>
+  <button class="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-drawer">
+    <a href="#toolkit">The Toolkit</a>
+    <a href="#workflow">How It Works</a>
+    <a href="#economics">Offer Economics</a>
+    <a href="#scoring">Scoring</a>
+    <a href="#download">Download</a>
+    <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
+</div>
+
 
 <!-- HERO -->
 <section class="hero">
@@ -1390,6 +1483,26 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script>
+  // ── HAMBURGER MENU ──
+  (function() {
+    const btn    = document.querySelector('.nav-hamburger');
+    const drawer = document.querySelector('.nav-drawer');
+    if (!btn || !drawer) return;
+    btn.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        btn.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  })();
 </script>
 </body>
 </html>

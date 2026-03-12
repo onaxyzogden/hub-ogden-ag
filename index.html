@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OGDEN — Build Business On Soul · The Moontrance Collective</title>
 <meta name="description" content="OGDEN is a digital entrepreneur bridging strategic precision with soul-led execution. Home of BBOS and The Moontrance Collective.">
-<link rel="canonical" href="https://ogden.ag">
+<link rel="canonical" href="https://hub.ogden.ag">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
@@ -18,8 +18,8 @@ body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
 
 body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:0.5}
 
-.gateway{display:flex;height:100vh;width:100vw;position:relative;overflow:hidden;animation:reveal 1s ease forwards}
-@keyframes reveal{from{opacity:0}to{opacity:1}}
+.gateway{display:flex;height:100vh;width:100vw;position:relative;overflow:hidden;opacity:1}
+
 
 .panel{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;transition:flex 0.85s cubic-bezier(0.77,0,0.175,1);cursor:none}
 .panel:hover{flex:1.65}
@@ -112,21 +112,34 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   .cursor,.cursor-ring{display:none}
   .top-nav{padding:20px 24px}
 }
+
+  /* ── PAGE TRANSITION VEIL ── */
+  #page-veil {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #080810;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  #page-veil.cleared { opacity: 0; }
+
 </style>
+
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
+<div id="page-veil"></div>
+
+<div id="site-header"></div>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<nav class="top-nav">
-  <div class="nav-logo">Ogden</div>
-  <a href="about.html" class="nav-about">About</a>
-</nav>
+
 
 <div class="gateway">
 
-  <div class="panel panel-bbos" onclick="window.location='bbos/index.html'">
+  <div class="panel panel-bbos" data-href="bbos/index.html">
     <div class="bbos-grid"></div>
     <div class="panel-content">
       <div class="bbos-eyebrow">Strategy · Systems · Soul</div>
@@ -142,7 +155,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
     <div class="ogden-ring"><span class="ogden-letter">O</span></div>
   </div>
 
-  <div class="panel panel-moon" onclick="window.location='moontrance/index.html'">
+  <div class="panel panel-moon" data-href="moontrance/index.html">
     <div class="stars" id="stars"></div>
     <div class="moon-orb"></div>
     <div class="panel-content">
@@ -168,5 +181,46 @@ document.querySelectorAll('.panel,a').forEach(el=>{
 const sc=document.getElementById('stars');
 for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
 </script>
+
+<div id="site-footer"></div>
+<script src="/assets/js/includes.js"></script>
+<script src="/assets/js/site.js"></script>
+
+<script>
+  // ── PAGE TRANSITION VEIL ──
+  (function () {
+    const veil = document.getElementById('page-veil');
+
+    // Fade IN on load
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { veil.classList.add('cleared'); });
+    });
+
+    function navigateTo(href) {
+      veil.classList.remove('cleared');
+      setTimeout(() => { window.location.href = href; }, 570);
+    }
+
+    // Intercept panel clicks (data-href)
+    document.querySelectorAll('[data-href]').forEach(el => {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        navigateTo(this.dataset.href);
+      });
+    });
+
+    // Intercept all internal <a> clicks
+    document.addEventListener('click', function (e) {
+      const anchor = e.target.closest('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href');
+      if (!href) return;
+      if (href.startsWith('#') || href.startsWith('http') || href.startsWith('//') || anchor.target === '_blank') return;
+      e.preventDefault();
+      navigateTo(href);
+    });
+  })();
+</script>
+
 </body>
 </html>
