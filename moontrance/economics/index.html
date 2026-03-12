@@ -763,5 +763,45 @@ renderDetail(0);
     });
   })();
 </script>
+
+
+<script>
+  // ── PAGE TRANSITION VEIL ──
+  (function () {
+    var veil = document.getElementById('page-veil');
+    if (!veil) return;
+
+    // Step 1: enable transition, then immediately clear opacity
+    // Using setTimeout(0) guarantees the browser has painted opacity:1 first
+    setTimeout(function () {
+      veil.classList.add('fade-active');
+      setTimeout(function () {
+        veil.classList.add('cleared');
+      }, 20);
+    }, 0);
+
+    function navigateTo(href) {
+      veil.classList.remove('cleared');
+      setTimeout(function () { window.location.href = href; }, 620);
+    }
+
+    document.addEventListener('click', function (e) {
+      var anchor = e.target.closest('a');
+      if (!anchor) return;
+      var href = anchor.getAttribute('href');
+      if (!href) return;
+      if (href.startsWith('#') || href.startsWith('http') || href.startsWith('//') || anchor.target === '_blank') return;
+      e.preventDefault();
+      navigateTo(href);
+    });
+
+    document.querySelectorAll('[data-href]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        navigateTo(el.dataset.href);
+      });
+    });
+  })();
+</script>
 </body>
 </html>

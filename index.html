@@ -119,9 +119,12 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
     background: #080810;
     opacity: 1;
     pointer-events: none;
-    transition: opacity 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: none;
   }
-  #page-veil.cleared { opacity: 0; }
+  #page-veil.fade-active {
+    transition: opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  #page-veil.cleared { opacity: 0; pointer-events: none; }
 
 </style>
 
@@ -186,41 +189,45 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
 <script src="/assets/js/includes.js"></script>
 <script src="/assets/js/site.js"></script>
 
+
+
 <script>
   // ── PAGE TRANSITION VEIL ──
   (function () {
-    const veil = document.getElementById('page-veil');
+    var veil = document.getElementById('page-veil');
+    if (!veil) return;
 
-    // Fade IN on load
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => { veil.classList.add('cleared'); });
-    });
+    // Step 1: enable transition, then immediately clear opacity
+    // Using setTimeout(0) guarantees the browser has painted opacity:1 first
+    setTimeout(function () {
+      veil.classList.add('fade-active');
+      setTimeout(function () {
+        veil.classList.add('cleared');
+      }, 20);
+    }, 0);
 
     function navigateTo(href) {
       veil.classList.remove('cleared');
-      setTimeout(() => { window.location.href = href; }, 570);
+      setTimeout(function () { window.location.href = href; }, 620);
     }
 
-    // Intercept panel clicks (data-href)
-    document.querySelectorAll('[data-href]').forEach(el => {
-      el.addEventListener('click', function (e) {
-        e.preventDefault();
-        navigateTo(this.dataset.href);
-      });
-    });
-
-    // Intercept all internal <a> clicks
     document.addEventListener('click', function (e) {
-      const anchor = e.target.closest('a');
+      var anchor = e.target.closest('a');
       if (!anchor) return;
-      const href = anchor.getAttribute('href');
+      var href = anchor.getAttribute('href');
       if (!href) return;
       if (href.startsWith('#') || href.startsWith('http') || href.startsWith('//') || anchor.target === '_blank') return;
       e.preventDefault();
       navigateTo(href);
     });
+
+    document.querySelectorAll('[data-href]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        navigateTo(el.dataset.href);
+      });
+    });
   })();
 </script>
-
 </body>
 </html>
