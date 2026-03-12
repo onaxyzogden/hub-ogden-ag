@@ -63,7 +63,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
 
 .ogden-ring{width:70px;height:70px;border-radius:50%;background:#080810;border:1px solid rgba(200,150,42,0.3);display:flex;align-items:center;justify-content:center;position:relative}
 .ogden-ring::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(200,150,42,0.1)}
-.ogden-letter{font-family:'Cinzel',serif;font-size:21px;font-weight:600;color:rgba(200,150,42,0.85);letter-spacing:0.05em}
+.ogden-letter{font-family:'Cinzel',serif;font-size:21px;font-weight:600;color:#C4973A;letter-spacing:0.05em}
 
 .panel-content{position:relative;z-index:5;text-align:center;padding:48px;pointer-events:none}
 .panel:hover .panel-content{pointer-events:auto}
@@ -80,19 +80,19 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
 
 .panel-tagline{max-width:300px;margin:0 auto 36px;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.2s,transform 0.5s 0.2s;line-height:1.75}
 .panel:hover .panel-tagline{opacity:1;transform:none}
-.bbos-tagline{font-size:13px;color:rgba(255,255,255,0.42)}
-.moon-tagline{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:rgba(200,215,185,0.45)}
+.bbos-tagline{font-size:1rem;color:#8A8A8A}
+.moon-tagline{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:#7A9A78}
 
 .panel-cta{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:3px;font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;cursor:none;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.3s,transform 0.5s 0.3s,background 0.2s,color 0.2s,border-color 0.2s}
 .panel:hover .panel-cta{opacity:1;transform:none}
-.cta-bbos{background:rgba(200,150,42,0.1);color:rgba(200,150,42,0.85);border:1px solid rgba(200,150,42,0.28)}
-.cta-bbos:hover{background:rgba(200,150,42,0.2);color:#c8962a;border-color:rgba(200,150,42,0.55)}
+.cta-bbos{background:rgba(200,150,42,0.1);color:#C4973A;border:1px solid rgba(200,150,42,0.28)}
+.cta-bbos:hover{background:rgba(200,150,42,0.2);color:#c8962a;border-color:#B8891A}
 .cta-moon{background:rgba(122,140,110,0.1);color:rgba(196,163,90,0.85);border:1px solid rgba(122,140,110,0.28)}
 .cta-moon:hover{background:rgba(122,140,110,0.2);color:#c4a35a;border-color:rgba(196,163,90,0.5)}
 
 .panel-idle-label{font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;transition:opacity 0.4s}
-.panel-bbos .panel-idle-label{color:rgba(200,150,42,0.4)}
-.panel-moon .panel-idle-label{color:rgba(163,180,143,0.4)}
+.panel-bbos .panel-idle-label{color:#A07820}
+.panel-moon .panel-idle-label{color:#6A8A60}
 .panel:hover .panel-idle-label{opacity:0}
 
 .top-nav {
@@ -134,8 +134,8 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   position: relative;
   transition: color 0.2s;
 }
-.nav-side.nav-left a  { color: rgba(200,150,42,0.55); }
-.nav-side.nav-right a { color: rgba(163,180,143,0.55); }
+.nav-side.nav-left a  { color: #B8891A; }
+.nav-side.nav-right a { color: #7A9A70; }
 .nav-side a::after {
   content: '';
   position: absolute; bottom: -3px; left: 0; right: 0;
@@ -183,9 +183,57 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   }
   #page-veil.cleared { opacity: 0; pointer-events: none; }
 
+
+  /* ── PREFERS REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal, .fade-up {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    #page-veil { display: none !important; }
+  }
+
+
+  .drawer-close-btn {
+    position: absolute; top: 1.4rem; right: 1.5rem;
+    background: none; border: none;
+    font-size: 1.1rem; color: rgba(245,240,232,0.5);
+    cursor: pointer; padding: 0.5rem;
+    line-height: 1; transition: color 0.2s;
+    z-index: 10;
+  }
+  .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
+
+
+  /* ── KEYBOARD FOCUS STYLES ── */
+  body.keyboard-nav *:focus {
+    outline: 2px solid #C4A35A !important;
+    outline-offset: 3px !important;
+  }
+  body.keyboard-nav .nav-hamburger:focus {
+    outline: 2px solid #C4A35A !important;
+  }
+
 </style>
 
 <link rel="stylesheet" href="/assets/css/site.css">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hub.ogden.ag">
+<meta property="og:title" content="OGDEN — Build Business On Soul">
+<meta property="og:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
+<meta property="og:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OGDEN — Build Business On Soul">
+<meta name="twitter:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
+<meta name="twitter:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
+<meta name="theme-color" content="#080810">
 </head>
 <body>
 <div id="page-veil"></div>
@@ -195,7 +243,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
     <li><a href="bbos/index.html">What is BBOS</a></li>
     <li><a href="bbos/index.html">Systems</a></li>
   </ul>
-  <a href="index.html" class="nav-brand">Ogden</a>
+  <a href="index.html" class="nav-brand">OGDEN</a>
   <ul class="nav-side nav-right">
     <li><a href="moontrance/index.html">Moontrance</a></li>
     <li><a href="moontrance/acquisition/index.html">Find Land</a></li>
@@ -264,19 +312,20 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
     var veil = document.getElementById('page-veil');
     if (!veil) return;
 
-    function clearVeil() {
+        function clearVeil() {
+      veil.classList.remove('cleared');
+      veil.classList.remove('fade-active');
+      // Force browser repaint so opacity:1 is committed before transition starts
+      void veil.offsetHeight;
       veil.classList.add('fade-active');
-      setTimeout(function () { veil.classList.add('cleared'); }, 20);
+      setTimeout(function () { veil.classList.add('cleared'); }, 30);
     }
 
-    setTimeout(clearVeil, 0);
+    clearVeil();
 
-    // Fix back/forward button bfcache restore
+    // Back/forward cache restore — re-run full clearVeil sequence
     window.addEventListener('pageshow', function (e) {
-      if (e.persisted) {
-        veil.classList.remove('cleared', 'fade-active');
-        setTimeout(clearVeil, 0);
-      }
+      if (e.persisted) { clearVeil(); }
     });
 
     function navigateTo(href) {
@@ -324,6 +373,87 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
       moonPanel.addEventListener('mouseenter', function() { setActive(moonLinks); });
       moonPanel.addEventListener('mouseleave', function() { setActive(null); });
     }
+  })();
+
+</script>
+<script>
+
+  // ── ARIA ENHANCEMENTS ──
+  (function () {
+    // Nav landmarks
+    var nav = document.querySelector('nav, .top-nav');
+    if (nav && !nav.getAttribute('role')) nav.setAttribute('role', 'navigation');
+    if (nav && !nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Main navigation');
+
+    // Footer landmark
+    var footer = document.querySelector('footer, .site-footer');
+    if (footer && !footer.getAttribute('role')) footer.setAttribute('role', 'contentinfo');
+
+    // Main content landmark
+    var main = document.querySelector('main, .gateway, #hero, .hero, section');
+    if (main && main.tagName !== 'MAIN' && !main.getAttribute('role')) {
+      var mainEl = document.createElement('div');
+      // Wrap is too invasive — just mark the first section
+      main.setAttribute('role', 'main');
+    }
+
+    // Drawer ARIA
+    var drawer = document.querySelector('.nav-drawer');
+    var hamburger = document.querySelector('.nav-hamburger');
+    if (drawer) {
+      drawer.setAttribute('role', 'dialog');
+      drawer.setAttribute('aria-modal', 'true');
+      drawer.setAttribute('aria-label', 'Navigation menu');
+    }
+    if (hamburger) {
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-haspopup', 'dialog');
+    }
+
+    // Update aria-expanded on hamburger toggle
+    if (hamburger && drawer) {
+      var mo = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.attributeName === 'class') {
+            var isOpen = drawer.classList.contains('open');
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          }
+        });
+      });
+      mo.observe(drawer, { attributes: true });
+    }
+
+    // Drawer close button wires to hamburger close
+    var closeBtn = document.querySelector('.drawer-close-btn');
+    var hamburgerBtn = document.querySelector('.nav-hamburger');
+    if (closeBtn && hamburgerBtn) {
+      closeBtn.addEventListener('click', function() { hamburgerBtn.click(); });
+    }
+
+    // FAQ accordion ARIA
+    document.querySelectorAll('.faq-item').forEach(function(item, i) {
+      var trigger = item.querySelector('.faq-question, [onclick], h3, button');
+      var content = item.querySelector('.faq-answer, .faq-body, p');
+      if (trigger && content) {
+        var id = 'faq-panel-' + i;
+        content.setAttribute('id', id);
+        trigger.setAttribute('aria-controls', id);
+        trigger.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+        // Update on open/close
+        var faqObs = new MutationObserver(function() {
+          trigger.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+        });
+        faqObs.observe(item, { attributes: true });
+      }
+    });
+
+    // Focus visible ring for keyboard nav
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') document.body.classList.add('keyboard-nav');
+    });
+    document.addEventListener('mousedown', function() {
+      document.body.classList.remove('keyboard-nav');
+    });
   })();
 
 </script>
