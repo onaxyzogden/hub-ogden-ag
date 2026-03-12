@@ -110,7 +110,14 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   .divider{display:none}
   body{cursor:auto}
   .cursor,.cursor-ring{display:none}
-  .top-nav{padding:20px 24px}
+  .top-nav{
+    padding:16px 20px;
+    background:rgba(8,8,16,0.85);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(200,150,42,0.12);
+  }
+  .panel-bbos{ padding-top: 70px; }
 }
 
   /* ── PAGE TRANSITION VEIL ── */
@@ -192,19 +199,25 @@ for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';c
 
 
 <script>
-  // ── PAGE TRANSITION VEIL ──
+    // ── PAGE TRANSITION VEIL ──
   (function () {
     var veil = document.getElementById('page-veil');
     if (!veil) return;
 
-    // Step 1: enable transition, then immediately clear opacity
-    // Using setTimeout(0) guarantees the browser has painted opacity:1 first
-    setTimeout(function () {
+    function clearVeil() {
       veil.classList.add('fade-active');
-      setTimeout(function () {
-        veil.classList.add('cleared');
-      }, 20);
-    }, 0);
+      setTimeout(function () { veil.classList.add('cleared'); }, 20);
+    }
+
+    setTimeout(clearVeil, 0);
+
+    // Fix back/forward button bfcache restore
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) {
+        veil.classList.remove('cleared', 'fade-active');
+        setTimeout(clearVeil, 0);
+      }
+    });
 
     function navigateTo(href) {
       veil.classList.remove('cleared');

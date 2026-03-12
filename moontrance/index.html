@@ -1224,41 +1224,71 @@
   </footer>
 
 <script>
-  // ── HAMBURGER MENU ──
+    // ── HAMBURGER MENU ──
   (function() {
     const btn    = document.querySelector('.nav-hamburger');
     const drawer = document.querySelector('.nav-drawer');
     if (!btn || !drawer) return;
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      btn.classList.add('open');
+      btn.setAttribute('aria-label', 'Close menu');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-label', 'Open menu');
+      document.body.style.overflow = '';
+    }
+
     btn.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
-      btn.classList.toggle('open', open);
-      document.body.style.overflow = open ? 'hidden' : '';
+      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
     });
+
+    // Close on any link click
     drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        drawer.classList.remove('open');
-        btn.classList.remove('open');
-        document.body.style.overflow = '';
-      });
+      a.addEventListener('click', closeDrawer);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    });
+
+    // Close on backdrop click (outside the drawer content)
+    drawer.addEventListener('click', (e) => {
+      if (e.target === drawer) closeDrawer();
     });
   })();
 </script>
 
 
 <script>
-  // ── PAGE TRANSITION VEIL ──
+    // ── PAGE TRANSITION VEIL ──
   (function () {
     var veil = document.getElementById('page-veil');
     if (!veil) return;
 
-    // Step 1: enable transition, then immediately clear opacity
-    // Using setTimeout(0) guarantees the browser has painted opacity:1 first
-    setTimeout(function () {
+    function clearVeil() {
       veil.classList.add('fade-active');
-      setTimeout(function () {
-        veil.classList.add('cleared');
-      }, 20);
-    }, 0);
+      setTimeout(function () { veil.classList.add('cleared'); }, 20);
+    }
+
+    // Initial page load
+    setTimeout(clearVeil, 0);
+
+    // Back/forward button (bfcache restore) — page is returned from cache
+    // with veil still in cleared state from last visit, but if navigated away
+    // the veil was set to opacity:1 — pageshow with persisted=true fixes this
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) {
+        // Page restored from bfcache — reset and clear veil immediately
+        veil.classList.remove('cleared', 'fade-active');
+        setTimeout(clearVeil, 0);
+      }
+    });
 
     function navigateTo(href) {
       veil.classList.remove('cleared');
