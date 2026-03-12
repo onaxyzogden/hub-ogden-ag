@@ -212,14 +212,51 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
 
 
-  /* ── KEYBOARD FOCUS STYLES ── */
-  body.keyboard-nav *:focus {
-    outline: 2px solid #C4A35A !important;
-    outline-offset: 3px !important;
+  /* ── FOCUS VISIBLE STYLES ── */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
-  body.keyboard-nav .nav-hamburger:focus {
-    outline: 2px solid #C4A35A !important;
+  .nav-hamburger:focus-visible,
+  .drawer-close-btn:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
   }
+  .nav-links a:focus-visible,
+  .nav-cta:focus-visible,
+  .nav-logo:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Fallback for browsers that don't support :focus-visible */
+  @supports not selector(:focus-visible) {
+    body.keyboard-nav *:focus {
+      outline: 2px solid #C4A35A !important;
+      outline-offset: 3px !important;
+    }
+  }
+
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: #C4A35A;
+    color: #1a1610;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 4px 4px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 0; }
 
 </style>
 
@@ -238,7 +275,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
 <body>
 <div id="page-veil"></div>
 
-<nav class="top-nav">
+<nav class="top-nav" role="navigation" aria-label="Main navigation">
   <ul class="nav-side nav-left">
     <li><a href="bbos/index.html">What is BBOS</a></li>
     <li><a href="bbos/index.html">Systems</a></li>
@@ -255,6 +292,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
 
 
 
+<main id="main-content" aria-label="Main content">
 <div class="gateway">
 
   <div class="panel panel-bbos" data-href="bbos/index.html">

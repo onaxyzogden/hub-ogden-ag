@@ -370,12 +370,8 @@
     .nav-hamburger{display:flex}
   }
 </style>
-
-<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div id="site-header"></div>
-<div style="max-width:1200px;margin:0 auto;padding:90px 20px 0;"><a href="/bbos/" style="display:inline-block;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:600;color:#1a2f5a;">← Back to BBOS</a></div>
 
 <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
 
@@ -390,7 +386,16 @@
 </header>
 
 <!-- STAGE NAV -->
-
+<nav class="stage-nav" id="stageNav">
+  <button class="stage-btn active" data-section="0">00 · Start</button>
+  <button class="stage-btn" data-section="1">01 · Skills</button>
+  <button class="stage-btn" data-section="2">02 · Proof</button>
+  <button class="stage-btn" data-section="3">03 · Geography</button>
+  <button class="stage-btn" data-section="4">04 · Runway</button>
+  <button class="stage-btn" data-section="5">05 · Energy</button>
+  <button class="stage-btn" data-section="6">06 · Assets</button>
+  <button class="stage-btn" data-section="7">07 · Review</button>
+</nav>
 
 <main class="form-shell">
 
@@ -1254,9 +1259,5 @@ updateProgress();
   });
 })();
 </script>
-
-<div id="site-footer"></div>
-<script src="/assets/js/includes.js"></script>
-<script src="/assets/js/site.js"></script>
 </body>
 </html>
