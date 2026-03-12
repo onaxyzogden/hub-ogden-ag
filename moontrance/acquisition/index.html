@@ -1104,6 +1104,56 @@
   }
   .skip-link:focus { top: 0; }
 
+
+  /* ── RELATED STRIP ─────────────────────────────────────────────── */
+  .acq-related-strip {
+    background: rgba(245,240,232,0.04);
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(196,163,90,0.12);
+  }
+  .acq-related-inner { max-width: 1100px; margin: 0 auto; }
+  .acq-related-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(196,163,90,0.6);
+    margin-bottom: 1.5rem;
+  }
+  .acq-related-cards {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1.25rem;
+  }
+  @media (max-width: 768px) { .acq-related-cards { grid-template-columns: 1fr; } }
+  .acq-related-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(196,163,90,0.14);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .acq-related-card:hover {
+    border-color: rgba(196,163,90,0.45);
+    transform: translateY(-2px);
+  }
+  .acq-related-icon { font-size: 1.2rem; }
+  .acq-related-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(245,240,232,0.9);
+  }
+  .acq-related-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.65;
+  }
 </style>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hub.ogden.ag/moontrance/acquisition/">
@@ -1637,6 +1687,30 @@
   </div>
 </section>
 
+
+<section class="acq-related-strip" aria-label="Related resources">
+  <div class="acq-related-inner">
+    <p class="acq-related-label">Continue exploring</p>
+    <div class="acq-related-cards">
+      <a href="../collective/" class="acq-related-card">
+        <span class="acq-related-icon">🌿</span>
+        <span class="acq-related-title">The Collective</span>
+        <span class="acq-related-desc">See what an activated agritourism property looks like — the guest experiences, values, and community that make the land worth owning.</span>
+      </a>
+      <a href="../economics/" class="acq-related-card">
+        <span class="acq-related-icon">📊</span>
+        <span class="acq-related-title">Offer Economics</span>
+        <span class="acq-related-desc">Before you commit to a parcel, model whether the numbers can actually support your vision.</span>
+      </a>
+      <a href="../../bbos/" class="acq-related-card">
+        <span class="acq-related-icon">✦</span>
+        <span class="acq-related-title">BBOS Framework</span>
+        <span class="acq-related-desc">The operating system for building a soul-led business — including the one you'll run on the land you acquire.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- coming-soon note injected -->
 <p style="font-family:'DM Mono',monospace;font-size: 0.875rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,240,232,0.35);text-align:center;padding:0.5rem 0 2.5rem;max-width:420px;margin:0 auto;">
   Files and booking link launching shortly — join the waitlist above to be notified.
@@ -1647,7 +1721,12 @@
   <ul class="footer-links">
     <li><a href="#workflow">About the Toolkit</a></li>
     <li><a href="#toolkit">Resources</a></li>
-    <li><a href="#download">Contact</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="../">Moontrance Overview</a></li>
+    <li><a href="../collective/">The Collective</a></li>
+    <li><a href="../economics/">Offer Economics</a></li>
+    <li><a href="../../bbos/">BBOS</a></li>
+    <li><a href="../../">OGDEN Hub</a></li>
   </ul>
   <span class="footer-copy">© 2026 The Moontrance Collective</span>
 </main>

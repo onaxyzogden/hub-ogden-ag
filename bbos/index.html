@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BBOS — Build Business On Soul · OGDEN</title>
 <meta name="description" content="BBOS is a nine-stage operational and spiritual framework for building an ethical business as an act of worship. Rigorous systems, soul-first foundations.">
@@ -899,6 +900,58 @@ nav.scrolled {
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
 }
+
+  /* ── INTAKE CTA ROW ─────────────────────────────────────────────── */
+  .cta-intake-row {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(196,151,58,0.15);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .cta-intake-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--steel);
+    line-height: 1.65;
+    flex: 1;
+    min-width: 240px;
+    margin: 0;
+  }
+  .btn-intake-primary {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 13px 26px;
+    border-radius: 4px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-intake-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+  @media (max-width: 600px) {
+    .cta-intake-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .btn-intake-primary { width: 100%; text-align: center; }
+  }
+
+  /* ── COLOUR SCHEME ──────────────────────────────────────────────── */
+  :root { color-scheme: dark; }
+  @media (prefers-color-scheme: light) {
+    /* BBOS is intentionally dark — preserve the design,
+       just soften pure-black to rich navy on light-OS users */
+    :root {
+      --navy: #0a1428;
+      --navy-mid: #0f2040;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1314,7 +1367,7 @@ nav.scrolled {
       </p>
     </div>
     <div class="cta-modes fade-up delay-2">
-      <a href="#work-with" class="cta-mode" aria-label="Self-directed implementation">
+      <a href="#work-with" class="cta-mode" aria-label="Self-directed implementation — workbook coming soon">
         <div class="cta-mode-info">
           <p class="cta-mode-label">Independent</p>
           <p class="cta-mode-name">Self-Directed Implementation</p>
@@ -1322,7 +1375,7 @@ nav.scrolled {
         </div>
         <span class="cta-mode-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="#work-with" class="cta-mode" aria-label="Guided implementation cohort">
+      <a href="#work-with" class="cta-mode" aria-label="Guided implementation cohort — notify me when open">
         <div class="cta-mode-info">
           <p class="cta-mode-label">Cohort</p>
           <p class="cta-mode-name">Guided Implementation</p>
@@ -1330,14 +1383,18 @@ nav.scrolled {
         </div>
         <span class="cta-mode-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="#work-with" class="cta-mode" aria-label="Private engagement">
+      <a href="intake/" class="cta-mode" aria-label="Apply for private one-to-one engagement">
         <div class="cta-mode-info">
-          <p class="cta-mode-label">Private</p>
+          <p class="cta-mode-label">Private · Now Open</p>
           <p class="cta-mode-name">One-to-One Engagement</p>
-          <p class="cta-mode-desc">Direct work together. For operators who need the framework personalised to their specific situation, constraints, and calling. By application only.</p>
+          <p class="cta-mode-desc">Direct work together. For people who need the framework personalised to their specific situation, constraints, and calling. Begin with the intake charter.</p>
         </div>
         <span class="cta-mode-arrow" aria-hidden="true">→</span>
       </a>
+    </div>
+    <div class="cta-intake-row fade-up delay-3">
+      <p class="cta-intake-note">Not sure which path fits? The intake form is the first step for all of them — it exists to help us both understand what's needed before anything is committed.</p>
+      <a href="intake/" class="btn-intake-primary">Begin the Intake Charter →</a>
     </div>
   </div>
 </section>

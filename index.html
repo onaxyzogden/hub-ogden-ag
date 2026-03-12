@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OGDEN — Build Business On Soul · The Moontrance Collective</title>
 <meta name="description" content="OGDEN is a digital entrepreneur bridging strategic precision with soul-led execution. Home of BBOS and The Moontrance Collective.">
@@ -10,7 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%;overflow-x:hidden}
 body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
 
 .cursor{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
@@ -18,7 +19,7 @@ body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
 
 body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:0.5}
 
-.gateway{display:flex;height:100vh;width:100vw;position:relative;overflow:hidden;opacity:1}
+.gateway{display:flex;height:100vh;min-height:100vh;width:100vw;position:relative;overflow:hidden;opacity:1}
 
 
 .panel{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;transition:flex 0.85s cubic-bezier(0.77,0,0.175,1);cursor:none}
@@ -300,6 +301,170 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
     font-size: 0.75rem; color: #2a3444;
     letter-spacing: 0.05em;
   }
+
+  /* ── ABOUT CONNECTOR SECTION ─────────────────────────────────────── */
+  .about-connector {
+    background: #07090f;
+    border-top: 1px solid rgba(200,150,42,0.1);
+    padding: 6rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-connector::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(20,35,70,0.5) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .about-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .about-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(200,150,42,0.5);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+    font-weight: 400;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .about-heading em {
+    font-style: italic;
+    color: rgba(200,150,42,0.85);
+  }
+  .about-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.85;
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 3rem;
+  }
+  .about-divider-glyph {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: rgba(200,150,42,0.25);
+    letter-spacing: 0.5em;
+    margin: 2.5rem 0;
+  }
+  .about-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 640px) {
+    .about-two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .about-connector { padding: 4rem 1.5rem; }
+  }
+  .about-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(200,150,42,0.1);
+    border-radius: 6px;
+    padding: 2rem;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .about-card:hover {
+    border-color: rgba(200,150,42,0.28);
+    background: rgba(255,255,255,0.04);
+    transform: translateY(-2px);
+  }
+  .about-card-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .about-card-tag.tag-bbos  { color: rgba(200,150,42,0.65); }
+  .about-card-tag.tag-moon  { color: rgba(122,140,110,0.65); }
+  .about-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .about-card-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.75;
+  }
+  .about-card-arrow {
+    display: block;
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .about-card.card-bbos .about-card-arrow { color: rgba(200,150,42,0.5); }
+  .about-card.card-moon .about-card-arrow { color: rgba(122,140,110,0.5); }
+
+  /* ── DARK MODE (hub is already dark — confirm for OS-level awareness) */
+  :root { color-scheme: dark; }
+  @media (prefers-color-scheme: light) {
+    /* Gateway is intentionally dark. On light OS, keep the palette
+       but ensure text contrast is not harmed */
+    .about-body { color: rgba(255,255,255,0.55); }
+  }
+
+  .scroll-hint {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.45;
+    animation: hintBob 2.5s ease-in-out infinite;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .scroll-hint.hidden { opacity: 0; }
+  .scroll-hint-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(200,150,42,0.7);
+  }
+  .scroll-hint-arrow {
+    width: 18px; height: 18px;
+    border-right: 1px solid rgba(200,150,42,0.5);
+    border-bottom: 1px solid rgba(200,150,42,0.5);
+    transform: rotate(45deg);
+  }
+  @keyframes hintBob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+  }
+  @media (max-width: 768px) { .scroll-hint { display: none; } }
 </style>
 
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -329,6 +494,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   </ul>
 </nav>
 
+<div class="scroll-hint" id="scrollHint" aria-hidden="true"><span class="scroll-hint-label">Scroll</span><div class="scroll-hint-arrow"></div></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -372,6 +538,10 @@ const cursor=document.getElementById('cursor'),ring=document.getElementById('cur
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
 (function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+window.addEventListener('scroll', function() {
+  var hint = document.getElementById('scrollHint');
+  if (hint && window.scrollY > 40) hint.classList.add('hidden');
+}, { passive: true });
 document.querySelectorAll('.panel,a').forEach(el=>{
   el.addEventListener('mouseenter',()=>{ring.style.width='58px';ring.style.height='58px';ring.style.borderColor='rgba(200,150,42,0.45)'});
   el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(255,255,255,0.4)'});
@@ -379,6 +549,36 @@ document.querySelectorAll('.panel,a').forEach(el=>{
 const sc=document.getElementById('stars');
 for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
 </script>
+
+<section class="about-connector" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <p class="about-eyebrow">One Ecosystem · Two Paths</p>
+    <h2 class="about-heading" id="about-heading">
+      Both sides of this house share<br><em>the same foundation</em>
+    </h2>
+    <p class="about-body">
+      BBOS and The Moontrance Collective are distinct in what they do — one is a business operating framework, the other is a land-based agritourism ecosystem. But they're not separate projects that happen to share a domain. They're two expressions of the same conviction: that the way you build something matters as much as what you build. That rigour and soul are not in tension. That a business, a land, a life — these can be structured with both precision and meaning.
+    </p>
+    <div class="about-divider-glyph">· · ·</div>
+    <p class="about-body" style="margin-bottom:0">
+      Whether you're here to build a business from honest foundations, or to find and activate land that can hold a community — you're in the right place.
+    </p>
+    <div class="about-two-col" style="margin-top:3rem">
+      <a href="bbos/" class="about-card card-bbos">
+        <span class="about-card-tag tag-bbos">BBOS · Framework</span>
+        <p class="about-card-name">Build Business On Soul</p>
+        <p class="about-card-desc">A nine-stage operating system for the soul-centred entrepreneur. Strategy, systems, and spiritual accountability — woven into a single coherent framework that takes you from first principles to sustainable, ethical revenue.</p>
+        <span class="about-card-arrow">Enter BBOS →</span>
+      </a>
+      <a href="moontrance/" class="about-card card-moon">
+        <span class="about-card-tag tag-moon">Moontrance · Land</span>
+        <p class="about-card-name">The Moontrance Collective</p>
+        <p class="about-card-desc">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors. Guest experiences, offer economics, and a structured acquisition toolkit — built for people who want to steward land with intention.</p>
+        <span class="about-card-arrow">Enter the Collective →</span>
+      </a>
+    </div>
+  </div>
+</section>
 
 <footer class="hub-footer" role="contentinfo" aria-label="Site footer">
   <div class="hub-footer-inner">
