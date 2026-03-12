@@ -123,9 +123,20 @@
 
   /* TABLE */
   .table-section { background: var(--ivory); }
-  .table-wrapper { overflow-x: auto; margin-top: 2.5rem; }
+  .table-wrapper {
+    overflow-x: auto;
+    margin-top: 2.5rem;
+    border-radius: 4px;
+    /* scroll shadow: shows when content overflows left/right */
+    background:
+      linear-gradient(to right, var(--ivory) 30%, transparent) left center / 40px 100% no-repeat,
+      linear-gradient(to left,  var(--ivory) 30%, transparent) right center / 40px 100% no-repeat,
+      radial-gradient(ellipse at left,  rgba(90,107,78,0.12), transparent 70%) left center / 14px 100% no-repeat,
+      radial-gradient(ellipse at right, rgba(90,107,78,0.12), transparent 70%) right center / 14px 100% no-repeat;
+    background-attachment: local, local, scroll, scroll;
+  }
   table { width: 100%; border-collapse: collapse; min-width: 700px; }
-  thead th { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--sage); padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--sage-pale); background: var(--mist); }
+  thead th { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--sage); padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--sage-pale); background: var(--mist); font-weight: 500; }
   tbody tr { border-bottom: 1px solid rgba(90,107,78,0.1); transition: background 0.15s; }
   tbody tr:hover { background: var(--mist); }
   tbody td { padding: 1rem 1rem; font-size: 1rem; color: var(--bark-mid); vertical-align: middle; }
@@ -195,6 +206,20 @@
   @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* table scroll hint on mobile */
+  @media (max-width: 768px) {
+    .table-scroll-hint {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage); opacity: 0.6;
+      text-align: right;
+      margin-bottom: 0.5rem;
+    }
+  }
+  @media (min-width: 769px) { .table-scroll-hint { display: none; } }
 
   @media (max-width: 600px) {
     .hero-kpis { gap: 1.5rem; }
@@ -402,14 +427,51 @@
   .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
 
 
-  /* ── KEYBOARD FOCUS STYLES ── */
-  body.keyboard-nav *:focus {
-    outline: 2px solid #C4A35A !important;
-    outline-offset: 3px !important;
+  /* ── FOCUS VISIBLE STYLES ── */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
-  body.keyboard-nav .nav-hamburger:focus {
-    outline: 2px solid #C4A35A !important;
+  .nav-hamburger:focus-visible,
+  .drawer-close-btn:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
   }
+  .nav-links a:focus-visible,
+  .nav-cta:focus-visible,
+  .nav-logo:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Fallback for browsers that don't support :focus-visible */
+  @supports not selector(:focus-visible) {
+    body.keyboard-nav *:focus {
+      outline: 2px solid #C4A35A !important;
+      outline-offset: 3px !important;
+    }
+  }
+
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: #C4A35A;
+    color: #1a1610;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 4px 4px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 0; }
 
 </style>
 <meta property="og:type" content="website">
@@ -428,7 +490,7 @@
 <div id="page-veil"></div>
 
 
-<nav id="nav">
+<nav id="nav" role="navigation" aria-label="Main navigation">
   <a href="../index.html" class="nav-logo">Moontrance</a>
   <ul class="nav-links">
     <li><a href="#offers">Offer Models</a></li>
@@ -445,11 +507,13 @@
     <a href="#offers">Offer Models</a>
     <a href="#monthly">Monthly View</a>
     <a href="#strategy">Strategy</a>
-    <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
+    <a href="../../bbos/index.html">BBOS</a>
+  <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
 </div>
 
 
 <!-- HERO -->
+<main id="main-content" aria-label="Main content">
 <section class="hero">
   <p class="hero-eyebrow">Sanctuary Land Co. · Offer Economics</p>
   <h1>Five offers.<br /><em>One coherent business.</em></h1>
@@ -527,6 +591,7 @@
     <h2 class="section-title">Where the <em>numbers</em> separate</h2>
     <p class="section-body">Revenue per staff hour is the clearest signal of operational efficiency. Margin tells you pricing health. Together, they reveal which offers earn their place in the portfolio.</p>
   </div>
+  <p class="table-scroll-hint" aria-hidden="true">← scroll to see all →</p>
   <div class="table-wrapper reveal">
     <table>
       <thead>
@@ -730,7 +795,36 @@
   </div>
 </section>
 
-<footer>Sanctuary Land Co. · Offer Economics Model · Phase 1 Pre-Launch Planning · Halton Region, Ontario</footer>
+<footer class="site-footer" role="contentinfo" aria-label="Site footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-brand">
+      <a href="../index.html" class="site-footer-logo">Moontrance Collective</a>
+      <p class="site-footer-tagline">Sanctuary Land Co. · Phase 1 Pre-Launch Planning · Halton Region, Ontario.</p>
+    </div>
+    <div>
+      <p class="site-footer-col-title">Explore</p>
+      <ul class="site-footer-links">
+        <li><a href="../collective/index.html">The Collective</a></li>
+        <li><a href="../economics/index.html">Offer Economics</a></li>
+        <li><a href="../acquisition/index.html">Acquisition Hub</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="site-footer-col-title">Hub</p>
+      <ul class="site-footer-links">
+        <li><a href="../../index.html">OGDEN Home</a></li>
+        <li><a href="../index.html">Moontrance Home</a></li>
+        <li><a href="#offers">Offer Models</a></li>
+        <li><a href="#monthly">Monthly View</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer-bottom">
+    <p class="site-footer-copyright">© 2026 Moontrance Collective · OGDEN. All rights reserved.</p>
+    <p class="site-footer-ornament">Land, Learning &amp; Remembrance</p>
+  </div>
+</main>
+</footer>
 
 <script>
 const offers = [

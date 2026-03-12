@@ -1058,14 +1058,51 @@
   .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
 
 
-  /* ── KEYBOARD FOCUS STYLES ── */
-  body.keyboard-nav *:focus {
-    outline: 2px solid #C4A35A !important;
-    outline-offset: 3px !important;
+  /* ── FOCUS VISIBLE STYLES ── */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
-  body.keyboard-nav .nav-hamburger:focus {
-    outline: 2px solid #C4A35A !important;
+  .nav-hamburger:focus-visible,
+  .drawer-close-btn:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
   }
+  .nav-links a:focus-visible,
+  .nav-cta:focus-visible,
+  .nav-logo:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Fallback for browsers that don't support :focus-visible */
+  @supports not selector(:focus-visible) {
+    body.keyboard-nav *:focus {
+      outline: 2px solid #C4A35A !important;
+      outline-offset: 3px !important;
+    }
+  }
+
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: #C4A35A;
+    color: #1a1610;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 4px 4px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 0; }
 
 </style>
 <meta property="og:type" content="website">
@@ -1085,7 +1122,7 @@
 
 
 <!-- NAV -->
-<nav id="nav">
+<nav id="nav" role="navigation" aria-label="Main navigation">
   <a href="../index.html" class="nav-logo">Moontrance</a>
   <ul class="nav-links">
     <li><a href="#toolkit">The Toolkit</a></li>
@@ -1106,11 +1143,13 @@
     <a href="#economics">Offer Economics</a>
     <a href="#scoring">Scoring</a>
     <a href="#download">Download</a>
-    <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
+    <a href="../../bbos/index.html">BBOS</a>
+  <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
 </div>
 
 
 <!-- HERO -->
+<main id="main-content" aria-label="Main content">
 <section class="hero">
   <div class="hero-left">
     <p class="hero-eyebrow">Agritourism Acquisition Hub</p>
@@ -1591,22 +1630,27 @@
           <li>Monthly Operating Model with utilisation tracking</li>
           <li>Dashboard with pipeline KPIs and top candidate watch</li>
         </ul>
-        <a class="btn-download" href="#">⬇ Download Both Files — Free</a>
-        <a class="btn-download-ghost" href="#">Book a 30-min land strategy call →</a>
+        <a class="btn-download" href="#download" aria-label="Download coming soon — check back shortly">⬇ Download Both Files — Coming Soon</a>
+        <a class="btn-download-ghost" href="#cta-banner" aria-label="Strategy call booking — coming soon">Book a Strategy Call — Coming Soon →</a>
       </div>
     </div>
   </div>
 </section>
 
+<!-- coming-soon note injected -->
+<p style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,240,232,0.35);text-align:center;padding:0.5rem 0 2.5rem;max-width:420px;margin:0 auto;">
+  Files and booking link launching shortly — join the waitlist above to be notified.
+</p>
 <!-- FOOTER -->
-<footer>
+<footer role="contentinfo" aria-label="Site footer">
   <span class="footer-brand">The Moontrance Collective</span>
   <ul class="footer-links">
-    <li><a href="#">About</a></li>
-    <li><a href="#">Resources</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="#workflow">About the Toolkit</a></li>
+    <li><a href="#toolkit">Resources</a></li>
+    <li><a href="#download">Contact</a></li>
   </ul>
   <span class="footer-copy">© 2026 The Moontrance Collective</span>
+</main>
 </footer>
 
 <script>

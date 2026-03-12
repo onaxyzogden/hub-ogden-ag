@@ -603,12 +603,12 @@
   .faq-item.open .faq-icon { transform: rotate(45deg); }
   .faq-answer {
     max-height: 0; overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.3s;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), padding 0.35s ease;
     font-size: 1rem; font-weight: 300; line-height: 1.85;
     color: rgba(245,237,224,0.55);
   }
   .faq-item.open .faq-answer {
-    max-height: 240px; padding-bottom: 1.8rem;
+    max-height: var(--faq-h, 320px); padding-bottom: 1.8rem;
   }
 
   /* ── CTA BANNER ── */
@@ -921,14 +921,51 @@
   .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
 
 
-  /* ── KEYBOARD FOCUS STYLES ── */
-  body.keyboard-nav *:focus {
-    outline: 2px solid #C4A35A !important;
-    outline-offset: 3px !important;
+  /* ── FOCUS VISIBLE STYLES ── */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
-  body.keyboard-nav .nav-hamburger:focus {
-    outline: 2px solid #C4A35A !important;
+  .nav-hamburger:focus-visible,
+  .drawer-close-btn:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
   }
+  .nav-links a:focus-visible,
+  .nav-cta:focus-visible,
+  .nav-logo:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Fallback for browsers that don't support :focus-visible */
+  @supports not selector(:focus-visible) {
+    body.keyboard-nav *:focus {
+      outline: 2px solid #C4A35A !important;
+      outline-offset: 3px !important;
+    }
+  }
+
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: #C4A35A;
+    color: #1a1610;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 4px 4px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 0; }
 
 </style>
 <meta property="og:type" content="website">
@@ -948,7 +985,7 @@
 
 
 <!-- NAV -->
-<nav id="nav">
+<nav id="nav" role="navigation" aria-label="Main navigation">
   <a href="../index.html" class="nav-logo">Moontrance</a>
   <ul class="nav-links">
     <li><a href="#experiences">Experiences</a></li>
@@ -969,11 +1006,13 @@
     <a href="#audience">For You</a>
     <a href="#faq">FAQ</a>
     <a href="#cta-banner">Book a Visit</a>
-    <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
+    <a href="../../bbos/index.html">BBOS</a>
+  <a href="../index.html" class="drawer-cta">← Moontrance Home</a>
 </div>
 
 
 <!-- HERO -->
+<main id="main-content" aria-label="Main content">
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hero-moon"></div>
@@ -1296,42 +1335,42 @@
     </div>
     <div class="faq-list reveal">
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
+        <div class="faq-question" data-faq-trigger>
           What kind of experiences do you offer?
           <em class="faq-icon">+</em>
         </div>
         <div class="faq-answer">We offer guided farm and land tours, family half-day experiences, seasonal educational workshops, and overnight stays. Each experience is rooted in sustainable living, stewardship, and hospitality shaped by Islamic values. Whether you want a two-hour introduction or a full family weekend, there's a path for you.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
+        <div class="faq-question" data-faq-trigger>
           Is the environment family-friendly?
           <em class="faq-icon">+</em>
         </div>
         <div class="faq-answer">Yes — deeply so. Several of our experiences are specifically designed with families in mind, including child-friendly activities, values-conscious hospitality, and a setting built for parents who want to relax without compromising what they care about. Children are welcomed and included as full participants.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
+        <div class="faq-question" data-faq-trigger>
           Is food halal?
           <em class="faq-icon">+</em>
         </div>
         <div class="faq-answer">Our hospitality approach is rooted in Islamic values, which includes halal food standards wherever meals are offered. You will never need to ask or negotiate this. It is already built in.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
+        <div class="faq-question" data-faq-trigger>
           Do I need any farming experience?
           <em class="faq-icon">+</em>
         </div>
         <div class="faq-answer">Not at all. Our experiences are designed for guests at every level of familiarity — from people who have never set foot on a farm to those with a deep interest in sustainable systems. You will be guided, welcomed, and never made to feel unprepared.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
+        <div class="faq-question" data-faq-trigger>
           Are stays private and modesty-friendly?
           <em class="faq-icon">+</em>
         </div>
         <div class="faq-answer">Yes. Accommodations and shared spaces are designed with privacy, dignity, and guest comfort in mind from the ground up. We build privacy into the structure, not just the policy. Prayer spaces, direction, and quiet time are also integrated naturally into the stay experience.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
+        <div class="faq-question" data-faq-trigger>
           Can schools or groups visit?
           <em class="faq-icon">+</em>
         </div>
@@ -1349,13 +1388,13 @@
     <p class="cta-banner-body reveal reveal-delay-2">Join us for a guided visit, a workshop, or a stay designed to help you reconnect with creation, learn sustainable ways of living, and experience hospitality rooted in Islamic values.</p>
     <div class="cta-banner-buttons reveal reveal-delay-3">
       <a href="#experiences" class="btn-primary">Explore All Experiences</a>
-      <a href="#" class="btn-outline">Inquire About Group Visits</a>
+      <a href="#cta-banner" class="btn-outline">Inquire About Group Visits</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer role="contentinfo" aria-label="Site footer">
   <div class="footer-inner">
     <div class="footer-brand">
       <span class="footer-logo">Moontrance Collective</span>
@@ -1364,30 +1403,30 @@
     <div>
       <p class="footer-col-title">Experiences</p>
       <div class="footer-links">
-        <a href="#">Guided Farm Tour</a>
-        <a href="#">Family Land Day</a>
-        <a href="#">Seasonal Workshops</a>
-        <a href="#">Rest & Reconnect Stay</a>
-        <a href="#">Family Stewardship Stay</a>
+        <a href="#experiences">Guided Farm Tour</a>
+        <a href="#experiences">Family Land Day</a>
+        <a href="#experiences">Seasonal Workshops</a>
+        <a href="#experiences">Rest &amp; Reconnect Stay</a>
+        <a href="#experiences">Family Stewardship Stay</a>
       </div>
     </div>
     <div>
       <p class="footer-col-title">Visit Us</p>
       <div class="footer-links">
-        <a href="#">About</a>
-        <a href="#">Our Values</a>
-        <a href="#">Group Visits</a>
-        <a href="#">FAQ</a>
-        <a href="#">Contact</a>
+        <a href="#why">About</a>
+        <a href="#values">Our Values</a>
+        <a href="#audience">Group Visits</a>
+        <a href="#faq">FAQ</a>
+        <a href="#cta-banner">Contact</a>
       </div>
     </div>
     <div>
       <p class="footer-col-title">Stay Connected</p>
       <div class="footer-links">
-        <a href="#">Newsletter</a>
-        <a href="#">Instagram</a>
-        <a href="#">Facebook</a>
-        <a href="#">Book a Visit</a>
+        <a href="#cta-banner" aria-label="Sign up for our newsletter">Newsletter</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Follow us on Instagram">Instagram</a>
+        <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Follow us on Facebook">Facebook</a>
+        <a href="#cta-banner">Book a Visit</a>
       </div>
     </div>
   </div>
@@ -1395,6 +1434,7 @@
     <p class="footer-copyright">© 2025 Moontrance Collective. All rights reserved.</p>
     <p class="footer-ornament">Land, Learning & Remembrance</p>
   </div>
+</main>
 </footer>
 
 <script>
@@ -1414,13 +1454,58 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(el => observer.observe(el));
 
-  // FAQ toggle
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+  // FAQ accordion — event-listener driven, with JS-measured max-height
+  (function () {
+    document.querySelectorAll('[data-faq-trigger]').forEach(function (trigger) {
+      const item   = trigger.closest('.faq-item');
+      const answer = item ? item.querySelector('.faq-answer') : null;
+
+      // Set ARIA on the trigger
+      trigger.setAttribute('role', 'button');
+      trigger.setAttribute('tabindex', '0');
+      trigger.setAttribute('aria-expanded', 'false');
+      if (answer) {
+        const id = 'faq-ans-' + Math.random().toString(36).slice(2, 7);
+        answer.id = id;
+        trigger.setAttribute('aria-controls', id);
+      }
+
+      function openItem() {
+        // Measure exact answer height before opening
+        if (answer) {
+          answer.style.visibility = 'hidden';
+          answer.style.maxHeight  = 'none';
+          const h = answer.scrollHeight + 32; // 32px bottom padding buffer
+          answer.style.maxHeight  = null;
+          answer.style.visibility = null;
+          item.style.setProperty('--faq-h', h + 'px');
+        }
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeItem() {
+        item.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+
+      function toggleItem() {
+        const isOpen = item.classList.contains('open');
+        // Close all open items first
+        document.querySelectorAll('.faq-item.open').forEach(function (o) {
+          o.classList.remove('open');
+          const t = o.querySelector('[data-faq-trigger]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) openItem();
+      }
+
+      trigger.addEventListener('click', toggleItem);
+      trigger.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleItem(); }
+      });
+    });
+  })();
 </script>
 <script>
     // ── HAMBURGER MENU ──

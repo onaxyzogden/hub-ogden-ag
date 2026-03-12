@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
 
 /* ── TOKENS ── */
 :root {
@@ -238,6 +238,7 @@ nav.scrolled {
   user-select: none;
   font-weight: 700;
   letter-spacing: -0.02em;
+  font-family: 'Noto Naskh Arabic', 'Traditional Arabic', serif;
 }
 .hero-inner {
   position: relative; z-index: 5;
@@ -614,7 +615,7 @@ nav.scrolled {
   max-height: 0; overflow: hidden;
   transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.stage-item.open .stage-body { max-height: 500px; }
+.stage-item.open .stage-body { max-height: var(--stage-h, 600px); }
 .stage-body-inner {
   padding-top: 1.4rem;
   display: grid; grid-template-columns: 1fr 1fr;
@@ -724,7 +725,7 @@ nav.scrolled {
 }
 .site-footer-inner {
   max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 3rem; margin-bottom: 3rem;
 }
 .site-footer-logo {
@@ -795,7 +796,48 @@ nav.scrolled {
 :focus { outline: none; }
 :focus-visible {
   outline: 2px solid var(--gold);
-  outline-offset: 3px; border-radius: 2px;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.nav-links a:focus-visible,
+.nav-logo:focus-visible,
+.nav-cta:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.nav-hamburger:focus-visible,
+.drawer-close-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.stage-header:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.cta-mode:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.pillar-card:focus-visible,
+.client-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.site-footer-links a:focus-visible,
+.site-footer-logo:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 /* ── REDUCED MOTION ── */
@@ -839,7 +881,7 @@ nav.scrolled {
   .hero { padding-bottom: 5rem; }
   .stages-list { padding-left: 3.5rem; }
   .stage-node { left: -3rem; width: 28px; height: 28px; }
-  .stage-node-num { font-size: 0.7rem; }
+  .stage-node-num { font-size: 0.75rem; }
   .site-footer { padding: 3rem 1.5rem 2rem; }
   .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
   .site-footer-brand { grid-column: 1 / -1; }
@@ -864,6 +906,7 @@ nav.scrolled {
     <li><a href="#for-whom">Who It's For</a></li>
     <li><a href="#stages">The Nine Stages</a></li>
     <li><a href="#work-with">Work Together</a></li>
+    <li><a href="../moontrance/index.html">Moontrance</a></li>
   </ul>
   <a href="#work-with" class="nav-cta">Begin</a>
   <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-haspopup="dialog">
@@ -877,6 +920,7 @@ nav.scrolled {
   <a href="#for-whom">Who It's For</a>
   <a href="#stages">The Nine Stages</a>
   <a href="#work-with">Work Together</a>
+  <a href="../moontrance/index.html">Moontrance Collective</a>
   <a href="../index.html" class="drawer-home-cta">← OGDEN Home</a>
 </div>
 
@@ -1309,12 +1353,21 @@ nav.scrolled {
       </ul>
     </div>
     <div>
-      <p class="site-footer-col-title">OGDEN</p>
+      <p class="site-footer-col-title">Moontrance</p>
       <ul class="site-footer-links">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../moontrance/index.html">Moontrance Collective</a></li>
+        <li><a href="../moontrance/index.html">Overview</a></li>
+        <li><a href="../moontrance/collective/index.html">The Collective</a></li>
         <li><a href="../moontrance/economics/index.html">Offer Economics</a></li>
         <li><a href="../moontrance/acquisition/index.html">Acquisition Hub</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="site-footer-col-title">OGDEN</p>
+      <ul class="site-footer-links">
+        <li><a href="../index.html">Hub Home</a></li>
+        <li><a href="#philosophy">BBOS Philosophy</a></li>
+        <li><a href="#stages">Nine Stages</a></li>
+        <li><a href="#work-with">Work Together</a></li>
       </ul>
     </div>
   </div>
@@ -1394,8 +1447,15 @@ document.querySelectorAll('.stage-item').forEach(item => {
     document.querySelectorAll('.stage-item.open').forEach(o => {
       o.classList.remove('open');
       o.querySelector('.stage-header').setAttribute('aria-expanded', 'false');
+      o.querySelector('.stage-body').style.removeProperty('--stage-h');
     });
     if (!isOpen) {
+      // Measure exact height before opening so max-height never clips
+      const inner = body ? body.querySelector('.stage-body-inner') : null;
+      if (inner) {
+        const h = inner.scrollHeight + 48; // 48px padding buffer
+        body.style.setProperty('--stage-h', h + 'px');
+      }
       item.classList.add('open');
       header.setAttribute('aria-expanded', 'true');
     }

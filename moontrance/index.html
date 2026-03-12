@@ -1082,14 +1082,51 @@
   .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
 
 
-  /* ── KEYBOARD FOCUS STYLES ── */
-  body.keyboard-nav *:focus {
-    outline: 2px solid #C4A35A !important;
-    outline-offset: 3px !important;
+  /* ── FOCUS VISIBLE STYLES ── */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
-  body.keyboard-nav .nav-hamburger:focus {
-    outline: 2px solid #C4A35A !important;
+  .nav-hamburger:focus-visible,
+  .drawer-close-btn:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
   }
+  .nav-links a:focus-visible,
+  .nav-cta:focus-visible,
+  .nav-logo:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Fallback for browsers that don't support :focus-visible */
+  @supports not selector(:focus-visible) {
+    body.keyboard-nav *:focus {
+      outline: 2px solid #C4A35A !important;
+      outline-offset: 3px !important;
+    }
+  }
+
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: #C4A35A;
+    color: #1a1610;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 4px 4px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 0; }
 
 </style>
 <meta property="og:type" content="website">
@@ -1109,7 +1146,7 @@
 
 
   <!-- NAVIGATION -->
-  <nav>
+  <nav role="navigation" aria-label="Main navigation">
     <a class="nav-logo" href="../index.html">OGDEN</a>
     <ul class="nav-links">
       <li><a href="#portals">Our Pages</a></li>
@@ -1133,6 +1170,7 @@
 
 
   <!-- HERO -->
+  <main id="main-content" aria-label="Main content">
   <section class="hero">
     <div class="hero-top-rule"></div>
 
@@ -1357,7 +1395,7 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
+  <footer role="contentinfo" aria-label="Site footer">
     <div class="footer-logo">Moon<span>trance</span> Collective</div>
     <ul class="footer-links">
       <li><a href="collective/index.html">The Collective</a></li>
@@ -1365,6 +1403,7 @@
       <li><a href="acquisition/index.html">Acquisition Hub</a></li>
     </ul>
     <div class="footer-copy">Ontario Agritourism · Halton & Beyond</div>
+  </main>
   </footer>
 
 <script>
