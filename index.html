@@ -162,12 +162,12 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   body{cursor:auto}
   .cursor,.cursor-ring{display:none}
   .top-nav { padding: 0 20px; height: 56px; }
-  .nav-side { gap: 1rem; }
-  .nav-side.nav-left { margin-right: 0.5rem; }
-  .nav-side.nav-right { margin-left: 0.5rem; }
-  .nav-side a { font-size: 0.875rem; letter-spacing: 0.1em; }
+  /* Hide nav links on mobile — logo + hamburger only */
+  .nav-side { display: none; }
   .nav-brand { font-size: 0.875rem; }
   .panel-bbos { padding-top: 56px; }
+  /* Hide idle labels on mobile — CTA buttons are already visible */
+  .panel-idle-label { display: none; }
 }
 
   /* ── PAGE TRANSITION VEIL ── */
@@ -258,6 +258,47 @@ body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   }
   .skip-link:focus { top: 0; }
 
+
+  /* ── HUB FOOTER ── */
+  .hub-footer {
+    background: #040a14;
+    border-top: 1px solid rgba(200,150,42,0.1);
+    padding: 2.5rem 3rem;
+    text-align: center;
+  }
+  .hub-footer-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1rem;
+  }
+  .hub-footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(200,150,42,0.7); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hub-footer-logo:hover { color: rgba(200,150,42,0.95); }
+  .hub-footer-tagline {
+    font-size: 0.875rem; font-weight: 300;
+    color: #3a4a5c; letter-spacing: 0.04em;
+  }
+  .hub-footer-nav {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.3rem 1.8rem;
+  }
+  .hub-footer-nav a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: #3a4a5c; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hub-footer-nav a:hover { color: rgba(200,150,42,0.8); }
+  .hub-footer-copy {
+    font-size: 0.75rem; color: #2a3444;
+    letter-spacing: 0.05em;
+  }
 </style>
 
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -338,9 +379,19 @@ const sc=document.getElementById('stars');
 for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
 </script>
 
-<div id="site-footer"></div>
-<script src="/assets/js/includes.js"></script>
-<script src="/assets/js/site.js"></script>
+<footer class="hub-footer" role="contentinfo" aria-label="Site footer">
+  <div class="hub-footer-inner">
+    <a href="index.html" class="hub-footer-logo">OGDEN</a>
+    <p class="hub-footer-tagline">Build Business On Soul · The Moontrance Collective</p>
+    <nav class="hub-footer-nav" aria-label="Footer navigation">
+      <a href="bbos/index.html">BBOS</a>
+      <a href="moontrance/index.html">Moontrance</a>
+      <a href="moontrance/collective/index.html">The Collective</a>
+      <a href="moontrance/acquisition/index.html">Acquisition Hub</a>
+    </nav>
+    <p class="hub-footer-copy">© 2026 OGDEN. All rights reserved.</p>
+  </div>
+</footer>
 
 
 

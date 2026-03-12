@@ -210,14 +210,14 @@ nav.scrolled {
 /* Geometric grid background */
 .hero-grid {
   position: absolute; inset: 0; overflow: hidden;
-  opacity: 0.055;
+  opacity: 0.13;
 }
 .hero-grid::before {
   content: '';
   position: absolute; inset: -50%;
   background-image:
-    linear-gradient(rgba(196,151,58,0.9) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196,151,58,0.9) 1px, transparent 1px);
+    linear-gradient(rgba(220,175,80,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220,175,80,1) 1px, transparent 1px);
   background-size: 64px 64px;
   transform: perspective(600px) rotateX(30deg) rotateZ(-3deg);
   animation: gridDrift 30s linear infinite;
@@ -659,12 +659,12 @@ nav.scrolled {
   background: linear-gradient(to right, transparent, rgba(196,151,58,0.2) 30%, rgba(196,151,58,0.2) 70%, transparent);
 }
 .cta-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 6rem; align-items: start;
+  max-width: 860px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  gap: 3rem; align-items: stretch;
 }
 .cta-text .section-title {
-  max-width: 520px;
+  max-width: 680px;
 }
 .cta-text .section-body { margin-bottom: 2.5rem; }
 .cta-note {
@@ -674,23 +674,30 @@ nav.scrolled {
 }
 /* Right side — three engagement modes */
 .cta-modes {
-  display: flex; flex-direction: column; gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 768px) {
+  .cta-modes {
+    grid-template-columns: 1fr;
+  }
 }
 .cta-mode {
-  padding: 1.5rem 1.8rem;
+  padding: 1.8rem;
   border: 1px solid rgba(58,74,100,0.4);
   border-radius: 4px;
   background: rgba(6,13,26,0.5);
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 1.5rem;
+  display: flex; flex-direction: column;
+  justify-content: space-between; gap: 1.2rem;
   transition: border-color 0.3s, background 0.3s, transform 0.2s;
   cursor: pointer; text-decoration: none;
-  color: inherit;
+  color: inherit; min-height: 180px;
 }
 .cta-mode:hover {
   border-color: rgba(196,151,58,0.3);
   background: rgba(20,40,80,0.5);
-  transform: translateX(4px);
+  transform: translateY(-2px);
 }
 .cta-mode-info {}
 .cta-mode-label {
@@ -710,8 +717,9 @@ nav.scrolled {
   margin-top: 0.3rem;
 }
 .cta-mode-arrow {
-  font-size: 1rem; color: rgba(196,151,58,0.4);
-  flex-shrink: 0; transition: color 0.2s, transform 0.2s;
+  font-size: 0.875rem; color: rgba(196,151,58,0.4);
+  align-self: flex-end;
+  transition: color 0.2s, transform 0.2s;
 }
 .cta-mode:hover .cta-mode-arrow {
   color: var(--gold); transform: translateX(3px);
@@ -866,7 +874,7 @@ nav.scrolled {
   .philosophy-inner { grid-template-columns: 1fr; gap: 3rem; }
   .philosophy-pillars { grid-template-columns: 1fr 1fr; }
   .client-grid { grid-template-columns: 1fr; }
-  .cta-inner { grid-template-columns: 1fr; gap: 3rem; }
+  /* cta-inner already single-column */
   .stage-body-inner { grid-template-columns: 1fr; gap: 1.5rem; }
   .stage-attr { display: none; }
 }
