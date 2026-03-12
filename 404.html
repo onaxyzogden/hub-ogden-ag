@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting… — OGDEN</title>
+  <script>
+    var path = window.location.pathname;
+    // Strip trailing slash
+    path = path.replace(/\/$/, '');
+    // If it's a clean path with no file extension, redirect to the folder version
+    if (path && !path.includes('.')) {
+      window.location.replace(path + '/');
+    } else {
+      // Genuine 404 — go home
+      window.location.replace('/');
+    }
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/">
+  </noscript>
+</head>
+</html>
