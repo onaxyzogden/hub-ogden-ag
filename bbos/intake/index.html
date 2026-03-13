@@ -243,6 +243,7 @@
     margin-top: 3px; accent-color: var(--gold); flex-shrink: 0;
   }
   .radio-opt > div, .check-opt > div { flex: 1; min-width: 0; overflow: hidden; }
+  .check-opt > span.opt-label, .radio-opt > span.opt-label { flex: 1; min-width: 0; overflow-wrap: break-word; word-wrap: break-word; white-space: normal; }
   .opt-label { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); word-wrap: break-word; overflow-wrap: break-word; white-space: normal; }
   .opt-desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 3px; line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word; }
 
@@ -1129,29 +1130,29 @@
         <span>🔒</span> Amanah Self-Declaration — Required Before Submission
       </div>
 
-      <fieldset class="field-group">
-        <legend class="field-label">I confirm that: <span class="required">*</span></legend>
+      <div class="field-group">
+        <div class="field-label">I confirm that: <span class="required">*</span></div>
         <div class="check-group" id="declaration-group">
           <label class="check-opt" onclick="toggleCheck(this,'dec-honest')">
             <input type="checkbox" id="dec-honest">
-            <div><div class="opt-label">My answers reflect honest, current reality — not aspirational projections.</div></div>
+            <span class="opt-label">My answers reflect honest, current reality — not aspirational projections.</span>
           </label>
           <label class="check-opt" onclick="toggleCheck(this,'dec-proof')">
             <input type="checkbox" id="dec-proof">
-            <div><div class="opt-label">The proof I have described or linked to is genuinely available and attributable to my work.</div></div>
+            <span class="opt-label">The proof I have described or linked to is genuinely available and attributable to my work.</span>
           </label>
           <label class="check-opt" onclick="toggleCheck(this,'dec-runway')">
             <input type="checkbox" id="dec-runway">
-            <div><div class="opt-label">My stated financial runway and available hours are accurate as of today, not my target state.</div></div>
+            <span class="opt-label">My stated financial runway and available hours are accurate as of today, not my target state.</span>
           </label>
           <label class="check-opt" onclick="toggleCheck(this,'dec-review')">
             <input type="checkbox" id="dec-review">
-            <div><div class="opt-label">I understand that submitting this form begins a review process — not an automatic qualification — and I accept that outcome.</div></div>
+            <span class="opt-label">I understand that submitting this form begins a review process — not an automatic qualification — and I accept that outcome.</span>
           </label>
         </div>
         <div class="field-error" id="e-declaration">All four declarations are required to proceed.</div>
       </div>
-    </fieldset>
+    </div><!-- /amanah-section -->
 
     <div style="height:28px"></div>
 
@@ -1568,7 +1569,7 @@ function buildRoutingPreview() {
 }
 
 // ── SUBMISSION ─────────────────────────────────────────────────────────────
-const APPS_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwPY0jnPVhqNWknPLk7o_hGogmQSOoNQ9Q2jXR-47pUR-Y-1fSQ6_yPPN2M61Rerf7jNA/exec";
+const APPS_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzla9PUOIWmNf-DkDYAH2thbfW8cpQcCmVBtHnLO0jcwprfgPV0Vk8P27tYY8zZbzzUIQ/exec";
 
 function collectFormData(route) {
   const regFlags = ['reg-licence','reg-permit','reg-insurance','reg-uncertain']
@@ -1654,21 +1655,23 @@ async function submitForm() {
   try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
   isDirty = false;
 
-  // Send to Google Sheet (fire-and-forget — no-cors means we can't read the response)
+  // Send to Google Sheet
+  // NOTE: no-cors mode strips custom headers. We send Content-Type: text/plain
+  // so the browser treats it as a simple request — Apps Script receives the
+  // raw JSON string via e.postData.contents which the doPost function parses.
   if (APPS_SCRIPT_ENDPOINT && APPS_SCRIPT_ENDPOINT !== 'YOUR_APPS_SCRIPT_URL_HERE') {
     try {
       await fetch(APPS_SCRIPT_ENDPOINT, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(collectFormData(route))
       });
     } catch (err) {
       console.warn('Submission network error:', err);
-      // Don't block the redirect — Apps Script may still have received it
     }
   } else {
-    console.warn('BBOS intake: APPS_SCRIPT_ENDPOINT not configured. Set the constant at the top of the script block.');
+    console.warn('BBOS intake: APPS_SCRIPT_ENDPOINT not configured.');
   }
 
   // Redirect to thank-you page — no inline confirmation screen shown
