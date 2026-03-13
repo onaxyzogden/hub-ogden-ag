@@ -33,7 +33,7 @@ const INDEX_PASSWORD = "bbos-admin";
 const PROJECTS = [
   {
     name:        "Acme Corp",
-    file:        "project/acme.html",
+    file:        "acme.html",
     stage:       "02_QAL",
     status:      "advance",
     operator:    "Yousef",
@@ -42,7 +42,7 @@ const PROJECTS = [
   },
   {
     name:        "Bright Path",
-    file:        "project/brightpath.html",
+    file:        "brightpath.html",
     stage:       "03_STR",
     status:      "remain",
     operator:    "Yousef",
@@ -51,7 +51,7 @@ const PROJECTS = [
   },
   {
     name:        "Nova Studio",
-    file:        "project/nova.html",
+    file:        "nova.html",
     stage:       "01_INT",
     status:      "remain",
     operator:    "Yousef",
@@ -1076,7 +1076,7 @@ function modalBack() {
 function buildOutput() {
   const name      = document.getElementById('f-name').value.trim();
   const rawFile   = document.getElementById('f-file').value.trim();
-  const file      = rawFile.startsWith('project/') ? rawFile : 'project/' + rawFile;
+  const file      = rawFile;
   const operator  = document.getElementById('f-operator').value.trim() || 'Yousef';
   const stage     = document.getElementById('f-stage').value;
   const status    = document.getElementById('f-status').value;
@@ -1113,7 +1113,7 @@ function copyEntry() {
 function downloadDashboard() {
   const name       = document.getElementById('f-name').value.trim();
   const rawFile    = document.getElementById('f-file').value.trim();
-  const filename   = rawFile.replace(/^project\//, '');
+  const filename   = rawFile;
   const password   = document.getElementById('f-password').value.trim();
   const sheetId    = document.getElementById('f-sheetid').value.trim();
   const sheetName  = document.getElementById('f-sheetname').value.trim() || 'checklist';
@@ -1181,7 +1181,7 @@ if (sessionStorage.getItem('bbos_index_auth') === 'true') {
             <div class="field">
               <label class="field-label">Dashboard filename</label>
               <input class="field-input" id="f-file" placeholder="acme.html" autocomplete="off">
-              <div class="field-hint">File will live at: project/acme.html</div>
+              <div class="field-hint">Filename only, e.g. acme.html — upload to your project/ folder in GitHub</div>
             </div>
             <div class="field">
               <label class="field-label">Operator</label>
