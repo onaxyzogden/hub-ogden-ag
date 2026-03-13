@@ -222,7 +222,7 @@ nav.scrolled {
 .interest-opt:hover { border-color: var(--sage); background: rgba(122,140,110,0.04); }
 .interest-opt.selected { border-color: rgba(196,163,90,0.45); background: rgba(196,163,90,0.06); }
 .interest-opt input { accent-color: var(--gold); flex-shrink: 0; margin-top: 2px; }
-.interest-opt span { flex: 1; min-width: 0; word-wrap: break-word; line-height: 1.55; }
+.interest-opt span { flex: 1; min-width: 0; overflow-wrap: break-word; word-wrap: break-word; white-space: normal; line-height: 1.55; }
 
 /* Submit buttons */
 .btn-submit {
@@ -300,7 +300,7 @@ footer {
   outline: 2px solid var(--gold);
   outline-offset: 3px; border-radius: 2px;
 }
-fieldset { border: none; margin: 0; padding: 0; }
+fieldset { border: none; margin: 0; padding: 0; min-width: 0; width: 100%; }
 fieldset legend {
   font-family: 'DM Mono', monospace;
   font-size: 0.72rem; letter-spacing: 0.15em;
@@ -459,7 +459,7 @@ fieldset::after { content: ''; display: table; clear: both; }
 // ── ENDPOINT ────────────────────────────────────────────────
 // Replace with your Google Apps Script Web App URL.
 // Same sheet / different tabs, or separate endpoints — your choice.
-const CONNECT_ENDPOINT = 'YOUR_APPS_SCRIPT_URL_HERE';
+const CONNECT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzUQ63XPFfu5PqyfkeGrwM__FF7jo89xUfk8nSUzITPn2lFKGuJjC5HTBR7TOHZky70LA/exec';
 
 // ── NAV SCROLL ───────────────────────────────────────────────
 const nav = document.getElementById('nav');
@@ -503,7 +503,7 @@ async function submitSubscribe() {
     try {
       await fetch(CONNECT_ENDPOINT, {
         method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ formType: 'newsletter', name, email, interests })
       });
     } catch(e) { console.warn('Subscribe send error:', e); }
@@ -533,7 +533,7 @@ async function submitContact() {
     try {
       await fetch(CONNECT_ENDPOINT, {
         method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ formType: 'contact', name, email, subject, message })
       });
     } catch(e) { console.warn('Contact send error:', e); }
