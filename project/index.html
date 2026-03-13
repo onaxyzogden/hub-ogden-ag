@@ -270,13 +270,13 @@
         action: 'createProject',
         client_name: document.getElementById('f-name').value.trim(),
         operator: document.getElementById('f-operator').value.trim(),
-        client_contact: document.getElementById('f-client-contact').value.trim(),
-        client_email: document.getElementById('f-client-email').value.trim(),
+        client_contact: document.getElementById('f-client-contact')?.value.trim() || '',
+        client_email: document.getElementById('f-client-email')?.value.trim() || '',
         stage: document.getElementById('f-stage').value,
         status: document.getElementById('f-status').value,
         note: document.getElementById('f-note').value.trim(),
         dashboard_password: document.getElementById('f-password').value.trim(),
-        parent_folder_id: document.getElementById('f-parent-folder').value.trim()
+        parent_folder_id: document.getElementById('f-parent-folder')?.value.trim() || '1Zv2agDP_8gSoB2VDk-iYC3w6dk9THx9l'
       });
     
       if (!payload.get('client_name')) {
@@ -285,7 +285,7 @@
       }
     
       try {
-        const res = await fetch(API_URL, {
+        const res = await fetch('https://script.google.com/macros/s/AKfycbwyKeVEQ8raXvqmm2la9CiLlUUTU-PpgitIJOyl9a4A8kHOfxD33guIxhEXgwHQYkcigw/exec', {
           method: 'POST',
           body: payload
         });
@@ -297,12 +297,19 @@
           return;
         }
     
-        closeNewProject();
-        await loadProjects();
-        window.open(data.dashboard_url, '_blank');
+        if (typeof closeNewProject === 'function') closeNewProject();
+        if (typeof closeAddModal === 'function') closeAddModal();
+        if (typeof loadProjects === 'function') await loadProjects();
+    
+        if (data.dashboard_url) {
+          window.open(data.dashboard_url, '_blank');
+        } else {
+          alert('Project created successfully');
+        }
+    
       } catch (err) {
-        alert(err.message || 'Project creation failed');
         console.error(err);
+        alert(err.message || 'Project creation failed');
       }
     }
     
