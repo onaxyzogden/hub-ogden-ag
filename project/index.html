@@ -1,1285 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBOS — Projects</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
-<!-- ============================================================
-     BBOS PROJECT INDEX
-     ============================================================
-     SETUP:
-     1. Set INDEX_PASSWORD below
-     2. Add your projects to the PROJECTS array
-     3. Deploy alongside your dashboard HTML files
-
-     Each project entry:
-     {
-       name:       "Client Name",
-       file:       "client-name.html",    // relative path to dashboard
-       stage:      "02_QAL",              // current active stage
-       status:     "remain",              // advance|remain|patch|no_ship
-       operator:   "Yousef",
-       lastSession:"2025-03-10",
-       note:       "Optional short note", // shown on card
-     }
-     ============================================================ -->
-
-<script>
-const INDEX_PASSWORD = "bbos-admin";
-
-const PROJECTS = [
-  {
-    name:        "Acme Corp",
-    file:        "acme.html",
-    stage:       "02_QAL",
-    status:      "advance",
-    operator:    "Yousef",
-    lastSession: "2025-03-12",
-    note:        "QAL complete — ready for STR",
-  },
-  {
-    name:        "Bright Path",
-    file:        "brightpath.html",
-    stage:       "03_STR",
-    status:      "remain",
-    operator:    "Yousef",
-    lastSession: "2025-03-10",
-    note:        "VoC bank in progress",
-  },
-  {
-    name:        "Nova Studio",
-    file:        "nova.html",
-    stage:       "01_INT",
-    status:      "remain",
-    operator:    "Yousef",
-    lastSession: "2025-03-08",
-    note:        "Intake sections 1–4 complete",
-  },
-];
-</script>
-
-<style>
-  :root {
-    --bg:       #0b0f16;
-    --surface:  #161d28;
-    --surface-2:#1e2636;
-    --surface-3:#252f42;
-    --border:   rgba(255,255,255,0.06);
-    --border-md:rgba(255,255,255,0.11);
-    --text-1:   #ede8da;
-    --text-2:   #8c95aa;
-    --text-3:   #4f5a6e;
-    --gold:     #c9a96e;
-    --gold-dim: rgba(201,169,110,0.10);
-    --gold-bd:  rgba(201,169,110,0.28);
-    --green:    #52b584;
-    --green-dim:rgba(82,181,132,0.10);
-    --green-bd: rgba(82,181,132,0.28);
-    --amber:    #e8a93e;
-    --amber-dim:rgba(232,169,62,0.10);
-    --amber-bd: rgba(232,169,62,0.28);
-    --red:      #e05c5c;
-    --red-dim:  rgba(224,92,92,0.08);
-    --red-bd:   rgba(224,92,92,0.28);
-    --blue:     #6aadee;
-    --blue-dim: rgba(106,173,238,0.10);
-    --radius:   10px;
-    --radius-lg:16px;
-    --font-disp:'Cormorant Garamond', Georgia, serif;
-    --font-body:'Instrument Sans', sans-serif;
-    --font-mono:'DM Mono', monospace;
-    --ease:     cubic-bezier(.22,.68,0,1.2);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text-1);
-    font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
-
-  /* ── GATE ── */
-  #gate {
-    position: fixed; inset: 0;
-    background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000;
-  }
-
-  .gate-inner {
-    width: 100%; max-width: 360px; padding: 0 24px;
-    animation: fadeUp 0.5s var(--ease) both;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .gate-logo {
-    font-family: var(--font-disp);
-    font-size: 40px; font-weight: 500;
-    color: var(--text-1); letter-spacing: -0.02em;
-    margin-bottom: 2px;
-  }
-
-  .gate-sub {
-    font-size: 11px; color: var(--text-3);
-    letter-spacing: 0.12em; text-transform: uppercase;
-    margin-bottom: 44px;
-  }
-
-  .gate-label {
-    font-size: 11px; color: var(--text-3);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .gate-input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border-md);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    font-family: var(--font-mono); font-size: 14px;
-    color: var(--text-1); outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 12px; letter-spacing: 0.08em;
-  }
-
-  .gate-input:focus { border-color: var(--gold-bd); }
-
-  .gate-input.error {
-    border-color: var(--red);
-    animation: shake 0.3s;
-  }
-
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    25%      { transform: translateX(-6px); }
-    75%      { transform: translateX(6px); }
-  }
-
-  .gate-btn {
-    width: 100%; padding: 12px;
-    background: var(--gold-dim);
-    border: 1px solid var(--gold-bd);
-    border-radius: var(--radius);
-    color: var(--gold);
-    font-family: var(--font-body); font-size: 13px; font-weight: 500;
-    cursor: pointer; letter-spacing: 0.04em;
-    transition: all 0.2s;
-  }
-
-  .gate-btn:hover { background: rgba(201,169,110,0.18); }
-
-  .gate-error {
-    font-size: 12px; color: var(--red);
-    margin-top: 8px; min-height: 18px;
-  }
-
-  /* ── APP ── */
-  #app { display: none; position: relative; z-index: 1; min-height: 100vh; }
-  #app.visible { display: block; animation: fadeIn 0.4s ease both; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  /* ── HEADER ── */
-  .header {
-    display: flex; align-items: flex-end;
-    justify-content: space-between;
-    padding: 40px 48px 28px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .header::after {
-    content: '';
-    position: absolute; bottom: -1px; left: 48px;
-    width: 48px; height: 1px;
-    background: var(--gold); opacity: 0.6;
-  }
-
-  .header-logo {
-    font-family: var(--font-disp);
-    font-size: 34px; font-weight: 500;
-    color: var(--text-1); letter-spacing: -0.02em;
-  }
-
-  .header-label {
-    font-size: 11px; color: var(--text-3);
-    letter-spacing: 0.1em; text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .header-right {
-    display: flex; align-items: center; gap: 16px;
-  }
-
-  .header-meta {
-    text-align: right;
-    font-size: 12px; color: var(--text-3);
-    font-family: var(--font-mono);
-  }
-
-  .signout-btn {
-    background: none; border: 1px solid var(--border);
-    border-radius: 6px; padding: 6px 12px;
-    color: var(--text-3); font-size: 11px;
-    font-family: var(--font-body); cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .signout-btn:hover { border-color: var(--border-md); color: var(--text-2); }
-
-  /* ── CONTENT ── */
-  .content { padding: 40px 48px; max-width: 1100px; }
-
-  /* ── SUMMARY ROW ── */
-  .summary {
-    display: flex; gap: 12px; margin-bottom: 36px;
-  }
-
-  .sum-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 20px;
-    min-width: 120px;
-  }
-
-  .sum-label {
-    font-size: 10px; color: var(--text-3);
-    letter-spacing: 0.1em; text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .sum-value {
-    font-family: var(--font-disp);
-    font-size: 26px; font-weight: 500;
-    color: var(--text-1); line-height: 1;
-  }
-
-  /* ── SECTION HEADER ── */
-  .section-header {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .section-title {
-    font-size: 11px; font-weight: 500;
-    color: var(--text-3);
-    letter-spacing: 0.1em; text-transform: uppercase;
-  }
-
-  .section-count {
-    font-size: 11px; color: var(--text-3);
-    font-family: var(--font-mono);
-  }
-
-  /* ── PROJECT GRID ── */
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-
-  /* ── PROJECT CARD ── */
-  .project-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-    cursor: pointer;
-    text-decoration: none;
-    display: block;
-    animation: fadeUp 0.4s var(--ease) both;
-    position: relative;
-  }
-
-  .project-card:hover {
-    border-color: var(--border-md);
-    transform: translateY(-2px);
-  }
-
-  .project-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 2px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .project-card:hover::before { opacity: 1; }
-  .project-card.status-advance::before { background: var(--green); }
-  .project-card.status-remain::before  { background: var(--amber); }
-  .project-card.status-patch::before   { background: var(--red); }
-  .project-card.status-noship::before  { background: var(--red); }
-
-  .card-top {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .card-name-row {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 12px;
-    margin-bottom: 10px;
-  }
-
-  .card-name {
-    font-family: var(--font-disp);
-    font-size: 20px; font-weight: 500;
-    color: var(--text-1); letter-spacing: -0.01em;
-    line-height: 1.2;
-  }
-
-  .status-chip {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 500;
-    padding: 3px 8px; border-radius: 20px;
-    white-space: nowrap; flex-shrink: 0;
-    font-family: var(--font-body);
-    margin-top: 2px;
-  }
-
-  .chip-advance { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-bd); }
-  .chip-remain  { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-bd); }
-  .chip-patch   { background: var(--red-dim);   color: var(--red);   border: 1px solid var(--red-bd); }
-  .chip-noship  { background: var(--red-dim);   color: var(--red);   border: 1px solid var(--red-bd); }
-
-  .card-stage {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 11px; color: var(--text-3);
-    font-family: var(--font-mono);
-  }
-
-  .stage-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--gold); opacity: 0.6;
-  }
-
-  .card-note {
-    font-size: 12px; color: var(--text-3);
-    line-height: 1.5; margin-top: 8px;
-    font-style: italic;
-  }
-
-  .card-bottom {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-  }
-
-  .card-meta {
-    display: flex; align-items: center; gap: 14px;
-  }
-
-  .card-meta-item {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 11px; color: var(--text-3);
-    font-family: var(--font-mono);
-  }
-
-  .card-meta-icon {
-    width: 12px; height: 12px; opacity: 0.5;
-  }
-
-  .card-link {
-    display: flex; align-items: center; gap: 4px;
-    font-size: 11px; color: var(--text-3);
-    font-weight: 500; letter-spacing: 0.04em;
-    text-transform: uppercase;
-    transition: color 0.15s;
-  }
-
-  .project-card:hover .card-link { color: var(--gold); }
-
-  .card-arrow {
-    transition: transform 0.2s;
-  }
-
-  .project-card:hover .card-arrow { transform: translateX(3px); }
-
-  /* ── PIPELINE MINI ── */
-  .pipeline-mini {
-    display: flex; align-items: center;
-    padding: 10px 20px; gap: 0;
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-  }
-
-  .pip-seg {
-    flex: 1;
-    height: 3px;
-    background: var(--surface-3);
-    border-radius: 2px;
-    margin: 0 1px;
-    transition: background 0.3s;
-    position: relative;
-  }
-
-  .pip-seg.done    { background: var(--green-bd); }
-  .pip-seg.active  { background: var(--gold); }
-
-  .pip-seg-label {
-    position: absolute;
-    bottom: 6px;
-    left: 50%; transform: translateX(-50%);
-    font-size: 8px;
-    color: var(--text-3);
-    font-family: var(--font-mono);
-    white-space: nowrap;
-    opacity: 0;
-  }
-
-  /* ── ADD PROJECT CARD ── */
-  .add-card {
-    background: transparent;
-    border: 1px dashed var(--border-md);
-    border-radius: var(--radius-lg);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 10px; padding: 40px 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    min-height: 180px;
-  }
-
-  .add-card:hover {
-    border-color: var(--gold-bd);
-    background: var(--gold-dim);
-  }
-
-  .add-icon {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border-md);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text-3);
-    font-size: 18px; line-height: 1;
-    transition: all 0.2s;
-  }
-
-  .add-card:hover .add-icon {
-    border-color: var(--gold-bd);
-    color: var(--gold);
-  }
-
-  .add-label {
-    font-size: 12px; color: var(--text-3);
-    font-weight: 500; letter-spacing: 0.04em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .add-card:hover .add-label { color: var(--gold); }
-
-  /* ── EMPTY STATE ── */
-  .empty {
-    text-align: center; padding: 80px 32px;
-    color: var(--text-3);
-  }
-
-  .empty-title {
-    font-family: var(--font-disp);
-    font-size: 22px; color: var(--text-2);
-    margin-bottom: 8px;
-  }
-
-  /* ── FOOTER ── */
-  .footer {
-    padding: 24px 48px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center;
-    justify-content: space-between;
-    font-size: 11px; color: var(--text-3);
-    font-family: var(--font-mono);
-  }
-
-  /* ── FILTER BAR ── */
-  .filter-bar {
-    display: flex; gap: 6px; margin-bottom: 24px;
-  }
-
-  .filter-btn {
-    font-size: 11px; font-weight: 500;
-    font-family: var(--font-body);
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border-md);
-    background: transparent;
-    color: var(--text-3);
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.02em;
-  }
-
-  .filter-btn:hover { color: var(--text-2); border-color: var(--border-md); }
-
-  .filter-btn.active {
-    background: var(--gold-dim);
-    border-color: var(--gold-bd);
-    color: var(--gold);
-  }
-
-
-  /* ── ADD PROJECT MODAL ── */
-  .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    z-index: 500;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-    animation: fadeIn 0.2s ease;
-  }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border-md);
-    border-radius: var(--radius-lg);
-    width: 100%; max-width: 520px;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: fadeUp 0.25s var(--ease);
-  }
-
-  .modal-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .modal-title {
-    font-family: var(--font-disp);
-    font-size: 22px; font-weight: 500; color: var(--text-1);
-  }
-
-  .modal-close {
-    background: none; border: none;
-    color: var(--text-3); font-size: 20px;
-    cursor: pointer; padding: 4px 8px;
-    border-radius: 4px; line-height: 1;
-    transition: color 0.15s;
-  }
-  .modal-close:hover { color: var(--text-1); }
-
-  .modal-body { padding: 20px 24px; }
-
-  .modal-step {
-    display: none;
-  }
-  .modal-step.active { display: block; }
-
-  .field { margin-bottom: 16px; }
-
-  .field-label {
-    display: block;
-    font-size: 11px; color: var(--text-3);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .field-input, .field-select {
-    width: 100%;
-    background: var(--surface-2);
-    border: 1px solid var(--border-md);
-    border-radius: var(--radius);
-    padding: 10px 12px;
-    font-family: var(--font-body); font-size: 13px;
-    color: var(--text-1); outline: none;
-    transition: border-color 0.2s;
-  }
-  .field-input:focus, .field-select:focus { border-color: var(--gold-bd); }
-  .field-input::placeholder { color: var(--text-3); }
-  .field-select option { background: var(--surface-2); }
-
-  .field-hint {
-    font-size: 11px; color: var(--text-3);
-    margin-top: 4px; font-style: italic;
-  }
-
-  .field-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  }
-
-  .modal-footer {
-    display: flex; gap: 8px; justify-content: flex-end;
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
-  }
-
-  .btn-secondary {
-    padding: 9px 16px;
-    background: transparent;
-    border: 1px solid var(--border-md);
-    border-radius: var(--radius);
-    color: var(--text-2); font-size: 13px;
-    font-family: var(--font-body); cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-secondary:hover { border-color: var(--border-md); color: var(--text-1); }
-
-  .btn-primary {
-    padding: 9px 20px;
-    background: var(--gold-dim);
-    border: 1px solid var(--gold-bd);
-    border-radius: var(--radius);
-    color: var(--gold); font-size: 13px; font-weight: 500;
-    font-family: var(--font-body); cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-primary:hover { background: rgba(201,169,110,0.2); }
-
-  .output-block {
-    background: var(--surface-3);
-    border: 1px solid var(--border-md);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    font-family: var(--font-mono); font-size: 12px;
-    color: var(--text-2); line-height: 1.7;
-    white-space: pre; overflow-x: auto;
-    margin-bottom: 12px;
-  }
-
-  .output-label {
-    font-size: 11px; color: var(--text-3);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .copy-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px;
-    background: transparent;
-    border: 1px solid var(--border-md);
-    border-radius: 6px;
-    color: var(--text-3); font-size: 11px;
-    font-family: var(--font-body); cursor: pointer;
-    transition: all 0.15s; margin-bottom: 16px;
-  }
-  .copy-btn:hover { color: var(--text-1); border-color: var(--border-md); }
-  .copy-btn.copied { color: var(--green); border-color: var(--green-bd); }
-
-  .download-btn {
-    display: flex; align-items: center; gap: 8px;
-    width: 100%; padding: 12px 16px;
-    background: var(--green-dim);
-    border: 1px solid var(--green-bd);
-    border-radius: var(--radius);
-    color: var(--green); font-size: 13px; font-weight: 500;
-    font-family: var(--font-body); cursor: pointer;
-    transition: all 0.15s; text-align: left;
-    margin-bottom: 8px;
-  }
-  .download-btn:hover { background: rgba(82,181,132,0.18); }
-
-  .step-indicator {
-    display: flex; gap: 6px; margin-bottom: 20px;
-  }
-  .step-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--surface-3);
-    transition: background 0.2s;
-  }
-  .step-dot.active { background: var(--gold); }
-  .step-dot.done   { background: var(--green-bd); }
-
-  .success-icon {
-    font-size: 32px; text-align: center;
-    margin-bottom: 12px;
-  }
-
-  .checklist-steps {
-    list-style: none; margin: 16px 0 0;
-  }
-  .checklist-steps li {
-    display: flex; gap: 10px; align-items: flex-start;
-    font-size: 13px; color: var(--text-2);
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .checklist-steps li:last-child { border: none; }
-  .step-num {
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--gold-dim); border: 1px solid var(--gold-bd);
-    color: var(--gold); font-size: 10px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; margin-top: 1px;
-  }
-
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BBOS Project Dashboard</title>
+  <style>
+    :root {
+      --bg:#0f131a;
+      --panel:#161d28;
+      --panel-2:#1d2633;
+      --text:#ede8da;
+      --muted:#9ca3af;
+      --gold:#c9a96e;
+      --green:#52b584;
+      --amber:#e8a93e;
+      --red:#e05c5c;
+      --blue:#6aadee;
+      --line:#2a3445;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; background:var(--bg); color:var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+    .wrap { max-width:1200px; margin:0 auto; padding:28px; }
+    .topbar {
+      display:flex; justify-content:space-between; align-items:center;
+      gap:16px; margin-bottom:24px; flex-wrap:wrap;
+    }
+    h1 { margin:0; font-size:34px; }
+    .muted { color:var(--muted); }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; }
+    button {
+      background:var(--gold); color:#111; border:none; border-radius:10px;
+      padding:12px 16px; font-weight:700; cursor:pointer;
+    }
+    button.secondary { background:var(--panel-2); color:var(--text); border:1px solid var(--line); }
+    .stats {
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:22px;
+    }
+    .stat {
+      background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;
+    }
+    .stat .num { font-size:28px; font-weight:800; }
+    .filters { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+    .filter.active { outline:2px solid var(--gold); }
+    .grid {
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px;
+    }
+    .card {
+      display:block; text-decoration:none; color:inherit; background:var(--panel);
+      border:1px solid var(--line); border-radius:16px; padding:16px;
+    }
+    .card:hover { border-color:var(--gold); transform:translateY(-1px); }
+    .row { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .chip {
+      font-size:12px; padding:6px 9px; border-radius:999px; font-weight:700; display:inline-block;
+    }
+    .chip.advance { background:rgba(82,181,132,.16); color:var(--green); }
+    .chip.remain { background:rgba(232,169,62,.16); color:var(--amber); }
+    .chip.patch { background:rgba(224,92,92,.16); color:var(--red); }
+    .chip.no_ship { background:rgba(106,173,238,.16); color:var(--blue); }
+    .stagebar {
+      display:grid; grid-template-columns:repeat(9,1fr); gap:4px; margin:14px 0;
+    }
+    .seg { height:8px; border-radius:999px; background:#253041; }
+    .seg.done { background:var(--green); }
+    .seg.current { background:var(--gold); }
+    .meta { display:flex; justify-content:space-between; gap:10px; color:var(--muted); font-size:12px; margin-top:12px; }
+    .footer { margin-top:26px; color:var(--muted); font-size:12px; }
+    dialog {
+      width:min(760px, calc(100% - 24px)); border:none; border-radius:18px;
+      background:var(--panel); color:var(--text); padding:0;
+    }
+    .modal-head, .modal-body, .modal-foot { padding:18px 20px; }
+    .modal-head { border-bottom:1px solid var(--line); }
+    .modal-foot { border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px; }
+    .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .field { display:flex; flex-direction:column; gap:6px; }
+    label { font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+    input, select, textarea {
+      width:100%; background:var(--panel-2); color:var(--text); border:1px solid var(--line);
+      border-radius:10px; padding:12px;
+    }
+    textarea { min-height:84px; resize:vertical; }
+    .span-2 { grid-column:1 / -1; }
+    @media (max-width: 800px) {
+      .stats, .form-grid { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- ── GATE ── -->
-<div id="gate">
-  <div class="gate-inner">
-    <div class="gate-logo">BBOS</div>
-    <div class="gate-sub">Project Index</div>
-    <div class="gate-label">Access code</div>
-    <input type="password" id="pw-input" class="gate-input"
-      placeholder="••••••••" autocomplete="current-password"
-      onkeydown="if(event.key==='Enter')checkPassword()">
-    <button class="gate-btn" onclick="checkPassword()">Enter</button>
-    <div class="gate-error" id="gate-error"></div>
-  </div>
-</div>
-
-<!-- ── APP ── -->
-<div id="app">
-
-  <header class="header">
-    <div>
-      <div class="header-label">BBOS — Operator Index</div>
-      <div class="header-logo">Projects</div>
-    </div>
-    <div class="header-right">
-      <div class="header-meta" id="header-meta"></div>
-      <button class="signout-btn" onclick="signOut()">Sign out</button>
-    </div>
-  </header>
-
-  <div class="content">
-
-    <!-- Summary strip -->
-    <div class="summary" id="summary"></div>
-
-    <!-- Filter bar -->
-    <div class="filter-bar" id="filter-bar">
-      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('advance', this)">Ready to advance</button>
-      <button class="filter-btn" onclick="setFilter('remain', this)">In progress</button>
-      <button class="filter-btn" onclick="setFilter('patch', this)">Needs patch</button>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>BBOS Project Dashboard</h1>
+        <div class="muted">Google-powered operator console</div>
+      </div>
+      <div class="actions">
+        <button class="secondary" onclick="loadProjects()">Refresh</button>
+        <button onclick="openNewProject()">New Project</button>
+      </div>
     </div>
 
-    <!-- Section header -->
-    <div class="section-header">
-      <span class="section-title">Active projects</span>
-      <span class="section-count" id="project-count"></span>
+    <div class="stats" id="stats"></div>
+
+    <div class="filters">
+      <button class="filter active secondary" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="filter secondary" data-filter="advance" onclick="setFilter('advance', this)">Ready</button>
+      <button class="filter secondary" data-filter="remain" onclick="setFilter('remain', this)">In Progress</button>
+      <button class="filter secondary" data-filter="patch" onclick="setFilter('patch', this)">Patch</button>
+      <button class="filter secondary" data-filter="no_ship" onclick="setFilter('no_ship', this)">No Ship</button>
     </div>
 
-    <!-- Project grid -->
-    <div class="project-grid" id="project-grid"></div>
-
+    <div class="grid" id="grid"></div>
+    <div class="footer">Connected to Apps Script web app and Google registry.</div>
   </div>
 
-  <footer class="footer">
-    <span>BBOS v2.1</span>
-    <span id="footer-date"></span>
-  </footer>
-
-</div>
-
-<script>
-// ── PIPELINE ──────────────────────────────────────────────────────────────
-
-const PIPELINE = [
-  { code:'01_INT', short:'INT' },
-  { code:'02_QAL', short:'QAL' },
-  { code:'03_STR', short:'STR' },
-  { code:'04_OFR', short:'OFR' },
-  { code:'05_OUT', short:'OUT' },
-  { code:'06_SAL', short:'SAL' },
-  { code:'07_FUL', short:'FUL' },
-  { code:'08_RET', short:'RET' },
-  { code:'09_OPT', short:'OPT' },
-];
-
-const STATUS_LABELS = {
-  advance: 'Ready to advance',
-  remain:  'In progress',
-  patch:   'Patch needed',
-  no_ship: 'No-ship',
-};
-
-const STAGE_NAMES = {
-  '01_INT': 'Intake',
-  '02_QAL': 'Qualification',
-  '03_STR': 'Strategy',
-  '04_OFR': 'Offer',
-  '05_OUT': 'Outreach',
-  '06_SAL': 'Sales',
-  '07_FUL': 'Fulfilment',
-  '08_RET': 'Retention',
-  '09_OPT': 'Optimise',
-};
-
-// ── AUTH ──────────────────────────────────────────────────────────────────
-
-function checkPassword() {
-  const val = document.getElementById('pw-input').value.trim();
-  const err = document.getElementById('gate-error');
-  const inp = document.getElementById('pw-input');
-
-  if (val === INDEX_PASSWORD) {
-    sessionStorage.setItem('bbos_index_auth', 'true');
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('app').classList.add('visible');
-    init();
-  } else {
-    err.textContent = 'Incorrect access code.';
-    inp.classList.add('error');
-    inp.value = '';
-    setTimeout(() => { inp.classList.remove('error'); err.textContent = ''; }, 1800);
-  }
-}
-
-function signOut() {
-  sessionStorage.removeItem('bbos_index_auth');
-  location.reload();
-}
-
-// ── INIT ──────────────────────────────────────────────────────────────────
-
-let activeFilter = 'all';
-
-function init() {
-  const now = new Date();
-  document.getElementById('header-meta').textContent =
-    now.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
-  document.getElementById('footer-date').textContent =
-    `Last loaded: ${now.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}`;
-
-  renderSummary();
-  renderGrid('all');
-}
-
-// ── SUMMARY ───────────────────────────────────────────────────────────────
-
-function renderSummary() {
-  const total    = PROJECTS.length;
-  const advance  = PROJECTS.filter(p => p.status === 'advance').length;
-  const remain   = PROJECTS.filter(p => p.status === 'remain').length;
-  const patch    = PROJECTS.filter(p => p.status === 'patch' || p.status === 'no_ship').length;
-
-  const el = document.getElementById('summary');
-  el.innerHTML = [
-    { label: 'Total projects', value: total,   delay: '0.05s' },
-    { label: 'Ready to advance', value: advance, delay: '0.10s' },
-    { label: 'In progress',    value: remain,  delay: '0.15s' },
-    { label: 'Need attention', value: patch,   delay: '0.20s' },
-  ].map(s => `
-    <div class="sum-card" style="animation:fadeUp 0.4s var(--ease) ${s.delay} both">
-      <div class="sum-label">${s.label}</div>
-      <div class="sum-value">${s.value}</div>
+  <dialog id="newProjectDialog">
+    <div class="modal-head">
+      <h2 style="margin:0">Create Project</h2>
     </div>
-  `).join('');
-}
-
-// ── FILTER ────────────────────────────────────────────────────────────────
-
-function setFilter(filter, btn) {
-  activeFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderGrid(filter);
-}
-
-// ── GRID ──────────────────────────────────────────────────────────────────
-
-function renderGrid(filter) {
-  const grid = document.getElementById('project-grid');
-  const filtered = filter === 'all'
-    ? PROJECTS
-    : PROJECTS.filter(p => {
-        if (filter === 'patch') return p.status === 'patch' || p.status === 'no_ship';
-        return p.status === filter;
-      });
-
-  document.getElementById('project-count').textContent =
-    `${filtered.length} of ${PROJECTS.length}`;
-
-  if (!PROJECTS.length) {
-    grid.innerHTML = `
-      <div class="empty" style="grid-column:1/-1">
-        <div class="empty-title">No projects yet</div>
-        <div style="font-size:13px;margin-top:6px">Add entries to the PROJECTS array in this file</div>
-      </div>`;
-    return;
-  }
-
-  grid.innerHTML = '';
-
-  filtered.forEach((project, i) => {
-    const card = buildCard(project, i);
-    grid.appendChild(card);
-  });
-
-  // Add project card — opens modal
-  const addCard = document.createElement('div');
-  addCard.className = 'add-card';
-  addCard.onclick = () => openAddModal();
-  addCard.innerHTML = `
-    <div class="add-icon">+</div>
-    <div class="add-label">Add project</div>
-  `;
-  grid.appendChild(addCard);
-}
-
-function buildCard(project, i) {
-  const statusKey  = (project.status || 'remain').replace('_', '');
-  const chipClass  = `chip-${statusKey}`;
-  const chipLabel  = STATUS_LABELS[project.status] || project.status;
-  const stageName  = STAGE_NAMES[project.stage] || project.stage;
-  const activeIdx  = PIPELINE.findIndex(p => p.code === project.stage);
-
-  const card = document.createElement('a');
-  card.href = project.file;
-  card.className = `project-card status-${statusKey}`;
-  card.style.animationDelay = `${0.05 + i * 0.06}s`;
-
-  // Mini pipeline
-  const pipeSegs = PIPELINE.map((p, pi) => {
-    const cls = pi < activeIdx ? 'done' : pi === activeIdx ? 'active' : '';
-    return `<div class="pip-seg ${cls}" title="${p.short}"></div>`;
-  }).join('');
-
-  card.innerHTML = `
-    <div class="pipeline-mini">${pipeSegs}</div>
-    <div class="card-top">
-      <div class="card-name-row">
-        <div class="card-name">${project.name}</div>
-        <span class="status-chip ${chipClass}">${chipLabel}</span>
-      </div>
-      <div class="card-stage">
-        <div class="stage-dot"></div>
-        ${project.stage} — ${stageName}
-      </div>
-      ${project.note ? `<div class="card-note">${project.note}</div>` : ''}
-    </div>
-    <div class="card-bottom">
-      <div class="card-meta">
-        <div class="card-meta-item">
-          <svg class="card-meta-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="6" cy="6" r="4.5"/>
-            <path d="M6 3.5V6l1.5 1.5"/>
-          </svg>
-          ${project.lastSession || '—'}
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Client / Project Name</label>
+          <input id="f-name" placeholder="Acme Corp">
         </div>
-        <div class="card-meta-item">
-          <svg class="card-meta-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="6" cy="4" r="2.5"/>
-            <path d="M1.5 10.5c0-2.21 2.01-4 4.5-4s4.5 1.79 4.5 4"/>
-          </svg>
-          ${project.operator || '—'}
+        <div class="field">
+          <label>Operator</label>
+          <input id="f-operator" placeholder="Yousef">
+        </div>
+        <div class="field">
+          <label>Client Contact</label>
+          <input id="f-client-contact" placeholder="Jane Doe">
+        </div>
+        <div class="field">
+          <label>Client Email</label>
+          <input id="f-client-email" placeholder="jane@client.com">
+        </div>
+        <div class="field">
+          <label>Stage</label>
+          <select id="f-stage">
+            <option value="01_INT">01_INT</option>
+            <option value="02_QAL">02_QAL</option>
+            <option value="03_STR">03_STR</option>
+            <option value="04_OFR">04_OFR</option>
+            <option value="05_OUT">05_OUT</option>
+            <option value="06_SAL">06_SAL</option>
+            <option value="07_FUL">07_FUL</option>
+            <option value="08_RET">08_RET</option>
+            <option value="09_OPT">09_OPT</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="f-status">
+            <option value="remain">remain</option>
+            <option value="advance">advance</option>
+            <option value="patch">patch</option>
+            <option value="no_ship">no_ship</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Dashboard Password</label>
+          <input id="f-password" placeholder="optional">
+        </div>
+        <div class="field">
+          <label>Parent Folder ID</label>
+          <input id="f-parent-folder" value="1Zv2agDP_8gSoB2VDk-iYC3w6dk9THx9l">
+        </div>
+        <div class="field span-2">
+          <label>Note</label>
+          <textarea id="f-note" placeholder="Project created and ready for intake."></textarea>
         </div>
       </div>
-      <div class="card-link">
-        Open
-        <svg class="card-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M2.5 6h7M6.5 3l3 3-3 3"/>
-        </svg>
-      </div>
     </div>
-  `;
+    <div class="modal-foot">
+      <button class="secondary" onclick="closeNewProject()">Cancel</button>
+      <button onclick="createProjectFromModal()">Create Project</button>
+    </div>
+  </dialog>
 
-  return card;
-}
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwyKeVEQ8raXvqmm2la9CiLlUUTU-PpgitIJOyl9a4A8kHOfxD33guIxhEXgwHQYkcigw/exec";
+    let PROJECT = [];
+    let activeFilter = 'all';
+    const STAGES = ['01_INT','02_QAL','03_STR','04_OFR','05_OUT','06_SAL','07_FUL','08_RET','09_OPT'];
 
-
-// ── ADD PROJECT MODAL ─────────────────────────────────────────────────────
-
-let modalStep = 0;
-
-function openAddModal() {
-  modalStep = 0;
-  // Reset fields
-  ['f-name','f-file','f-operator','f-note','f-sheetid','f-password'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  document.getElementById('f-sheetname').value = 'checklist';
-  document.getElementById('f-metasheet').value = 'meta';
-  document.getElementById('f-stage').value = '01_INT';
-  document.getElementById('f-status').value = 'remain';
-  updateModalStep();
-  document.getElementById('add-modal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  // Auto-generate filename from name
-  document.getElementById('f-name').addEventListener('input', autoFilename);
-}
-
-function autoFilename() {
-  const name = document.getElementById('f-name').value;
-  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  if (slug) document.getElementById('f-file').value = slug + '.html';
-}
-
-function closeAddModal() {
-  document.getElementById('add-modal').style.display = 'none';
-  document.body.style.overflow = '';
-  document.getElementById('f-name').removeEventListener('input', autoFilename);
-}
-
-function updateModalStep() {
-  [0,1,2].forEach(i => {
-    document.getElementById(`modal-step-${i}`).classList.toggle('active', i === modalStep);
-    const dot = document.getElementById(`dot-${i}`);
-    dot.className = 'step-dot' + (i < modalStep ? ' done' : i === modalStep ? ' active' : '');
-  });
-  document.getElementById('modal-back-btn').style.display = modalStep > 0 ? 'block' : 'none';
-  document.getElementById('modal-next-btn').textContent = modalStep === 1 ? 'Generate ✦' : 'Next →';
-  if (modalStep === 2) document.getElementById('modal-next-btn').style.display = 'none';
-  else document.getElementById('modal-next-btn').style.display = 'block';
-}
-
-function modalNext() {
-  if (modalStep === 0) {
-    const name = document.getElementById('f-name').value.trim();
-    if (!name) { document.getElementById('f-name').focus(); return; }
-    const file = document.getElementById('f-file').value.trim();
-    if (!file) { document.getElementById('f-file').focus(); return; }
-    modalStep = 1;
-    updateModalStep();
-  } else if (modalStep === 1) {
-    const sheetId = document.getElementById('f-sheetid').value.trim();
-    if (!sheetId || sheetId === 'YOUR_SHEET_ID_HERE') {
-      document.getElementById('f-sheetid').focus(); return;
+    function openNewProject() {
+      document.getElementById('newProjectDialog').showModal();
     }
-    const pw = document.getElementById('f-password').value.trim();
-    if (!pw) { document.getElementById('f-password').focus(); return; }
-    buildOutput();
-    modalStep = 2;
-    updateModalStep();
-  }
-}
 
-function modalBack() {
-  if (modalStep > 0) { modalStep--; updateModalStep(); }
-}
+    function closeNewProject() {
+      document.getElementById('newProjectDialog').close();
+    }
 
-function buildOutput() {
-  const name      = document.getElementById('f-name').value.trim();
-  const rawFile   = document.getElementById('f-file').value.trim();
-  const file      = rawFile;
-  const operator  = document.getElementById('f-operator').value.trim() || 'Yousef';
-  const stage     = document.getElementById('f-stage').value;
-  const status    = document.getElementById('f-status').value;
-  const note      = document.getElementById('f-note').value.trim();
-  const today     = new Date().toISOString().slice(0,10);
+    function setFilter(filter, btn) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid();
+    }
 
-  const entry = `  {
-    name:        "${name}",
-    file:        "${file}",
-    stage:       "${stage}",
-    status:      "${status}",
-    operator:    "${operator}",
-    lastSession: "${today}",${note ? `
-    note:        "${note}",` : ''}
-  },`;
+    async function loadProjects() {
+      const res = await fetch(`${API_URL}?action=listProjects`);
+      const data = await res.json();
+      if (!data.ok) {
+        alert(data.error || 'Failed to load projects');
+        return;
+      }
+      PROJECT = data.projects || [];
+      renderStats();
+      renderGrid();
+    }
 
-  document.getElementById('output-entry').textContent = entry;
-  document.getElementById('output-filepath').textContent = file;
-}
+    function renderStats() {
+      const total = PROJECT.length;
+      const advance = PROJECT.filter(p => p.status === 'advance').length;
+      const remain = PROJECT.filter(p => p.status === 'remain').length;
+      const needsPatch = PROJECT.filter(p => p.status === 'patch').length;
 
-function copyEntry() {
-  const text = document.getElementById('output-entry').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-entry-btn');
-    btn.textContent = '✓ Copied';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="7" height="7" rx="1"/><path d="M1 8V1h7"/></svg> Copy entry`;
-      btn.classList.remove('copied');
-    }, 2000);
-  });
-}
+      document.getElementById('stats').innerHTML = `
+        <div class="stat"><div class="muted">Total Projects</div><div class="num">${total}</div></div>
+        <div class="stat"><div class="muted">Ready</div><div class="num">${advance}</div></div>
+        <div class="stat"><div class="muted">In Progress</div><div class="num">${remain}</div></div>
+        <div class="stat"><div class="muted">Needs Patch</div><div class="num">${needsPatch}</div></div>
+      `;
+    }
 
-function downloadDashboard() {
-  const name       = document.getElementById('f-name').value.trim();
-  const rawFile    = document.getElementById('f-file').value.trim();
-  const filename   = rawFile;
-  const password   = document.getElementById('f-password').value.trim();
-  const sheetId    = document.getElementById('f-sheetid').value.trim();
-  const sheetName  = document.getElementById('f-sheetname').value.trim() || 'checklist';
-  const metaSheet  = document.getElementById('f-metasheet').value.trim() || 'meta';
+    function renderGrid() {
+      const grid = document.getElementById('grid');
+      let rows = PROJECT.slice();
+      if (activeFilter !== 'all') {
+        rows = rows.filter(p => p.status === activeFilter);
+      }
 
-  // Fetch and patch the dashboard template
-  fetch('bbos_project_dashboard_template.html')
-    .then(r => {
-      if (!r.ok) throw new Error('Template not found');
-      return r.text();
-    })
-    .then(html => {
-      html = html.replace(/password:\s*"[^"]*"/, `password:    "${password}"`);
-      html = html.replace(/projectName:\s*"[^"]*"/, `projectName: "${name}"`);
-      html = html.replace(/sheetId:\s*"[^"]*"/, `sheetId:     "${sheetId}"`);
-      html = html.replace(/sheetName:\s*"[^"]*"/, `sheetName:   "${sheetName}"`);
-      html = html.replace(/metaSheet:\s*"[^"]*"/, `metaSheet:   "${metaSheet}"`);
+      grid.innerHTML = rows.map(p => {
+        const idx = STAGES.indexOf(p.stage);
+        const stagebar = STAGES.map((s, i) => {
+          let cls = 'seg';
+          if (i < idx) cls += ' done';
+          if (i === idx) cls += ' current';
+          return `<div class="${cls}"></div>`;
+        }).join('');
 
-      const blob = new Blob([html], { type: 'text/html' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    })
-    .catch(() => {
-      // Fallback: generate a minimal working stub
-      alert('Could not find bbos_project_dashboard_template.html in the same directory.\n\nMake sure both files are deployed together at the same path.');
-    });
-}
-
-// ── STARTUP ───────────────────────────────────────────────────────────────
-
-if (sessionStorage.getItem('bbos_index_auth') === 'true') {
-  document.getElementById('gate').style.display = 'none';
-  document.getElementById('app').classList.add('visible');
-  init();
-}
-</script>
-
-<!-- ── ADD PROJECT MODAL ── -->
-<div id="add-modal" style="display:none">
-  <div class="modal-backdrop" onclick="if(event.target===this)closeAddModal()">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">New project</div>
-        <button class="modal-close" onclick="closeAddModal()">✕</button>
-      </div>
-      <div class="modal-body">
-
-        <!-- Step indicators -->
-        <div class="step-indicator">
-          <div class="step-dot active" id="dot-0"></div>
-          <div class="step-dot" id="dot-1"></div>
-          <div class="step-dot" id="dot-2"></div>
-        </div>
-
-        <!-- Step 1: Project details -->
-        <div class="modal-step active" id="modal-step-0">
-          <div class="field">
-            <label class="field-label">Project / client name</label>
-            <input class="field-input" id="f-name" placeholder="Acme Corp" autocomplete="off">
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field-label">Dashboard filename</label>
-              <input class="field-input" id="f-file" placeholder="acme.html" autocomplete="off">
-              <div class="field-hint">Filename only, e.g. acme.html — upload to your project/ folder in GitHub</div>
+        return `
+          <a class="card" href="${p.file}" target="_blank">
+            <div class="row">
+              <div>
+                <div style="font-size:20px;font-weight:800">${escapeHtml(p.name || '')}</div>
+                <div class="muted" style="margin-top:4px">${escapeHtml(p.stage || '')}</div>
+              </div>
+              <span class="chip ${p.status}">${escapeHtml(p.status || '')}</span>
             </div>
-            <div class="field">
-              <label class="field-label">Operator</label>
-              <input class="field-input" id="f-operator" placeholder="Yousef" autocomplete="off">
+            <div style="margin-top:10px">${escapeHtml(p.note || '')}</div>
+            <div class="stagebar">${stagebar}</div>
+            <div class="meta">
+              <span>${escapeHtml(p.operator || '')}</span>
+              <span>${escapeHtml(p.lastSession || '')}</span>
             </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field-label">Active stage</label>
-              <select class="field-select" id="f-stage">
-                <option value="01_INT">01_INT — Intake</option>
-                <option value="02_QAL">02_QAL — Qualification</option>
-                <option value="03_STR">03_STR — Strategy</option>
-                <option value="04_OFR">04_OFR — Offer</option>
-                <option value="05_OUT">05_OUT — Outreach</option>
-                <option value="06_SAL">06_SAL — Sales</option>
-                <option value="07_FUL">07_FUL — Fulfilment</option>
-                <option value="08_RET">08_RET — Retention</option>
-                <option value="09_OPT">09_OPT — Optimise</option>
-              </select>
-            </div>
-            <div class="field">
-              <label class="field-label">Routing status</label>
-              <select class="field-select" id="f-status">
-                <option value="remain">remain — In progress</option>
-                <option value="advance">advance — Ready to advance</option>
-                <option value="patch">patch — Patch needed</option>
-                <option value="no_ship">no_ship — No-ship</option>
-              </select>
-            </div>
-          </div>
-          <div class="field">
-            <label class="field-label">Short note (optional)</label>
-            <input class="field-input" id="f-note" placeholder="e.g. Intake sections 1–4 complete" autocomplete="off">
-          </div>
-        </div>
+          </a>
+        `;
+      }).join('');
+    }
 
-        <!-- Step 2: Sheet + password -->
-        <div class="modal-step" id="modal-step-1">
-          <div class="field">
-            <label class="field-label">Google Sheet ID</label>
-            <input class="field-input" id="f-sheetid" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" autocomplete="off" style="font-family:var(--font-mono);font-size:12px">
-            <div class="field-hint">From the sheet URL: /spreadsheets/d/<strong>SHEET_ID</strong>/edit</div>
-          </div>
-          <div class="field">
-            <label class="field-label">Dashboard password</label>
-            <input class="field-input" id="f-password" placeholder="client-password-2025" autocomplete="off">
-            <div class="field-hint">Unique per project — share privately with the client or team</div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field-label">Checklist tab name</label>
-              <input class="field-input" id="f-sheetname" value="checklist" autocomplete="off">
-            </div>
-            <div class="field">
-              <label class="field-label">Meta tab name</label>
-              <input class="field-input" id="f-metasheet" value="meta" autocomplete="off">
-            </div>
-          </div>
-        </div>
+    async function createProjectFromModal() {
+      const payload = {
+        action: 'createProject',
+        client_name: document.getElementById('f-name').value.trim(),
+        operator: document.getElementById('f-operator').value.trim(),
+        client_contact: document.getElementById('f-client-contact').value.trim(),
+        client_email: document.getElementById('f-client-email').value.trim(),
+        stage: document.getElementById('f-stage').value,
+        status: document.getElementById('f-status').value,
+        note: document.getElementById('f-note').value.trim(),
+        dashboard_password: document.getElementById('f-password').value.trim(),
+        parent_folder_id: document.getElementById('f-parent-folder').value.trim()
+      };
 
-        <!-- Step 3: Output -->
-        <div class="modal-step" id="modal-step-2">
-          <div class="success-icon">✦</div>
-          <div class="output-label">PROJECTS array entry — paste into bbos_index.html</div>
-          <div class="output-block" id="output-entry"></div>
-          <button class="copy-btn" id="copy-entry-btn" onclick="copyEntry()">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="4" y="4" width="7" height="7" rx="1"/><path d="M1 8V1h7"/>
-            </svg>
-            Copy entry
-          </button>
+      if (!payload.client_name) {
+        alert('Client / Project Name is required');
+        return;
+      }
 
-          <button class="download-btn" onclick="downloadDashboard()">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M7 1v8M4 6l3 3 3-3M1 11h12"/>
-            </svg>
-            Download pre-configured dashboard HTML
-          </button>
+      const btns = document.querySelectorAll('button');
+      btns.forEach(b => b.disabled = true);
 
-          <div class="output-label" style="margin-top:8px">Next steps</div>
-          <ul class="checklist-steps">
-            <li><span class="step-num">1</span>Copy the entry above and add it to the PROJECTS array in bbos_index.html</li>
-            <li><span class="step-num">2</span>Download the dashboard HTML and upload it to your repo at <span id="output-filepath" style="font-family:var(--font-mono);font-size:11px;color:var(--gold)"></span></li>
-            <li><span class="step-num">3</span>Make sure the Google Sheet is published (File → Share → Publish to web)</li>
-            <li><span class="step-num">4</span>Push to GitHub — the tile will be live on next deploy</li>
-          </ul>
-        </div>
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          alert(data.error || 'Project creation failed');
+          return;
+        }
+        closeNewProject();
+        await loadProjects();
+        window.open(data.dashboard_url, '_blank');
+      } catch (err) {
+        alert(err.message || 'Project creation failed');
+      } finally {
+        btns.forEach(b => b.disabled = false);
+      }
+    }
 
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" id="modal-back-btn" onclick="modalBack()" style="display:none">Back</button>
-        <button class="btn-secondary" onclick="closeAddModal()">Cancel</button>
-        <button class="btn-primary" id="modal-next-btn" onclick="modalNext()">Next →</button>
-      </div>
-    </div>
-  </div>
-</div>
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
 
+    loadProjects();
+  </script>
 </body>
 </html>
