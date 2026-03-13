@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBOS — Build Business On Soul · OGDEN</title>
+<meta name="description" content="BBOS is a nine-stage operational and spiritual framework for building an ethical business as an act of worship. Rigorous systems, soul-first foundations.">
+<link rel="canonical" href="https://hub.ogden.ag/bbos/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hub.ogden.ag/bbos/">
+<meta property="og:title" content="BBOS — Build Business On Soul">
+<meta property="og:description" content="A nine-stage framework for building an ethical business as an act of ibadah. Rigorous systems, soul-first foundations.">
+<meta property="og:image" content="https://hub.ogden.ag/assets/og/bbos.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060d1a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+/* ── TOKENS ── */
+:root {
+  --navy:       #060d1a;
+  --navy-mid:   #0d1e38;
+  --navy-light: #1a3060;
+  --gold:       #C4973A;
+  --gold-light: #DEB96A;
+  --gold-pale:  #F0D898;
+  --cream:      #FAF7F2;
+  --cream-mid:  #EDE6D8;
+  --steel:      #8A9BB8;
+  --steel-mid:  #6A7A94;
+  --steel-dim:  #3A4A64;
+  --ink:        #1C2840;
+  --white:      #FFFFFF;
+  --gap-xs: 0.5rem;
+  --gap-s:  1rem;
+  --gap-m:  2rem;
+  --gap-l:  4rem;
+  --gap-xl: 7rem;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--cream-mid);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ── NOISE GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 200px;
+  opacity: 0.45;
+}
+
+/* ── SKIP LINK ── */
+.skip-link {
+  position: absolute; top: -100%; left: 1rem; z-index: 99999;
+  background: var(--gold); color: var(--navy);
+  font-size: 0.875rem; font-weight: 600;
+  padding: 0.6rem 1.2rem; border-radius: 0 0 4px 4px;
+  text-decoration: none; transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px; z-index: 200;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(6,13,26,0.0);
+  border-bottom: 1px solid rgba(196,151,58,0.0);
+  transition: background 0.4s, border-color 0.4s;
+}
+nav.scrolled {
+  background: rgba(6,13,26,0.96);
+  border-bottom-color: rgba(196,151,58,0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold); transition: color 0.2s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.nav-logo:hover { color: var(--gold-light); }
+.nav-links {
+  display: flex; align-items: center;
+  gap: 2rem; list-style: none;
+}
+.nav-links a {
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(138,155,184,0.8);
+  position: relative; transition: color 0.2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute;
+  bottom: -3px; left: 0; right: 0; height: 1px;
+  background: var(--gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-links a:hover { color: var(--cream); }
+.nav-links a:hover::after,
+.nav-links a.nav-active::after { transform: scaleX(1); }
+.nav-links a.nav-active { color: var(--gold-light); }
+.nav-cta {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(196,151,58,0.35);
+  padding: 0.5rem 1.2rem; border-radius: 2px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.nav-cta:hover {
+  background: rgba(196,151,58,0.1);
+  border-color: var(--gold);
+}
+.nav-hamburger {
+  display: none; flex-direction: column;
+  justify-content: center; gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none;
+  cursor: pointer; padding: 4px; z-index: 210;
+}
+.nav-hamburger span {
+  display: block; width: 100%; height: 1.5px;
+  background: rgba(196,151,58,0.8); border-radius: 2px;
+  transition: transform 0.35s cubic-bezier(0.77,0,0.175,1), opacity 0.25s;
+  transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-drawer {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(6,13,26,0.98);
+  backdrop-filter: blur(18px);
+  z-index: 150;
+  padding: 5rem 2.5rem 3rem;
+  flex-direction: column;
+  transform: translateY(-100%);
+  transition: transform 0.45s cubic-bezier(0.77,0,0.175,1);
+  border-bottom: 1px solid rgba(196,151,58,0.12);
+}
+.nav-drawer.open { transform: translateY(0); }
+.nav-drawer a {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 400;
+  color: rgba(250,247,242,0.88);
+  text-decoration: none; letter-spacing: 0.03em;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(196,151,58,0.1);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.nav-drawer a:last-of-type { border-bottom: none; }
+.nav-drawer a:hover { color: var(--gold-light); padding-left: 0.5rem; }
+.drawer-home-cta {
+  margin-top: 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold) !important;
+  border: 1px solid rgba(196,151,58,0.3) !important;
+  border-radius: 100px;
+  padding: 0.75rem 1.8rem !important;
+  text-align: center;
+  display: block !important;
+}
+.drawer-close-btn {
+  position: absolute; top: 1.4rem; right: 1.5rem;
+  background: none; border: none;
+  font-size: 1.1rem; color: rgba(138,155,184,0.5);
+  cursor: pointer; padding: 0.5rem; line-height: 1;
+  transition: color 0.2s;
+}
+.drawer-close-btn:hover { color: var(--gold-light); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 7rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 15% 40%, rgba(20,45,100,0.6) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(196,151,58,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(13,30,56,0.8) 0%, transparent 100%),
+    #060d1a;
+}
+/* Geometric grid background */
+.hero-grid {
+  position: absolute; inset: 0; overflow: hidden;
+  opacity: 0.13;
+}
+.hero-grid::before {
+  content: '';
+  position: absolute; inset: -50%;
+  background-image:
+    linear-gradient(rgba(220,175,80,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220,175,80,1) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(600px) rotateX(30deg) rotateZ(-3deg);
+  animation: gridDrift 30s linear infinite;
+}
+@keyframes gridDrift {
+  from { transform: perspective(600px) rotateX(30deg) rotateZ(-3deg) translateY(0); }
+  to   { transform: perspective(600px) rotateX(30deg) rotateZ(-3deg) translateY(64px); }
+}
+/* Arabic calligraphy watermark */
+.hero-calligraphy {
+  position: absolute;
+  top: 50%; right: 8%;
+  transform: translateY(-50%);
+  font-size: clamp(10rem, 22vw, 22rem);
+  line-height: 1;
+  color: rgba(196,151,58,0.04);
+  pointer-events: none;
+  user-select: none;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-family: 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+}
+.hero-inner {
+  position: relative; z-index: 5;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 3rem; width: 100%;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.8rem;
+  opacity: 0; animation: fadeUp 0.8s 0.1s ease forwards;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block; width: 2.5rem; height: 1px;
+  background: var(--gold); flex-shrink: 0;
+}
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.08;
+  max-width: 820px;
+  opacity: 0; animation: fadeUp 0.9s 0.2s ease forwards;
+  margin-bottom: 1.8rem;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+.hero-sub {
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--steel);
+  max-width: 560px; line-height: 1.75;
+  opacity: 0; animation: fadeUp 0.9s 0.35s ease forwards;
+  margin-bottom: 3rem;
+}
+.hero-actions {
+  display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.9s 0.5s ease forwards;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.9rem 2rem;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.875rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: 2px;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.9rem 2rem;
+  border: 1px solid rgba(196,151,58,0.3);
+  color: var(--gold);
+  font-size: 0.875rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: 2px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-ghost:hover {
+  background: rgba(196,151,58,0.08);
+  border-color: var(--gold);
+}
+/* Hero scroll indicator */
+.hero-scroll {
+  position: absolute; bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  opacity: 0; animation: fadeIn 1s 1.2s ease forwards;
+  z-index: 5;
+}
+.hero-scroll-line {
+  width: 1px; height: 3rem;
+  background: linear-gradient(to bottom, transparent, rgba(196,151,58,0.5));
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50%       { opacity: 0.8; transform: scaleY(1.15); }
+}
+.hero-scroll-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.2em;
+  color: rgba(196,151,58,0.4); text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+/* ── SHARED SECTION STYLES ── */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.section-label::before {
+  content: ''; display: block;
+  width: 1.5rem; height: 1px; background: var(--gold); flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400; line-height: 1.18;
+  color: var(--white); margin-bottom: 1.4rem;
+}
+.section-body {
+  font-size: 1rem; font-weight: 300;
+  color: var(--steel); line-height: 1.8;
+  max-width: 620px;
+}
+
+/* ── PHILOSOPHY SECTION ── */
+#philosophy {
+  padding: var(--gap-xl) 3rem;
+  position: relative; overflow: hidden;
+}
+.philosophy-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: center;
+}
+.philosophy-text {}
+.philosophy-ayah {
+  margin-top: 2.5rem;
+  padding: 1.8rem 2rem;
+  border-left: 2px solid rgba(196,151,58,0.3);
+  background: rgba(196,151,58,0.04);
+  border-radius: 0 4px 4px 0;
+}
+.ayah-arabic {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; font-weight: 400;
+  color: var(--gold-pale);
+  line-height: 1.7;
+  direction: rtl; text-align: right;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.03em;
+}
+.ayah-translation {
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid);
+  font-style: italic; line-height: 1.7;
+}
+.ayah-source {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.12em;
+  color: rgba(196,151,58,0.45);
+  margin-top: 0.6rem; text-transform: uppercase;
+}
+/* Right side pillars */
+.philosophy-pillars {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.pillar-card {
+  background: rgba(13,30,56,0.6);
+  border: 1px solid rgba(58,74,100,0.4);
+  border-radius: 4px;
+  padding: 1.5rem;
+  transition: border-color 0.3s, background 0.3s;
+}
+.pillar-card:hover {
+  border-color: rgba(196,151,58,0.25);
+  background: rgba(20,40,80,0.7);
+}
+.pillar-attr {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.14em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.pillar-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 400;
+  color: var(--cream-mid);
+  margin-bottom: 0.6rem; line-height: 1.3;
+}
+.pillar-desc {
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid); line-height: 1.65;
+}
+
+/* ── FOR WHOM ── */
+#for-whom {
+  padding: var(--gap-xl) 3rem;
+  background: rgba(13,30,56,0.3);
+  position: relative;
+}
+#for-whom::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(196,151,58,0.2) 30%, rgba(196,151,58,0.2) 70%, transparent);
+}
+.for-whom-inner {
+  max-width: 1200px; margin: 0 auto;
+}
+.for-whom-header {
+  max-width: 640px; margin-bottom: 4rem;
+}
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+.client-card {
+  padding: 2rem;
+  border: 1px solid rgba(58,74,100,0.35);
+  border-radius: 4px;
+  background: rgba(6,13,26,0.6);
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.client-card:hover {
+  border-color: rgba(196,151,58,0.22);
+  transform: translateY(-3px);
+}
+.client-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.client-card:hover::before { opacity: 1; }
+.client-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; color: rgba(196,151,58,0.4);
+  letter-spacing: 0.18em; margin-bottom: 1rem;
+}
+.client-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 400;
+  color: var(--cream-mid); line-height: 1.3;
+  margin-bottom: 0.9rem;
+}
+.client-desc {
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid); line-height: 1.7;
+}
+/* Not-for-whom note */
+.not-for-whom {
+  padding: 1.5rem 2rem;
+  border: 1px solid rgba(58,74,100,0.25);
+  border-radius: 4px;
+  background: rgba(13,30,56,0.3);
+  display: flex; align-items: flex-start; gap: 1.2rem;
+  max-width: 780px;
+}
+.not-for-whom-icon {
+  font-size: 1rem; color: rgba(196,151,58,0.4);
+  flex-shrink: 0; margin-top: 0.15rem;
+}
+.not-for-whom-text {
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid); line-height: 1.7;
+}
+.not-for-whom-text strong {
+  color: var(--steel); font-weight: 500;
+}
+
+/* ── NINE STAGES ── */
+#stages {
+  padding: var(--gap-xl) 3rem;
+  position: relative;
+}
+#stages::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(196,151,58,0.2) 30%, rgba(196,151,58,0.2) 70%, transparent);
+}
+.stages-inner {
+  max-width: 1200px; margin: 0 auto;
+}
+.stages-header {
+  max-width: 640px; margin-bottom: 5rem;
+}
+/* Vertical stage spine */
+.stages-list {
+  position: relative;
+  padding-left: 5rem;
+}
+.stages-spine {
+  position: absolute;
+  left: 1.75rem; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    rgba(196,151,58,0.5) 0%,
+    rgba(196,151,58,0.2) 60%,
+    transparent 100%
+  );
+}
+.stage-item {
+  position: relative;
+  margin-bottom: 3.5rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(58,74,100,0.2);
+  cursor: pointer;
+}
+.stage-item:last-child {
+  border-bottom: none; margin-bottom: 0; padding-bottom: 0;
+}
+/* Stage node on the spine */
+.stage-node {
+  position: absolute;
+  left: -4.35rem; top: 0.25rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 1px solid rgba(196,151,58,0.25);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.3s, background 0.3s;
+  z-index: 2;
+}
+.stage-item:hover .stage-node,
+.stage-item.open   .stage-node {
+  border-color: var(--gold);
+  background: rgba(196,151,58,0.1);
+}
+.stage-node-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--gold); letter-spacing: 0.05em;
+}
+/* Stage header row */
+.stage-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 1.5rem;
+  margin-bottom: 0;
+}
+.stage-meta {
+  flex: 1;
+}
+.stage-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.18em;
+  color: rgba(196,151,58,0.55); text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.stage-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 400; color: var(--cream-mid);
+  line-height: 1.25; transition: color 0.2s;
+}
+.stage-item:hover .stage-name { color: var(--white); }
+.stage-attr {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.12em;
+  color: var(--gold-pale); opacity: 0.5;
+  text-transform: uppercase;
+  white-space: nowrap; margin-top: 0.25rem;
+  flex-shrink: 0; align-self: flex-start;
+  padding-top: 0.6rem;
+}
+.stage-toggle {
+  font-size: 0.875rem; color: rgba(196,151,58,0.4);
+  transition: transform 0.3s, color 0.2s;
+  flex-shrink: 0; align-self: flex-start;
+  padding-top: 0.55rem; margin-left: 0.5rem;
+}
+.stage-item.open .stage-toggle { transform: rotate(180deg); color: var(--gold); }
+/* Expandable body */
+.stage-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stage-item.open .stage-body { max-height: var(--stage-h, 600px); }
+.stage-body-inner {
+  padding-top: 1.4rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.stage-desc {
+  font-size: 1rem; font-weight: 300;
+  color: var(--steel); line-height: 1.8;
+}
+.stage-deliverables {}
+.stage-deliv-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.16em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.stage-deliv-list {
+  list-style: none; display: flex;
+  flex-direction: column; gap: 0.5rem;
+}
+.stage-deliv-list li {
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid); line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 0.6rem;
+}
+.stage-deliv-list li::before {
+  content: '—'; color: rgba(196,151,58,0.4);
+  flex-shrink: 0; margin-top: 0.05rem;
+}
+
+/* ── CTA SECTION ── */
+#work-with {
+  padding: var(--gap-xl) 3rem;
+  background: rgba(13,30,56,0.3);
+  position: relative;
+}
+#work-with::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(196,151,58,0.2) 30%, rgba(196,151,58,0.2) 70%, transparent);
+}
+.cta-inner {
+  max-width: 860px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  gap: 3rem; align-items: stretch;
+}
+.cta-text .section-title {
+  max-width: 680px;
+}
+.cta-text .section-body { margin-bottom: 2.5rem; }
+.cta-note {
+  margin-top: 1.2rem;
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid); font-style: italic;
+}
+/* Right side — three engagement modes */
+.cta-modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 768px) {
+  .cta-modes {
+    grid-template-columns: 1fr;
+  }
+}
+.cta-mode {
+  padding: 1.8rem;
+  border: 1px solid rgba(58,74,100,0.4);
+  border-radius: 4px;
+  background: rgba(6,13,26,0.5);
+  display: flex; flex-direction: column;
+  justify-content: space-between; gap: 1.2rem;
+  transition: border-color 0.3s, background 0.3s, transform 0.2s;
+  cursor: pointer; text-decoration: none;
+  color: inherit; min-height: 180px;
+}
+.cta-mode:hover {
+  border-color: rgba(196,151,58,0.3);
+  background: rgba(20,40,80,0.5);
+  transform: translateY(-2px);
+}
+.cta-mode-info {}
+.cta-mode-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.16em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.cta-mode-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 400;
+  color: var(--cream-mid); line-height: 1.3;
+}
+.cta-mode-desc {
+  font-size: 0.875rem; font-weight: 300;
+  color: var(--steel-mid); line-height: 1.6;
+  margin-top: 0.3rem;
+}
+.cta-mode-arrow {
+  font-size: 0.875rem; color: rgba(196,151,58,0.4);
+  align-self: flex-end;
+  transition: color 0.2s, transform 0.2s;
+}
+.cta-mode:hover .cta-mode-arrow {
+  color: var(--gold); transform: translateX(3px);
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  background: #040a14;
+  border-top: 1px solid rgba(196,151,58,0.1);
+  padding: 4rem 3rem 2.5rem;
+}
+.site-footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem; margin-bottom: 3rem;
+}
+.site-footer-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  display: block; margin-bottom: 0.9rem;
+  transition: color 0.2s;
+}
+.site-footer-logo:hover { color: var(--gold-light); }
+.site-footer-tagline {
+  font-size: 0.875rem; font-weight: 400;
+  color: #4a5a74; line-height: 1.75; max-width: 280px;
+}
+.site-footer-col-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+}
+.site-footer-links {
+  list-style: none; display: flex;
+  flex-direction: column; gap: 0.6rem;
+}
+.site-footer-links a {
+  font-size: 0.875rem; font-weight: 400;
+  color: #4a5a74; text-decoration: none; transition: color 0.2s;
+}
+.site-footer-links a:hover { color: var(--gold); }
+.site-footer-bottom {
+  max-width: 1200px; margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 0.5rem;
+}
+.site-footer-copyright {
+  font-size: 0.75rem; color: #3a4a5c;
+}
+.site-footer-ornament {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.875rem; font-style: italic;
+  color: rgba(196,151,58,0.35);
+}
+
+/* ── SCROLL ANIMATIONS ── */
+.fade-up {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.fade-up.visible { opacity: 1; transform: none; }
+.fade-up.delay-1 { transition-delay: 0.1s; }
+.fade-up.delay-2 { transition-delay: 0.2s; }
+.fade-up.delay-3 { transition-delay: 0.3s; }
+.fade-up.delay-4 { transition-delay: 0.4s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── FOCUS ── */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.nav-links a:focus-visible,
+.nav-logo:focus-visible,
+.nav-cta:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.nav-hamburger:focus-visible,
+.drawer-close-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.stage-header:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.cta-mode:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.pillar-card:focus-visible,
+.client-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.site-footer-links a:focus-visible,
+.site-footer-logo:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-up { opacity: 1 !important; transform: none !important; }
+  #page-veil { display: none !important; }
+}
+
+/* ── PAGE VEIL ── */
+#page-veil {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #060d1a; opacity: 1; pointer-events: none;
+  transition: none;
+}
+#page-veil.fade-active { transition: opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1); }
+#page-veil.cleared { opacity: 0; pointer-events: none; }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  .philosophy-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .philosophy-pillars { grid-template-columns: 1fr 1fr; }
+  .client-grid { grid-template-columns: 1fr; }
+  /* cta-inner already single-column */
+  .stage-body-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .stage-attr { display: none; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 1.5rem; background: rgba(6,13,26,0.97) !important; backdrop-filter: blur(14px); border-bottom-color: rgba(196,151,58,0.12) !important; }
+  .nav-links { display: none; }
+  .nav-cta  { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-drawer { display: flex; }
+  #philosophy, #for-whom, #stages, #work-with { padding: var(--gap-l) 1.5rem; }
+  .hero-inner { padding: 0 1.5rem; }
+  .hero { padding-bottom: 5rem; }
+  .hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.15em; flex-wrap: wrap; }
+  .stages-list { padding-left: 3.5rem; }
+  .stage-node { left: -3rem; width: 28px; height: 28px; }
+  .stage-node-num { font-size: 0.75rem; }
+  .site-footer { padding: 3rem 1.5rem 2rem; }
+  .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .site-footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .philosophy-pillars { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+}
+
+  /* ── INTAKE CTA ROW ─────────────────────────────────────────────── */
+  .cta-intake-row {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(196,151,58,0.15);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .cta-intake-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--steel);
+    line-height: 1.65;
+    flex: 1;
+    min-width: 240px;
+    margin: 0;
+  }
+  .btn-intake-primary {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 13px 26px;
+    border-radius: 4px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-intake-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+  @media (max-width: 600px) {
+    .cta-intake-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .btn-intake-primary { width: 100%; text-align: center; }
+  }
+
+  /* ── COLOUR SCHEME ──────────────────────────────────────────────── */
+  :root { color-scheme: dark; }
+  @media (prefers-color-scheme: light) {
+    /* BBOS is intentionally dark — preserve the design,
+       just soften pure-black to rich navy on light-OS users */
+    :root {
+      --navy: #0a1428;
+      --navy-mid: #0f2040;
+    }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div id="page-veil"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="../" class="nav-logo">OGDEN</a>
+  <ul class="nav-links">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#for-whom">Who It's For</a></li>
+    <li><a href="#stages">The Nine Stages</a></li>
+    <li><a href="#work-with">Work Together</a></li>
+    <li><a href="../moontrance/">Moontrance</a></li>
+  </ul>
+  <a href="#work-with" class="nav-cta">Begin</a>
+  <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-haspopup="dialog">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="drawer-close-btn" aria-label="Close menu">&#10005;</button>
+  <a href="#philosophy">Philosophy</a>
+  <a href="#for-whom">Who It's For</a>
+  <a href="#stages">The Nine Stages</a>
+  <a href="#work-with">Work Together</a>
+  <a href="../moontrance/">Moontrance Collective</a>
+  <a href="../" class="drawer-home-cta">← OGDEN Home</a>
+</div>
+
+<main id="main-content">
+
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-calligraphy" aria-hidden="true">ب</div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">BBOS · Build Business On Soul</p>
+    <h1 class="hero-h1">
+      The business is the<br>
+      <em>act of worship.</em><br>
+      The system holds it.
+    </h1>
+    <p class="hero-sub">
+      A nine-stage operational framework designed for people who are building something for Allah — and who need rigour rigorous enough to carry that intention all the way through the operational detail.
+    </p>
+    <div class="hero-actions">
+      <a href="#stages" class="btn-primary">See the Nine Stages</a>
+      <a href="#philosophy" class="btn-ghost">Start with the Philosophy</a>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span class="hero-scroll-label">Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── PHILOSOPHY ── -->
+<section id="philosophy" aria-labelledby="philosophy-title">
+  <div style="max-width:1200px;margin:0 auto;padding:var(--gap-xl) 3rem;">
+    <div class="philosophy-inner">
+      <div class="philosophy-text fade-up">
+        <p class="section-label">The Foundation</p>
+        <h2 class="section-title" id="philosophy-title">
+          Ibadah is not a category.<br>It is the container.
+        </h2>
+        <p class="section-body">
+          Most business frameworks treat the spiritual dimension as a nice-to-have — a values section on a website, a mission statement that gets reviewed once a year. BBOS is built the other way around.
+        </p>
+        <p class="section-body" style="margin-top:1rem;">
+          Every stage, every deliverable, every decision gate is anchored to a Name of Allah — not as ornamentation, but as a structural load. The intention to build for Allah is not held in your heart and then left there. It is embedded in the system itself, so that when capacity is stretched and the operational pressure is high, the framework itself pulls you back to what the business is actually for.
+        </p>
+        <p class="section-body" style="margin-top:1rem;">
+          Grounded. Direct. Not soft — but built to accompany.
+        </p>
+        <div class="philosophy-ayah">
+          <p class="ayah-arabic">وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ</p>
+          <p class="ayah-translation">"I did not create the jinn and mankind except to worship Me."</p>
+          <p class="ayah-source">Surah Adh-Dhariyat · 51:56</p>
+        </div>
+      </div>
+      <div class="philosophy-pillars fade-up delay-2">
+        <div class="pillar-card">
+          <p class="pillar-attr">Al-Haqq</p>
+          <p class="pillar-name">The Truth</p>
+          <p class="pillar-desc">Build from your actual reality, not your aspirational one. Faking capacity is a spiritual failure before it is a strategic one.</p>
+        </div>
+        <div class="pillar-card">
+          <p class="pillar-attr">Al-Khabir</p>
+          <p class="pillar-name">The All-Aware</p>
+          <p class="pillar-desc">Self-assessment that goes all the way down. Your Energy Profile and Constraint Map are the honest account of who you are right now.</p>
+        </div>
+        <div class="pillar-card">
+          <p class="pillar-attr">Al-Adl</p>
+          <p class="pillar-name">The Just</p>
+          <p class="pillar-desc">Offer architecture governed by equity — ensuring neither operator nor client carries unfair risk. Justice is a design constraint.</p>
+        </div>
+        <div class="pillar-card">
+          <p class="pillar-attr">Al-Muqsit</p>
+          <p class="pillar-name">The Equitable</p>
+          <p class="pillar-desc">The Scope Map is not bureaucracy. It is a covenant. Ambiguity is a breach of trust before it is a business problem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOR WHOM ── -->
+<section id="for-whom" aria-labelledby="for-whom-title">
+  <div class="for-whom-inner">
+    <div class="for-whom-header fade-up">
+      <p class="section-label">The Client</p>
+      <h2 class="section-title" id="for-whom-title">
+        Built for the operator who refuses to separate the sacred from the strategic.
+      </h2>
+      <p class="section-body">
+        BBOS is not for everyone — and it knows it. Here is who it was built for, and who it was not.
+      </p>
+    </div>
+    <div class="client-grid">
+      <div class="client-card fade-up delay-1">
+        <p class="client-number">01</p>
+        <p class="client-title">The intention-first founder</p>
+        <p class="client-desc">You started from a place of wanting to build something that serves. The business grew, and now you're not always sure the system is holding the original intention. You need a framework that makes the intention structural rather than aspirational.</p>
+      </div>
+      <div class="client-card fade-up delay-2">
+        <p class="client-number">02</p>
+        <p class="client-title">The competent operator who is stretched</p>
+        <p class="client-desc">You can do the work. The issue is not skill — it's that the operational weight has grown past what informal systems can hold. You need rigour without losing the warmth that makes what you do worth doing.</p>
+      </div>
+      <div class="client-card fade-up delay-3">
+        <p class="client-number">03</p>
+        <p class="client-title">The builder who takes accountability seriously</p>
+        <p class="client-desc">You're willing to be honest about your capacity, your constraints, and your blind spots — because you understand that building on an inflated version of yourself is its own kind of dishonesty. You want a system that tells you the truth.</p>
+      </div>
+    </div>
+    <div class="not-for-whom fade-up">
+      <div class="not-for-whom-icon">◇</div>
+      <p class="not-for-whom-text">
+        <strong>BBOS is not for people who want permission to keep running the way they're already running.</strong> The framework asks for honesty at every stage. It will surface the gap between your stated values and your operational reality, and it will ask you to close it. If that's not a conversation you're ready for, this is not the right fit — and there's no shame in that.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── NINE STAGES ── -->
+<section id="stages" aria-labelledby="stages-title">
+  <div class="stages-inner">
+    <div class="stages-header fade-up">
+      <p class="section-label">The Framework</p>
+      <h2 class="section-title" id="stages-title">Nine stages.<br>One continuous act of worship.</h2>
+      <p class="section-body">Each stage is sequential, each one a decision gate. You do not move forward until the current stage is honest. Tap any stage to open it.</p>
+    </div>
+    <div class="stages-list" role="list">
+      <div class="stages-spine" aria-hidden="true"></div>
+
+      <!-- Stage 00 -->
+      <div class="stage-item fade-up" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">00</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 00 · Intake</p>
+            <p class="stage-name">Begin with the truth of where you are</p>
+          </div>
+          <p class="stage-attr">Al-Awwal · The First</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">The intake stage does not ask who you want to be. It asks who you are right now — your actual energy, actual time, actual capacity. The Energy Profile and Constraint Map are honest accounts, not performance documents. Nothing built on an inflated baseline holds.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Energy Profile Assessment</li>
+                <li>Constraint Map (time, capital, capacity)</li>
+                <li>Baseline Reality Document</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 01 -->
+      <div class="stage-item fade-up delay-1" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">01</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 01 · Qualification</p>
+            <p class="stage-name">Verify what you can actually deliver</p>
+          </div>
+          <p class="stage-attr">Al-Khabir · The All-Aware</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">A self-assessment of verifiable competencies — not what you believe you can do, but what you can evidence. The qualification stage exists because promising more than you can deliver is a breach of trust before it is a business problem. Al-Khabir sees through the gap.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Competency Evidence Map</li>
+                <li>Capacity-to-Promise Ratio</li>
+                <li>Gap Identification Report</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 02 -->
+      <div class="stage-item fade-up delay-2" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">02</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 02 · Identity Alignment</p>
+            <p class="stage-name">Ensure the business is actually an expression of you</p>
+          </div>
+          <p class="stage-attr">Al-Haqq · The Truth</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">A business built on an aspirational version of yourself will drift. Stage 02 aligns the offer direction, positioning, and business model with your actual identity — the way you genuinely work, what you are genuinely called to, and what your real constraints allow. Truth is the structural material.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Identity-to-Offer Alignment Map</li>
+                <li>Positioning Foundation Document</li>
+                <li>Business Model Fit Assessment</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 03 -->
+      <div class="stage-item fade-up" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">03</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 03 · Offer Architecture</p>
+            <p class="stage-name">Structure what you sell with the care of a covenant</p>
+          </div>
+          <p class="stage-attr">Al-Adl · The Just</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">The Offer Asset Pack: Promise, Mechanism, Value Stack, Pricing Structure, Guarantee, and a Scope Map that draws the exact boundary between what is included and what is not. Ambiguity is not just a business risk — it is inequity between you and the person who trusted you with their resources.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Offer Asset Pack (full)</li>
+                <li>Scope Map — inclusions and exclusions</li>
+                <li>Pricing Structure with rationale</li>
+                <li>Guarantee framework</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 04 -->
+      <div class="stage-item fade-up delay-1" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">04</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 04 · Outreach</p>
+            <p class="stage-name">Find the right people without distorting yourself to reach them</p>
+          </div>
+          <p class="stage-attr">Al-Waliy · The Protecting Friend</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">Lead routing frameworks, outreach sequences, and DM automation flows designed to surface genuine fit — not to manufacture urgency or create pressure. The outreach stage is governed by the principle that manipulation is a form of theft of the other person's will.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Lead Routing Matrix</li>
+                <li>Outreach Sequence Templates</li>
+                <li>DM Automation Flow Design</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 05 -->
+      <div class="stage-item fade-up delay-2" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">05</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 05 · Sales</p>
+            <p class="stage-name">The fit call as a discernment conversation, not a close</p>
+          </div>
+          <p class="stage-attr">Al-Hakam · The Judge</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">Fit-call scripts and graceful No-Fit disqualification frameworks. The goal of Stage 05 is accurate discernment — it is as important to decline a misfit clearly and with care as it is to onboard a good one. A graceful no is an act of respect on both sides.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Fit-Call Script Framework</li>
+                <li>Qualification Criteria Rubric</li>
+                <li>No-Fit Disqualification Script</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 06 -->
+      <div class="stage-item fade-up" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">06</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 06 · Fulfillment</p>
+            <p class="stage-name">Deliver with the excellence that reflects the giver of all excellence</p>
+          </div>
+          <p class="stage-attr">Al-Muhsin · The Doer of Good</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">Client intake forms, Execution SOPs, Quality Control Checklists. The Prophet ﷺ said: Allah loves that when any of you does a job, he does it with itqan — with excellence and mastery. Stage 06 builds the system that makes excellence repeatable rather than dependent on how you feel on a given day.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Client Intake SOP</li>
+                <li>Execution Standard Operating Procedures</li>
+                <li>Quality Control Checklist</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 07 -->
+      <div class="stage-item fade-up delay-1" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">07</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 07 · Retention</p>
+            <p class="stage-name">Stay in genuine relationship after the work is done</p>
+          </div>
+          <p class="stage-attr">Al-Wadud · The Loving</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">Re-engagement sequences and the Ascension Framework — a map of the ongoing value you can offer as the client grows. Retention is not a sales tactic. It is a continuation of the responsibility that began when you took on the work. The relationship does not end at delivery.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Re-Engagement Sequence Design</li>
+                <li>Ascension Framework Map</li>
+                <li>Long-Term Client Journey Blueprint</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 08 -->
+      <div class="stage-item fade-up delay-2" role="listitem">
+        <div class="stage-node" aria-hidden="true"><span class="stage-node-num">08</span></div>
+        <div class="stage-header">
+          <div class="stage-meta">
+            <p class="stage-code">Stage 08 · Optimisation</p>
+            <p class="stage-name">Measure what matters and tend to the people who deliver it</p>
+          </div>
+          <p class="stage-attr">Al-Raqib · The Watchful</p>
+          <span class="stage-toggle" aria-hidden="true">▾</span>
+        </div>
+        <div class="stage-body" role="region">
+          <div class="stage-body-inner">
+            <p class="stage-desc">Canonical Metrics tracking — Fit-to-Close Rate, Unprompted Referral Rate, Delivery Completion Rate — alongside a team vitality management system. Stage 08 is the continuous cycle. The business that cannot account for itself cannot be improved, and the business that burns out the people running it has not been built on soul.</p>
+            <div class="stage-deliverables">
+              <p class="stage-deliv-title">Deliverables</p>
+              <ul class="stage-deliv-list">
+                <li>Canonical Metrics Dashboard</li>
+                <li>Optimisation Cycle Protocol</li>
+                <li>Team Vitality Management Framework</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /stages-list -->
+  </div>
+</section>
+
+<!-- ── WORK WITH ── -->
+<section id="work-with" aria-labelledby="cta-title">
+  <div class="cta-inner">
+    <div class="cta-text fade-up">
+      <p class="section-label">Work Together</p>
+      <h2 class="section-title" id="cta-title">
+        Ready to build something that holds its intention all the way through.
+      </h2>
+      <p class="section-body">
+        BBOS is available in three forms, depending on where you are and what you need. All of them start with an honest conversation.
+      </p>
+      <p class="cta-note">
+        There is no pressure to work together. The first conversation is a discernment call — for both of us.
+      </p>
+    </div>
+    <div class="cta-modes fade-up delay-2">
+      <a href="intake/" class="cta-mode" aria-label="Self-directed implementation — begin intake">
+        <div class="cta-mode-info">
+          <p class="cta-mode-label">Independent</p>
+          <p class="cta-mode-name">Self-Directed Implementation</p>
+          <p class="cta-mode-desc">The full BBOS framework as a structured workbook. All nine stages, all deliverable templates, all decision gates. Work through it in your own time. Starts with the intake charter.</p>
+        </div>
+        <span class="cta-mode-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="intake/" class="cta-mode" aria-label="Guided implementation cohort — begin intake">
+        <div class="cta-mode-info">
+          <p class="cta-mode-label">Cohort</p>
+          <p class="cta-mode-name">Guided Implementation</p>
+          <p class="cta-mode-desc">A small cohort working through BBOS together, with live sessions to surface what the framework alone cannot — the gaps you can't see in your own work. Starts with the intake charter.</p>
+        </div>
+        <span class="cta-mode-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="intake/" class="cta-mode" aria-label="Apply for private one-to-one engagement">
+        <div class="cta-mode-info">
+          <p class="cta-mode-label">Private · Now Open</p>
+          <p class="cta-mode-name">One-to-One Engagement</p>
+          <p class="cta-mode-desc">Direct work together. For people who need the framework personalised to their specific situation, constraints, and calling. Begin with the intake charter.</p>
+        </div>
+        <span class="cta-mode-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="cta-intake-row fade-up delay-3">
+      <p class="cta-intake-note">Not sure which path fits? The intake form is the first step for all of them — it exists to help us both understand what's needed before anything is committed.</p>
+      <a href="intake/" class="btn-intake-primary">Begin the Intake Charter →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer" role="contentinfo" aria-label="Site footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-brand">
+      <a href="../" class="site-footer-logo">OGDEN</a>
+      <p class="site-footer-tagline">Home of BBOS and The Moontrance Collective. Build Business On Soul.</p>
+    </div>
+    <div>
+      <p class="site-footer-col-title">BBOS</p>
+      <ul class="site-footer-links">
+        <li><a href="#philosophy">The Philosophy</a></li>
+        <li><a href="#for-whom">Who It's For</a></li>
+        <li><a href="#stages">Nine Stages</a></li>
+        <li><a href="#work-with">Work Together</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="site-footer-col-title">Moontrance</p>
+      <ul class="site-footer-links">
+        <li><a href="../moontrance/">Overview</a></li>
+        <li><a href="../moontrance/collective/">The Collective</a></li>
+        <li><a href="../moontrance/economics/">Offer Economics</a></li>
+        <li><a href="../moontrance/acquisition/">Acquisition Hub</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="site-footer-col-title">OGDEN</p>
+      <ul class="site-footer-links">
+        <li><a href="../">Hub Home</a></li>
+        <li><a href="#philosophy">BBOS Philosophy</a></li>
+        <li><a href="#stages">Nine Stages</a></li>
+        <li><a href="#work-with">Work Together</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer-bottom">
+    <p class="site-footer-copyright">© 2026 OGDEN. All rights reserved.</p>
+    <p class="site-footer-ornament">Build Business On Soul</p>
+  </div>
+</footer>
+
+<script>
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── ACTIVE NAV (IntersectionObserver) ──
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+const sections = document.querySelectorAll('section[id]');
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('nav-active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => sectionObserver.observe(s));
+
+// ── HAMBURGER ──
+(function () {
+  const btn = document.querySelector('.nav-hamburger');
+  const drawer = document.querySelector('.nav-drawer');
+  const closeBtn = document.querySelector('.drawer-close-btn');
+  if (!btn || !drawer) return;
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    btn.classList.add('open');
+    btn.setAttribute('aria-label', 'Close menu');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-label', 'Open menu');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  btn.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+  drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+})();
+
+// ── STAGE ACCORDION ──
+document.querySelectorAll('.stage-item').forEach(item => {
+  const header = item.querySelector('.stage-header');
+  const body = item.querySelector('.stage-body');
+  const toggle = item.querySelector('.stage-toggle');
+
+  header.setAttribute('role', 'button');
+  header.setAttribute('tabindex', '0');
+  header.setAttribute('aria-expanded', 'false');
+  if (body) {
+    const id = 'stage-body-' + Math.random().toString(36).slice(2);
+    body.id = id;
+    header.setAttribute('aria-controls', id);
+  }
+
+  function toggleStage() {
+    const isOpen = item.classList.contains('open');
+    // Close all others
+    document.querySelectorAll('.stage-item.open').forEach(o => {
+      o.classList.remove('open');
+      o.querySelector('.stage-header').setAttribute('aria-expanded', 'false');
+      o.querySelector('.stage-body').style.removeProperty('--stage-h');
+    });
+    if (!isOpen) {
+      // Measure exact height before opening so max-height never clips
+      const inner = body ? body.querySelector('.stage-body-inner') : null;
+      if (inner) {
+        const h = inner.scrollHeight + 48; // 48px padding buffer
+        body.style.setProperty('--stage-h', h + 'px');
+      }
+      item.classList.add('open');
+      header.setAttribute('aria-expanded', 'true');
+    }
+  }
+  header.addEventListener('click', toggleStage);
+  header.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleStage(); } });
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── PAGE VEIL ──
+(function () {
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+  function clearVeil() {
+    veil.classList.remove('cleared', 'fade-active');
+    void veil.offsetHeight;
+    veil.classList.add('fade-active');
+    setTimeout(() => veil.classList.add('cleared'), 30);
+  }
+  clearVeil();
+  window.addEventListener('pageshow', e => { if (e.persisted) clearVeil(); });
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a || !a.href) return;
+    const url = new URL(a.href, location.href);
+    if (url.hash && url.pathname === location.pathname) return;
+    if (a.target === '_blank' || url.origin !== location.origin) return;
+    e.preventDefault();
+    veil.classList.remove('cleared');
+    veil.classList.add('fade-active');
+    setTimeout(() => { location.href = a.href; }, 620);
+  });
+})();
+</script>
+
+</body>
+</html>

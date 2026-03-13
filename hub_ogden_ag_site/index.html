@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN — Build Business On Soul · The Moontrance Collective</title>
+<meta name="description" content="OGDEN is a digital entrepreneur bridging strategic precision with soul-led execution. Home of BBOS and The Moontrance Collective.">
+<link rel="canonical" href="https://hub.ogden.ag">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
+
+.cursor{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s}
+
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:0.5}
+
+.gateway{display:flex;height:100vh;min-height:100vh;width:100vw;position:relative;overflow:hidden;opacity:1}
+
+
+.panel{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;transition:flex 0.85s cubic-bezier(0.77,0,0.175,1);cursor:none}
+.panel:hover{flex:1.65}
+.gateway:has(.panel-bbos:hover) .panel-moon{flex:0.55}
+.gateway:has(.panel-moon:hover) .panel-bbos{flex:0.55}
+
+.panel-bbos{background:#060d1a}
+.panel-bbos::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 35% 50%,rgba(20,40,85,0.95) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 75% 15%,rgba(200,150,42,0.06) 0%,transparent 60%)}
+
+.bbos-grid{position:absolute;inset:0;overflow:hidden;opacity:0.22}
+.bbos-grid::before{content:'';position:absolute;inset:-50%;background-image:linear-gradient(rgba(200,150,42,1) 1px,transparent 1px),linear-gradient(90deg,rgba(200,150,42,1) 1px,transparent 1px);background-size:55px 55px;transform:perspective(500px) rotateX(28deg) rotateZ(-4deg);animation:gridDrift 25s linear infinite}
+@keyframes gridDrift{from{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(0)}to{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(55px)}}
+
+/* Moontrance palette: --sage:#7A8C6E  --earth:#6B4F3A  --gold:#C4A35A  --dark-green:#3A4A32  --cream:#F5F0E8 */
+.panel-moon{background:#1e2a18}
+.panel-moon::before{content:'';position:absolute;inset:0;background:
+  /* warm gold moon-glow at centre */
+  radial-gradient(ellipse 55% 50% at 50% 50%, rgba(196,163,90,0.13) 0%, transparent 55%),
+  /* sage-green mid atmosphere */
+  radial-gradient(ellipse 85% 75% at 48% 48%, rgba(122,140,110,0.18) 0%, transparent 65%),
+  /* earth-brown lower warmth */
+  radial-gradient(ellipse 60% 45% at 30% 75%, rgba(107,79,58,0.12) 0%, transparent 55%),
+  /* deep forest-green edge */
+  radial-gradient(ellipse 140% 120% at 50% 52%, rgba(58,74,50,0.55) 0%, transparent 88%)}
+
+.stars{position:absolute;inset:0;overflow:hidden}
+.star{position:absolute;background:rgba(245,240,232,0.9);border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--mn,0.1);transform:scale(1)}50%{opacity:var(--mx,0.5);transform:scale(1.4)}}
+
+.moon-orb{position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(196,163,90,0.14);top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04);animation:moonPulse 9s ease-in-out infinite}
+.moon-orb::before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(196,163,90,0.08)}
+@keyframes moonPulse{0%,100%{box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04)}50%{box-shadow:0 0 110px rgba(196,163,90,0.12),0 0 220px rgba(58,74,50,0.16),inset 0 0 80px rgba(196,163,90,0.07)}}
+
+.divider{position:absolute;top:0;bottom:0;left:50%;width:1px;z-index:10;background:linear-gradient(to bottom,transparent,rgba(200,150,42,0.5) 20%,rgba(200,150,42,0.65) 50%,rgba(196,133,58,0.5) 80%,transparent);transform:translateX(-50%);pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
+.gateway:has(.panel-bbos:hover) .divider{left:62%}
+.gateway:has(.panel-moon:hover) .divider{left:38%}
+
+.ogden-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;text-align:center;pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
+.gateway:has(.panel-bbos:hover) .ogden-mark{left:62%}
+.gateway:has(.panel-moon:hover) .ogden-mark{left:38%}
+
+.ogden-ring{width:70px;height:70px;border-radius:50%;background:#080810;border:1px solid rgba(200,150,42,0.3);display:flex;align-items:center;justify-content:center;position:relative}
+.ogden-ring::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(200,150,42,0.1)}
+.ogden-letter{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;color:#C4973A;letter-spacing:0.05em}
+
+.panel-content{position:relative;z-index:5;text-align:center;padding:48px;pointer-events:none}
+.panel:hover .panel-content{pointer-events:auto}
+
+.bbos-eyebrow,.moon-eyebrow{font-size:0.875rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:18px;opacity:0;transform:translateY(10px);transition:opacity 0.5s 0.1s,transform 0.5s 0.1s}
+.bbos-eyebrow{font-family:'DM Sans',sans-serif;color:rgba(200,150,42,0.7)}
+.moon-eyebrow{font-family:'DM Sans',sans-serif;font-weight:500;color:rgba(163,180,143,0.9);font-style:normal;letter-spacing:0.22em}
+.panel-bbos:hover .bbos-eyebrow,.panel-moon:hover .moon-eyebrow{opacity:1;transform:none}
+
+.bbos-title{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#fff;line-height:1.2;margin-bottom:14px}
+.bbos-title em{font-style:italic;color:rgba(200,150,42,0.9)}
+.moon-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#f0ebe0;line-height:1.2;margin-bottom:14px;letter-spacing:0.02em}
+.moon-title em{font-style:italic;color:rgba(196,163,90,0.9)}
+
+.panel-tagline{max-width:300px;margin:0 auto 36px;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.2s,transform 0.5s 0.2s;line-height:1.75}
+.panel:hover .panel-tagline{opacity:1;transform:none}
+.bbos-tagline{font-size:1rem;color:#8A8A8A}
+.moon-tagline{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;font-style:normal;color:rgba(200,220,190,0.82);line-height:1.7}
+
+.panel-cta{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:3px;font-size:0.875rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;cursor:none;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.3s,transform 0.5s 0.3s,background 0.2s,color 0.2s,border-color 0.2s}
+.panel:hover .panel-cta{opacity:1;transform:none}
+.cta-bbos{background:rgba(200,150,42,0.1);color:#C4973A;border:1px solid rgba(200,150,42,0.28)}
+.cta-bbos:hover{background:rgba(200,150,42,0.2);color:#c8962a;border-color:#B8891A}
+.cta-moon{background:rgba(122,140,110,0.1);color:rgba(196,163,90,0.85);border:1px solid rgba(122,140,110,0.28)}
+.cta-moon:hover{background:rgba(122,140,110,0.2);color:#c4a35a;border-color:rgba(196,163,90,0.5)}
+
+.panel-idle-label{font-family:'Cinzel',serif;font-size:0.875rem;letter-spacing:0.22em;text-transform:uppercase;position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;transition:opacity 0.4s}
+.panel-bbos .panel-idle-label{color:#A07820}
+.panel-moon .panel-idle-label{color:#6A8A60}
+.panel:hover .panel-idle-label{opacity:0}
+
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 0 48px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100;
+  background: rgba(8,8,16,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(200,150,42,0.12);
+  pointer-events: auto;
+}
+.nav-brand {
+  font-family: 'Cinzel', serif;
+  font-size: 0.875rem; font-weight: 600;
+  color: rgba(200,150,42,0.55);
+  letter-spacing: 0.3em; text-transform: uppercase;
+  text-decoration: none;
+  pointer-events: auto;
+  transition: color 0.2s;
+  flex: 0 0 auto;
+}
+.nav-brand:hover { color: rgba(200,150,42,0.9); }
+.nav-side {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+  flex: 1;
+}
+.nav-side.nav-left { justify-content: flex-start; margin-right: 2rem; }
+.nav-side.nav-right { justify-content: flex-end; margin-left: 2rem; }
+.nav-side a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none;
+  pointer-events: auto; cursor: none;
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-side.nav-left a  { color: #B8891A; }
+.nav-side.nav-right a { color: #7A9A70; }
+.nav-side a::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-side.nav-left  a::after { background: rgba(200,150,42,0.7); }
+.nav-side.nav-right a::after { background: rgba(163,180,143,0.7); }
+.nav-side a:hover { color: rgba(255,255,255,0.75); }
+.nav-side a:hover::after { transform: scaleX(1); }
+/* Active state */
+.nav-side a.nav-active { color: rgba(255,255,255,0.85); }
+.nav-side a.nav-active::after { transform: scaleX(1); }
+
+@media(max-width:768px){
+  html,body{overflow:auto}
+  .gateway{flex-direction:column;height:auto;min-height:100vh}
+  .panel{flex:none!important;min-height:55vh}
+  .panel-content{padding:40px 28px}
+  .bbos-eyebrow,.moon-eyebrow,.panel-tagline,.panel-cta{opacity:1!important;transform:none!important}
+  .ogden-mark{display:none}
+  .divider{display:none}
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+  .top-nav { padding: 0 20px; height: 56px; justify-content: center; position: relative; }
+  /* Hide nav links on mobile — logo only, centred */
+  .nav-side { display: none; }
+  /* Absolute-centre the brand so it's pixel-perfect regardless of flex residue */
+  .nav-brand { position: absolute; left: 50%; transform: translateX(-50%); font-size: 0.875rem; }
+  .panel-bbos { padding-top: 56px; }
+  /* Hide idle labels on mobile — CTA buttons are already visible */
+  .panel-idle-label { display: none; }
+}
+
+  /* ── PAGE TRANSITION VEIL ── */
+  #page-veil {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #080810;
+    opacity: 1;
+    pointer-events: none;
+    transition: none;
+  }
+  #page-veil.fade-active {
+    transition: opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  #page-veil.cleared { opacity: 0; pointer-events: none; }
+
+
+  /* ── PREFERS REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal, .fade-up {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    #page-veil { display: none !important; }
+  }
+
+
+  .drawer-close-btn {
+    position: absolute; top: 1.4rem; right: 1.5rem;
+    background: none; border: none;
+    font-size: 1.1rem; color: rgba(245,240,232,0.5);
+    cursor: pointer; padding: 0.5rem;
+    line-height: 1; transition: color 0.2s;
+    z-index: 10;
+  }
+  .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
+
+
+  /* ── FOCUS VISIBLE STYLES ── */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .nav-hamburger:focus-visible,
+  .drawer-close-btn:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+  }
+  .nav-links a:focus-visible,
+  .nav-cta:focus-visible,
+  .nav-logo:focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Fallback for browsers that don't support :focus-visible */
+  @supports not selector(:focus-visible) {
+    body.keyboard-nav *:focus {
+      outline: 2px solid #C4A35A !important;
+      outline-offset: 3px !important;
+    }
+  }
+
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: #C4A35A;
+    color: #1a1610;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 4px 4px;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 0; }
+
+
+  /* ── HUB FOOTER ── */
+  .hub-footer {
+    background: #040a14;
+    border-top: 1px solid rgba(200,150,42,0.1);
+    padding: 2.5rem 3rem;
+    text-align: center;
+  }
+  .hub-footer-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1rem;
+  }
+  .hub-footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(200,150,42,0.7); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hub-footer-logo:hover { color: rgba(200,150,42,0.95); }
+  .hub-footer-tagline {
+    font-size: 0.875rem; font-weight: 300;
+    color: #3a4a5c; letter-spacing: 0.04em;
+  }
+  .hub-footer-nav {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.3rem 1.8rem;
+  }
+  .hub-footer-nav a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: #3a4a5c; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hub-footer-nav a:hover { color: rgba(200,150,42,0.8); }
+  .hub-footer-copy {
+    font-size: 0.75rem; color: #2a3444;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ABOUT CONNECTOR SECTION ─────────────────────────────────────── */
+  .about-connector {
+    background: #07090f;
+    border-top: 1px solid rgba(200,150,42,0.1);
+    padding: 6rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-connector::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(20,35,70,0.5) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .about-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .about-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(200,150,42,0.5);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+    font-weight: 400;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .about-heading em {
+    font-style: italic;
+    color: rgba(200,150,42,0.85);
+  }
+  .about-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.85;
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 3rem;
+  }
+  .about-divider-glyph {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: rgba(200,150,42,0.25);
+    letter-spacing: 0.5em;
+    margin: 2.5rem 0;
+  }
+  .about-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 640px) {
+    .about-two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .about-connector { padding: 4rem 1.5rem; }
+  }
+  .about-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(200,150,42,0.1);
+    border-radius: 6px;
+    padding: 2rem;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .about-card:hover {
+    border-color: rgba(200,150,42,0.28);
+    background: rgba(255,255,255,0.04);
+    transform: translateY(-2px);
+  }
+  .about-card-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .about-card-tag.tag-bbos  { color: rgba(200,150,42,0.65); }
+  .about-card-tag.tag-moon  { color: rgba(122,140,110,0.65); }
+  .about-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .about-card-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.75;
+  }
+  .about-card-arrow {
+    display: block;
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .about-card.card-bbos .about-card-arrow { color: rgba(200,150,42,0.5); }
+  .about-card.card-moon .about-card-arrow { color: rgba(122,140,110,0.5); }
+
+  /* ── DARK MODE (hub is already dark — confirm for OS-level awareness) */
+  :root { color-scheme: dark; }
+  @media (prefers-color-scheme: light) {
+    /* Gateway is intentionally dark. On light OS, keep the palette
+       but ensure text contrast is not harmed */
+    .about-body { color: rgba(255,255,255,0.55); }
+  }
+
+  .scroll-hint {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.45;
+    animation: hintBob 2.5s ease-in-out infinite;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .scroll-hint.hidden { opacity: 0; }
+  .scroll-hint-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(200,150,42,0.7);
+  }
+  .scroll-hint-arrow {
+    width: 18px; height: 18px;
+    border-right: 1px solid rgba(200,150,42,0.5);
+    border-bottom: 1px solid rgba(200,150,42,0.5);
+    transform: rotate(45deg);
+  }
+  @keyframes hintBob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+  }
+  @media (max-width: 768px) { .scroll-hint { display: none; } }
+</style>
+
+<link rel="stylesheet" href="/assets/css/site.css">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hub.ogden.ag">
+<meta property="og:title" content="OGDEN — Build Business On Soul">
+<meta property="og:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
+<meta property="og:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OGDEN — Build Business On Soul">
+<meta name="twitter:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
+<meta name="twitter:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
+<meta name="theme-color" content="#080810">
+</head>
+<body>
+<div id="page-veil"></div>
+
+<nav class="top-nav" role="navigation" aria-label="Main navigation">
+  <ul class="nav-side nav-left">
+    <li><a href="bbos/">What is BBOS</a></li>
+    <li><a href="bbos/">Systems</a></li>
+  </ul>
+  <a href="./" class="nav-brand">OGDEN</a>
+  <ul class="nav-side nav-right">
+    <li><a href="moontrance/">Moontrance</a></li>
+    <li><a href="moontrance/acquisition/">Find Land</a></li>
+  </ul>
+</nav>
+
+<div class="scroll-hint" id="scrollHint" aria-hidden="true"><span class="scroll-hint-label">Scroll</span><div class="scroll-hint-arrow"></div></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+
+
+<main id="main-content" aria-label="Main content">
+<div class="gateway">
+
+  <div class="panel panel-bbos" data-href="bbos/">
+    <div class="bbos-grid"></div>
+    <div class="panel-content">
+      <div class="bbos-eyebrow">Strategy · Systems · Soul</div>
+      <h2 class="bbos-title">Build Business<br><em>On Soul</em></h2>
+      <p class="panel-tagline bbos-tagline">A comprehensive operating system for the soul-centered entrepreneur. Precision without the cage.</p>
+      <a href="bbos/" class="panel-cta cta-bbos">Enter BBOS →</a>
+    </div>
+    <div class="panel-idle-label">BBOS</div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="ogden-mark">
+    <div class="ogden-ring"><span class="ogden-letter">O</span></div>
+  </div>
+
+  <div class="panel panel-moon" data-href="moontrance/">
+    <div class="stars" id="stars"></div>
+    <div class="moon-orb"></div>
+    <div class="panel-content">
+      <div class="moon-eyebrow">Agritourism · Land · Ontario</div>
+      <h2 class="moon-title">The Moontrance<br><em>Collective</em></h2>
+      <p class="panel-tagline moon-tagline">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors.</p>
+      <a href="moontrance/" class="panel-cta cta-moon">Enter the Collective →</a>
+    </div>
+    <div class="panel-idle-label">Moontrance</div>
+  </div>
+
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+window.addEventListener('scroll', function() {
+  var hint = document.getElementById('scrollHint');
+  if (hint && window.scrollY > 40) hint.classList.add('hidden');
+}, { passive: true });
+document.querySelectorAll('.panel,a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='58px';ring.style.height='58px';ring.style.borderColor='rgba(200,150,42,0.45)'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(255,255,255,0.4)'});
+});
+const sc=document.getElementById('stars');
+for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
+</script>
+
+<section class="about-connector" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <p class="about-eyebrow">One Ecosystem · Two Paths</p>
+    <h2 class="about-heading" id="about-heading">
+      Both sides of this house share<br><em>the same foundation</em>
+    </h2>
+    <p class="about-body">
+      BBOS and The Moontrance Collective are distinct in what they do — one is a business operating framework, the other is a land-based agritourism ecosystem. But they're not separate projects that happen to share a domain. They're two expressions of the same conviction: that the way you build something matters as much as what you build. That rigour and soul are not in tension. That a business, a land, a life — these can be structured with both precision and meaning.
+    </p>
+    <div class="about-divider-glyph">· · ·</div>
+    <p class="about-body" style="margin-bottom:0">
+      Whether you're here to build a business from honest foundations, or to find and activate land that can hold a community — you're in the right place.
+    </p>
+    <div class="about-two-col" style="margin-top:3rem">
+      <a href="bbos/" class="about-card card-bbos">
+        <span class="about-card-tag tag-bbos">BBOS · Framework</span>
+        <p class="about-card-name">Build Business On Soul</p>
+        <p class="about-card-desc">A nine-stage operating system for the soul-centred entrepreneur. Strategy, systems, and spiritual accountability — woven into a single coherent framework that takes you from first principles to sustainable, ethical revenue.</p>
+        <span class="about-card-arrow">Enter BBOS →</span>
+      </a>
+      <a href="moontrance/" class="about-card card-moon">
+        <span class="about-card-tag tag-moon">Moontrance · Land</span>
+        <p class="about-card-name">The Moontrance Collective</p>
+        <p class="about-card-desc">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors. Guest experiences, offer economics, and a structured acquisition toolkit — built for people who want to steward land with intention.</p>
+        <span class="about-card-arrow">Enter the Collective →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="hub-footer" role="contentinfo" aria-label="Site footer">
+  <div class="hub-footer-inner">
+    <a href="./" class="hub-footer-logo">OGDEN</a>
+    <p class="hub-footer-tagline">Build Business On Soul · The Moontrance Collective</p>
+    <nav class="hub-footer-nav" aria-label="Footer navigation">
+      <a href="bbos/">BBOS</a>
+      <a href="moontrance/">Moontrance</a>
+      <a href="moontrance/collective/">The Collective</a>
+      <a href="moontrance/acquisition/">Acquisition Hub</a>
+    </nav>
+    <p class="hub-footer-copy">© 2026 OGDEN. All rights reserved.</p>
+  </div>
+</footer>
+
+
+
+<script>
+    // ── PAGE TRANSITION VEIL ──
+  (function () {
+    var veil = document.getElementById('page-veil');
+    if (!veil) return;
+
+        function clearVeil() {
+      veil.classList.remove('cleared');
+      veil.classList.remove('fade-active');
+      // Force browser repaint so opacity:1 is committed before transition starts
+      void veil.offsetHeight;
+      veil.classList.add('fade-active');
+      setTimeout(function () { veil.classList.add('cleared'); }, 30);
+    }
+
+    clearVeil();
+
+    // Back/forward cache restore — re-run full clearVeil sequence
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) { clearVeil(); }
+    });
+
+    function navigateTo(href) {
+      veil.classList.remove('cleared');
+      setTimeout(function () { window.location.href = href; }, 620);
+    }
+
+    document.addEventListener('click', function (e) {
+      var anchor = e.target.closest('a');
+      if (!anchor) return;
+      var href = anchor.getAttribute('href');
+      if (!href) return;
+      if (href.startsWith('#') || href.startsWith('http') || href.startsWith('//') || anchor.target === '_blank') return;
+      e.preventDefault();
+      navigateTo(href);
+    });
+
+    document.querySelectorAll('[data-href]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        navigateTo(el.dataset.href);
+      });
+    });
+  })();
+</script>
+<script>
+  // ── HUB NAV ACTIVE STATE ON PANEL HOVER ──
+  (function () {
+    var bbosLinks  = document.querySelectorAll('.nav-left a');
+    var moonLinks  = document.querySelectorAll('.nav-right a');
+    var bboPanel   = document.querySelector('.panel-bbos');
+    var moonPanel  = document.querySelector('.panel-moon');
+
+    function setActive(links) {
+      bbosLinks.forEach(function(a) { a.classList.remove('nav-active'); });
+      moonLinks.forEach(function(a) { a.classList.remove('nav-active'); });
+      if (links) links.forEach(function(a) { a.classList.add('nav-active'); });
+    }
+
+    if (bboPanel) {
+      bboPanel.addEventListener('mouseenter', function() { setActive(bbosLinks); });
+      bboPanel.addEventListener('mouseleave', function() { setActive(null); });
+    }
+    if (moonPanel) {
+      moonPanel.addEventListener('mouseenter', function() { setActive(moonLinks); });
+      moonPanel.addEventListener('mouseleave', function() { setActive(null); });
+    }
+  })();
+
+</script>
+<script>
+
+  // ── ARIA ENHANCEMENTS ──
+  (function () {
+    // Nav landmarks
+    var nav = document.querySelector('nav, .top-nav');
+    if (nav && !nav.getAttribute('role')) nav.setAttribute('role', 'navigation');
+    if (nav && !nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Main navigation');
+
+    // Footer landmark
+    var footer = document.querySelector('footer, .site-footer');
+    if (footer && !footer.getAttribute('role')) footer.setAttribute('role', 'contentinfo');
+
+    // Main content landmark
+    var main = document.querySelector('main, .gateway, #hero, .hero, section');
+    if (main && main.tagName !== 'MAIN' && !main.getAttribute('role')) {
+      var mainEl = document.createElement('div');
+      // Wrap is too invasive — just mark the first section
+      main.setAttribute('role', 'main');
+    }
+
+    // Drawer ARIA
+    var drawer = document.querySelector('.nav-drawer');
+    var hamburger = document.querySelector('.nav-hamburger');
+    if (drawer) {
+      drawer.setAttribute('role', 'dialog');
+      drawer.setAttribute('aria-modal', 'true');
+      drawer.setAttribute('aria-label', 'Navigation menu');
+    }
+    if (hamburger) {
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-haspopup', 'dialog');
+    }
+
+    // Update aria-expanded on hamburger toggle
+    if (hamburger && drawer) {
+      var mo = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.attributeName === 'class') {
+            var isOpen = drawer.classList.contains('open');
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          }
+        });
+      });
+      mo.observe(drawer, { attributes: true });
+    }
+
+    // Drawer close button wires to hamburger close
+    var closeBtn = document.querySelector('.drawer-close-btn');
+    var hamburgerBtn = document.querySelector('.nav-hamburger');
+    if (closeBtn && hamburgerBtn) {
+      closeBtn.addEventListener('click', function() { hamburgerBtn.click(); });
+    }
+
+    // FAQ accordion ARIA
+    document.querySelectorAll('.faq-item').forEach(function(item, i) {
+      var trigger = item.querySelector('.faq-question, [onclick], h3, button');
+      var content = item.querySelector('.faq-answer, .faq-body, p');
+      if (trigger && content) {
+        var id = 'faq-panel-' + i;
+        content.setAttribute('id', id);
+        trigger.setAttribute('aria-controls', id);
+        trigger.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+        // Update on open/close
+        var faqObs = new MutationObserver(function() {
+          trigger.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+        });
+        faqObs.observe(item, { attributes: true });
+      }
+    });
+
+    // Focus visible ring for keyboard nav
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') document.body.classList.add('keyboard-nav');
+    });
+    document.addEventListener('mousedown', function() {
+      document.body.classList.remove('keyboard-nav');
+    });
+  })();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect · Moontrance Collective</title>
+<meta name="description" content="Stay connected with the Moontrance Collective — join our newsletter or send us a message about visiting, collaborating, or exploring the land.">
+<link rel="canonical" href="https://hub.ogden.ag/moontrance/connect/">
+<meta property="og:title" content="Connect · Moontrance Collective">
+<meta property="og:description" content="Join the Moontrance newsletter or send us a message.">
+<meta property="og:image" content="https://hub.ogden.ag/assets/og/moontrance-connect.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#3a4a32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  background: #FDFAF5;
+  color: #2C2C2C;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+:root {
+  --sage:       #7A8C6E;
+  --sage-light: #A3B48F;
+  --sage-pale:  #E8EDE3;
+  --earth:      #6B4F3A;
+  --earth-light:#9B7A5E;
+  --cream:      #F5F0E8;
+  --warm-white: #FDFAF5;
+  --charcoal:   #2C2C2C;
+  --ink-light:  #6B6B6B;
+  --dark-green: #3A4A32;
+  --gold:       #C4A35A;
+  --gold-light: #D9BC7C;
+  --mist:       #E8EDE3;
+  --border:     rgba(122,140,110,0.22);
+}
+
+/* ── SKIP LINK ────────────────────────────────────────────── */
+.skip-link {
+  position: fixed; top: -100%; left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-green); color: var(--warm-white);
+  font-size: 0.875rem; font-weight: 600;
+  padding: 10px 22px; border-radius: 0 0 6px 6px;
+  text-decoration: none; z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; outline: 3px solid var(--gold); }
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem;
+  height: 60px;
+  background: rgba(253,250,245,0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(122,140,110,0.15);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled {
+  box-shadow: 0 2px 16px rgba(58,74,50,0.08);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 500;
+  color: var(--dark-green); text-decoration: none;
+  letter-spacing: 0.04em;
+}
+.nav-back {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--sage); text-decoration: none;
+  padding: 7px 14px;
+  border: 1px solid rgba(122,140,110,0.3);
+  border-radius: 4px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-back:hover {
+  color: var(--dark-green);
+  border-color: var(--sage);
+  background: rgba(122,140,110,0.06);
+}
+@media (max-width: 640px) {
+  nav { padding: 0 1.5rem; height: 54px; }
+}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  padding: 120px 2rem 4rem;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(122,140,110,0.1) 0%, transparent 60%),
+    var(--warm-white);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: 300px; opacity: 0.6; pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--sage);
+  margin-bottom: 1.25rem; position: relative;
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  font-weight: 400; line-height: 1.2;
+  color: var(--dark-green); margin-bottom: 1.25rem;
+  position: relative;
+}
+.hero h1 em { font-style: italic; color: var(--earth); }
+.hero-sub {
+  font-size: 1rem; font-weight: 300;
+  color: var(--ink-light); max-width: 540px;
+  margin: 0 auto; position: relative;
+}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────── */
+.page-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .page-body { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem 5rem; }
+}
+
+/* ── PANEL ───────────────────────────────────────────────── */
+.panel {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.25rem;
+  position: relative;
+}
+.panel-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--sage);
+  margin-bottom: 0.75rem;
+}
+.panel h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem; font-weight: 500;
+  color: var(--dark-green); line-height: 1.25;
+  margin-bottom: 0.875rem;
+}
+.panel-body {
+  font-size: 0.9rem; font-weight: 300;
+  color: var(--ink-light); line-height: 1.75;
+  margin-bottom: 1.75rem;
+}
+
+/* ── FORM ELEMENTS ───────────────────────────────────────── */
+.field { margin-bottom: 1rem; }
+.field label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--sage);
+  margin-bottom: 6px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: var(--warm-white);
+  border: 1.5px solid rgba(122,140,110,0.25);
+  border-radius: 5px;
+  padding: 11px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem; font-weight: 300;
+  color: var(--charcoal);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: none;
+}
+.field input::placeholder, .field textarea::placeholder {
+  color: rgba(107,107,107,0.45);
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none;
+  border-color: var(--sage);
+  box-shadow: 0 0 0 3px rgba(122,140,110,0.12);
+}
+.field-error {
+  font-size: 0.78rem; color: #b85c38;
+  margin-top: 5px; display: none;
+}
+.field-error.show { display: block; }
+.required { color: var(--earth); margin-left: 2px; }
+
+/* Interest checkboxes */
+.interest-group { display: flex; flex-direction: column; gap: 8px; }
+.interest-opt {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px;
+  border: 1.5px solid rgba(122,140,110,0.2);
+  border-radius: 5px; cursor: pointer;
+  background: var(--warm-white);
+  transition: border-color 0.2s, background 0.2s;
+  font-size: 0.875rem; color: var(--charcoal);
+}
+.interest-opt:hover { border-color: var(--sage); background: rgba(122,140,110,0.04); }
+.interest-opt.selected { border-color: rgba(196,163,90,0.45); background: rgba(196,163,90,0.06); }
+.interest-opt input { accent-color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+.interest-opt span { flex: 1; min-width: 0; word-wrap: break-word; line-height: 1.55; }
+
+/* Submit buttons */
+.btn-submit {
+  width: 100%;
+  background: var(--dark-green);
+  color: var(--warm-white);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 13px 24px;
+  border: none; border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 0.5rem;
+}
+.btn-submit:hover { background: #2a3826; transform: translateY(-1px); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Success states */
+.success-msg {
+  display: none;
+  text-align: center; padding: 2rem 1rem;
+}
+.success-msg.show { display: block; }
+.success-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.success-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 500;
+  color: var(--dark-green); margin-bottom: 0.5rem;
+}
+.success-body { font-size: 0.875rem; color: var(--ink-light); line-height: 1.7; }
+
+/* ── DIVIDER ─────────────────────────────────────────────── */
+.page-divider {
+  max-width: 900px; margin: 0 auto;
+  border: none; border-top: 1px solid var(--border);
+}
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+footer {
+  background: var(--dark-green);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.footer-inner { max-width: 700px; margin: 0 auto; }
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 500;
+  color: rgba(245,240,232,0.6);
+  text-decoration: none; display: block;
+  margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+.footer-links {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 0.25rem 1.5rem;
+  list-style: none; margin-bottom: 1.25rem;
+}
+.footer-links a {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(245,240,232,0.4); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: rgba(245,240,232,0.8); }
+.footer-copy {
+  font-size: 0.75rem; color: rgba(245,240,232,0.25);
+  letter-spacing: 0.05em;
+}
+
+/* ── ACCESSIBILITY ───────────────────────────────────────── */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px; border-radius: 2px;
+}
+fieldset { border: none; margin: 0; padding: 0; }
+fieldset legend {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--sage);
+  margin-bottom: 8px; float: left; width: 100%;
+}
+fieldset::after { content: ''; display: table; clear: both; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="../" class="nav-logo">Moontrance</a>
+  <a href="../" class="nav-back">← Back to overview</a>
+</nav>
+
+<main id="main-content">
+
+  <header class="hero">
+    <p class="hero-eyebrow">Moontrance Collective · Connect</p>
+    <h1>Stay rooted<br><em>in what's growing</em></h1>
+    <p class="hero-sub">
+      Whether you'd like to follow the journey, plan a visit, or start a conversation — this is where it begins.
+    </p>
+  </header>
+
+  <div class="page-body">
+
+    <!-- PANEL 1: NEWSLETTER ──────────────────────────── -->
+    <section class="panel" aria-labelledby="subscribe-heading">
+      <div id="subscribe-form-wrap">
+        <p class="panel-tag">Newsletter</p>
+        <h2 id="subscribe-heading">Follow the journey</h2>
+        <p class="panel-body">
+          Seasonal updates on the land, the offerings, and the thinking behind the work. No selling — just honest writing from the ground up. Sent when there's something worth saying.
+        </p>
+        <form id="subscribe-form" novalidate>
+          <div class="field">
+            <label for="sub-name">Your name <span class="required">*</span></label>
+            <input type="text" id="sub-name" placeholder="How you'd like to be addressed" autocomplete="given-name">
+            <p class="field-error" id="e-sub-name">Please enter your name.</p>
+          </div>
+          <div class="field">
+            <label for="sub-email">Email address <span class="required">*</span></label>
+            <input type="email" id="sub-email" placeholder="you@example.com" autocomplete="email">
+            <p class="field-error" id="e-sub-email">A valid email address is required.</p>
+          </div>
+          <fieldset class="field">
+            <legend>What draws you here? <span style="font-weight:400;font-size:0.75em;text-transform:none;letter-spacing:0">(optional)</span></legend>
+            <div class="interest-group">
+              <label class="interest-opt" onclick="toggleInterest(this,'int-visits')">
+                <input type="checkbox" id="int-visits">
+                <span>Visiting the land — farm tours, stays, workshops</span>
+              </label>
+              <label class="interest-opt" onclick="toggleInterest(this,'int-land')">
+                <input type="checkbox" id="int-land">
+                <span>Agritourism land — acquisition, planning, economics</span>
+              </label>
+              <label class="interest-opt" onclick="toggleInterest(this,'int-community')">
+                <input type="checkbox" id="int-community">
+                <span>Community and stewardship — the values behind the work</span>
+              </label>
+              <label class="interest-opt" onclick="toggleInterest(this,'int-bbos')">
+                <input type="checkbox" id="int-bbos">
+                <span>BBOS — the business framework behind the ecosystem</span>
+              </label>
+            </div>
+          </fieldset>
+          <button type="button" class="btn-submit" onclick="submitSubscribe()">Join the newsletter →</button>
+        </form>
+      </div>
+      <div class="success-msg" id="subscribe-success" role="status">
+        <p class="success-icon">🌿</p>
+        <p class="success-title">You're on the list.</p>
+        <p class="success-body">Thank you — we'll be in touch when there's something worth sharing. Watch for a quiet email from the Moontrance Collective.</p>
+      </div>
+    </section>
+
+    <!-- PANEL 2: CONTACT ─────────────────────────────── -->
+    <section class="panel" aria-labelledby="contact-heading">
+      <div id="contact-form-wrap">
+        <p class="panel-tag">Get in touch</p>
+        <h2 id="contact-heading">Send us a message</h2>
+        <p class="panel-body">
+          Enquiries about visiting, group bookings, collaborations, press, or anything else. We read every message and reply personally.
+        </p>
+        <form id="contact-form" novalidate>
+          <div class="field">
+            <label for="ct-name">Your name <span class="required">*</span></label>
+            <input type="text" id="ct-name" placeholder="Full name" autocomplete="name">
+            <p class="field-error" id="e-ct-name">Please enter your name.</p>
+          </div>
+          <div class="field">
+            <label for="ct-email">Email address <span class="required">*</span></label>
+            <input type="email" id="ct-email" placeholder="you@example.com" autocomplete="email">
+            <p class="field-error" id="e-ct-email">A valid email address is required.</p>
+          </div>
+          <div class="field">
+            <label for="ct-subject">Subject</label>
+            <select id="ct-subject">
+              <option value="">— Select a topic —</option>
+              <option value="visit">Planning a visit</option>
+              <option value="group">Group or school booking</option>
+              <option value="collaboration">Collaboration or partnership</option>
+              <option value="press">Press or media enquiry</option>
+              <option value="land">Agritourism land / acquisition</option>
+              <option value="bbos">BBOS framework</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ct-message">Message <span class="required">*</span></label>
+            <textarea id="ct-message" rows="5" placeholder="Tell us what's on your mind…"></textarea>
+            <p class="field-error" id="e-ct-message">Please write a short message.</p>
+          </div>
+          <button type="button" class="btn-submit" onclick="submitContact()">Send message →</button>
+        </form>
+      </div>
+      <div class="success-msg" id="contact-success" role="status">
+        <p class="success-icon">✦</p>
+        <p class="success-title">Message received.</p>
+        <p class="success-body">Thank you for reaching out. We read every message personally and will reply within a few days.</p>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<footer role="contentinfo" aria-label="Site footer">
+  <div class="footer-inner">
+    <a href="../" class="footer-logo">Moontrance Collective</a>
+    <ul class="footer-links">
+      <li><a href="../">Overview</a></li>
+      <li><a href="../collective/">The Collective</a></li>
+      <li><a href="../economics/">Offer Economics</a></li>
+      <li><a href="../acquisition/">Acquisition Hub</a></li>
+      <li><a href="../../bbos/">BBOS</a></li>
+      <li><a href="../../">OGDEN Hub</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Moontrance Collective · OGDEN. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+// ── ENDPOINT ────────────────────────────────────────────────
+// Replace with your Google Apps Script Web App URL.
+// Same sheet / different tabs, or separate endpoints — your choice.
+const CONNECT_ENDPOINT = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+// ── NAV SCROLL ───────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ── INTEREST CHECKBOX TOGGLE ─────────────────────────────────
+function toggleInterest(label, id) {
+  const cb = document.getElementById(id);
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  label.classList.toggle('selected', cb.checked);
+}
+
+// ── VALIDATION HELPERS ───────────────────────────────────────
+function showErr(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('show', show);
+}
+function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+// ── SUBMIT: NEWSLETTER ───────────────────────────────────────
+async function submitSubscribe() {
+  const name  = document.getElementById('sub-name').value.trim();
+  const email = document.getElementById('sub-email').value.trim();
+  let ok = true;
+  showErr('e-sub-name',  !name);  if (!name)          ok = false;
+  showErr('e-sub-email', !validEmail(email)); if (!validEmail(email)) ok = false;
+  if (!ok) return;
+
+  const btn = document.querySelector('#subscribe-form .btn-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+  const interests = ['int-visits','int-land','int-community','int-bbos']
+    .filter(id => document.getElementById(id)?.checked)
+    .map(id => id.replace('int-',''))
+    .join(', ') || 'not specified';
+
+  if (CONNECT_ENDPOINT && CONNECT_ENDPOINT !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    try {
+      await fetch(CONNECT_ENDPOINT, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'newsletter', name, email, interests })
+      });
+    } catch(e) { console.warn('Subscribe send error:', e); }
+  }
+
+  document.getElementById('subscribe-form-wrap').style.display = 'none';
+  document.getElementById('subscribe-success').classList.add('show');
+}
+
+// ── SUBMIT: CONTACT ──────────────────────────────────────────
+async function submitContact() {
+  const name    = document.getElementById('ct-name').value.trim();
+  const email   = document.getElementById('ct-email').value.trim();
+  const message = document.getElementById('ct-message').value.trim();
+  let ok = true;
+  showErr('e-ct-name',    !name);            if (!name)            ok = false;
+  showErr('e-ct-email',   !validEmail(email)); if (!validEmail(email)) ok = false;
+  showErr('e-ct-message', message.length < 10); if (message.length < 10) ok = false;
+  if (!ok) return;
+
+  const btn = document.querySelector('#contact-form .btn-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+  const subject = document.getElementById('ct-subject').value || 'not specified';
+
+  if (CONNECT_ENDPOINT && CONNECT_ENDPOINT !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    try {
+      await fetch(CONNECT_ENDPOINT, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'contact', name, email, subject, message })
+      });
+    } catch(e) { console.warn('Contact send error:', e); }
+  }
+
+  document.getElementById('contact-form-wrap').style.display = 'none';
+  document.getElementById('contact-success').classList.add('show');
+}
+
+// ── KEYBOARD NAV ─────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Tab') document.body.classList.add('keyboard-nav');
+});
+document.addEventListener('mousedown', () => {
+  document.body.classList.remove('keyboard-nav');
+});
+</script>
+</body>
+</html>
