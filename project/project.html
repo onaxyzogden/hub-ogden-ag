@@ -220,7 +220,7 @@
         last_session: new Date().toISOString().slice(0, 10)
       });
     
-      const res = await fetch(API_URL, {
+      const res = await fetch('https://script.google.com/macros/s/AKfycbwyKeVEQ8raXvqmm2la9CiLlUUTU-PpgitIJOyl9a4A8kHOfxD33guIxhEXgwHQYkcigw/exec', {
         method: 'POST',
         body: payload
       });
@@ -234,7 +234,7 @@
       await loadProject();
       alert('Project updated');
     }
-
+    
     async function appendActivity() {
       const detail = document.getElementById('activityDetail').value.trim();
       if (!detail) {
@@ -250,7 +250,7 @@
         detail
       });
     
-      const res = await fetch(API_URL, {
+      const res = await fetch('https://script.google.com/macros/s/AKfycbwyKeVEQ8raXvqmm2la9CiLlUUTU-PpgitIJOyl9a4A8kHOfxD33guIxhEXgwHQYkcigw/exec', {
         method: 'POST',
         body: payload
       });
@@ -264,7 +264,7 @@
       document.getElementById('activityDetail').value = '';
       alert('Activity added');
     }
-
+    
     async function generateStageDocs() {
       const payload = new URLSearchParams({
         action: 'generateStageDocs',
@@ -272,7 +272,7 @@
         stage: document.getElementById('stageInput').value
       });
     
-      const res = await fetch(API_URL, {
+      const res = await fetch('https://script.google.com/macros/s/AKfycbwyKeVEQ8raXvqmm2la9CiLlUUTU-PpgitIJOyl9a4A8kHOfxD33guIxhEXgwHQYkcigw/exec', {
         method: 'POST',
         body: payload
       });
@@ -284,7 +284,7 @@
       }
     
       alert(`Created ${(data.created || []).length} docs`);
-      loadProject();
+      await loadProject();
     }
 
     loadProject();
