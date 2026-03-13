@@ -308,6 +308,12 @@ fieldset legend {
   margin-bottom: 8px; float: left; width: 100%;
 }
 fieldset::after { content: ''; display: table; clear: both; }
+.field-legend {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--sage);
+  margin-bottom: 8px;
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important;
@@ -356,8 +362,8 @@ fieldset::after { content: ''; display: table; clear: both; }
             <input type="email" id="sub-email" placeholder="you@example.com" autocomplete="email">
             <p class="field-error" id="e-sub-email">A valid email address is required.</p>
           </div>
-          <fieldset class="field">
-            <legend>What draws you here? <span style="font-weight:400;font-size:0.75em;text-transform:none;letter-spacing:0">(optional)</span></legend>
+          <div class="field">
+            <div class="field-legend">What draws you here? <span style="font-weight:400;font-size:0.75em;text-transform:none;letter-spacing:0">(optional)</span></div>
             <div class="interest-group">
               <label class="interest-opt" onclick="toggleInterest(this,'int-visits')">
                 <input type="checkbox" id="int-visits">
@@ -376,7 +382,7 @@ fieldset::after { content: ''; display: table; clear: both; }
                 <span>BBOS — the business framework behind the ecosystem</span>
               </label>
             </div>
-          </fieldset>
+          </div>
           <button type="button" class="btn-submit" onclick="submitSubscribe()">Join the newsletter →</button>
         </form>
       </div>
