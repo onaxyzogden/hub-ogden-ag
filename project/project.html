@@ -210,26 +210,27 @@
     }
 
     async function saveProject() {
-      const payload = {
+      const payload = new URLSearchParams({
         action: 'updateProject',
         project_id: PROJECT_ID,
         operator: document.getElementById('operatorInput').value.trim(),
         stage: document.getElementById('stageInput').value,
         status: document.getElementById('statusInput').value,
         note: document.getElementById('noteInput').value.trim(),
-        last_session: new Date().toISOString().slice(0,10)
-      };
-
+        last_session: new Date().toISOString().slice(0, 10)
+      });
+    
       const res = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: payload
       });
+    
       const data = await res.json();
       if (!data.ok) {
         alert(data.error || 'Save failed');
         return;
       }
+    
       await loadProject();
       alert('Project updated');
     }
@@ -240,46 +241,48 @@
         alert('Add a note first');
         return;
       }
-
-      const payload = {
+    
+      const payload = new URLSearchParams({
         action: 'appendActivity',
         project_id: PROJECT_ID,
         actor: document.getElementById('operatorInput').value.trim() || 'operator',
         event_action: 'note',
         detail
-      };
-
+      });
+    
       const res = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: payload
       });
+    
       const data = await res.json();
       if (!data.ok) {
         alert(data.error || 'Could not add activity');
         return;
       }
+    
       document.getElementById('activityDetail').value = '';
       alert('Activity added');
     }
 
     async function generateStageDocs() {
-      const payload = {
+      const payload = new URLSearchParams({
         action: 'generateStageDocs',
         project_id: PROJECT_ID,
         stage: document.getElementById('stageInput').value
-      };
-
+      });
+    
       const res = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: payload
       });
+    
       const data = await res.json();
       if (!data.ok) {
         alert(data.error || 'Could not generate docs');
         return;
       }
+    
       alert(`Created ${(data.created || []).length} docs`);
       loadProject();
     }
