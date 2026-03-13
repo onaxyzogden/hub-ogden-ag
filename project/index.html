@@ -266,7 +266,7 @@
     }
 
     async function createProjectFromModal() {
-      const payload = {
+      const payload = new URLSearchParams({
         action: 'createProject',
         client_name: document.getElementById('f-name').value.trim(),
         operator: document.getElementById('f-operator').value.trim(),
@@ -277,44 +277,42 @@
         note: document.getElementById('f-note').value.trim(),
         dashboard_password: document.getElementById('f-password').value.trim(),
         parent_folder_id: document.getElementById('f-parent-folder').value.trim()
-      };
-
-      if (!payload.client_name) {
+      });
+    
+      if (!payload.get('client_name')) {
         alert('Client / Project Name is required');
         return;
       }
-
-      const btns = document.querySelectorAll('button');
-      btns.forEach(b => b.disabled = true);
-
+    
       try {
         const res = await fetch(API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: payload
         });
+    
         const data = await res.json();
+    
         if (!data.ok) {
           alert(data.error || 'Project creation failed');
           return;
         }
+    
         closeNewProject();
         await loadProjects();
         window.open(data.dashboard_url, '_blank');
       } catch (err) {
         alert(err.message || 'Project creation failed');
-      } finally {
-        btns.forEach(b => b.disabled = false);
+        console.error(err);
       }
     }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
+    
+        function escapeHtml(str) {
+          return String(str)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
     }
 
     loadProjects();
