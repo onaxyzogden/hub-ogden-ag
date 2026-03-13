@@ -242,9 +242,9 @@
   .radio-opt input, .check-opt input {
     margin-top: 3px; accent-color: var(--gold); flex-shrink: 0;
   }
-  .radio-opt > div, .check-opt > div { flex: 1; min-width: 0; }
-  .opt-label { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); word-wrap: break-word; }
-  .opt-desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 3px; line-height: 1.5; word-wrap: break-word; }
+  .radio-opt > div, .check-opt > div { flex: 1; min-width: 0; overflow: hidden; }
+  .opt-label { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); word-wrap: break-word; overflow-wrap: break-word; white-space: normal; }
+  .opt-desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 3px; line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word; }
 
   /* ── AVERSION INPUTS ─────────────────────────────────────────────── */
   .aversion-inputs { display: flex; flex-direction: column; gap: 10px; }
@@ -556,7 +556,7 @@
   }
 
   /* ── FIELDSET / LEGEND reset ─────────────────────────────────────── */
-  fieldset { border: none; margin: 0; padding: 0; }
+  fieldset { border: none; margin: 0; padding: 0; min-width: 0; width: 100%; }
   fieldset.field-group legend.field-label { float: left; width: 100%; margin-bottom: 6px; }
   fieldset.field-group::after { content: ''; display: table; clear: both; }
 </style>
