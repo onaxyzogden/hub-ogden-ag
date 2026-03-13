@@ -96,6 +96,7 @@ nav.scrolled {
   font-size: 0.75rem; font-weight: 600;
   letter-spacing: 0.28em; text-transform: uppercase;
   color: var(--gold); transition: color 0.2s;
+  white-space: nowrap; flex-shrink: 0;
 }
 .nav-logo:hover { color: var(--gold-light); }
 .nav-links {
@@ -880,7 +881,7 @@ nav.scrolled {
   .stage-attr { display: none; }
 }
 @media (max-width: 768px) {
-  nav { padding: 0 1.5rem; }
+  nav { padding: 0 1.5rem; background: rgba(6,13,26,0.97) !important; backdrop-filter: blur(14px); border-bottom-color: rgba(196,151,58,0.12) !important; }
   .nav-links { display: none; }
   .nav-cta  { display: none; }
   .nav-hamburger { display: flex; }
@@ -888,6 +889,7 @@ nav.scrolled {
   #philosophy, #for-whom, #stages, #work-with { padding: var(--gap-l) 1.5rem; }
   .hero-inner { padding: 0 1.5rem; }
   .hero { padding-bottom: 5rem; }
+  .hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.15em; flex-wrap: wrap; }
   .stages-list { padding-left: 3.5rem; }
   .stage-node { left: -3rem; width: 28px; height: 28px; }
   .stage-node-num { font-size: 0.75rem; }

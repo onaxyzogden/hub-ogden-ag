@@ -21,7 +21,7 @@
       --dark-green: #3A4A32;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -1128,6 +1128,24 @@
   }
   .skip-link:focus { top: 0; }
 
+
+  @media (max-width: 480px) {
+    .btn-primary {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      padding: 0.85rem 1.5rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-ghost {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+    }
+    .hero-actions {
+      width: 100%;
+      padding: 0 0.25rem;
+    }
+  }
 </style>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hub.ogden.ag/moontrance/">
