@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBOS — Help & Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f16;--surface:#161d28;--surface-2:#1e2636;--surface-3:#252f42;
+  --border:rgba(255,255,255,0.06);--border-md:rgba(255,255,255,0.11);
+  --text-1:#ede8da;--text-2:#8c95aa;--text-3:#4f5a6e;
+  --gold:#c9a96e;--gold-dim:rgba(201,169,110,0.10);--gold-bd:rgba(201,169,110,0.28);
+  --green:#52b584;--green-dim:rgba(82,181,132,0.10);--green-bd:rgba(82,181,132,0.28);
+  --amber:#e8a93e;--amber-dim:rgba(232,169,62,0.10);--amber-bd:rgba(232,169,62,0.28);
+  --red:#e05c5c;--red-dim:rgba(224,92,92,0.08);--red-bd:rgba(224,92,92,0.28);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.10);--purple-bd:rgba(167,139,250,0.28);
+  --radius:10px;--radius-lg:16px;
+  --font-disp:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Instrument Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --ease:cubic-bezier(.22,.68,0,1.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text-1);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+.header{display:flex;align-items:flex-end;justify-content:space-between;padding:32px 48px 24px;border-bottom:1px solid var(--border);position:relative;z-index:1}
+.header::after{content:'';position:absolute;bottom:-1px;left:48px;width:48px;height:1px;background:var(--gold);opacity:0.6}
+.header-logo{font-family:var(--font-disp);font-size:32px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em}
+.header-label{font-size:11px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:6px 12px;border-radius:6px;font-size:12px;color:var(--text-3);text-decoration:none;transition:all 0.15s;font-weight:500}
+.nav-link:hover{background:var(--surface-2);color:var(--text-2)}
+.nav-link.active{background:var(--gold-dim);color:var(--gold)}
+
+.layout{display:grid;grid-template-columns:220px 1fr;gap:0;position:relative;z-index:1;min-height:calc(100vh - 90px)}
+
+/* SIDEBAR */
+.sidebar{padding:28px 24px;border-right:1px solid var(--border);position:sticky;top:0;height:calc(100vh - 90px);overflow-y:auto}
+.sidebar-section{margin-bottom:20px}
+.sidebar-title{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+.sidebar-link{display:block;padding:5px 10px;border-radius:6px;font-size:12px;color:var(--text-3);text-decoration:none;transition:all 0.15s;cursor:pointer}
+.sidebar-link:hover{background:var(--surface-2);color:var(--text-2)}
+.sidebar-link.active{background:var(--gold-dim);color:var(--gold)}
+
+/* MAIN */
+.main{padding:32px 48px 48px;max-width:760px}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:28px}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:11px 14px 11px 36px;font-family:var(--font-body);font-size:14px;color:var(--text-1);outline:none;transition:border-color 0.2s}
+.search-input:focus{border-color:var(--gold-bd)}
+.search-input::placeholder{color:var(--text-3)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+
+/* SECTIONS */
+.help-section{margin-bottom:40px;scroll-margin-top:20px}
+.section-heading{font-family:var(--font-disp);font-size:26px;font-weight:500;color:var(--text-1);letter-spacing:-0.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.help-p{font-size:13px;color:var(--text-2);line-height:1.8;margin-bottom:12px}
+
+/* GLOSSARY */
+.glossary-item{margin-bottom:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:border-color 0.2s}
+.glossary-item:hover{border-color:var(--border-md)}
+.glossary-term{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--gold);margin-bottom:4px}
+.glossary-def{font-size:12px;color:var(--text-2);line-height:1.7}
+.glossary-example{font-size:11px;color:var(--text-3);font-style:italic;margin-top:4px;padding-top:4px;border-top:1px solid var(--border)}
+.hidden{display:none}
+
+/* COMMAND TABLE */
+.cmd-table{width:100%;border-collapse:collapse;margin-bottom:16px}
+.cmd-table th{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.cmd-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2);vertical-align:top}
+.cmd-table tr:last-child td{border:none}
+.cmd-name{font-family:var(--font-mono);font-size:11px;color:var(--gold);font-weight:500}
+
+/* STAGE TABLE */
+.stage-table{width:100%;border-collapse:collapse;margin-bottom:16px}
+.stage-table th{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left}
+.stage-table td{padding:9px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2);vertical-align:top}
+.stage-table tr:last-child td{border:none}
+.stage-code{font-family:var(--font-mono);font-size:10px;color:var(--gold)}
+
+/* FAQ */
+.faq-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+.faq-question{padding:12px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--text-1);font-weight:500;user-select:none;transition:background 0.15s}
+.faq-question:hover{background:rgba(255,255,255,0.02)}
+.faq-chevron{color:var(--text-3);transition:transform 0.2s;font-size:12px}
+.faq-chevron.open{transform:rotate(180deg)}
+.faq-answer{display:none;padding:0 16px 14px;font-size:12px;color:var(--text-2);line-height:1.7;border-top:1px solid var(--border)}
+.faq-answer.open{display:block}
+
+/* INLINE CODE */
+.ic{font-family:var(--font-mono);font-size:11px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:4px;padding:1px 5px;color:var(--gold)}
+
+/* ROUTING CHIPS */
+.r-chip{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;font-family:var(--font-body);vertical-align:middle}
+.r-advance{background:var(--green-dim);color:var(--green);border:1px solid var(--green-bd)}
+.r-remain{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-bd)}
+.r-patch{background:rgba(232,120,50,0.1);color:#e87832;border:1px solid rgba(232,120,50,0.3)}
+.r-noship{background:var(--red-dim);color:var(--red);border:1px solid var(--red-bd)}
+.r-glabel{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-bd)}
+
+/* FEEDBACK */
+.feedback-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-top:32px}
+.feedback-title{font-family:var(--font-disp);font-size:20px;color:var(--text-1);margin-bottom:8px}
+.feedback-sub{font-size:12px;color:var(--text-3);margin-bottom:16px}
+.feedback-stars{display:flex;gap:6px;margin-bottom:14px}
+.star{font-size:22px;cursor:pointer;opacity:0.3;transition:opacity 0.15s;user-select:none}
+.star.active,.star:hover{opacity:1}
+.feedback-input{width:100%;background:var(--surface-2);border:1px solid var(--border-md);border-radius:var(--radius);padding:10px 12px;font-family:var(--font-body);font-size:13px;color:var(--text-1);outline:none;resize:vertical;min-height:80px;transition:border-color 0.2s;margin-bottom:12px}
+.feedback-input:focus{border-color:var(--gold-bd)}
+.feedback-input::placeholder{color:var(--text-3)}
+.feedback-btn{padding:9px 20px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-size:13px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all 0.2s}
+.feedback-btn:hover{background:rgba(201,169,110,0.2)}
+.feedback-thanks{display:none;font-size:13px;color:var(--green);margin-top:10px}
+
+footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);font-family:var(--font-mono);position:relative;z-index:1}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <div class="header-label">BBOS — Documentation</div>
+    <div class="header-logo">Help Center</div>
+  </div>
+  <nav class="nav-links">
+    <a class="nav-link" href="bbos_index.html">Index</a>
+    <a class="nav-link" href="bbos_analytics.html">Analytics</a>
+    <a class="nav-link" href="bbos_similarity.html">Similarity</a>
+    <a class="nav-link active" href="#">Help</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Getting started</div>
+      <a class="sidebar-link active" onclick="scrollTo('overview')">Overview</a>
+      <a class="sidebar-link" onclick="scrollTo('commands')">Commands</a>
+      <a class="sidebar-link" onclick="scrollTo('pipeline')">Pipeline stages</a>
+      <a class="sidebar-link" onclick="scrollTo('routing')">Routing status</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Reference</div>
+      <a class="sidebar-link" onclick="scrollTo('glossary')">Glossary</a>
+      <a class="sidebar-link" onclick="scrollTo('glabels')">G-label system</a>
+      <a class="sidebar-link" onclick="scrollTo('validators')">Validators</a>
+      <a class="sidebar-link" onclick="scrollTo('spiritual')">Spiritual layer</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Dashboard</div>
+      <a class="sidebar-link" onclick="scrollTo('sheet-setup')">Sheet setup</a>
+      <a class="sidebar-link" onclick="scrollTo('meta-keys')">Meta keys reference</a>
+      <a class="sidebar-link" onclick="scrollTo('faq')">FAQ</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Feedback</div>
+      <a class="sidebar-link" onclick="scrollTo('feedback')">Give feedback</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="5.5" r="4"/><path d="M9 9l2.5 2.5"/></svg>
+      <input class="search-input" id="search-input" placeholder="Search glossary terms, commands, FAQ…" oninput="filterContent()">
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="help-section" id="sec-overview">
+      <div class="section-heading">Overview</div>
+      <p class="help-p">BBOS (Barakah Business Operating System) is a modular AI operating system built on Claude. It guides operators through a structured 9-stage pipeline — from initial intake to optimisation — using a governor-driven architecture that enforces stage isolation, truth-safe language, and integrity validation at every step.</p>
+      <p class="help-p">The operating hierarchy is: <span class="ic">Governor</span> → <span class="ic">Active Stage Skill</span> → <span class="ic">Specialist Skills</span> → <span class="ic">Validators</span> → <span class="ic">State Update</span>. No stage work happens without the governor first confirming routing.</p>
+      <p class="help-p">The dashboard visualises the live state of each project — its active stage, routing decision, integrity status, required inputs, and session history — drawing data from a paired Google Sheet updated after each session.</p>
+    </div>
+
+    <!-- COMMANDS -->
+    <div class="help-section" id="sec-commands">
+      <div class="section-heading">Commands</div>
+      <p class="help-p">These are the six operator commands recognised by the BBOS governor. Each command must be issued at the start of a Claude session to set the operating mode.</p>
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>What it does</th><th>Routes to</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd-name">INTAKE</td><td>Captures the full operator intake — 6 sections covering business, offer, market, proof, constraints, and energy. Produces the Normalised Intake Packet.</td><td>Stage 01_INT only</td></tr>
+          <tr><td class="cmd-name">S-OUTPUTS</td><td>Runs the Research Factory for the active stage. Produces structured research outputs that feed the Asset Factory.</td><td>Active stage Research Factory</td></tr>
+          <tr><td class="cmd-name">ASSEMBLE</td><td>Runs the Canon + Asset Factory + Assemble Contract for the active stage. Produces the deliverable asset pack.</td><td>Active stage Asset Factory</td></tr>
+          <tr><td class="cmd-name">ANNOTATE</td><td>Invokes the spiritual annotation layer for the active stage. Explicit invocation only — never automatic.</td><td>Spiritual anchor in active stage</td></tr>
+          <tr><td class="cmd-name">PATCH</td><td>Modifies a single named output or section. All other sections remain unchanged.</td><td>Named section only</td></tr>
+          <tr><td class="cmd-name">RESET ROUTING</td><td>Drops any inferred routing and re-anchors to an explicitly named stage. Use when stage state is ambiguous.</td><td>Operator-specified stage</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="help-section" id="sec-pipeline">
+      <div class="section-heading">Pipeline stages</div>
+      <table class="stage-table">
+        <thead><tr><th>Code</th><th>Name</th><th>Purpose</th><th>Key output</th></tr></thead>
+        <tbody>
+          <tr><td class="stage-code">01_INT</td><td>Intake</td><td>Capture and normalise operator input across 6 sections</td><td>Normalised Intake Packet</td></tr>
+          <tr><td class="stage-code">02_QAL</td><td>Qualification</td><td>Score niche viability, screen regulatory/competence gates</td><td>QAL Asset Pack (5 assets)</td></tr>
+          <tr><td class="stage-code">03_STR</td><td>Strategy</td><td>Define positioning, enemy narrative, VoC buying language</td><td>STR Asset Pack (5 assets)</td></tr>
+          <tr><td class="stage-code">04_OFR</td><td>Offer</td><td>Build the full offer — promise, mechanism, scope, guarantee, pricing</td><td>OFR Asset Pack (8 assets)</td></tr>
+          <tr><td class="stage-code">05_OUT</td><td>Outreach</td><td>Build hooks, message library, follow-up sequence, no-fit scripts</td><td>OUT Asset Pack (7 outputs)</td></tr>
+          <tr><td class="stage-code">06_SAL</td><td>Sales</td><td>Qualification form, fit call script, objection library, nurture sequences</td><td>SAL Asset Pack (6 outputs)</td></tr>
+          <tr><td class="stage-code">07_FUL</td><td>Fulfilment</td><td>Delivery map, QC checklist, client milestones, offboarding</td><td>FUL Asset Pack</td></tr>
+          <tr><td class="stage-code">08_RET</td><td>Retention</td><td>Re-engagement, referral activation, proof deployment, ascension paths</td><td>RET Asset Pack (6 deliverables)</td></tr>
+          <tr><td class="stage-code">09_OPT</td><td>Optimise</td><td>CM-1–4 metrics review, BHI, TVS, stewardship score, next test plan</td><td>OPT Pack (10 items)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ROUTING -->
+    <div class="help-section" id="sec-routing">
+      <div class="section-heading">Routing status</div>
+      <p class="help-p">After every session the governor issues one of four routing decisions. This should be recorded in the meta sheet's <span class="ic">routing_status</span> key.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span class="r-chip r-advance">advance</span></div>
+          <div class="help-p" style="margin:0">All stage criteria met, all validators passed, no blocking issues. The project may move to the next stage.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span class="r-chip r-remain">remain</span></div>
+          <div class="help-p" style="margin:0">Stage work is in progress. Continue working within the current stage on the next session.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span class="r-chip r-patch">patch</span></div>
+          <div class="help-p" style="margin:0">A specific named output needs revision. Use the PATCH command on the next session targeting only that section.</div>
+        </div>
+        <div style="background:var(--red-dim);border:1px solid var(--red-bd);border-radius:var(--radius);padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span class="r-chip r-noship">no_ship</span></div>
+          <div class="help-p" style="margin:0">A hard stop. Required inputs are missing, a blocking issue is unresolved, or a request would require guessing. Nothing ships until the condition is resolved. Record the reason in <span class="ic">noship_1</span>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GLOSSARY -->
+    <div class="help-section" id="sec-glossary">
+      <div class="section-heading">Glossary</div>
+      <div id="glossary-items">
+        <div class="glossary-item" data-terms="governor routing active stage">
+          <div class="glossary-term">Governor</div>
+          <div class="glossary-def">The runtime controller that resolves the active command and stage, enforces stage isolation, loads permitted specialists and validators, and issues the routing recommendation. Nothing in BBOS runs without the governor first approving it.</div>
+        </div>
+        <div class="glossary-item" data-terms="stage isolation mixing">
+          <div class="glossary-term">Stage isolation</div>
+          <div class="glossary-def">The hard rule that work in one stage cannot pull canon, outputs, or methods from another stage. The governor enforces this at every session. Violating stage isolation produces unreliable, cross-contaminated outputs.</div>
+        </div>
+        <div class="glossary-item" data-terms="no_ship noship hard stop">
+          <div class="glossary-term">NO_SHIP</div>
+          <div class="glossary-def">A governor decision that halts all output. Triggered when required inputs are missing, a blocking issue is unresolved, stage isolation would be violated, or producing output would require guessing.</div>
+          <div class="glossary-example">Example: "NO_SHIP — no approved OFR Asset Pack exists. Cannot begin Outreach stage."</div>
+        </div>
+        <div class="glossary-item" data-terms="anchor discipline approved anchors">
+          <div class="glossary-term">Anchor discipline</div>
+          <div class="glossary-def">Each stage has a set of approved anchors (e.g. <span class="ic">@@BBOS_STAGE:OFR@@</span>). The governor only allows the active stage's anchors to be used. Invoking an anchor from another stage is a violation.</div>
+        </div>
+        <div class="glossary-item" data-terms="g-label glabel certainty theater proof">
+          <div class="glossary-term">G-label</div>
+          <div class="glossary-def">A classification applied to result-implying language in BBOS copy. G1 = grounded certainty (proven, documented). G2 = conditional claim (likely, typical). G3 = aspirational/directional. G4 = visionary/hypothetical. Copy that uses G4 language as if it were G1 is called certainty theater and will fail the Truth Gate validator.</div>
+          <div class="glossary-example">G1: "Clients in this niche typically see X — documented across 12 case studies." G4 (invalid as a promise): "You will achieve X."</div>
+        </div>
+        <div class="glossary-item" data-terms="certainty theater proof pending">
+          <div class="glossary-term">Certainty theater</div>
+          <div class="glossary-def">Language that presents aspirational or conditional outcomes as guaranteed facts. A Truth Gate validator failure. Must be patched before stage can advance.</div>
+        </div>
+        <div class="glossary-item" data-terms="truth gate validator integrity">
+          <div class="glossary-term">Truth Gate Validator</div>
+          <div class="glossary-def">A validator that checks every meaningful claim is G-labeled, every G1/G2 claim has a proof anchor, no certainty theater exists, scarcity is documented or absent, and no claim exceeds scope control.</div>
+        </div>
+        <div class="glossary-item" data-terms="amanah integrity proof audit">
+          <div class="glossary-term">Amanah Proof Audit</div>
+          <div class="glossary-def">A QAL-stage check of the operator's claimed credentials, competence, and results against documented evidence. Items that cannot be proven are flagged as proof gaps and must be resolved before the offer can make those claims.</div>
+        </div>
+        <div class="glossary-item" data-terms="barakah BHI health index">
+          <div class="glossary-term">Barakah Health Index (BHI)</div>
+          <div class="glossary-def">A 5-dimension assessment used in Stage 09_OPT measuring the alignment of business operations with principles of integrity, sustainability, and blessing (barakah). BHI-1 through BHI-5 cover different operational domains.</div>
+        </div>
+        <div class="glossary-item" data-terms="canonical metrics CM-1 CM-2 CM-3 CM-4">
+          <div class="glossary-term">Canonical Metrics (CM-1–4)</div>
+          <div class="glossary-def">The four core performance metrics tracked in Stage 09_OPT: CM-1 Qualified Outreach Conversion Rate, CM-2 Fit-to-Close Rate, CM-3 Client Milestone Completion Rate, CM-4 Unprompted Referral Rate.</div>
+        </div>
+        <div class="glossary-item" data-terms="voc voice of customer buying language">
+          <div class="glossary-term">VoC (Voice of Customer)</div>
+          <div class="glossary-def">Verbatim language collected from real prospects or clients in Stage 03_STR. Used to seed positioning, hooks, and objection responses. BBOS requires a minimum of 15 verbatim phrases in the VoC Buying Language Bank before advancing STR.</div>
+        </div>
+        <div class="glossary-item" data-terms="scope map exclusions">
+          <div class="glossary-term">Scope Map</div>
+          <div class="glossary-def">OFR Asset 4. Documents exactly what is included and excluded in the offer. Scope exclusions must be explicit — not implied. Prevents scope creep, misaligned expectations, and guarantee disputes.</div>
+        </div>
+        <div class="glossary-item" data-terms="asset pack deliverable">
+          <div class="glossary-term">Asset Pack</div>
+          <div class="glossary-def">The complete set of deliverables produced by a stage. Each stage has a defined asset pack with numbered items that must all be complete before the stage can advance. Partial packs do not qualify.</div>
+        </div>
+        <div class="glossary-item" data-terms="spiritual annotate annotation">
+          <div class="glossary-term">Spiritual annotation</div>
+          <div class="glossary-def">An operator-facing spiritual framing of a stage asset, invoked only by the explicit ANNOTATE command. Never auto-generated. Maximum 2 sentences per asset, 1 operational implication. Cannot be used to reinforce urgency, scarcity, or closing pressure.</div>
+        </div>
+        <div class="glossary-item" data-terms="no-fit disqualify DQ">
+          <div class="glossary-term">No-fit / DQ language</div>
+          <div class="glossary-def">Scripted language for declining or disqualifying prospects who are not a good match. BBOS requires this language to be clear, respectful, and final — not ambiguous or pressure-inviting. Dignity must be preserved.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- G-LABELS -->
+    <div class="help-section" id="sec-glabels">
+      <div class="section-heading">G-label system</div>
+      <p class="help-p">Every result-implying claim in BBOS copy must carry a G-label. The label is recorded internally — it does not appear in client-facing copy. Its purpose is to ensure the operator and validator can audit whether each claim is supported by evidence.</p>
+      <table class="cmd-table">
+        <thead><tr><th>Label</th><th>Meaning</th><th>Proof requirement</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd-name">G1</td><td>Grounded certainty — documented, proven, repeatable</td><td>Must have a named proof anchor or case study</td></tr>
+          <tr><td class="cmd-name">G2</td><td>Conditional claim — likely, typical, common outcome</td><td>Must reference pattern evidence or documented probability</td></tr>
+          <tr><td class="cmd-name">G3</td><td>Aspirational/directional — intended, designed for</td><td>Must be framed as aspiration, not commitment</td></tr>
+          <tr><td class="cmd-name">G4</td><td>Visionary — hypothetical, potential, possible</td><td>Must be clearly framed as possibility only</td></tr>
+        </tbody>
+      </table>
+      <p class="help-p">G-flags in the dashboard indicate claims that are missing a label, using the wrong label for their proof level, or presenting G3/G4 language as if it were G1/G2 (certainty theater). These must be resolved before stage advance.</p>
+    </div>
+
+    <!-- VALIDATORS -->
+    <div class="help-section" id="sec-validators">
+      <div class="section-heading">Validators</div>
+      <p class="help-p">Validators are independent of generators. A stage cannot advance unless all required validators pass. Validator results should be recorded in the meta sheet's <span class="ic">validator_N</span> keys using the format <span class="ic">validator-name::pass</span> or <span class="ic">validator-name::fail</span>.</p>
+      <table class="cmd-table">
+        <thead><tr><th>Validator</th><th>Purpose</th><th>Active stages</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd-name">bbos-glabel-auditor</td><td>Checks all result-implying language carries correct G-labels</td><td>03_OFR</td></tr>
+          <tr><td class="cmd-name">bbos-truth-gate-validator</td><td>Checks for certainty theater, missing proof anchors, unsupported scarcity, scope excess</td><td>03_OFR, 04_OUT, 05_SAL</td></tr>
+          <tr><td class="cmd-name">bbos-stage-completeness-checker</td><td>Confirms all required deliverables for the stage are present</td><td>03_OFR, 04_OUT, 05_SAL</td></tr>
+          <tr><td class="cmd-name">bbos-scarcity-checker</td><td>Confirms any scarcity language references a real, documented constraint</td><td>04_OUT</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SPIRITUAL -->
+    <div class="help-section" id="sec-spiritual">
+      <div class="section-heading">Spiritual layer</div>
+      <p class="help-p">The spiritual layer in BBOS is operator-facing only and explicitly invocation-only. It is never generated automatically. Rules:</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        <li style="font-size:13px;color:var(--text-2);padding:8px 12px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)">Only invoke with the <span class="ic">ANNOTATE</span> command — never without it</li>
+        <li style="font-size:13px;color:var(--text-2);padding:8px 12px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)">One annotation per major asset, maximum 2 sentences</li>
+        <li style="font-size:13px;color:var(--text-2);padding:8px 12px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)">Must include one specific operational implication</li>
+        <li style="font-size:13px;color:var(--text-2);padding:8px 12px;background:var(--surface);border-radius:var(--radius);border-left:3px solid var(--red)">Never use spiritual language to reinforce urgency, scarcity, or closing pressure</li>
+        <li style="font-size:13px;color:var(--text-2);padding:8px 12px;background:var(--surface);border-radius:var(--radius);border-left:3px solid var(--red)">If the active stage lacks a spiritual anchor, the result is NO_SHIP — not an improvised annotation</li>
+      </ul>
+    </div>
+
+    <!-- SHEET SETUP -->
+    <div class="help-section" id="sec-sheet-setup">
+      <div class="section-heading">Sheet setup</div>
+      <p class="help-p">Each project requires a Google Sheet with two tabs: <span class="ic">meta</span> and <span class="ic">checklist</span>. Use the BBOS Sheet Creator Apps Script to generate this automatically.</p>
+      <p class="help-p"><strong style="color:var(--text-1)">To publish the sheet for dashboard access:</strong> File → Share → Publish to web. Publish each tab individually as CSV. The dashboard uses the <span class="ic">gviz/tq</span> endpoint — this requires CSV publication, not "Web page" format.</p>
+      <p class="help-p"><strong style="color:var(--text-1)">Common error:</strong> Using the long <span class="ic">/d/e/2PACX-…</span> URL from the publish dialog instead of the Sheet ID from the edit URL. The dashboard needs the Sheet ID, not the published page URL.</p>
+    </div>
+
+    <!-- META KEYS -->
+    <div class="help-section" id="sec-meta-keys">
+      <div class="section-heading">Meta keys reference</div>
+      <p class="help-p">All keys go in column A of the meta tab. Values go in column B. Update after each session.</p>
+      <table class="cmd-table">
+        <thead><tr><th>Key</th><th>Value format</th><th>Update when</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd-name">active_stage</td><td>e.g. <span class="ic">03_STR</span></td><td>After every advance decision</td></tr>
+          <tr><td class="cmd-name">active_command</td><td><span class="ic">INTAKE</span> | <span class="ic">S-OUTPUTS</span> | <span class="ic">ASSEMBLE</span> | <span class="ic">PATCH</span> | <span class="ic">ANNOTATE</span></td><td>After every session</td></tr>
+          <tr><td class="cmd-name">routing_status</td><td><span class="ic">remain</span> | <span class="ic">advance</span> | <span class="ic">patch</span> | <span class="ic">no_ship</span></td><td>After every session</td></tr>
+          <tr><td class="cmd-name">last_session</td><td>YYYY-MM-DD</td><td>After every session</td></tr>
+          <tr><td class="cmd-name">last_validated</td><td>YYYY-MM-DD</td><td>After validators run</td></tr>
+          <tr><td class="cmd-name">next_action</td><td>Plain English sentence</td><td>After every session</td></tr>
+          <tr><td class="cmd-name">blocking_issue_1</td><td>Description of issue</td><td>When a block is identified; clear when resolved</td></tr>
+          <tr><td class="cmd-name">validator_1</td><td><span class="ic">bbos-truth-gate-validator::pass</span></td><td>After validators run</td></tr>
+          <tr><td class="cmd-name">gflag_1</td><td><span class="ic">location::issue_type::required_fix</span></td><td>When G-flag raised; remove row when resolved</td></tr>
+          <tr><td class="cmd-name">noship_1</td><td><span class="ic">reason | YYYY-MM-DD</span></td><td>Every NO_SHIP event — never delete previous entries</td></tr>
+          <tr><td class="cmd-name">artifact_1</td><td><span class="ic">OFR Asset Pack::v1.2::complete</span></td><td>When artifact is produced or updated</td></tr>
+          <tr><td class="cmd-name">stage_entered_date</td><td>YYYY-MM-DD</td><td>When advancing to a new stage</td></tr>
+          <tr><td class="cmd-name">annotate_invoked</td><td><span class="ic">yes</span> | <span class="ic">no</span></td><td>When ANNOTATE is used</td></tr>
+          <tr><td class="cmd-name">note_1</td><td><span class="ic">text | author | date</span></td><td>Add a new row each session — do not overwrite</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FAQ -->
+    <div class="help-section" id="sec-faq">
+      <div class="section-heading">FAQ</div>
+      <div id="faq-items">
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Why does the dashboard show "Failed to fetch"?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">The most common cause is publishing the sheet as "Web page" instead of "CSV". Go to File → Share → Publish to web → select your sheet tab from the first dropdown → select CSV from the second dropdown → Publish. Repeat for both the checklist and meta tabs. Also check that the Sheet ID in CONFIG is the short alphanumeric ID from the edit URL, not the long /d/e/ published URL.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Can a project skip a stage?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">No. Stage isolation is a hard rule. Each stage has defined prerequisite inputs from the stage before it. Skipping a stage means those inputs don't exist, which will trigger NO_SHIP when the skipped stage's downstream work is attempted. The only exception is that stages 07_FUL, 08_RET, and 09_OPT can be worked concurrently with the sales pipeline under specific conditions defined in the governor rules.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            What does it mean when last_validated is behind last_session?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">It means work has been done in sessions after the last validator run. This is a yellow flag — not a block — but it means the integrity status shown may be based on older work. Run validators again before treating the current state as clean.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            When should I use PATCH vs starting a new ASSEMBLE session?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">Use PATCH when the routing decision is specifically "patch" and a named section has been identified for revision. PATCH touches only that section — everything else is preserved. Use ASSEMBLE when building the full asset pack from scratch or doing a substantive rebuild. Never use ASSEMBLE to "touch up" a single item — that is PATCH work and creates unnecessary regeneration risk.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Can ANNOTATE be invoked for any stage?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">No. Only stages that have a defined spiritual anchor in their skill file support ANNOTATE. If you invoke ANNOTATE on a stage without an anchor, the result is NO_SHIP — not an improvised annotation. Check the stage skill file for the presence of @@SECTION:SPIRITUAL_ANCHOR@@ before invoking.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            How do I clear a G-flag from the dashboard?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">Resolve the issue described in the flag (fix the claim, add the proof anchor, remove the certainty theater), then delete or blank out the corresponding gflag_N row in the meta sheet. Do not just overwrite it with a note — remove it entirely so the dashboard no longer counts it as an active flag.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            What is the difference between a blocking issue and a NO_SHIP?
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">A blocking issue is an operator-recorded condition that prevents progress — it lives in the meta sheet and is visible on the dashboard. A NO_SHIP is a governor decision issued during a Claude session when a hard stop condition is met. A blocking issue often causes the next session to return NO_SHIP, but they are recorded separately. Always log both: the blocking issue in blocking_issue_N and the NO_SHIP event in noship_N with a reason and date.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="help-section" id="sec-feedback">
+      <div class="section-heading">Feedback</div>
+      <div class="feedback-box">
+        <div class="feedback-title">Help us improve BBOS</div>
+        <div class="feedback-sub">Your feedback shapes the platform. Rate this documentation and leave a note.</div>
+        <div class="feedback-stars" id="stars">
+          <span class="star" onclick="rateStar(1)">★</span>
+          <span class="star" onclick="rateStar(2)">★</span>
+          <span class="star" onclick="rateStar(3)">★</span>
+          <span class="star" onclick="rateStar(4)">★</span>
+          <span class="star" onclick="rateStar(5)">★</span>
+        </div>
+        <textarea class="feedback-input" id="feedback-text" placeholder="What was helpful? What's missing? What confused you?"></textarea>
+        <button class="feedback-btn" onclick="submitFeedback()">Submit feedback</button>
+        <div class="feedback-thanks" id="feedback-thanks">Thank you — your feedback has been recorded.</div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<footer>
+  <span>BBOS Help Center v1.0</span>
+  <span>Use ↑ sidebar to navigate · Search above for quick lookup</span>
+</footer>
+
+<script>
+let _starRating = 0;
+
+function scrollTo(id) {
+  document.getElementById('sec-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function toggleFaq(el) {
+  const ans     = el.nextElementSibling;
+  const chevron = el.querySelector('.faq-chevron');
+  const isOpen  = ans.classList.toggle('open');
+  chevron.classList.toggle('open', isOpen);
+}
+
+function filterContent() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  // Filter glossary
+  document.querySelectorAll('#glossary-items .glossary-item').forEach(item=>{
+    const text = (item.querySelector('.glossary-term')?.textContent||'').toLowerCase()
+              + (item.querySelector('.glossary-def')?.textContent||'').toLowerCase()
+              + (item.dataset.terms||'').toLowerCase();
+    item.classList.toggle('hidden', q.length>0 && !text.includes(q));
+  });
+  // Filter FAQ
+  document.querySelectorAll('#faq-items .faq-item').forEach(item=>{
+    const text = item.textContent.toLowerCase();
+    item.classList.toggle('hidden', q.length>0 && !text.includes(q));
+  });
+}
+
+function rateStar(n) {
+  _starRating = n;
+  document.querySelectorAll('.star').forEach((s,i)=>{
+    s.classList.toggle('active', i<n);
+  });
+}
+
+function submitFeedback() {
+  const text    = document.getElementById('feedback-text').value.trim();
+  const rating  = _starRating;
+  if (!text && !rating) return;
+  // Store in localStorage
+  const fb = JSON.parse(localStorage.getItem('bbos_feedback')||'[]');
+  fb.push({ rating, text, date: new Date().toISOString() });
+  localStorage.setItem('bbos_feedback', JSON.stringify(fb));
+  document.getElementById('feedback-text').value='';
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));
+  _starRating=0;
+  const thanks = document.getElementById('feedback-thanks');
+  thanks.style.display='block';
+  setTimeout(()=>thanks.style.display='none', 3000);
+}
+</script>
+</body>
+</html>
