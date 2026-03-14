@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBOS — Project Similarity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     BBOS PROJECT SIMILARITY PAGE v1.0
+     ============================================================
+     SETUP:
+     1. Set ADMIN_PASSWORD
+     2. Copy PROJECTS array from bbos_index.html
+        Each project needs tags[] for similarity matching
+     3. Optional: set SIMILARITY_SHEET_ID to a shared Google Sheet
+        where similarity votes are stored (tab: "similarity")
+        Columns: A=from_project B=to_project C=vote D=date
+     ============================================================ -->
+
+<script>
+const ADMIN_PASSWORD    = "bbos-admin";
+const SIMILARITY_SHEET_ID = ""; // optional — for storing votes
+
+const PROJECTS = [
+  { name:"Moontrance",  file:"moontrance.html",  sheetId:"", operator:"Yousef", tags:["music","service","b2c","creative","solo-operator"] },
+  { name:"Acme Corp",   file:"acme.html",         sheetId:"", operator:"Yousef", tags:["consulting","b2b","professional-services","high-ticket"] },
+  { name:"Bright Path", file:"brightpath.html",   sheetId:"", operator:"Yousef", tags:["coaching","b2c","education","transformation","high-ticket"] },
+  { name:"Nova Studio", file:"nova.html",          sheetId:"", operator:"Yousef", tags:["design","b2b","creative","service","agency"] },
+];
+</script>
+
+<style>
+:root{
+  --bg:#0b0f16;--surface:#161d28;--surface-2:#1e2636;--surface-3:#252f42;
+  --border:rgba(255,255,255,0.06);--border-md:rgba(255,255,255,0.11);
+  --text-1:#ede8da;--text-2:#8c95aa;--text-3:#4f5a6e;
+  --gold:#c9a96e;--gold-dim:rgba(201,169,110,0.10);--gold-bd:rgba(201,169,110,0.28);
+  --green:#52b584;--green-dim:rgba(82,181,132,0.10);--green-bd:rgba(82,181,132,0.28);
+  --amber:#e8a93e;--amber-dim:rgba(232,169,62,0.10);--amber-bd:rgba(232,169,62,0.28);
+  --red:#e05c5c;--red-dim:rgba(224,92,92,0.08);--red-bd:rgba(224,92,92,0.28);
+  --radius:10px;--radius-lg:16px;
+  --font-disp:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Instrument Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --ease:cubic-bezier(.22,.68,0,1.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text-1);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+#gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
+.gate-inner{width:100%;max-width:360px;padding:0 24px;animation:fadeUp 0.5s var(--ease) both}
+.gate-logo{font-family:var(--font-disp);font-size:42px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em;margin-bottom:2px}
+.gate-sub{font-size:11px;color:var(--text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:36px}
+.gate-label{font-size:11px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px}
+.gate-input{width:100%;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:11px 14px;font-family:var(--font-mono);font-size:14px;color:var(--text-1);outline:none;transition:border-color 0.2s;margin-bottom:10px;letter-spacing:0.06em}
+.gate-input:focus{border-color:var(--gold-bd)}
+.gate-input.error{border-color:var(--red);animation:shake 0.3s}
+.gate-btn{width:100%;padding:11px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
+.gate-btn:hover{background:rgba(201,169,110,0.18)}
+.gate-error{font-size:12px;color:var(--red);margin-top:6px;min-height:18px}
+
+#app{display:none;position:relative;z-index:1}
+#app.visible{display:block;animation:fadeIn 0.4s ease both}
+
+.header{display:flex;align-items:flex-end;justify-content:space-between;padding:32px 48px 24px;border-bottom:1px solid var(--border);position:relative}
+.header::after{content:'';position:absolute;bottom:-1px;left:48px;width:48px;height:1px;background:var(--gold);opacity:0.6}
+.header-logo{font-family:var(--font-disp);font-size:32px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em}
+.header-label{font-size:11px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.header-right{display:flex;align-items:center;gap:10px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:6px 12px;border-radius:6px;font-size:12px;color:var(--text-3);text-decoration:none;transition:all 0.15s;font-weight:500}
+.nav-link:hover{background:var(--surface-2);color:var(--text-2)}
+.nav-link.active{background:var(--gold-dim);color:var(--gold)}
+.hdr-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 12px;color:var(--text-3);font-size:11px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
+.hdr-btn:hover{border-color:var(--border-md);color:var(--text-2)}
+
+.content{padding:32px 48px 48px;max-width:1100px}
+
+/* SELECTOR */
+.selector-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.selector-label{font-size:11px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap}
+.project-select{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:10px 14px;font-family:var(--font-disp);font-size:16px;color:var(--text-1);outline:none;cursor:pointer;min-width:220px}
+.project-select option{background:var(--surface-2)}
+.tag-filters{display:flex;gap:6px;flex-wrap:wrap}
+.tag-btn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
+.tag-btn:hover{color:var(--text-2)}
+.tag-btn.active{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.min-tags-select{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:8px 12px;font-family:var(--font-body);font-size:12px;color:var(--text-2);outline:none;cursor:pointer}
+
+/* SOURCE CARD */
+.source-card{background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px}
+.source-name{font-family:var(--font-disp);font-size:26px;font-weight:500;color:var(--text-1);margin-bottom:8px}
+.source-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag-pill{display:inline-block;font-size:10px;padding:3px 9px;border-radius:20px;font-family:var(--font-body);font-weight:500}
+.tag-source{background:rgba(201,169,110,0.2);color:var(--gold);border:1px solid var(--gold-bd)}
+.tag-shared{background:var(--green-dim);color:var(--green);border:1px solid var(--green-bd)}
+.tag-unshared{background:var(--surface-3);color:var(--text-3);border:1px solid var(--border)}
+
+/* RESULTS */
+.results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.results-title{font-size:11px;font-weight:500;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase}
+.results-count{font-size:11px;color:var(--text-3);font-family:var(--font-mono)}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.sim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;transition:border-color 0.2s,transform 0.2s;animation:fadeUp 0.3s var(--ease) both}
+.sim-card:hover{border-color:var(--border-md);transform:translateY(-1px)}
+.sim-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.sim-name{font-family:var(--font-disp);font-size:20px;font-weight:500;color:var(--text-1)}
+.sim-score{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
+.sim-score-val{font-family:var(--font-disp);font-size:22px;font-weight:500;line-height:1}
+.sim-score-label{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
+.score-high{color:var(--green)}
+.score-mid{color:var(--amber)}
+.score-low{color:var(--text-3)}
+.sim-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.sim-meta{font-size:11px;color:var(--text-3);font-family:var(--font-mono);margin-bottom:12px}
+.sim-actions{display:flex;gap:6px}
+.sim-btn{flex:1;padding:7px;border-radius:var(--radius);font-size:11px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px}
+.sim-btn-open{background:var(--gold-dim);border:1px solid var(--gold-bd);color:var(--gold)}
+.sim-btn-open:hover{background:rgba(201,169,110,0.18)}
+.sim-btn-yes{background:var(--green-dim);border:1px solid var(--green-bd);color:var(--green)}
+.sim-btn-yes:hover{background:rgba(82,181,132,0.18)}
+.sim-btn-no{background:transparent;border:1px solid var(--border-md);color:var(--text-3)}
+.sim-btn-no:hover{border-color:var(--red-bd);color:var(--red)}
+.voted{opacity:0.5;pointer-events:none}
+.voted-label{font-size:10px;color:var(--text-3);font-style:italic}
+
+/* SCORE BAR */
+.score-bar{height:3px;background:var(--surface-3);border-radius:2px;overflow:hidden;margin-bottom:10px}
+.score-bar-fill{height:100%;border-radius:2px;transition:width 0.5s var(--ease)}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 32px;color:var(--text-3)}
+.empty-title{font-family:var(--font-disp);font-size:20px;color:var(--text-2);margin-bottom:6px}
+
+/* ALL TAGS PANEL */
+.all-tags-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:24px}
+.panel-label{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+.all-tags{display:flex;gap:6px;flex-wrap:wrap}
+
+footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);font-family:var(--font-mono)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-logo">BBOS</div>
+    <div class="gate-sub">Project Similarity</div>
+    <div class="gate-label">Access code</div>
+    <input type="password" id="pw-input" class="gate-input" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="gate-btn" onclick="checkPw()">Enter</button>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="header">
+    <div>
+      <div class="header-label">BBOS — Intelligence</div>
+      <div class="header-logo">Project Similarity</div>
+    </div>
+    <div class="header-right">
+      <nav class="nav-links">
+        <a class="nav-link" href="bbos_index.html">Index</a>
+        <a class="nav-link" href="bbos_analytics.html">Analytics</a>
+        <a class="nav-link active" href="#">Similarity</a>
+        <a class="nav-link" href="bbos_help.html">Help</a>
+      </nav>
+      <button class="hdr-btn" onclick="signOut()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- SELECTOR ROW -->
+    <div class="selector-row">
+      <span class="selector-label">Compare project</span>
+      <select class="project-select" id="project-select" onchange="renderResults()">
+        <option value="">— select project —</option>
+      </select>
+      <span class="selector-label" style="margin-left:8px">Min. shared tags</span>
+      <select class="min-tags-select" id="min-tags" onchange="renderResults()">
+        <option value="1">1 tag</option>
+        <option value="2" selected>2 tags</option>
+        <option value="3">3 tags</option>
+      </select>
+    </div>
+
+    <!-- ALL TAGS FILTER -->
+    <div class="all-tags-panel" id="all-tags-panel">
+      <div class="panel-label">Filter by tag</div>
+      <div class="all-tags" id="all-tags"></div>
+    </div>
+
+    <!-- SOURCE CARD -->
+    <div id="source-card-wrap" style="display:none"></div>
+
+    <!-- RESULTS -->
+    <div class="results-hdr">
+      <span class="results-title">Similar projects</span>
+      <span class="results-count" id="results-count"></span>
+    </div>
+    <div class="sim-grid" id="sim-grid">
+      <div class="empty">
+        <div class="empty-title">Select a project above</div>
+        <div style="font-size:12px;margin-top:4px">Similarity is calculated from shared tags</div>
+      </div>
+    </div>
+
+  </div>
+  <footer><span>BBOS Similarity v1.0</span><span id="footer-ts">—</span></footer>
+</div>
+
+<script>
+// Votes stored in localStorage (persists per browser)
+// Key: `bbos_sim_vote_${from}_${to}` → "yes"|"no"
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value.trim();
+  const err = document.getElementById('gate-error');
+  const inp = document.getElementById('pw-input');
+  if (val === ADMIN_PASSWORD) {
+    sessionStorage.setItem('bbos_sim_auth','1');
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').classList.add('visible');
+    init();
+  } else {
+    err.textContent='Incorrect code.'; inp.classList.add('error'); inp.value='';
+    setTimeout(()=>{inp.classList.remove('error');err.textContent='';},1800);
+  }
+}
+
+function signOut() { sessionStorage.removeItem('bbos_sim_auth'); location.reload(); }
+
+let _activeTags = new Set();
+
+function init() {
+  // Populate project selector
+  const sel = document.getElementById('project-select');
+  PROJECTS.forEach(p => {
+    const o=document.createElement('option'); o.value=p.name; o.textContent=p.name; sel.appendChild(o);
+  });
+
+  // Build all-tags list
+  const allTags = [...new Set(PROJECTS.flatMap(p=>p.tags||[]))].sort();
+  const el = document.getElementById('all-tags');
+  el.innerHTML = allTags.map(t=>`
+    <button class="tag-btn" data-tag="${t}" onclick="toggleTagFilter('${t}',this)">${t}</button>`).join('');
+
+  document.getElementById('footer-ts').textContent = 'Loaded: '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+function toggleTagFilter(tag, btn) {
+  if (_activeTags.has(tag)) { _activeTags.delete(tag); btn.classList.remove('active'); }
+  else { _activeTags.add(tag); btn.classList.add('active'); }
+  renderResults();
+}
+
+function scoreProjects(source) {
+  return PROJECTS
+    .filter(p => p.name !== source.name)
+    .map(p => {
+      const shared = (source.tags||[]).filter(t => (p.tags||[]).includes(t));
+      const tagFilterMatch = _activeTags.size===0 || [..._activeTags].every(t=>(p.tags||[]).includes(t));
+      const score = source.tags.length ? Math.round(shared.length / source.tags.length * 100) : 0;
+      return { ...p, shared, score, tagFilterMatch };
+    })
+    .filter(p => p.tagFilterMatch)
+    .sort((a,b) => b.score - a.score);
+}
+
+function renderResults() {
+  const selVal = document.getElementById('project-select').value;
+  const minTags = parseInt(document.getElementById('min-tags').value);
+  const grid = document.getElementById('sim-grid');
+  const wrap = document.getElementById('source-card-wrap');
+
+  if (!selVal) {
+    wrap.style.display='none';
+    grid.innerHTML=`<div class="empty"><div class="empty-title">Select a project above</div></div>`;
+    document.getElementById('results-count').textContent='';
+    return;
+  }
+
+  const source = PROJECTS.find(p=>p.name===selVal);
+  if (!source) return;
+
+  // Source card
+  wrap.style.display='block';
+  wrap.innerHTML=`<div class="source-card">
+    <div class="source-name">${source.name}</div>
+    <div class="source-tags">
+      ${(source.tags||[]).map(t=>`<span class="tag-pill tag-source">${t}</span>`).join('')}
+    </div>
+  </div>`;
+
+  // Score + filter
+  const scored = scoreProjects(source).filter(p=>p.shared.length>=minTags);
+  document.getElementById('results-count').textContent = `${scored.length} match${scored.length!==1?'es':''}`;
+
+  if (!scored.length) {
+    grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-title">No similar projects found</div><div style="font-size:12px;margin-top:4px">Try reducing the minimum shared tags or adding more tags to your projects</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = scored.map((p,i) => {
+    const scoreClass = p.score>=60?'score-high':p.score>=30?'score-mid':'score-low';
+    const barColor   = p.score>=60?'var(--green)':p.score>=30?'var(--amber)':'var(--text-3)';
+    const voteKey    = `bbos_sim_vote_${source.name}_${p.name}`;
+    const existingVote = localStorage.getItem(voteKey);
+    const tagsHtml = (p.tags||[]).map(t=>{
+      const isShared = p.shared.includes(t);
+      return `<span class="tag-pill ${isShared?'tag-shared':'tag-unshared'}">${t}</span>`;
+    }).join('');
+    const voteHtml = existingVote
+      ? `<span class="voted-label">Flagged as: ${existingVote==='yes'?'✓ similar':'✗ not similar'}</span>`
+      : `<button class="sim-btn sim-btn-yes" onclick="vote('${source.name}','${p.name}','yes',this)">✓ Similar</button>
+         <button class="sim-btn sim-btn-no" onclick="vote('${source.name}','${p.name}','no',this)">✗ Not similar</button>`;
+
+    return `<div class="sim-card" style="animation-delay:${i*0.05}s">
+      <div class="sim-card-header">
+        <div class="sim-name">${p.name}</div>
+        <div class="sim-score">
+          <div class="sim-score-val ${scoreClass}">${p.score}%</div>
+          <div class="sim-score-label">${p.shared.length} shared tag${p.shared.length!==1?'s':''}</div>
+        </div>
+      </div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:${p.score}%;background:${barColor}"></div></div>
+      <div class="sim-tags">${tagsHtml}</div>
+      <div class="sim-meta">Operator: ${p.operator||'—'}</div>
+      <div class="sim-actions">
+        <a href="project/${p.file}" class="sim-btn sim-btn-open">Open →</a>
+        <div style="display:flex;gap:5px;flex:2" id="vote-area-${p.name.replace(/\s/g,'_')}">${voteHtml}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function vote(from, to, val, btn) {
+  const key = `bbos_sim_vote_${from}_${to}`;
+  localStorage.setItem(key, val);
+  const area = document.getElementById(`vote-area-${to.replace(/\s/g,'_')}`);
+  if (area) area.innerHTML=`<span class="voted-label">Flagged as: ${val==='yes'?'✓ similar':'✗ not similar'}</span>`;
+  // If SIMILARITY_SHEET_ID is set, we could POST to a Google Apps Script web app
+  // For now, votes persist in localStorage
+}
+
+if (sessionStorage.getItem('bbos_sim_auth')==='1') {
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').classList.add('visible');
+  init();
+}
+</script>
+</body>
+</html>
