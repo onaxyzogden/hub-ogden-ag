@@ -1197,40 +1197,80 @@ async function submitToWebApp() {
   const tags      = tagsRaw ? tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean) : [];
   const note      = document.getElementById('f-note')?.value?.trim() || '';
 
-  // Show submitting state
+  // Show submitting state — stay here until confirmed
   _modalStepN = 2; updateModalStep();
+  _setSubmittingStatus('Creating project — this takes 15–30 seconds…');
 
+  // Apps Script Web Apps require no-cors for cross-origin POST.
+  // We cannot read the response body in no-cors mode, so we
+  // fire the request then poll the registry to confirm creation.
   try {
-    const res = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, file, operator, stage, status, tags, password, sheetName, metaSheet, note }),
+    await fetch(WEB_APP_URL, {
+      method:  'POST',
+      mode:    'no-cors',  // required — Apps Script redirects break regular CORS
+      headers: { 'Content-Type': 'text/plain' }, // no-cors only allows simple headers
+      body:    JSON.stringify({ name, file, operator, stage, status, tags, password, sheetName, metaSheet, note }),
     });
-    const data = await res.json();
-
-    if (data.status === 'ok') {
-      // Success — show result step
-      document.getElementById('webapp-sheet-id').textContent  = data.sheetId  || '—';
-      document.getElementById('webapp-sheet-url').textContent = data.sheetUrl || '—';
-      document.getElementById('webapp-sheet-url').href        = data.sheetUrl || '#';
-      document.getElementById('webapp-project-name').textContent = name;
-      document.getElementById('webapp-file').textContent      = `project/${file}`;
-      _modalStepN = 3; updateModalStep();
-      // Reload registry after a moment
-      setTimeout(() => loadProjectRegistry().then(() => { renderGrid(); renderSummary(); }), 2000);
-    } else {
-      document.getElementById('webapp-error-msg').textContent = data.message || 'Unknown error';
-      document.getElementById('webapp-error').style.display = 'block';
-      document.getElementById('modal-next-btn').style.display = 'block';
-      document.getElementById('modal-next-btn').textContent = 'Retry ✦';
-      _modalStepN = 1; updateModalStep();
-    }
   } catch(e) {
-    document.getElementById('webapp-error-msg').textContent = e.message;
-    document.getElementById('webapp-error').style.display = 'block';
-    document.getElementById('modal-next-btn').style.display = 'block';
-    _modalStepN = 1; updateModalStep();
+    // no-cors fetch throws on network error but not on redirect — safe to ignore
+    console.log('Fetch note (expected with no-cors):', e.message);
   }
+
+  // Poll registry every 4 seconds for up to 60 seconds
+  _setSubmittingStatus('Waiting for sheet creation to complete…');
+  const found = await _pollRegistryForProject(name, 60, 4000);
+
+  if (found) {
+    document.getElementById('webapp-project-name').textContent = name;
+    document.getElementById('webapp-sheet-id').textContent     = found.sheet_id || '—';
+    document.getElementById('webapp-file').textContent         = `project/${file}`;
+    const link = document.getElementById('webapp-sheet-url');
+    if (found.sheet_id) {
+      link.href        = `https://docs.google.com/spreadsheets/d/${found.sheet_id}/edit`;
+      link.textContent = 'Open sheet →';
+    } else {
+      link.textContent = '—';
+    }
+    _modalStepN = 3; updateModalStep();
+    await loadProjectRegistry();
+    renderGrid(); renderSummary();
+  } else {
+    // Timed out — project may still have been created, check email
+    document.getElementById('webapp-project-name').textContent = name;
+    document.getElementById('webapp-sheet-id').textContent     = 'Check your email for Sheet ID';
+    document.getElementById('webapp-file').textContent         = `project/${file}`;
+    document.getElementById('webapp-sheet-url').textContent    = 'Could not confirm — check email';
+    document.getElementById('webapp-sheet-url').removeAttribute('href');
+    _modalStepN = 3; updateModalStep();
+    // Try reloading registry anyway
+    setTimeout(() => loadProjectRegistry().then(() => { renderGrid(); renderSummary(); }), 3000);
+  }
+}
+
+function _setSubmittingStatus(msg) {
+  const el = document.querySelector('#modal-step-2 div[style*="text-align:center"] div:nth-child(3)');
+  if (el) el.textContent = msg;
+}
+
+async function _pollRegistryForProject(name, timeoutSecs, intervalMs) {
+  const deadline = Date.now() + timeoutSecs * 1000;
+  while (Date.now() < deadline) {
+    await new Promise(r => setTimeout(r, intervalMs));
+    try {
+      const url  = `https://docs.google.com/spreadsheets/d/${REGISTRY_SHEET_ID}/gviz/tq?tqx=out:json&sheet=registry&t=${Date.now()}`;
+      const res  = await fetch(url);
+      const text = await res.text();
+      const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
+      const rows = json.table?.rows || [];
+      const hdrs = (json.table?.cols || []).map(c => (c.label||'').toLowerCase().replace(/\s+/g,'_'));
+      for (const row of rows) {
+        const obj = {};
+        hdrs.forEach((h,i) => obj[h] = (row.c?.[i]?.v ?? '').toString().trim());
+        if (obj.project_name === name) return obj;
+      }
+    } catch(e) { console.log('Poll attempt failed:', e.message); }
+  }
+  return null;
 }
 
 function buildOutput() {
