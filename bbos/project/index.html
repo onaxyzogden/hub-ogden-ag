@@ -41,7 +41,7 @@
 
 const ROLES = {
   admin:    { password: "bbos-admin",    role: "admin"    },
-  yousef:   { password: "agee",   role: "operator" },
+  yousef:   { password: "yousef-2025",   role: "operator" },
   // Add more operators: name: { password: "...", role: "operator" }
 };
 
@@ -552,10 +552,13 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
         </div>
         <!-- Step 2 -->
         <div class="modal-step" id="modal-step-1">
-          <div class="field">
+          <div class="field" id="sheetid-field">
             <label class="field-label">Google Sheet ID</label>
             <input class="field-input" id="f-sheetid" placeholder="1BxiMVs0XRA…" autocomplete="off" style="font-family:var(--font-mono);font-size:15px">
             <div class="field-hint">From sheet URL: /spreadsheets/d/<strong>SHEET_ID</strong>/edit — enables live sync</div>
+          </div>
+          <div id="webapp-mode-notice" style="display:none;background:var(--green-dim);border:1px solid var(--green-bd);border-radius:var(--radius);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--green)">
+            ✦ Web App connected — sheet will be created automatically
           </div>
           <div class="field">
             <label class="field-label">Dashboard password</label>
@@ -1115,6 +1118,11 @@ function openAddModal() {
   document.getElementById('f-metasheet').value='meta';
   document.getElementById('f-stage').value='01_INT';
   document.getElementById('f-status').value='remain';
+  // Hide Sheet ID field when Web App is configured — it handles creation automatically
+  const sheetIdField = document.getElementById('sheetid-field');
+  if (sheetIdField) sheetIdField.style.display = _URL ? 'none' : 'block';
+  const notice = document.getElementById('webapp-mode-notice');
+  if (notice) notice.style.display = _URL ? 'block' : 'none';
   updateModalStep();
   document.getElementById('add-modal').style.display='block';
   document.body.style.overflow='hidden';
@@ -1143,7 +1151,7 @@ function updateModalStep() {
   if (_modalStepN>=2) { nextBtn.style.display='none'; }
   else {
     nextBtn.style.display='block';
-    nextBtn.textContent = _modalStepN===1 ? (WEB_APP_URL ? 'Create project ✦' : 'Generate ✦') : 'Next →';
+    nextBtn.textContent = _modalStepN===1 ? (_URL ? 'Create project ✦' : 'Generate ✦') : 'Next →';
   }
 }
 
@@ -1155,7 +1163,7 @@ function modalNext() {
   } else if (_modalStepN===1) {
     const password = document.getElementById('f-password').value.trim();
     if (!password) { document.getElementById('f-password').focus(); return; }
-    if (WEB_APP_URL) {
+    if (_URL) {
       // Automated flow — call Web App
       submitToWebApp();
     } else {
