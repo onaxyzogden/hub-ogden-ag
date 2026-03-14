@@ -41,55 +41,34 @@
 
 const ROLES = {
   admin:    { password: "bbos-admin",    role: "admin"    },
-  yousef:   { password: "yousef-2025",   role: "operator" },
+  yousef:   { password: "agee",   role: "operator" },
   // Add more operators: name: { password: "...", role: "operator" }
 };
 
-const STALE_DAYS = 7; // Cards flagged amber if no session in this many days
+const STALE_DAYS = 7;
 
-const PROJECTS = [
+// ── LIVE BACKEND CONFIGURATION ───────────────────────────────────────────
+// Set these after deploying BBOS_WebApp.gs as a Web App.
+// Leave blank to use the static PROJECTS array below as fallback.
+
+const WEB_APP_URL      = "https://script.google.com/macros/s/AKfycbwaKtvvd1sBTomBuxmYiz--rKm2Fqg074aHm2UEew5JeYKQ3RsIP83gcJVFxoB9QrxKNg/exec";  // ← paste your Web App URL here after deploying
+const REGISTRY_SHEET_ID = "1ohrWN16Moge72TpJV0F2I39jXZeLzl7VGFW7tpe6vCo"; // ← paste your Registry Sheet ID here (for direct read)
+
+// ── STATIC FALLBACK ──────────────────────────────────────────────────────
+// Used only when WEB_APP_URL and REGISTRY_SHEET_ID are both empty.
+// Once the Web App is live, new projects auto-appear from the registry
+// and you no longer need to edit this array manually.
+
+const PROJECTS_FALLBACK = [
   {
     name:      "Moontrance",
     file:      "moontrance.html",
-    sheetId:   "",   // ← paste Sheet ID here for live sync
+    sheetId:   "",
     operator:  "Yousef",
     archived:  false,
     tags:      ["music", "service", "b2c", "creative"],
   },
-  {
-    name:      "Acme Corp",
-    file:      "acme.html",
-    sheetId:   "",
-    operator:  "Yousef",
-    archived:  false,
-    tags:      ["consulting", "b2b", "professional-services"],
-  },
-  {
-    name:      "Bright Path",
-    file:      "brightpath.html",
-    sheetId:   "",
-    operator:  "Yousef",
-    archived:  false,
-    tags:      ["coaching", "b2c", "education"],
-  },
-  {
-    name:      "Nova Studio",
-    file:      "nova.html",
-    sheetId:   "",
-    operator:  "Yousef",
-    archived:  false,
-    tags:      ["design", "b2b", "creative", "service"],
-  },
-  {
-    name:     "testing 101",
-    file:     "testing-101.html",
-    sheetId:  "1pZMbUSarWh0r0HhO3la08AaRb6cVRA4YbATjN3CIvqQ",
-    operator: "Yousef",
-    archived: false,
-    tags:     ["test"],
-  },
-  // Archived example
-  // { name: "Old Client", file: "old.html", sheetId: "", operator: "Yousef", archived: true, tags: [] },
+  // Add fallback projects here if needed
 ];
 </script>
 
@@ -134,18 +113,18 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
 .gate-inner{width:100%;max-width:380px;padding:0 24px;animation:fadeUp 0.5s var(--ease) both}
 .gate-logo{font-family:var(--font-disp);font-size:52px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em;margin-bottom:2px}
-.gate-sub{font-size:13px;color:var(--text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:40px}
-.gate-label{font-size:12px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px}
+.gate-sub{font-size:16px;color:var(--text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:40px}
+.gate-label{font-size:15px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px}
 .gate-input{width:100%;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:11px 14px;font-family:var(--font-mono);font-size:16px;color:var(--text-1);outline:none;transition:border-color 0.2s;margin-bottom:10px;letter-spacing:0.06em}
 .gate-input:focus{border-color:var(--gold-bd)}
 .gate-input.error{border-color:var(--red);animation:shake 0.3s}
 .gate-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.gate-btn{width:100%;padding:11px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
+.gate-btn{width:100%;padding:11px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-family:var(--font-body);font-size:16px;font-weight:500;cursor:pointer;transition:all 0.2s}
 .gate-btn:hover{background:rgba(201,169,110,0.18)}
 .gate-btn.secondary{background:transparent;border-color:var(--border-md);color:var(--text-3)}
 .gate-btn.secondary:hover{border-color:var(--border-md);color:var(--text-2)}
-.gate-error{font-size:12px;color:var(--red);margin-top:6px;min-height:18px}
-.gate-hint{font-size:11px;color:var(--text-3);margin-bottom:12px;font-style:italic}
+.gate-error{font-size:15px;color:var(--red);margin-top:6px;min-height:18px}
+.gate-hint{font-size:14px;color:var(--text-3);margin-bottom:12px;font-style:italic}
 
 /* APP */
 #app{display:none;position:relative;z-index:1;min-height:100vh;flex-direction:column}
@@ -155,18 +134,18 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .header{display:flex;align-items:flex-end;justify-content:space-between;padding:36px 48px 24px;border-bottom:1px solid var(--border);position:relative}
 .header::after{content:'';position:absolute;bottom:-1px;left:48px;width:48px;height:1px;background:var(--gold);opacity:0.6}
 .header-logo{font-family:var(--font-disp);font-size:42px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em}
-.header-label{font-size:12px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.header-label{font-size:15px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
 .header-right{display:flex;align-items:center;gap:12px}
-.header-meta{font-size:11px;color:var(--text-3);font-family:var(--font-mono);text-align:right;line-height:1.6}
-.role-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px;font-family:var(--font-body)}
+.header-meta{font-size:14px;color:var(--text-3);font-family:var(--font-mono);text-align:right;line-height:1.6}
+.role-badge{display:inline-block;font-size:16px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px;font-family:var(--font-body)}
 .role-admin{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-bd)}
 .role-operator{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(106,173,238,0.28)}
-.hdr-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:7px 14px;color:var(--text-3);font-size:13px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
+.hdr-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:7px 14px;color:var(--text-3);font-size:16px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
 .hdr-btn:hover{border-color:var(--border-md);color:var(--text-2)}
 
 /* INTEGRITY SUMMARY STRIP */
 .integrity-strip{display:flex;gap:10px;padding:14px 48px;background:rgba(224,92,92,0.04);border-bottom:1px solid var(--red-bd)}
-.istrip-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2)}
+.istrip-item{display:flex;align-items:center;gap:6px;font-size:16px;color:var(--text-2)}
 .istrip-val{font-weight:700;font-family:var(--font-mono);font-size:15px}
 .istrip-val.red{color:var(--red)}
 .istrip-val.amber{color:var(--amber)}
@@ -179,7 +158,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* SUMMARY CARDS */
 .summary{display:flex;gap:10px;margin-bottom:28px}
 .sum-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;min-width:110px}
-.sum-label{font-size:12px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.sum-label{font-size:15px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
 .sum-value{font-family:var(--font-disp);font-size:32px;font-weight:500;color:var(--text-1);line-height:1}
 
 /* TOOLBAR */
@@ -192,17 +171,17 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .filter-select{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:8px 12px;font-family:var(--font-body);font-size:14px;color:var(--text-2);outline:none;cursor:pointer}
 .filter-select option{background:var(--surface-2)}
 .toolbar-right{display:flex;gap:6px;margin-left:auto}
-.filter-btn{font-size:13px;font-weight:500;font-family:var(--font-body);padding:6px 13px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.15s}
+.filter-btn{font-size:16px;font-weight:500;font-family:var(--font-body);padding:6px 13px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.15s}
 .filter-btn:hover{color:var(--text-2)}
 .filter-btn.active{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
-.sync-btn{display:flex;align-items:center;gap:5px;font-size:11px;font-family:var(--font-body);padding:7px 13px;border-radius:var(--radius);border:1px solid var(--border-md);background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.15s}
+.sync-btn{display:flex;align-items:center;gap:5px;font-size:14px;font-family:var(--font-body);padding:7px 13px;border-radius:var(--radius);border:1px solid var(--border-md);background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.15s}
 .sync-btn:hover{color:var(--text-2);border-color:var(--border-md)}
 .syncing .sync-icon{animation:spin 1s linear infinite}
 
 /* SECTION HEADER */
 .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.section-title{font-size:13px;font-weight:500;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase}
-.section-count{font-size:13px;color:var(--text-3);font-family:var(--font-mono)}
+.section-title{font-size:16px;font-weight:500;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase}
+.section-count{font-size:16px;color:var(--text-3);font-family:var(--font-mono)}
 
 /* PROJECT GRID */
 .project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:32px}
@@ -227,12 +206,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .card-body{padding:14px 16px 0}
 .card-name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
 .card-name{font-family:var(--font-disp);font-size:22px;font-weight:500;color:var(--text-1);letter-spacing:-0.01em;line-height:1.2}
-.status-chip{display:inline-flex;align-items:center;font-size:12px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;font-family:var(--font-body)}
+.status-chip{display:inline-flex;align-items:center;font-size:15px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;font-family:var(--font-body)}
 .chip-advance{background:var(--green-dim);color:var(--green);border:1px solid var(--green-bd)}
 .chip-remain{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-bd)}
 .chip-patch{background:rgba(232,120,50,0.1);color:#e87832;border:1px solid rgba(232,120,50,0.3)}
 .chip-noship,.chip-no_ship{background:var(--red-dim);color:var(--red);border:1px solid var(--red-bd)}
-.card-stage{font-family:var(--font-mono);font-size:13px;color:var(--text-3);display:flex;align-items:center;gap:5px;margin-bottom:5px}
+.card-stage{font-family:var(--font-mono);font-size:16px;color:var(--text-3);display:flex;align-items:center;gap:5px;margin-bottom:5px}
 .stage-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0.6;flex-shrink:0}
 .card-note{font-size:14px;color:var(--text-3);font-style:italic;margin-bottom:8px;line-height:1.5}
 .card-flags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
@@ -243,23 +222,23 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 .card-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid var(--border);margin-top:6px}
 .card-meta-row{display:flex;align-items:center;gap:12px}
-.meta-item{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-3);font-family:var(--font-mono)}
+.meta-item{display:flex;align-items:center;gap:4px;font-size:16px;color:var(--text-3);font-family:var(--font-mono)}
 .card-actions{display:flex;align-items:center;gap:6px}
-.card-copy-btn{opacity:0;display:flex;align-items:center;gap:4px;padding:5px 10px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:6px;color:var(--text-3);font-size:12px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;pointer-events:none}
+.card-copy-btn{opacity:0;display:flex;align-items:center;gap:4px;padding:5px 10px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:6px;color:var(--text-3);font-size:15px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;pointer-events:none}
 .project-card:hover .card-copy-btn{opacity:1;pointer-events:auto}
 .card-copy-btn:hover{color:var(--gold);border-color:var(--gold-bd)}
 .card-copy-btn.copied{color:var(--green);border-color:var(--green-bd)}
-.card-open{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-3);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.15s}
+.card-open{display:flex;align-items:center;gap:4px;font-size:16px;color:var(--text-3);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.15s}
 .project-card:hover .card-open{color:var(--gold)}
 .card-arrow{transition:transform 0.2s}
 .project-card:hover .card-arrow{transform:translateX(3px)}
 
-.duration-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--font-mono);margin-left:6px}
+.duration-tag{display:inline-flex;align-items:center;gap:4px;font-size:16px;padding:2px 7px;border-radius:4px;font-family:var(--font-mono);margin-left:6px}
 .duration-normal{color:var(--text-3)}
 .duration-long{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-bd)}
 .duration-very-long{background:var(--red-dim);color:var(--red);border:1px solid var(--red-bd)}
 
-.loading-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--text-3);font-family:var(--font-mono)}
+.loading-badge{display:inline-flex;align-items:center;gap:5px;font-size:16px;color:var(--text-3);font-family:var(--font-mono)}
 .mini-spin{animation:spin 1s linear infinite;display:inline-block}
 
 /* ADD CARD */
@@ -267,11 +246,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .add-card:hover{border-color:var(--gold-bd);background:var(--gold-dim)}
 .add-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border-md);display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:18px;line-height:1;transition:all 0.2s}
 .add-card:hover .add-icon{border-color:var(--gold-bd);color:var(--gold)}
-.add-label{font-size:12px;color:var(--text-3);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s}
+.add-label{font-size:15px;color:var(--text-3);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s}
 .add-card:hover .add-label{color:var(--gold)}
 
 /* ARCHIVE */
-.archive-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 0;color:var(--text-3);font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;user-select:none;margin-bottom:12px;border-top:1px solid var(--border);padding-top:20px;margin-top:8px}
+.archive-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 0;color:var(--text-3);font-size:15px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;user-select:none;margin-bottom:12px;border-top:1px solid var(--border);padding-top:20px;margin-top:8px}
 .archive-toggle:hover{color:var(--text-2)}
 .archive-chevron{transition:transform 0.2s}
 .archive-chevron.open{transform:rotate(90deg)}
@@ -300,22 +279,22 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .modal-body{padding:18px 22px}
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:14px 22px;border-top:1px solid var(--border)}
 .field{margin-bottom:14px}
-.field-label{display:block;font-size:11px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
-.field-input,.field-select{width:100%;background:var(--surface-2);border:1px solid var(--border-md);border-radius:var(--radius);padding:9px 12px;font-family:var(--font-body);font-size:13px;color:var(--text-1);outline:none;transition:border-color 0.2s}
+.field-label{display:block;font-size:14px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
+.field-input,.field-select{width:100%;background:var(--surface-2);border:1px solid var(--border-md);border-radius:var(--radius);padding:9px 12px;font-family:var(--font-body);font-size:16px;color:var(--text-1);outline:none;transition:border-color 0.2s}
 .field-input:focus,.field-select:focus{border-color:var(--gold-bd)}
 .field-input::placeholder{color:var(--text-3)}
 .field-select option{background:var(--surface-2)}
-.field-hint{font-size:11px;color:var(--text-3);margin-top:4px;font-style:italic}
+.field-hint{font-size:14px;color:var(--text-3);margin-top:4px;font-style:italic}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.btn-primary{padding:9px 18px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-size:13px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
+.btn-primary{padding:9px 18px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-size:16px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
 .btn-primary:hover{background:rgba(201,169,110,0.2)}
-.btn-secondary{padding:9px 16px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-2);font-size:13px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
-.output-block{background:var(--surface-3);border:1px solid var(--border-md);border-radius:var(--radius);padding:12px 14px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);line-height:1.7;white-space:pre;overflow-x:auto;margin-bottom:10px}
-.output-label{font-size:11px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
-.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:transparent;border:1px solid var(--border-md);border-radius:6px;color:var(--text-3);font-size:11px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;margin-bottom:14px}
+.btn-secondary{padding:9px 16px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-2);font-size:16px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
+.output-block{background:var(--surface-3);border:1px solid var(--border-md);border-radius:var(--radius);padding:12px 14px;font-family:var(--font-mono);font-size:14px;color:var(--text-2);line-height:1.7;white-space:pre;overflow-x:auto;margin-bottom:10px}
+.output-label{font-size:14px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
+.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:transparent;border:1px solid var(--border-md);border-radius:6px;color:var(--text-3);font-size:14px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;margin-bottom:14px}
 .copy-btn:hover{color:var(--text-1);border-color:var(--border-md)}
 .copy-btn.copied{color:var(--green);border-color:var(--green-bd)}
-.download-btn{display:flex;align-items:center;gap:7px;width:100%;padding:11px 14px;background:var(--green-dim);border:1px solid var(--green-bd);border-radius:var(--radius);color:var(--green);font-size:13px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;margin-bottom:8px}
+.download-btn{display:flex;align-items:center;gap:7px;width:100%;padding:11px 14px;background:var(--green-dim);border:1px solid var(--green-bd);border-radius:var(--radius);color:var(--green);font-size:16px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;margin-bottom:8px}
 .download-btn:hover{background:rgba(82,181,132,0.18)}
 .step-indicator{display:flex;gap:5px;margin-bottom:18px}
 .step-dot{width:6px;height:6px;border-radius:50%;background:var(--surface-3);transition:background 0.2s}
@@ -324,12 +303,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .modal-step{display:none}
 .modal-step.active{display:block}
 .checklist-steps{list-style:none;margin:14px 0 0}
-.checklist-steps li{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--text-2);padding:5px 0;border-bottom:1px solid var(--border)}
+.checklist-steps li{display:flex;gap:9px;align-items:flex-start;font-size:15px;color:var(--text-2);padding:5px 0;border-bottom:1px solid var(--border)}
 .checklist-steps li:last-child{border:none}
 .step-num{width:17px;height:17px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-bd);color:var(--gold);font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 
 /* FOOTER */
-footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;color:var(--text-3);font-family:var(--font-mono)}
+footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:16px;color:var(--text-3);font-family:var(--font-mono)}
 
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px}
@@ -373,7 +352,7 @@ body.light .section-card { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
   display: flex; align-items: center; gap: 6px;
   background: none; border: 1px solid var(--border-md);
   border-radius: 20px; padding: 5px 12px;
-  color: var(--text-3); font-size: 13px;
+  color: var(--text-3); font-size: 16px;
   font-family: var(--font-body); cursor: pointer;
   transition: all 0.2s;
 }
@@ -423,7 +402,7 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
   <header class="header">
     <div>
       <div class="header-label">BBOS — Operator Index</div>
-      <div class="header-logo">Projects <span id="role-badge" class="role-badge role-operator" style="font-size:12px;vertical-align:middle"></span></div>
+      <div class="header-logo">Projects <span id="role-badge" class="role-badge role-operator" style="font-size:15px;vertical-align:middle"></span></div>
     </div>
     <div class="header-right">
       <nav class="nav-links">
@@ -490,7 +469,7 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
       <div class="archive-toggle" onclick="toggleArchive()">
         <span class="archive-chevron" id="archive-chevron">▶</span>
         Archived projects
-        <span id="archive-count" style="font-family:var(--font-mono);font-size:11px;margin-left:4px"></span>
+        <span id="archive-count" style="font-family:var(--font-mono);font-size:14px;margin-left:4px"></span>
       </div>
       <div class="archive-grid" id="archive-grid"></div>
     </div>
@@ -517,6 +496,7 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
           <div class="step-dot active" id="dot-0"></div>
           <div class="step-dot" id="dot-1"></div>
           <div class="step-dot" id="dot-2"></div>
+          <div class="step-dot" id="dot-3"></div>
         </div>
         <!-- Step 1 -->
         <div class="modal-step active" id="modal-step-0">
@@ -574,7 +554,7 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
         <div class="modal-step" id="modal-step-1">
           <div class="field">
             <label class="field-label">Google Sheet ID</label>
-            <input class="field-input" id="f-sheetid" placeholder="1BxiMVs0XRA…" autocomplete="off" style="font-family:var(--font-mono);font-size:12px">
+            <input class="field-input" id="f-sheetid" placeholder="1BxiMVs0XRA…" autocomplete="off" style="font-family:var(--font-mono);font-size:15px">
             <div class="field-hint">From sheet URL: /spreadsheets/d/<strong>SHEET_ID</strong>/edit — enables live sync</div>
           </div>
           <div class="field">
@@ -608,9 +588,39 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
           <div class="output-label" style="margin-top:6px">Next steps</div>
           <ul class="checklist-steps">
             <li><span class="step-num">1</span>Copy entry above → paste into PROJECTS array in bbos_index.html</li>
-            <li><span class="step-num">2</span>Download the dashboard HTML → upload to <span id="output-filepath" style="font-family:var(--font-mono);font-size:10px;color:var(--gold)"></span></li>
+            <li><span class="step-num">2</span>Download the dashboard HTML → upload to <span id="output-filepath" style="font-family:var(--font-mono);font-size:16px;color:var(--gold)"></span></li>
             <li><span class="step-num">3</span>Publish both sheet tabs (File → Share → Publish to web → CSV)</li>
             <li><span class="step-num">4</span>Push to GitHub</li>
+          </ul>
+        </div>
+        <!-- Step 2: Submitting (Web App mode) -->
+        <div class="modal-step" id="modal-step-2">
+          <div style="text-align:center;padding:32px 0">
+            <div style="font-size:32px;margin-bottom:16px;animation:spin 1.5s linear infinite;display:inline-block">⟳</div>
+            <div style="font-family:var(--font-disp);font-size:20px;color:var(--text-1);margin-bottom:8px">Creating project…</div>
+            <div style="font-size:14px;color:var(--text-3)">Building sheet, registering project, sending dashboard to your email.</div>
+          </div>
+          <div id="webapp-error" style="display:none;background:var(--red-dim);border:1px solid var(--red-bd);border-radius:var(--radius);padding:14px 16px;margin-top:12px">
+            <div style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:4px">Web App error</div>
+            <div id="webapp-error-msg" style="font-size:13px;color:var(--text-2)"></div>
+          </div>
+        </div>
+        <!-- Step 3: Success (Web App mode) -->
+        <div class="modal-step" id="modal-step-3">
+          <div style="text-align:center;font-size:28px;margin-bottom:12px">✦</div>
+          <div style="font-family:var(--font-disp);font-size:22px;color:var(--text-1);text-align:center;margin-bottom:16px" id="webapp-project-name"></div>
+          <div style="background:var(--green-dim);border:1px solid var(--green-bd);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px">
+            <div style="font-size:11px;color:var(--green);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-weight:600">Project created successfully</div>
+            <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">Sheet ID: <span id="webapp-sheet-id" style="font-family:var(--font-mono);font-size:12px;color:var(--text-1)"></span></div>
+            <div style="font-size:13px;color:var(--text-2)">Sheet URL: <a id="webapp-sheet-url" href="#" target="_blank" style="color:var(--gold);font-size:12px">Open sheet →</a></div>
+          </div>
+          <div class="output-label">Next steps</div>
+          <ul class="checklist-steps">
+            <li><span class="step-num">1</span>Check your email — the dashboard HTML has been sent as an attachment</li>
+            <li><span class="step-num">2</span>Upload <span id="webapp-file" style="font-family:var(--font-mono);font-size:11px;color:var(--gold)"></span> to your GitHub repo</li>
+            <li><span class="step-num">3</span>Publish BOTH sheet tabs: File → Share → Publish to web → tab → CSV → Publish</li>
+            <li><span class="step-num">4</span>Attach BBOS_Complete_Script.gs to the new sheet → run installTriggers()</li>
+            <li><span class="step-num">5</span>Push to GitHub — the project card appears automatically</li>
           </ul>
         </div>
       </div>
@@ -689,22 +699,28 @@ function signOut() {
 
 // ── INIT ─────────────────────────────────────────────────────────────────
 
-function init() {
+// Live projects array — populated from registry or fallback
+let PROJECTS = [...(typeof PROJECTS_FALLBACK !== 'undefined' ? PROJECTS_FALLBACK : [])];
+
+async function init() {
   const now = new Date();
   document.getElementById('header-meta').textContent =
     now.toLocaleDateString('en-GB', {weekday:'short',day:'numeric',month:'short',year:'numeric'});
   document.getElementById('footer-ts').textContent =
-    'Last loaded: ' + now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    'Loading…';
 
-  // Role badge
   const badge = document.getElementById('role-badge');
   badge.textContent = _session.role;
   badge.className = 'role-badge ' + (_session.role === 'admin' ? 'role-admin' : 'role-operator');
+
+  // Load projects from registry if configured
+  await loadProjectRegistry();
 
   // Operator filter (admin only)
   if (_session.role === 'admin') {
     const sel = document.getElementById('operator-filter');
     sel.style.display = 'block';
+    sel.innerHTML = '<option value="">All operators</option>';
     const ops = [...new Set(PROJECTS.map(p => p.operator).filter(Boolean))];
     ops.forEach(op => {
       const o = document.createElement('option');
@@ -717,6 +733,41 @@ function init() {
   renderGrid();
   renderArchive();
   syncAllSheets();
+}
+
+async function loadProjectRegistry() {
+  // Try registry sheet first (direct gviz read — faster, no CORS issues)
+  if (REGISTRY_SHEET_ID) {
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${REGISTRY_SHEET_ID}/gviz/tq?tqx=out:json&sheet=registry`;
+      const res  = await fetch(url);
+      const text = await res.text();
+      const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
+      const rows = json.table?.rows || [];
+      const hdrs = json.table?.cols?.map(c => (c.label||'').toLowerCase().replace(/\s+/g,'_')) || [];
+      if (rows.length) {
+        PROJECTS = rows.map(r => {
+          const obj = {};
+          hdrs.forEach((h,i) => obj[h] = (r.c?.[i]?.v ?? '').toString().trim());
+          const tagsRaw = obj.tags || '';
+          return {
+            name:     obj.project_name || '',
+            file:     obj.file         || '',
+            sheetId:  obj.sheet_id     || '',
+            operator: obj.operator     || '',
+            archived: obj.archived === 'true',
+            tags:     tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean) : [],
+          };
+        }).filter(p => p.name && p.file);
+        console.log(`Registry loaded: ${PROJECTS.length} projects`);
+        return;
+      }
+    } catch(e) {
+      console.warn('Registry sheet read failed:', e.message);
+    }
+  }
+  // Fallback: use static PROJECTS_FALLBACK (already set above)
+  console.log(`Using fallback: ${PROJECTS.length} projects`);
 }
 
 // ── LIVE SYNC ─────────────────────────────────────────────────────────────
@@ -832,7 +883,7 @@ function renderIntegrityStrip() {
 
   strip.style.display = 'flex';
   strip.innerHTML = `
-    <span style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-right:8px">Platform integrity</span>
+    <span style="font-size:16px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-right:8px">Platform integrity</span>
     ${gflags ? `<div class="istrip-item"><span class="istrip-val red">${gflags}</span> G-flag${gflags!==1?'s':''}</div><div class="istrip-divider"></div>` : ''}
     ${vfails ? `<div class="istrip-item"><span class="istrip-val red">${vfails}</span> validator fail${vfails!==1?'s':''}</div><div class="istrip-divider"></div>` : ''}
     ${noshipsTotal ? `<div class="istrip-item"><span class="istrip-val amber">${noshipsTotal}</span> NO_SHIP event${noshipsTotal!==1?'s':''}</div><div class="istrip-divider"></div>` : ''}
@@ -883,7 +934,7 @@ function renderGrid() {
 
   grid.innerHTML = '';
   if (!list.length) {
-    grid.innerHTML = `<div class="empty"><div class="empty-title">No projects found</div><div style="font-size:12px;margin-top:4px">Adjust filters or add a project</div></div>`;
+    grid.innerHTML = `<div class="empty"><div class="empty-title">No projects found</div><div style="font-size:15px;margin-top:4px">Adjust filters or add a project</div></div>`;
   } else {
     list.forEach(({raw, d}, i) => {
       const card = buildCard(raw, d, i);
@@ -999,8 +1050,8 @@ function renderArchive() {
         <div class="card-stage"><div class="stage-dot"></div>${d.stage}</div>
       </div>
       <div class="card-footer">
-        <div class="meta-item" style="font-size:11px;color:var(--text-3);font-family:var(--font-mono)">${d.lastSession||'—'}</div>
-        <div class="card-open" style="font-size:11px;color:var(--text-3)">Open →</div>
+        <div class="meta-item" style="font-size:14px;color:var(--text-3);font-family:var(--font-mono)">${d.lastSession||'—'}</div>
+        <div class="card-open" style="font-size:14px;color:var(--text-3)">Open →</div>
       </div>
     </a>`;
   }).join('');
@@ -1081,15 +1132,19 @@ function closeAddModal() {
 }
 
 function updateModalStep() {
-  [0,1,2].forEach(i => {
-    document.getElementById(`modal-step-${i}`).classList.toggle('active', i===_modalStepN);
+  [0,1,2,3].forEach(i => {
+    const el = document.getElementById(`modal-step-${i}`);
+    if (el) el.classList.toggle('active', i===_modalStepN);
     const dot = document.getElementById(`dot-${i}`);
-    dot.className='step-dot'+(i<_modalStepN?' done':i===_modalStepN?' active':'');
+    if (dot) dot.className='step-dot'+(i<_modalStepN?' done':i===_modalStepN?' active':'');
   });
-  document.getElementById('modal-back-btn').style.display = _modalStepN>0?'block':'none';
+  document.getElementById('modal-back-btn').style.display = (_modalStepN>0&&_modalStepN<2)?'block':'none';
   const nextBtn = document.getElementById('modal-next-btn');
-  if (_modalStepN===2) { nextBtn.style.display='none'; }
-  else { nextBtn.style.display='block'; nextBtn.textContent = _modalStepN===1?'Generate ✦':'Next →'; }
+  if (_modalStepN>=2) { nextBtn.style.display='none'; }
+  else {
+    nextBtn.style.display='block';
+    nextBtn.textContent = _modalStepN===1 ? (WEB_APP_URL ? 'Create project ✦' : 'Generate ✦') : 'Next →';
+  }
 }
 
 function modalNext() {
@@ -1098,13 +1153,73 @@ function modalNext() {
     if (!document.getElementById('f-file').value.trim()) { document.getElementById('f-file').focus(); return; }
     _modalStepN=1; updateModalStep();
   } else if (_modalStepN===1) {
-    if (!document.getElementById('f-sheetid').value.trim()) { document.getElementById('f-sheetid').focus(); return; }
-    if (!document.getElementById('f-password').value.trim()) { document.getElementById('f-password').focus(); return; }
-    buildOutput(); _modalStepN=2; updateModalStep();
+    const password = document.getElementById('f-password').value.trim();
+    if (!password) { document.getElementById('f-password').focus(); return; }
+    if (WEB_APP_URL) {
+      // Automated flow — call Web App
+      submitToWebApp();
+    } else {
+      // Manual fallback — requires sheetId
+      if (!document.getElementById('f-sheetid').value.trim()) {
+        document.getElementById('f-sheetid').focus(); return;
+      }
+      buildOutput(); _modalStepN=2; updateModalStep();
+    }
   }
 }
 
 function modalBack() { if(_modalStepN>0){_modalStepN--;updateModalStep();} }
+
+// ── WEB APP SUBMISSION ────────────────────────────────────────────────────
+
+async function submitToWebApp() {
+  const name      = document.getElementById('f-name').value.trim();
+  const file      = document.getElementById('f-file').value.trim();
+  const operator  = document.getElementById('f-operator').value.trim() || 'Yousef';
+  const stage     = document.getElementById('f-stage').value;
+  const status    = document.getElementById('f-status').value;
+  const password  = document.getElementById('f-password').value.trim();
+  const sheetName = document.getElementById('f-sheetname').value.trim() || 'checklist';
+  const metaSheet = document.getElementById('f-metasheet').value.trim() || 'meta';
+  const tagsRaw   = document.getElementById('f-tags').value.trim();
+  const tags      = tagsRaw ? tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean) : [];
+  const note      = document.getElementById('f-note')?.value?.trim() || '';
+
+  // Show submitting state
+  _modalStepN = 2; updateModalStep();
+
+  try {
+    const res = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, file, operator, stage, status, tags, password, sheetName, metaSheet, note }),
+    });
+    const data = await res.json();
+
+    if (data.status === 'ok') {
+      // Success — show result step
+      document.getElementById('webapp-sheet-id').textContent  = data.sheetId  || '—';
+      document.getElementById('webapp-sheet-url').textContent = data.sheetUrl || '—';
+      document.getElementById('webapp-sheet-url').href        = data.sheetUrl || '#';
+      document.getElementById('webapp-project-name').textContent = name;
+      document.getElementById('webapp-file').textContent      = `project/${file}`;
+      _modalStepN = 3; updateModalStep();
+      // Reload registry after a moment
+      setTimeout(() => loadProjectRegistry().then(() => { renderGrid(); renderSummary(); }), 2000);
+    } else {
+      document.getElementById('webapp-error-msg').textContent = data.message || 'Unknown error';
+      document.getElementById('webapp-error').style.display = 'block';
+      document.getElementById('modal-next-btn').style.display = 'block';
+      document.getElementById('modal-next-btn').textContent = 'Retry ✦';
+      _modalStepN = 1; updateModalStep();
+    }
+  } catch(e) {
+    document.getElementById('webapp-error-msg').textContent = e.message;
+    document.getElementById('webapp-error').style.display = 'block';
+    document.getElementById('modal-next-btn').style.display = 'block';
+    _modalStepN = 1; updateModalStep();
+  }
+}
 
 function buildOutput() {
   const name      = document.getElementById('f-name').value.trim();
