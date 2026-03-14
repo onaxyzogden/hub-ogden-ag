@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBOS — Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     BBOS ANALYTICS PAGE v1.0
+     ============================================================
+     SETUP:
+     1. Set ADMIN_PASSWORD below
+     2. Copy your PROJECTS array from bbos_index.html
+        (each project needs a sheetId for live data)
+     ============================================================ -->
+
+<script>
+const ADMIN_PASSWORD = "bbos-admin";
+
+const PROJECTS = [
+  { name:"Moontrance",  file:"moontrance.html",  sheetId:"", operator:"Yousef", tags:["music","service","b2c"] },
+  { name:"Acme Corp",   file:"acme.html",         sheetId:"", operator:"Yousef", tags:["consulting","b2b"] },
+  { name:"Bright Path", file:"brightpath.html",   sheetId:"", operator:"Yousef", tags:["coaching","b2c","education"] },
+  { name:"Nova Studio", file:"nova.html",          sheetId:"", operator:"Yousef", tags:["design","b2b","creative"] },
+];
+</script>
+
+<style>
+:root{
+  --bg:#0b0f16;--surface:#161d28;--surface-2:#1e2636;--surface-3:#252f42;
+  --border:rgba(255,255,255,0.06);--border-md:rgba(255,255,255,0.11);
+  --text-1:#ede8da;--text-2:#8c95aa;--text-3:#4f5a6e;
+  --gold:#c9a96e;--gold-dim:rgba(201,169,110,0.10);--gold-bd:rgba(201,169,110,0.28);
+  --green:#52b584;--green-dim:rgba(82,181,132,0.10);--green-bd:rgba(82,181,132,0.28);
+  --amber:#e8a93e;--amber-dim:rgba(232,169,62,0.10);--amber-bd:rgba(232,169,62,0.28);
+  --red:#e05c5c;--red-dim:rgba(224,92,92,0.08);--red-bd:rgba(224,92,92,0.28);
+  --blue:#6aadee;--blue-dim:rgba(106,173,238,0.10);
+  --radius:10px;--radius-lg:16px;
+  --font-disp:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Instrument Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --ease:cubic-bezier(.22,.68,0,1.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text-1);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+#gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
+.gate-inner{width:100%;max-width:360px;padding:0 24px;animation:fadeUp 0.5s var(--ease) both}
+.gate-logo{font-family:var(--font-disp);font-size:42px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em;margin-bottom:2px}
+.gate-sub{font-size:11px;color:var(--text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:36px}
+.gate-label{font-size:11px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px}
+.gate-input{width:100%;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:11px 14px;font-family:var(--font-mono);font-size:14px;color:var(--text-1);outline:none;transition:border-color 0.2s;margin-bottom:10px;letter-spacing:0.06em}
+.gate-input:focus{border-color:var(--gold-bd)}
+.gate-input.error{border-color:var(--red);animation:shake 0.3s}
+.gate-btn{width:100%;padding:11px;background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--radius);color:var(--gold);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
+.gate-btn:hover{background:rgba(201,169,110,0.18)}
+.gate-error{font-size:12px;color:var(--red);margin-top:6px;min-height:18px}
+
+#app{display:none;position:relative;z-index:1}
+#app.visible{display:block;animation:fadeIn 0.4s ease both}
+
+.header{display:flex;align-items:flex-end;justify-content:space-between;padding:32px 48px 24px;border-bottom:1px solid var(--border);position:relative}
+.header::after{content:'';position:absolute;bottom:-1px;left:48px;width:48px;height:1px;background:var(--gold);opacity:0.6}
+.header-logo{font-family:var(--font-disp);font-size:32px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em}
+.header-label{font-size:11px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:6px 12px;border-radius:6px;font-size:12px;color:var(--text-3);text-decoration:none;transition:all 0.15s;font-weight:500}
+.nav-link:hover{background:var(--surface-2);color:var(--text-2)}
+.nav-link.active{background:var(--gold-dim);color:var(--gold)}
+.hdr-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 12px;color:var(--text-3);font-size:11px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
+.hdr-btn:hover{border-color:var(--border-md);color:var(--text-2)}
+.header-right{display:flex;align-items:center;gap:10px}
+
+.content{padding:32px 48px 48px;max-width:1200px}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:28px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.kpi-label{font-size:10px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px}
+.kpi-value{font-family:var(--font-disp);font-size:26px;font-weight:500;line-height:1}
+.kpi-sub{font-size:10px;color:var(--text-3);font-family:var(--font-mono);margin-top:3px}
+.kpi-green{color:var(--green)}
+.kpi-red{color:var(--red)}
+.kpi-amber{color:var(--amber)}
+.kpi-gold{color:var(--gold)}
+
+/* SECTION */
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)}
+.section-title{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase}
+.section-body{padding:20px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(255,255,255,0.02)}
+.td-name{color:var(--text-1);font-weight:500}
+.td-mono{font-family:var(--font-mono);font-size:11px}
+.td-link{color:var(--gold);text-decoration:none;font-size:11px}
+.td-link:hover{text-decoration:underline}
+
+/* STATUS CHIPS */
+.s-chip{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;font-family:var(--font-body)}
+.s-advance{background:var(--green-dim);color:var(--green);border:1px solid var(--green-bd)}
+.s-remain{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-bd)}
+.s-patch{background:rgba(232,120,50,0.1);color:#e87832;border:1px solid rgba(232,120,50,0.3)}
+.s-noship,.s-no_ship{background:var(--red-dim);color:var(--red);border:1px solid var(--red-bd)}
+
+/* BAR CHART */
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:11px;color:var(--text-2);width:80px;flex-shrink:0;font-family:var(--font-mono)}
+.bar-track{flex:1;height:8px;background:var(--surface-3);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 0.6s var(--ease)}
+.bar-count{font-size:11px;color:var(--text-3);font-family:var(--font-mono);width:30px;text-align:right;flex-shrink:0}
+
+/* INTEGRITY TABLE */
+.int-row-good td{color:var(--green) !important}
+.int-row-warn td{color:var(--amber) !important}
+.int-row-bad  td{color:var(--red) !important}
+
+/* LOADING */
+.loading{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-3);padding:20px 0}
+.spin{animation:spin 1s linear infinite;display:inline-block}
+
+/* COPY */
+.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:transparent;border:1px solid var(--border-md);border-radius:6px;color:var(--text-3);font-size:11px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s}
+.copy-btn:hover{color:var(--text-1)}
+.copy-btn.copied{color:var(--green);border-color:var(--green-bd)}
+
+/* TREND */
+.trend-up{color:var(--green)}
+.trend-dn{color:var(--red)}
+.trend-fl{color:var(--text-3)}
+
+footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);font-family:var(--font-mono)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-logo">BBOS</div>
+    <div class="gate-sub">Analytics — Admin only</div>
+    <div class="gate-label">Admin access code</div>
+    <input type="password" id="pw-input" class="gate-input" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="gate-btn" onclick="checkPw()">Enter</button>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="header">
+    <div>
+      <div class="header-label">BBOS — Admin</div>
+      <div class="header-logo">Analytics</div>
+    </div>
+    <div class="header-right">
+      <nav class="nav-links">
+        <a class="nav-link" href="bbos_index.html">Index</a>
+        <a class="nav-link active" href="#">Analytics</a>
+        <a class="nav-link" href="bbos_similarity.html">Similarity</a>
+        <a class="nav-link" href="bbos_help.html">Help</a>
+      </nav>
+      <button class="hdr-btn" id="sync-btn" onclick="loadAll()">↻ Refresh</button>
+      <button class="hdr-btn" onclick="signOut()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- KPI ROW -->
+    <div class="kpi-row" id="kpi-row" style="animation:fadeUp 0.35s var(--ease) 0.05s both">
+      <div class="kpi-card"><div class="kpi-label">Projects</div><div class="kpi-value kpi-gold" id="kpi-total">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Advance ready</div><div class="kpi-value kpi-green" id="kpi-advance">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">G-flags total</div><div class="kpi-value kpi-red" id="kpi-gflags">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Validator fails</div><div class="kpi-value kpi-red" id="kpi-vfails">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">NO_SHIP events</div><div class="kpi-value kpi-amber" id="kpi-noshipsTotal">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Stale (>7d)</div><div class="kpi-value kpi-amber" id="kpi-stale">—</div></div>
+    </div>
+
+    <!-- TWO COL: Stage distribution + Bottleneck -->
+    <div class="two-col" style="margin-bottom:16px;animation:fadeUp 0.35s var(--ease) 0.10s both">
+      <div class="section-card">
+        <div class="section-hdr"><span class="section-title">Projects by stage</span></div>
+        <div class="section-body"><div class="bar-chart" id="stage-chart"><div class="loading"><span class="spin">⟳</span> Loading…</div></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-hdr"><span class="section-title">Stage bottleneck analysis</span></div>
+        <div class="section-body">
+          <div id="bottleneck-body"><div class="loading"><span class="spin">⟳</span> Loading…</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT STATUS TABLE -->
+    <div class="section-card" style="animation:fadeUp 0.35s var(--ease) 0.13s both">
+      <div class="section-hdr">
+        <span class="section-title">All projects — status overview</span>
+        <button class="copy-btn" id="export-btn" onclick="exportSummary()">Export summary</button>
+      </div>
+      <div class="section-body" style="padding:0">
+        <table class="data-table" id="status-table">
+          <thead>
+            <tr>
+              <th>Project</th><th>Operator</th><th>Stage</th><th>Status</th>
+              <th>Days in stage</th><th>Completion %</th><th>G-flags</th>
+              <th>Validator fails</th><th>NO_SHIP</th><th>Last session</th>
+            </tr>
+          </thead>
+          <tbody id="status-tbody">
+            <tr><td colspan="10" style="text-align:center;padding:24px;color:var(--text-3)">
+              <span class="spin">⟳</span> Loading data…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INTEGRITY DETAIL -->
+    <div class="section-card" style="animation:fadeUp 0.35s var(--ease) 0.16s both">
+      <div class="section-hdr"><span class="section-title">Platform integrity detail</span></div>
+      <div class="section-body" style="padding:0">
+        <table class="data-table" id="integrity-table">
+          <thead>
+            <tr><th>Project</th><th>Issue type</th><th>Detail</th><th>Stage</th></tr>
+          </thead>
+          <tbody id="integrity-tbody">
+            <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-3)"><span class="spin">⟳</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <footer><span>BBOS Analytics v1.0</span><span id="footer-ts">—</span></footer>
+</div>
+
+<script>
+const PIPELINE=[
+  {code:'01_INT',name:'Intake'},{code:'02_QAL',name:'Qualification'},
+  {code:'03_STR',name:'Strategy'},{code:'04_OFR',name:'Offer'},
+  {code:'05_OUT',name:'Outreach'},{code:'06_SAL',name:'Sales'},
+  {code:'07_FUL',name:'Fulfilment'},{code:'08_RET',name:'Retention'},
+  {code:'09_OPT',name:'Optimise'},
+];
+
+let _allData = [];
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value.trim();
+  const err = document.getElementById('gate-error');
+  const inp = document.getElementById('pw-input');
+  if (val === ADMIN_PASSWORD) {
+    sessionStorage.setItem('bbos_analytics_auth','1');
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').classList.add('visible');
+    loadAll();
+  } else {
+    err.textContent='Incorrect code.'; inp.classList.add('error'); inp.value='';
+    setTimeout(()=>{inp.classList.remove('error');err.textContent='';},1800);
+  }
+}
+
+function signOut() { sessionStorage.removeItem('bbos_analytics_auth'); location.reload(); }
+
+async function fetchMeta(sheetId) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=meta`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP '+res.status);
+  const text = await res.text();
+  const json = text.replace(/^[^(]+\(/,'').replace(/\);?\s*$/,'');
+  const data = JSON.parse(json);
+  const m={};
+  (data.table?.rows||[]).forEach(r=>{
+    const k=(r.c?.[0]?.v||'').toString().trim().toLowerCase().replace(/\s+/g,'_');
+    const v=(r.c?.[1]?.v??'').toString().trim();
+    if(k) m[k]=v;
+  });
+  return m;
+}
+
+async function fetchChecklist(sheetId) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=checklist`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const text = await res.text();
+  const json = text.replace(/^[^(]+\(/,'').replace(/\);?\s*$/,'');
+  const data = JSON.parse(json);
+  return (data.table?.rows||[]).map(r=>({
+    stage:(r.c?.[0]?.v||'').toString().trim(),
+    status:(r.c?.[2]?.v||'pending').toString().trim().toLowerCase(),
+  })).filter(r=>r.stage&&!r.stage.includes('—'));
+}
+
+async function loadAll() {
+  const btn = document.getElementById('sync-btn');
+  btn.textContent='↻ Loading…';
+  _allData=[];
+
+  await Promise.allSettled(PROJECTS.map(async p => {
+    try {
+      const meta = p.sheetId ? await fetchMeta(p.sheetId) : {};
+      const cl   = p.sheetId ? await fetchChecklist(p.sheetId) : [];
+      const stage = meta.active_stage || p.stage || '01_INT';
+      const stageItems = cl.filter(i=>i.stage===stage);
+      const done  = stageItems.filter(i=>i.status==='complete').length;
+      const total = stageItems.length;
+      const gflags = Object.entries(meta).filter(([k,v])=>k.startsWith('gflag')&&v).length;
+      const vfails = Object.entries(meta).filter(([k,v])=>k.startsWith('validator')&&v&&v.includes('::fail')).length;
+      const noships= Object.entries(meta).filter(([k,v])=>k.startsWith('noship')&&v).length;
+      const entered= meta.stage_entered_date||'';
+      const duration = entered ? Math.floor((Date.now()-new Date(entered))/86400000) : null;
+      const ls = meta.last_session||'';
+      const stale = ls ? (Date.now()-new Date(ls))/86400000>7 : false;
+      _allData.push({
+        name: meta.project_name||p.name,
+        operator: meta.operator||p.operator||'',
+        file: p.file,
+        stage, status: meta.routing_status||'remain',
+        completion: total?Math.round(done/total*100):0,
+        gflags, vfails, noships, duration, stale,
+        meta, isLive:!!p.sheetId,
+      });
+    } catch(e) {
+      _allData.push({
+        name:p.name, operator:p.operator||'', file:p.file,
+        stage:'—', status:'remain', completion:0,
+        gflags:0, vfails:0, noships:0, duration:null, stale:false,
+        meta:{}, isLive:false, error:e.message,
+      });
+    }
+  }));
+
+  render();
+  btn.textContent='↻ Refresh';
+  document.getElementById('footer-ts').textContent='Updated: '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+function render() {
+  renderKPIs();
+  renderStageChart();
+  renderBottleneck();
+  renderStatusTable();
+  renderIntegrityTable();
+}
+
+function renderKPIs() {
+  const total   = _allData.length;
+  const advance = _allData.filter(d=>d.status==='advance').length;
+  const gflags  = _allData.reduce((s,d)=>s+d.gflags,0);
+  const vfails  = _allData.reduce((s,d)=>s+d.vfails,0);
+  const noships = _allData.reduce((s,d)=>s+d.noships,0);
+  const stale   = _allData.filter(d=>d.stale).length;
+  document.getElementById('kpi-total').textContent    = total;
+  document.getElementById('kpi-advance').textContent  = advance;
+  document.getElementById('kpi-gflags').textContent   = gflags;
+  document.getElementById('kpi-vfails').textContent   = vfails;
+  document.getElementById('kpi-noshipsTotal').textContent = noships;
+  document.getElementById('kpi-stale').textContent    = stale;
+}
+
+function renderStageChart() {
+  const counts={};
+  PIPELINE.forEach(p=>counts[p.code]=0);
+  _allData.forEach(d=>{ if(counts[d.stage]!==undefined) counts[d.stage]++; });
+  const max = Math.max(...Object.values(counts),1);
+  const el = document.getElementById('stage-chart');
+  el.innerHTML = PIPELINE.map(p=>{
+    const n=counts[p.code];
+    const w=Math.round(n/max*100);
+    const clr=n>2?'var(--red)':n>0?'var(--amber)':'var(--surface-3)';
+    return `<div class="bar-row">
+      <div class="bar-label">${p.code.split('_')[1]}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${clr}"></div></div>
+      <div class="bar-count">${n}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderBottleneck() {
+  const stageTotals={};
+  PIPELINE.forEach(p=>stageTotals[p.code]={count:0,durations:[]});
+  _allData.forEach(d=>{
+    if(stageTotals[d.stage]) {
+      stageTotals[d.stage].count++;
+      if(d.duration!==null) stageTotals[d.stage].durations.push(d.duration);
+    }
+  });
+  const sorted = PIPELINE
+    .map(p=>({...p,...stageTotals[p.code],avgDur:stageTotals[p.code].durations.length?
+      Math.round(stageTotals[p.code].durations.reduce((a,b)=>a+b,0)/stageTotals[p.code].durations.length):null}))
+    .filter(p=>p.count>0)
+    .sort((a,b)=>b.count-a.count);
+
+  const el = document.getElementById('bottleneck-body');
+  if (!sorted.length) { el.innerHTML='<div style="font-size:12px;color:var(--text-3);font-style:italic;padding:8px 0">No live data available — add Sheet IDs to PROJECTS</div>'; return; }
+  el.innerHTML = sorted.map(p=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--gold)">${p.code}</div>
+        <div style="font-size:11px;color:var(--text-2)">${p.name}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-disp);font-size:20px;color:var(--text-1)">${p.count}</div>
+        <div style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">${p.avgDur!==null?p.avgDur+'d avg':''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderStatusTable() {
+  const tbody = document.getElementById('status-tbody');
+  if (!_allData.length) {
+    tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--text-3)">No data</td></tr>'; return;
+  }
+  tbody.innerHTML = _allData.map(d=>{
+    const sc = d.status.replace('_','');
+    const dur = d.duration!==null ? (d.duration>14?`<span style="color:var(--amber)">${d.duration}d</span>`:d.duration+'d') : '—';
+    const comp = `<div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden"><div style="width:${d.completion}%;height:100%;background:var(--green);border-radius:2px"></div></div><span style="font-size:10px;font-family:var(--font-mono);color:var(--text-3)">${d.completion}%</span></div>`;
+    return `<tr>
+      <td class="td-name"><a href="project/${d.file}" class="td-link">${d.name}</a>${d.error?`<span style="font-size:9px;color:var(--red);margin-left:6px">sync failed</span>`:''}</td>
+      <td class="td-mono">${d.operator}</td>
+      <td class="td-mono">${d.stage}</td>
+      <td><span class="s-chip s-${sc}">${d.status}</span></td>
+      <td class="td-mono">${dur}</td>
+      <td>${comp}</td>
+      <td class="td-mono" style="color:${d.gflags>0?'var(--red)':'var(--text-3)'}">${d.gflags||'—'}</td>
+      <td class="td-mono" style="color:${d.vfails>0?'var(--red)':'var(--text-3)'}">${d.vfails||'—'}</td>
+      <td class="td-mono" style="color:${d.noships>0?'var(--amber)':'var(--text-3)'}">${d.noships||'—'}</td>
+      <td class="td-mono">${d.meta.last_session||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderIntegrityTable() {
+  const tbody = document.getElementById('integrity-tbody');
+  const rows=[];
+  _allData.forEach(d=>{
+    Object.entries(d.meta).filter(([k,v])=>k.startsWith('gflag')&&v).forEach(([,v])=>{
+      const p=v.split('::'); rows.push({project:d.name,type:'G-flag',detail:`${p[0]||''} — ${p[1]||''}: ${p[2]||''}`,stage:d.stage,sev:'bad'});
+    });
+    Object.entries(d.meta).filter(([k,v])=>k.startsWith('validator')&&v&&v.includes('::fail')).forEach(([,v])=>{
+      rows.push({project:d.name,type:'Validator fail',detail:v.split('::')[0],stage:d.stage,sev:'bad'});
+    });
+    Object.entries(d.meta).filter(([k,v])=>k.startsWith('noship')&&v).forEach(([,v])=>{
+      const p=v.split('|'); rows.push({project:d.name,type:'NO_SHIP',detail:p[0]?.trim()+' ('+p[1]?.trim()+')',stage:d.stage,sev:'warn'});
+    });
+    Object.entries(d.meta).filter(([k,v])=>k.startsWith('blocking_issue')&&v).forEach(([,v])=>{
+      rows.push({project:d.name,type:'Blocked',detail:v,stage:d.stage,sev:'bad'});
+    });
+  });
+  if (!rows.length) {
+    tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--green);font-size:12px">✓ No integrity issues found across all projects</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r=>`
+    <tr class="int-row-${r.sev}">
+      <td class="td-name">${r.project}</td>
+      <td><span style="font-family:var(--font-mono);font-size:10px">${r.type}</span></td>
+      <td style="font-size:12px">${r.detail}</td>
+      <td class="td-mono">${r.stage}</td>
+    </tr>`).join('');
+}
+
+function exportSummary() {
+  const lines=['BBOS ANALYTICS SUMMARY','Generated: '+new Date().toLocaleString(),''];
+  _allData.forEach(d=>{
+    lines.push(`${d.name} | ${d.stage} | ${d.status} | ${d.completion}% | G-flags:${d.gflags} | VFails:${d.vfails} | NoShip:${d.noships} | Last:${d.meta.last_session||'—'}`);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const btn=document.getElementById('export-btn');
+    btn.textContent='✓ Copied'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Export summary';btn.classList.remove('copied');},2000);
+  });
+}
+
+if (sessionStorage.getItem('bbos_analytics_auth')==='1') {
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').classList.add('visible');
+  loadAll();
+}
+</script>
+</body>
+</html>
