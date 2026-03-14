@@ -23,13 +23,13 @@
   --ease:cubic-bezier(.22,.68,0,1.2);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text-1);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh}
+body{background:var(--bg);color:var(--text-1);font-family:var(--font-body);font-size:16px;line-height:1.6;min-height:100vh}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
 
 .header{display:flex;align-items:flex-end;justify-content:space-between;padding:32px 48px 24px;border-bottom:1px solid var(--border);position:relative;z-index:1}
 .header::after{content:'';position:absolute;bottom:-1px;left:48px;width:48px;height:1px;background:var(--gold);opacity:0.6}
 .header-logo{font-family:var(--font-disp);font-size:32px;font-weight:500;color:var(--text-1);letter-spacing:-0.02em}
-.header-label{font-size:11px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.header-label{font-size:13px;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
 .nav-links{display:flex;align-items:center;gap:4px}
 .nav-link{padding:6px 12px;border-radius:6px;font-size:12px;color:var(--text-3);text-decoration:none;transition:all 0.15s;font-weight:500}
 .nav-link:hover{background:var(--surface-2);color:var(--text-2)}
@@ -50,7 +50,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* SEARCH */
 .search-wrap{position:relative;margin-bottom:28px}
-.search-input{width:100%;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:11px 14px 11px 36px;font-family:var(--font-body);font-size:14px;color:var(--text-1);outline:none;transition:border-color 0.2s}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:11px 14px 11px 36px;font-family:var(--font-body);font-size:16px;color:var(--text-1);outline:none;transition:border-color 0.2s}
 .search-input:focus{border-color:var(--gold-bd)}
 .search-input::placeholder{color:var(--text-3)}
 .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
@@ -64,21 +64,21 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .glossary-item{margin-bottom:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:border-color 0.2s}
 .glossary-item:hover{border-color:var(--border-md)}
 .glossary-term{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--gold);margin-bottom:4px}
-.glossary-def{font-size:12px;color:var(--text-2);line-height:1.7}
+.glossary-def{font-size:14px;color:var(--text-2);line-height:1.7}
 .glossary-example{font-size:11px;color:var(--text-3);font-style:italic;margin-top:4px;padding-top:4px;border-top:1px solid var(--border)}
 .hidden{display:none}
 
 /* COMMAND TABLE */
 .cmd-table{width:100%;border-collapse:collapse;margin-bottom:16px}
 .cmd-table th{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
-.cmd-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2);vertical-align:top}
+.cmd-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-2);vertical-align:top}
 .cmd-table tr:last-child td{border:none}
 .cmd-name{font-family:var(--font-mono);font-size:11px;color:var(--gold);font-weight:500}
 
 /* STAGE TABLE */
 .stage-table{width:100%;border-collapse:collapse;margin-bottom:16px}
 .stage-table th{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left}
-.stage-table td{padding:9px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-2);vertical-align:top}
+.stage-table td{padding:9px 10px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-2);vertical-align:top}
 .stage-table tr:last-child td{border:none}
 .stage-code{font-family:var(--font-mono);font-size:10px;color:var(--gold)}
 
@@ -88,7 +88,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .faq-question:hover{background:rgba(255,255,255,0.02)}
 .faq-chevron{color:var(--text-3);transition:transform 0.2s;font-size:12px}
 .faq-chevron.open{transform:rotate(180deg)}
-.faq-answer{display:none;padding:0 16px 14px;font-size:12px;color:var(--text-2);line-height:1.7;border-top:1px solid var(--border)}
+.faq-answer{display:none;padding:0 16px 14px;font-size:14px;color:var(--text-2);line-height:1.7;border-top:1px solid var(--border)}
 .faq-answer.open{display:block}
 
 /* INLINE CODE */
@@ -117,6 +117,27 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .feedback-thanks{display:none;font-size:13px;color:var(--green);margin-top:10px}
 
 footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);font-family:var(--font-mono);position:relative;z-index:1}
+
+/* ── LIGHT THEME ── */
+body.light {
+  --bg:#f5f0e8;--surface:#fffdf7;--surface-2:#f0ead8;--surface-3:#e8dfc8;
+  --border:rgba(0,0,0,0.08);--border-md:rgba(0,0,0,0.14);--border-hi:rgba(0,0,0,0.22);
+  --text-1:#1a1510;--text-2:#5a4e3a;--text-3:#9a8a70;
+  --gold:#9a6f2e;--gold-dim:rgba(154,111,46,0.12);--gold-bd:rgba(154,111,46,0.30);
+  --green:#2a7a50;--green-dim:rgba(42,122,80,0.10);--green-bd:rgba(42,122,80,0.28);
+  --amber:#b87d1a;--amber-dim:rgba(184,125,26,0.10);--amber-bd:rgba(184,125,26,0.28);
+  --red:#b83232;--red-dim:rgba(184,50,50,0.08);--red-bd:rgba(184,50,50,0.28);
+  --blue:#2a6aaa;--blue-dim:rgba(42,106,170,0.10);
+}
+body.light::before{opacity:0.12}
+body.light .gate-input{color:var(--text-1)}
+.theme-toggle{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--border-md);border-radius:20px;padding:5px 12px;color:var(--text-3);font-size:13px;font-family:var(--font-body);cursor:pointer;transition:all 0.2s}
+.theme-toggle:hover{border-color:var(--gold-bd);color:var(--gold)}
+.toggle-track{width:28px;height:16px;border-radius:8px;background:var(--surface-3);position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle-thumb{width:12px;height:12px;border-radius:50%;background:var(--text-3);position:absolute;top:2px;left:2px;transition:all 0.2s}
+body.light .toggle-track{background:var(--gold-dim);border:1px solid var(--gold-bd)}
+body.light .toggle-thumb{background:var(--gold);transform:translateX(12px)}
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px}
@@ -142,27 +163,27 @@ footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify
   <div class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-title">Getting started</div>
-      <a class="sidebar-link active" onclick="scrollTo('overview')">Overview</a>
-      <a class="sidebar-link" onclick="scrollTo('commands')">Commands</a>
-      <a class="sidebar-link" onclick="scrollTo('pipeline')">Pipeline stages</a>
-      <a class="sidebar-link" onclick="scrollTo('routing')">Routing status</a>
+      <a class="sidebar-link active" onclick="bbosScrollTo('overview')" data-target="overview">Overview</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('commands')" data-target="commands">Commands</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('pipeline')" data-target="pipeline">Pipeline stages</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('routing')" data-target="routing">Routing status</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">Reference</div>
-      <a class="sidebar-link" onclick="scrollTo('glossary')">Glossary</a>
-      <a class="sidebar-link" onclick="scrollTo('glabels')">G-label system</a>
-      <a class="sidebar-link" onclick="scrollTo('validators')">Validators</a>
-      <a class="sidebar-link" onclick="scrollTo('spiritual')">Spiritual layer</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('glossary')" data-target="glossary">Glossary</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('glabels')" data-target="glabels">G-label system</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('validators')" data-target="validators">Validators</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('spiritual')" data-target="spiritual">Spiritual layer</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">Dashboard</div>
-      <a class="sidebar-link" onclick="scrollTo('sheet-setup')">Sheet setup</a>
-      <a class="sidebar-link" onclick="scrollTo('meta-keys')">Meta keys reference</a>
-      <a class="sidebar-link" onclick="scrollTo('faq')">FAQ</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('sheet-setup')" data-target="sheet-setup">Sheet setup</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('meta-keys')" data-target="meta-keys">Meta keys reference</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('faq')" data-target="faq">FAQ</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">Feedback</div>
-      <a class="sidebar-link" onclick="scrollTo('feedback')">Give feedback</a>
+      <a class="sidebar-link" onclick="bbosScrollTo('feedback')" data-target="feedback">Give feedback</a>
     </div>
   </div>
 
@@ -475,11 +496,33 @@ footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify
 <script>
 let _starRating = 0;
 
-function scrollTo(id) {
-  document.getElementById('sec-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});
-  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
-  event.target.classList.add('active');
+function bbosScrollTo(id) {
+  const el = document.getElementById('sec-'+id);
+  if (!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+  setActiveSidebar(id);
 }
+
+function setActiveSidebar(id) {
+  document.querySelectorAll('.sidebar-link').forEach(l => {
+    const target = l.getAttribute('data-target');
+    l.classList.toggle('active', target === id);
+  });
+}
+
+// Scroll spy via IntersectionObserver
+(function initScrollSpy() {
+  const sections = document.querySelectorAll('.help-section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id.replace('sec-', '');
+        setActiveSidebar(id);
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+})();
 
 function toggleFaq(el) {
   const ans     = el.nextElementSibling;
@@ -526,6 +569,23 @@ function submitFeedback() {
   thanks.style.display='block';
   setTimeout(()=>thanks.style.display='none', 3000);
 }
+
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light');
+  localStorage.setItem('bbos_theme',isLight?'light':'dark');
+  const ic=document.getElementById('theme-icon');
+  if(ic) ic.textContent=isLight?'☽':'☀';
+}
+(function(){
+  if(localStorage.getItem('bbos_theme')==='light'){
+    document.body.classList.add('light');
+    document.addEventListener('DOMContentLoaded',()=>{
+      const ic=document.getElementById('theme-icon');
+      if(ic)ic.textContent='☽';
+    });
+  }
+})();
+
 </script>
 </body>
 </html>
