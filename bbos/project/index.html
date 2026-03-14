@@ -51,8 +51,8 @@ const STALE_DAYS = 7;
 // Set these after deploying BBOS_WebApp.gs as a Web App.
 // Leave blank to use the static PROJECTS array below as fallback.
 
-const WEB_APP_URL      = "https://script.google.com/macros/s/AKfycbwaKtvvd1sBTomBuxmYiz--rKm2Fqg074aHm2UEew5JeYKQ3RsIP83gcJVFxoB9QrxKNg/exec";  // ← paste your Web App URL here after deploying
-const REGISTRY_SHEET_ID = "1ohrWN16Moge72TpJV0F2I39jXZeLzl7VGFW7tpe6vCo"; // ← paste your Registry Sheet ID here (for direct read)
+const WEB_APP_URL      = "https://script.google.com/macros/s/AKfycbwaKtvvd1sBTomBuxmYiz--rKm2Fqg074aHm2UEew5JeYKQ3RsIP83gcJVFxoB9QrxKNg/exec";
+const REGISTRY_SHEET_ID = "1ohrWN16Moge72TpJV0F2I39jXZeLzl7VGFW7tpe6vCo";
 
 // ── STATIC FALLBACK ──────────────────────────────────────────────────────
 // Used only when WEB_APP_URL and REGISTRY_SHEET_ID are both empty.
@@ -739,6 +739,7 @@ async function init() {
 }
 
 async function loadProjectRegistry() {
+  try {
   // Try registry sheet first (direct gviz read — faster, no CORS issues)
   if (REGISTRY_SHEET_ID) {
     try {
@@ -771,6 +772,9 @@ async function loadProjectRegistry() {
   }
   // Fallback: use static PROJECTS_FALLBACK (already set above)
   console.log(`Using fallback: ${PROJECTS.length} projects`);
+  } catch(outerErr) {
+    console.warn('loadProjectRegistry outer error:', outerErr.message);
+  }
 }
 
 // ── LIVE SYNC ─────────────────────────────────────────────────────────────
@@ -1120,9 +1124,9 @@ function openAddModal() {
   document.getElementById('f-status').value='remain';
   // Hide Sheet ID field when Web App is configured — it handles creation automatically
   const sheetIdField = document.getElementById('sheetid-field');
-  if (sheetIdField) sheetIdField.style.display = _URL ? 'none' : 'block';
+  if (sheetIdField) sheetIdField.style.display = WEB_APP_URL ? 'none' : 'block';
   const notice = document.getElementById('webapp-mode-notice');
-  if (notice) notice.style.display = _URL ? 'block' : 'none';
+  if (notice) notice.style.display = WEB_APP_URL ? 'block' : 'none';
   updateModalStep();
   document.getElementById('add-modal').style.display='block';
   document.body.style.overflow='hidden';
@@ -1151,7 +1155,7 @@ function updateModalStep() {
   if (_modalStepN>=2) { nextBtn.style.display='none'; }
   else {
     nextBtn.style.display='block';
-    nextBtn.textContent = _modalStepN===1 ? (_URL ? 'Create project ✦' : 'Generate ✦') : 'Next →';
+    nextBtn.textContent = _modalStepN===1 ? (WEB_APP_URL ? 'Create project ✦' : 'Generate ✦') : 'Next →';
   }
 }
 
@@ -1163,7 +1167,7 @@ function modalNext() {
   } else if (_modalStepN===1) {
     const password = document.getElementById('f-password').value.trim();
     if (!password) { document.getElementById('f-password').focus(); return; }
-    if (_URL) {
+    if (WEB_APP_URL) {
       // Automated flow — call Web App
       submitToWebApp();
     } else {
@@ -1298,20 +1302,20 @@ function toggleTheme() {
 
 // ── STARTUP ───────────────────────────────────────────────────────────────
 
-(function() {
+(async function() {
   const saved = localStorage.getItem('bbos_idx_session');
   if (saved) {
     try {
       _session = JSON.parse(saved);
       document.getElementById('gate').style.display='none';
       document.getElementById('app').classList.add('visible');
-      init();
+      await init();
       return;
     } catch(e) {
+      console.error('Session restore error:', e);
       localStorage.removeItem('bbos_idx_session');
     }
   }
-  // Always show gate if no valid session
   document.getElementById('gate').style.display='flex';
 })();
 </script>
