@@ -575,8 +575,8 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
             </div>
           </div>
         </div>
-        <!-- Step 3 -->
-        <div class="modal-step" id="modal-step-2">
+        <!-- Step 4: Manual fallback output (no Web App) -->
+        <div class="modal-step" id="modal-step-4">
           <div style="text-align:center;font-size:28px;margin-bottom:12px">✦</div>
           <div class="output-label">Add to PROJECTS array in bbos_index.html</div>
           <div class="output-block" id="output-entry"></div>
@@ -629,7 +629,7 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" id="modal-back-btn" onclick="modalBack()" style="display:none">Back</button>
-        <button class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+        <button class="btn-secondary" onclick="closeAddModal()">Close</button>
         <button class="btn-primary" id="modal-next-btn" onclick="modalNext()">Next →</button>
       </div>
     </div>
@@ -1144,13 +1144,13 @@ function closeAddModal() {
 }
 
 function updateModalStep() {
-  [0,1,2,3].forEach(i => {
+  [0,1,2,3,4].forEach(i => {
     const el = document.getElementById(`modal-step-${i}`);
     if (el) el.classList.toggle('active', i===_modalStepN);
     const dot = document.getElementById(`dot-${i}`);
     if (dot) dot.className='step-dot'+(i<_modalStepN?' done':i===_modalStepN?' active':'');
   });
-  document.getElementById('modal-back-btn').style.display = (_modalStepN>0&&_modalStepN<2)?'block':'none';
+  document.getElementById('modal-back-btn').style.display = (_modalStepN===1)?'block':'none';
   const nextBtn = document.getElementById('modal-next-btn');
   if (_modalStepN>=2) { nextBtn.style.display='none'; }
   else {
@@ -1175,7 +1175,7 @@ function modalNext() {
       if (!document.getElementById('f-sheetid').value.trim()) {
         document.getElementById('f-sheetid').focus(); return;
       }
-      buildOutput(); _modalStepN=2; updateModalStep();
+      buildOutput(); _modalStepN=4; updateModalStep();
     }
   }
 }
