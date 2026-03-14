@@ -465,7 +465,7 @@ function renderStatusTable() {
     const dur = d.duration!==null ? (d.duration>14?`<span style="color:var(--amber)">${d.duration}d</span>`:d.duration+'d') : '—';
     const comp = `<div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden"><div style="width:${d.completion}%;height:100%;background:var(--green);border-radius:2px"></div></div><span style="font-size:16px;font-family:var(--font-mono);color:var(--text-3)">${d.completion}%</span></div>`;
     return `<tr>
-      <td class="td-name"><a href="project/${d.file}" class="td-link">${d.name}</a>${d.error?`<span style="font-size:16px;color:var(--red);margin-left:6px">sync failed</span>`:''}</td>
+      <td class="td-name"><a href="project/s/${d.file}" class="td-link">${d.name}</a>${d.error?`<span style="font-size:16px;color:var(--red);margin-left:6px">sync failed</span>`:''}</td>
       <td class="td-mono">${d.operator}</td>
       <td class="td-mono">${d.stage}</td>
       <td><span class="s-chip s-${sc}">${d.status}</span></td>

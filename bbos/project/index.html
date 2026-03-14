@@ -23,7 +23,7 @@
 
      PROJECTS array keys:
        name        Display name
-       file        Dashboard HTML filename (in project/ folder)
+       file        Dashboard HTML filename (in project/s/ folder)
        sheetId     Google Sheet ID for live sync (required for live data)
        operator    Lead operator name
        archived    true | false
@@ -508,7 +508,7 @@ body.light .theme-toggle .toggle-thumb { background: var(--gold); transform: tra
             <div class="field">
               <label class="field-label">Filename</label>
               <input class="field-input" id="f-file" placeholder="acme.html" autocomplete="off">
-              <div class="field-hint">Upload to project/ folder in GitHub</div>
+              <div class="field-hint">Upload to project/s/ folder in GitHub</div>
             </div>
             <div class="field">
               <label class="field-label">Operator</label>
@@ -997,7 +997,7 @@ function buildCard(raw, d, i) {
   const reentryText = buildReentry(d);
 
   const card = document.createElement('a');
-  card.href = `project/${raw.file}`;
+  card.href = `project/s/${raw.file}`;
   card.className = `project-card card-${statusKey}${stale?' card-stale':''}`;
   card.style.animationDelay = `${0.04 + i * 0.05}s`;
 
@@ -1050,7 +1050,7 @@ function renderArchive() {
     const activeIdx = PIPELINE.findIndex(pip => pip.code === d.stage);
     const pipeSegs = PIPELINE.map((pip,pi) =>
       `<div class="pip-seg ${pi<activeIdx?'done':pi===activeIdx?'active':''}" ></div>`).join('');
-    return `<a href="project/${p.file}" class="project-card archived-card" style="animation-delay:${0.04+i*0.05}s">
+    return `<a href="project/s/${p.file}" class="project-card archived-card" style="animation-delay:${0.04+i*0.05}s">
       <div class="pip-bar">${pipeSegs}</div>
       <div class="card-body">
         <div class="card-name-row"><div class="card-name">${d.name}</div></div>
@@ -1223,7 +1223,7 @@ async function submitToWebApp() {
   if (found) {
     document.getElementById('webapp-project-name').textContent = name;
     document.getElementById('webapp-sheet-id').textContent     = found.sheet_id || '—';
-    document.getElementById('webapp-file').textContent         = `project/${file}`;
+    document.getElementById('webapp-file').textContent         = `project/s/${file}`;
     const link = document.getElementById('webapp-sheet-url');
     if (found.sheet_id) {
       link.href        = `https://docs.google.com/spreadsheets/d/${found.sheet_id}/edit`;
@@ -1238,7 +1238,7 @@ async function submitToWebApp() {
     // Timed out — project may still have been created, check email
     document.getElementById('webapp-project-name').textContent = name;
     document.getElementById('webapp-sheet-id').textContent     = 'Check your email for Sheet ID';
-    document.getElementById('webapp-file').textContent         = `project/${file}`;
+    document.getElementById('webapp-file').textContent         = `project/s/${file}`;
     document.getElementById('webapp-sheet-url').textContent    = 'Could not confirm — check email';
     document.getElementById('webapp-sheet-url').removeAttribute('href');
     _modalStepN = 3; updateModalStep();
@@ -1285,7 +1285,7 @@ function buildOutput() {
 
   const entry = `  {\n    name:     "${name}",\n    file:     "${file}",\n    sheetId:  "${sheetId}",\n    operator: "${operator}",\n    archived: false,\n    tags:     [${tags.map(t=>`"${t}"`).join(', ')}],\n  },`;
   document.getElementById('output-entry').textContent = entry;
-  document.getElementById('output-filepath').textContent = `project/${file}`;
+  document.getElementById('output-filepath').textContent = `project/s/${file}`;
 }
 
 function copyEntry() {
@@ -1305,7 +1305,7 @@ function downloadDashboard() {
   const sheetName = document.getElementById('f-sheetname').value.trim()||'checklist';
   const metaSheet = document.getElementById('f-metasheet').value.trim()||'meta';
 
-  fetch('bbos_project_dashboard_template.html')
+  fetch('../bbos_project_dashboard_template.html')
     .then(r=>{ if(!r.ok)throw new Error('not found'); return r.text(); })
     .then(html=>{
       html=html.replace(/password:\s*"[^"]*"/,`password:    "${password}"`);

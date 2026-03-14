@@ -371,7 +371,7 @@ function renderResults() {
       <div class="sim-tags">${tagsHtml}</div>
       <div class="sim-meta">Operator: ${p.operator||'—'}</div>
       <div class="sim-actions">
-        <a href="project/${p.file}" class="sim-btn sim-btn-open">Open →</a>
+        <a href="project/s/${p.file}" class="sim-btn sim-btn-open">Open →</a>
         <div style="display:flex;gap:5px;flex:2" id="vote-area-${p.name.replace(/\s/g,'_')}">${voteHtml}</div>
       </div>
     </div>`;
