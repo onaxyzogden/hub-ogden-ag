@@ -362,9 +362,9 @@ footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify
     <div class="header-right">
       <nav class="nav-links">
         <a class="nav-link active" href="#">Index</a>
-        <a class="nav-link" href="bbos_analytics.html">Analytics</a>
-        <a class="nav-link" href="bbos_similarity.html">Similarity</a>
-        <a class="nav-link" href="bbos_help.html">Help</a>
+        <a class="nav-link" href="analytics.html">Analytics</a>
+        <a class="nav-link" href="similarity.html">Similarity</a>
+        <a class="nav-link" href="help.html">Help</a>
       </nav>
       <div class="header-meta" id="header-meta"></div>
       <button class="hdr-btn" id="sync-btn" onclick="syncAllSheets()">↻ Sync</button>
@@ -1063,7 +1063,7 @@ function downloadDashboard() {
   const sheetName = document.getElementById('f-sheetname').value.trim()||'checklist';
   const metaSheet = document.getElementById('f-metasheet').value.trim()||'meta';
 
-  fetch('../bbos_project_dashboard_template.html')
+  fetch('bbos_project_dashboard_template.html')
     .then(r=>{ if(!r.ok)throw new Error('not found'); return r.text(); })
     .then(html=>{
       html=html.replace(/password:\s*"[^"]*"/,`password:    "${password}"`);
