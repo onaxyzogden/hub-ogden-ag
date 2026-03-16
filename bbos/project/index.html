@@ -40,19 +40,20 @@
 // ── CONFIGURATION ────────────────────────────────────────────────────────
 
 const ROLES = {
-  admin:    { password: "bbos-admin",    role: "admin"    },
-  yousef:   { password: "yousef-2025",   role: "operator" },
+  admin:    { password: "",    role: "admin"    },
+  yousef:   { password: "",   role: "operator" },
   // Add more operators: name: { password: "...", role: "operator" }
 };
 
 const STALE_DAYS = 7;
 
 // ── LIVE BACKEND CONFIGURATION ───────────────────────────────────────────
-// Set these after deploying BBOS_WebApp.gs as a Web App.
-// Leave blank to use the static PROJECTS array below as fallback.
+// WEB_APP_URL  → Apps Script web app that creates the Google Sheet.
+// SUPABASE_*   → Project registry (replaces Google Sheets gviz read).
 
-const WEB_APP_URL      = "https://script.google.com/macros/s/AKfycbwaKtvvd1sBTomBuxmYiz--rKm2Fqg074aHm2UEew5JeYKQ3RsIP83gcJVFxoB9QrxKNg/exec";
-const REGISTRY_SHEET_ID = "1ohrWN16Moge72TpJV0F2I39jXZeLzl7VGFW7tpe6vCo";
+const WEB_APP_URL    = "https://script.google.com/macros/s/AKfycbxkJ5aCwaBxUkzgscoJ5a4r7HaglkOyVqNxIHSbx8uklZzzIwV1mwQLIHYLFut815lxPg/exec";
+const SUPABASE_URL   = "https://qqcxjaqrcfthcxtdvths.supabase.co";
+const SUPABASE_KEY   = "sb_publishable_r_KFSkfBZ1ijKxjB3kwEeQ_rw3Xbl37";
 
 // ── STATIC FALLBACK ──────────────────────────────────────────────────────
 // Used only when WEB_APP_URL and REGISTRY_SHEET_ID are both empty.
@@ -740,41 +741,29 @@ async function init() {
 
 async function loadProjectRegistry() {
   try {
-  // Try registry sheet first (direct gviz read — faster, no CORS issues)
-  if (REGISTRY_SHEET_ID) {
-    try {
-      const url = `https://docs.google.com/spreadsheets/d/${REGISTRY_SHEET_ID}/gviz/tq?tqx=out:json&sheet=registry`;
-      const res  = await fetch(url);
-      const text = await res.text();
-      const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
-      const rows = json.table?.rows || [];
-      const hdrs = json.table?.cols?.map(c => (c.label||'').toLowerCase().replace(/\s+/g,'_')) || [];
-      if (rows.length) {
-        PROJECTS = rows.map(r => {
-          const obj = {};
-          hdrs.forEach((h,i) => obj[h] = (r.c?.[i]?.v ?? '').toString().trim());
-          const tagsRaw = obj.tags || '';
-          return {
-            name:     obj.project_name || '',
-            file:     obj.file         || '',
-            sheetId:  obj.sheet_id     || '',
-            operator: obj.operator     || '',
-            archived: obj.archived === 'true',
-            tags:     tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean) : [],
-          };
-        }).filter(p => p.name && p.file);
-        console.log(`Registry loaded: ${PROJECTS.length} projects`);
-        return;
-      }
-    } catch(e) {
-      console.warn('Registry sheet read failed:', e.message);
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/projects?select=*&order=created_at.asc`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    if (rows.length) {
+      PROJECTS = rows.map(r => ({
+        name:     r.project_name || '',
+        file:     r.file         || '',
+        sheetId:  r.sheet_id     || '',
+        operator: r.operator     || '',
+        archived: r.archived     || false,
+        tags:     r.tags ? r.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+      })).filter(p => p.name && p.file);
+      console.log(`Registry loaded from Supabase: ${PROJECTS.length} projects`);
+      return;
     }
+  } catch(e) {
+    console.warn('Supabase registry read failed — using fallback:', e.message);
   }
-  // Fallback: use static PROJECTS_FALLBACK (already set above)
+  PROJECTS = [...PROJECTS_FALLBACK];
   console.log(`Using fallback: ${PROJECTS.length} projects`);
-  } catch(outerErr) {
-    console.warn('loadProjectRegistry outer error:', outerErr.message);
-  }
 }
 
 // ── LIVE SYNC ─────────────────────────────────────────────────────────────
@@ -1197,54 +1186,58 @@ async function submitToWebApp() {
   const tags      = tagsRaw ? tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean) : [];
   const note      = document.getElementById('f-note')?.value?.trim() || '';
 
-  // Show submitting state — stay here until confirmed
   _modalStepN = 2; updateModalStep();
-  _setSubmittingStatus('Creating project — this takes 15–30 seconds…');
+  _setSubmittingStatus('Creating project…');
 
-  // Apps Script Web Apps require no-cors for cross-origin POST.
-  // We cannot read the response body in no-cors mode, so we
-  // fire the request then poll the registry to confirm creation.
+  // Step 1 — fire Apps Script to create the Google Sheet (no-cors, fire-and-forget)
   try {
     await fetch(WEB_APP_URL, {
       method:  'POST',
-      mode:    'no-cors',  // required — Apps Script redirects break regular CORS
-      headers: { 'Content-Type': 'text/plain' }, // no-cors only allows simple headers
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
       body:    JSON.stringify({ name, file, operator, stage, status, tags, password, sheetName, metaSheet, note }),
     });
   } catch(e) {
-    // no-cors fetch throws on network error but not on redirect — safe to ignore
     console.log('Fetch note (expected with no-cors):', e.message);
   }
 
-  // Poll registry every 4 seconds for up to 60 seconds
-  _setSubmittingStatus('Waiting for sheet creation to complete…');
-  const found = await _pollRegistryForProject(name, 60, 4000);
-
-  if (found) {
-    document.getElementById('webapp-project-name').textContent = name;
-    document.getElementById('webapp-sheet-id').textContent     = found.sheet_id || '—';
-    document.getElementById('webapp-file').textContent         = `project/s/${file}`;
-    const link = document.getElementById('webapp-sheet-url');
-    if (found.sheet_id) {
-      link.href        = `https://docs.google.com/spreadsheets/d/${found.sheet_id}/edit`;
-      link.textContent = 'Open sheet →';
-    } else {
-      link.textContent = '—';
-    }
-    _modalStepN = 3; updateModalStep();
-    await loadProjectRegistry();
-    renderGrid(); renderSummary();
-  } else {
-    // Timed out — project may still have been created, check email
-    document.getElementById('webapp-project-name').textContent = name;
-    document.getElementById('webapp-sheet-id').textContent     = 'Check your email for Sheet ID';
-    document.getElementById('webapp-file').textContent         = `project/s/${file}`;
-    document.getElementById('webapp-sheet-url').textContent    = 'Could not confirm — check email';
-    document.getElementById('webapp-sheet-url').removeAttribute('href');
-    _modalStepN = 3; updateModalStep();
-    // Try reloading registry anyway
-    setTimeout(() => loadProjectRegistry().then(() => { renderGrid(); renderSummary(); }), 3000);
+  // Step 2 — register the project in Supabase immediately
+  _setSubmittingStatus('Registering project…');
+  let supabaseRowId = null;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/projects`, {
+      method: 'POST',
+      headers: {
+        'apikey':        SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type':  'application/json',
+        'Prefer':        'return=representation',
+      },
+      body: JSON.stringify({ project_name: name, file, operator, tags: tags.join(','), archived: false }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const [row] = await res.json();
+    supabaseRowId = row?.id ?? null;
+    console.log('Project registered in Supabase:', row);
+  } catch(e) {
+    console.warn('Supabase insert failed:', e.message);
   }
+
+  // Step 3 — show success immediately; project is already in the registry
+  document.getElementById('webapp-project-name').textContent = name;
+  document.getElementById('webapp-sheet-id').textContent     = 'Pending…';
+  document.getElementById('webapp-file').textContent         = `project/s/${file}`;
+  const link = document.getElementById('webapp-sheet-url');
+  link.textContent = '—';
+  link.removeAttribute('href');
+  _modalStepN = 3; updateModalStep();
+
+  // Step 4 — reload registry so the new project appears on the dashboard NOW
+  await loadProjectRegistry();
+  renderGrid(); renderSummary();
+
+  // Step 5 — poll in the background for the sheet_id (Apps Script writes it when done)
+  if (supabaseRowId !== null) _pollForSheetId(supabaseRowId);
 }
 
 function _setSubmittingStatus(msg) {
@@ -1252,25 +1245,36 @@ function _setSubmittingStatus(msg) {
   if (el) el.textContent = msg;
 }
 
-async function _pollRegistryForProject(name, timeoutSecs, intervalMs) {
+// Polls Supabase every 4 s (up to 90 s) until Apps Script writes the sheet_id,
+// then updates the confirmation modal and re-renders the grid.
+async function _pollForSheetId(rowId, timeoutSecs = 90, intervalMs = 4000) {
   const deadline = Date.now() + timeoutSecs * 1000;
   while (Date.now() < deadline) {
     await new Promise(r => setTimeout(r, intervalMs));
     try {
-      const url  = `https://docs.google.com/spreadsheets/d/${REGISTRY_SHEET_ID}/gviz/tq?tqx=out:json&sheet=registry&t=${Date.now()}`;
-      const res  = await fetch(url);
-      const text = await res.text();
-      const json = JSON.parse(text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
-      const rows = json.table?.rows || [];
-      const hdrs = (json.table?.cols || []).map(c => (c.label||'').toLowerCase().replace(/\s+/g,'_'));
-      for (const row of rows) {
-        const obj = {};
-        hdrs.forEach((h,i) => obj[h] = (row.c?.[i]?.v ?? '').toString().trim());
-        if (obj.project_name === name) return obj;
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/projects?id=eq.${rowId}&select=sheet_id`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      if (!res.ok) continue;
+      const [row] = await res.json();
+      if (row?.sheet_id) {
+        // Update confirmation modal if it is still open
+        const sheetIdEl = document.getElementById('webapp-sheet-id');
+        const linkEl    = document.getElementById('webapp-sheet-url');
+        if (sheetIdEl) sheetIdEl.textContent = row.sheet_id;
+        if (linkEl) {
+          linkEl.href        = `https://docs.google.com/spreadsheets/d/${row.sheet_id}/edit`;
+          linkEl.textContent = 'Open sheet →';
+        }
+        // Refresh grid so the sheet_id is live
+        await loadProjectRegistry();
+        renderGrid();
+        return;
       }
-    } catch(e) { console.log('Poll attempt failed:', e.message); }
+    } catch(e) { console.log('Sheet ID poll:', e.message); }
   }
-  return null;
+  console.log('Sheet ID not populated within timeout — Apps Script may still be running.');
 }
 
 function buildOutput() {

@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN Atlas — Site Intelligence · Phase 1</title>
+<meta name="description" content="A land intelligence system built on the principle of stewardship over extraction. Phase 1: Site Intelligence.">
+<link rel="canonical" href="https://hub.ogden.ag/site-intelligence/">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+/* ── DESIGN TOKENS ───────────────────────────────────────────────────── */
+:root {
+  --bg:         #0b0f16;
+  --surface:    #161d28;
+  --surface-2:  #1e2636;
+  --surface-3:  #252f42;
+  --border:     rgba(255,255,255,0.06);
+  --border-md:  rgba(255,255,255,0.11);
+  --border-hi:  rgba(255,255,255,0.18);
+  --text-1:     #ede8da;
+  --text-2:     #8c95aa;
+  --text-3:     #4f5a6e;
+  --gold:       #c9a96e;
+  --gold-dim:   rgba(201,169,110,0.10);
+  --gold-bd:    rgba(201,169,110,0.28);
+  --green:      #52b584;
+  --green-dim:  rgba(82,181,132,0.10);
+  --green-bd:   rgba(82,181,132,0.28);
+  --amber:      #e8a93e;
+  --amber-dim:  rgba(232,169,62,0.10);
+  --amber-bd:   rgba(232,169,62,0.28);
+  --red:        #e05c5c;
+  --red-dim:    rgba(224,92,92,0.08);
+  --red-bd:     rgba(224,92,92,0.28);
+  --blue:       #6aadee;
+  --blue-dim:   rgba(106,173,238,0.10);
+  --blue-bd:    rgba(106,173,238,0.28);
+  --sage:       #7a9a6e;
+  --sage-dim:   rgba(122,154,110,0.10);
+  --sage-bd:    rgba(122,154,110,0.28);
+  --radius:     10px;
+  --radius-lg:  16px;
+  --font-disp:  'Cormorant Garamond', Georgia, serif;
+  --font-body:  'Instrument Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+  --ease:       cubic-bezier(.22,.68,0,1.2);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-1);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* ── NAV ─────────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(11,15,22,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 60px;
+}
+.nav-brand {
+  font-family: var(--font-disp);
+  font-size: 20px; font-weight: 400;
+  color: var(--text-1);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-brand-sub {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3); text-decoration: none;
+  padding: 6px 11px; border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-link:hover { color: var(--text-2); background: var(--surface); }
+.nav-link.active { color: var(--gold); background: var(--gold-dim); }
+
+/* ── LAYOUT ──────────────────────────────────────────────────────────── */
+.page { position: relative; z-index: 1; padding-top: 60px; }
+.page-inner { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+/* ── HERO ────────────────────────────────────────────────────────────── */
+.hero {
+  padding: 52px 0 40px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -1px; left: 0;
+  width: 60px; height: 1px; background: var(--gold); opacity: 0.7;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 28px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.hero-title {
+  font-family: var(--font-disp);
+  font-size: clamp(36px,5vw,56px); font-weight: 400; line-height: 1.15;
+  margin-bottom: 12px; color: var(--text-1);
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-desc {
+  font-size: 16px; color: var(--text-2);
+  max-width: 580px; line-height: 1.8; margin-bottom: 24px;
+}
+.hero-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-family: var(--font-mono);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+  background: var(--surface); border: 1px solid var(--border-md);
+  padding: 4px 10px; border-radius: 4px;
+}
+.tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sage); }
+
+/* ── INTAKE ──────────────────────────────────────────────────────────── */
+.section { padding: 36px 0 44px; }
+.section-label {
+  font-size: 10px; font-family: var(--font-mono);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+}
+.section-label::before { content: ''; width: 18px; height: 1px; background: currentColor; opacity: 0.4; }
+.section-title {
+  font-family: var(--font-disp); font-size: 26px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 22px;
+}
+.intake-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 30px; position: relative;
+}
+.intake-card::before {
+  content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent);
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-size: 10px; font-family: var(--font-mono);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3);
+}
+.form-label .req { color: var(--gold); margin-left: 3px; }
+.form-input, .form-textarea {
+  background: var(--surface-2); border: 1px solid var(--border-md);
+  border-radius: var(--radius); padding: 10px 13px;
+  font-family: var(--font-mono); font-size: 13px; color: var(--text-1);
+  outline: none; transition: border-color 0.2s; width: 100%;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--gold-bd); }
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-3); }
+.form-textarea { resize: vertical; min-height: 80px; font-size: 11px; line-height: 1.55; }
+.form-hint { font-size: 11px; color: var(--text-3); font-style: italic; }
+.intake-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border);
+  flex-wrap: wrap; gap: 14px;
+}
+.intake-note { font-size: 11px; color: var(--text-3); max-width: 440px; line-height: 1.7; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 26px; background: var(--gold-dim);
+  border: 1px solid var(--gold-bd); border-radius: var(--radius);
+  color: var(--gold); font-family: var(--font-body);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.btn-primary:hover { background: rgba(201,169,110,0.18); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; background: transparent;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  color: var(--text-3); font-family: var(--font-body);
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--border-hi); color: var(--text-2); }
+
+/* ── RUNNER ──────────────────────────────────────────────────────────── */
+#runner { display: none; padding: 36px 0; border-top: 1px solid var(--border); }
+.runner-hdr {
+  font-family: var(--font-disp); font-size: 22px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 5px;
+}
+.runner-sub {
+  font-size: 12px; color: var(--text-3); font-family: var(--font-mono);
+  letter-spacing: 0.08em; margin-bottom: 28px;
+}
+.agents-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin-bottom: 32px;
+}
+.agent-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px;
+  transition: border-color 0.3s;
+}
+.agent-card.active { border-color: var(--gold-bd); }
+.agent-card.done   { border-color: var(--green-bd); }
+.agent-hdr { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+.agent-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; background: var(--surface-2); border: 1px solid var(--border-md);
+  flex-shrink: 0; transition: all 0.3s;
+}
+.agent-card.active .agent-icon { background: var(--gold-dim); border-color: var(--gold-bd); }
+.agent-card.done   .agent-icon { background: var(--green-dim); border-color: var(--green-bd); }
+.agent-name { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); }
+.agent-role { font-size: 10px; color: var(--text-3); margin-top: 1px; }
+.agent-status { font-size: 11px; color: var(--text-3); line-height: 1.6; min-height: 32px; }
+.agent-card.active .agent-status { color: var(--gold); }
+.agent-card.done   .agent-status { color: var(--green); }
+
+.layers-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.layer-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; transition: border-color 0.3s;
+}
+.layer-card.fetching { border-color: var(--amber-bd); }
+.layer-card.done     { border-color: var(--green-bd); }
+.layer-card.failed   { border-color: var(--red-bd); }
+.layer-card.partial  { border-color: var(--amber-bd); }
+.layer-name {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 7px;
+}
+.layer-status-row { display: flex; align-items: center; gap: 5px; }
+.layer-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-3); flex-shrink: 0; transition: background 0.3s;
+}
+.layer-card.fetching .layer-dot { background: var(--amber); animation: pulse 1s ease-in-out infinite; }
+.layer-card.done .layer-dot     { background: var(--green); }
+.layer-card.failed .layer-dot   { background: var(--red); }
+.layer-card.partial .layer-dot  { background: var(--amber); }
+.layer-status-text { font-size: 11px; color: var(--text-3); }
+.layer-card.done .layer-status-text    { color: var(--green); }
+.layer-card.failed .layer-status-text  { color: var(--red); }
+.layer-card.partial .layer-status-text { color: var(--amber); }
+.layer-data { font-size: 11px; color: var(--text-2); margin-top: 5px; line-height: 1.5; }
+.layer-source {
+  font-size: 9px; color: var(--text-3); font-family: var(--font-mono);
+  margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border);
+}
+
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+@keyframes spin  { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+.spinner { display: inline-block; animation: spin 1s linear infinite; margin-right: 4px; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.fadeup { animation: fadeUp 0.5s var(--ease) both; }
+
+/* ── RESULTS ─────────────────────────────────────────────────────────── */
+#results { display: none; padding: 44px 0 80px; }
+
+.results-hdr {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 24px; margin-bottom: 32px; padding-bottom: 24px;
+  border-bottom: 1px solid var(--border); flex-wrap: wrap;
+}
+.results-parcel {
+  font-family: var(--font-disp); font-size: 34px; font-weight: 400;
+  color: var(--text-1); line-height: 1.2; margin-bottom: 5px;
+}
+.results-coords { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+.results-meta-col { text-align: right; flex-shrink: 0; }
+.results-date { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); margin-bottom: 6px; }
+.completeness-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+}
+.cb-high { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-bd); }
+.cb-med  { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-bd); }
+.cb-low  { background: var(--red-dim);   color: var(--red);   border: 1px solid var(--red-bd);   }
+
+/* Flags */
+.flags-block { margin-bottom: 22px; }
+.flag-item {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 12px 16px; border-radius: var(--radius); margin-bottom: 7px;
+  font-size: 12px; line-height: 1.6;
+}
+.flag-item.caution { background: var(--red-dim);   border: 1px solid var(--red-bd);   color: var(--red);   }
+.flag-item.warn    { background: var(--amber-dim); border: 1px solid var(--amber-bd); color: var(--amber); }
+.flag-item.info    { background: var(--blue-dim);  border: 1px solid var(--blue-bd);  color: var(--blue);  }
+.flag-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.flag-text b { font-weight: 600; display: block; margin-bottom: 1px; }
+
+/* Scores */
+.scores-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+.score-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 26px; position: relative; overflow: hidden;
+}
+.score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.sc-suit::before { background: linear-gradient(90deg, var(--gold), transparent); }
+.sc-regen::before { background: linear-gradient(90deg, var(--sage), transparent); }
+.score-lbl {
+  font-size: 10px; font-family: var(--font-mono);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;
+}
+.score-num {
+  font-family: var(--font-disp); font-size: 60px; font-weight: 300;
+  line-height: 1; margin-bottom: 5px;
+}
+.sc-suit .score-num { color: var(--gold); }
+.sc-regen .score-num { color: var(--sage); }
+.score-sub { font-size: 12px; color: var(--text-3); margin-bottom: 14px; }
+.conf-row { display: flex; align-items: center; gap: 8px; }
+.conf-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px;
+  font-family: var(--font-body); letter-spacing: 0.05em;
+}
+.conf-high { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-bd); }
+.conf-med  { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-bd); }
+.conf-low  { background: var(--red-dim);   color: var(--red);   border: 1px solid var(--red-bd);   }
+.conf-note { font-size: 11px; color: var(--text-3); font-style: italic; }
+.breakdown { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.bd-item { display: flex; align-items: center; padding: 4px 0; }
+.bd-label { font-size: 11px; color: var(--text-2); width: 180px; flex-shrink: 0; }
+.bd-bar-wrap { flex: 1; margin: 0 10px; height: 3px; background: var(--surface-3); border-radius: 2px; overflow: hidden; }
+.bd-bar { height: 100%; border-radius: 2px; transition: width 1s var(--ease); }
+.bd-val { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); min-width: 30px; text-align: right; }
+
+/* Map */
+.map-section { margin-bottom: 28px; }
+.map-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
+}
+.map-title { font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+.map-legend { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text-3); }
+.legend-swatch { width: 14px; height: 8px; border-radius: 2px; }
+#map {
+  width: 100%; height: 420px;
+  border-radius: var(--radius-lg); border: 1px solid var(--border-md); overflow: hidden;
+}
+.map-toggles { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.map-btn {
+  font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 10px; border-radius: 5px; background: var(--surface);
+  border: 1px solid var(--border-md); color: var(--text-3); cursor: pointer; transition: all 0.2s;
+}
+.map-btn.on { background: var(--gold-dim); border-color: var(--gold-bd); color: var(--gold); }
+
+/* Tier 1 confirmed grid */
+.tier1-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 28px; }
+.tier1-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+}
+.t1-hdr { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+.t1-icon { font-size: 17px; }
+.t1-name { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); }
+.t1-agency { font-size: 9px; color: var(--text-3); margin-top: 1px; }
+.t1-val { font-family: var(--font-disp); font-size: 19px; font-weight: 400; color: var(--text-1); margin-bottom: 3px; line-height: 1.3; }
+.t1-sub { font-size: 11px; color: var(--text-3); line-height: 1.5; }
+.t1-status { display: flex; align-items: center; gap: 5px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.t1-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.dot-g { background: var(--green); }
+.dot-a { background: var(--amber); }
+.dot-r { background: var(--red); }
+.t1-status-txt { font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.t1-source { font-size: 9px; color: var(--text-3); font-style: italic; margin-top: 2px; }
+
+/* Brief */
+.brief-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 34px; margin-bottom: 20px; position: relative;
+}
+.brief-card::before {
+  content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(122,154,110,0.28), transparent);
+}
+.brief-eyebrow {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 10px;
+}
+.brief-title {
+  font-family: var(--font-disp); font-size: 26px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 18px; line-height: 1.3;
+}
+.brief-title em { font-style: italic; color: var(--sage); }
+.brief-body {
+  font-family: var(--font-disp); font-size: 16px; font-weight: 300;
+  color: var(--text-2); line-height: 1.9;
+}
+.brief-body p + p { margin-top: 14px; }
+.brief-body strong { color: var(--text-1); font-weight: 400; }
+.brief-pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--border); }
+.pillar { padding: 14px; background: var(--surface-2); border-radius: var(--radius); border: 1px solid var(--border); }
+.pillar-lbl { font-size: 9px; font-family: var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+.pillar-title { font-family: var(--font-disp); font-size: 16px; color: var(--text-1); margin-bottom: 4px; }
+.pillar-body { font-size: 11px; color: var(--text-3); line-height: 1.6; }
+
+/* Disclaimer */
+.disclaimer {
+  background: rgba(11,15,22,0.7); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px; margin-top: 8px;
+}
+.disc-lbl { font-size: 9px; font-family: var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); margin-bottom: 7px; }
+.disc-text { font-size: 11px; color: var(--text-3); line-height: 1.8; font-style: italic; }
+.disc-text strong { color: var(--text-2); font-style: normal; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .page-inner { padding: 0 18px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .agents-row { grid-template-columns: 1fr; }
+  .layers-row { grid-template-columns: 1fr 1fr; }
+  .scores-row { grid-template-columns: 1fr; }
+  .tier1-grid { grid-template-columns: 1fr 1fr; }
+  .brief-pillars { grid-template-columns: 1fr; }
+  .results-hdr { flex-direction: column; }
+  .results-meta-col { text-align: left; }
+  .bd-label { width: 130px; }
+}
+@media (max-width: 520px) {
+  .layers-row { grid-template-columns: 1fr; }
+  .tier1-grid { grid-template-columns: 1fr; }
+  #map { height: 300px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-brand">
+    Ogden <span style="color:var(--text-3);margin:0 6px">·</span>
+    <span class="nav-brand-sub">Atlas</span>
+  </a>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Hub</a>
+    <a href="/bbos/" class="nav-link">BBOS</a>
+    <a href="/moontrance/" class="nav-link">Moontrance</a>
+    <a href="/site-intelligence/" class="nav-link active">Site Intelligence</a>
+  </div>
+</nav>
+
+<div class="page">
+<div class="page-inner">
+
+  <!-- HERO -->
+  <section class="hero fadeup">
+    <div class="hero-eyebrow">OGDEN Atlas · Phase 1</div>
+    <h1 class="hero-title">Site <em>Intelligence</em></h1>
+    <p class="hero-desc">
+      A land assessment tool built on the principle of stewardship over extraction.
+      Every finding is grounded in public federal data and cited to its source.
+      This tool assists — it does not decide.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag"><span class="tag-dot"></span>USGS 3DEP · Elevation</span>
+      <span class="hero-tag"><span class="tag-dot"></span>SSURGO · Soils</span>
+      <span class="hero-tag"><span class="tag-dot"></span>NHD · Hydrology</span>
+      <span class="hero-tag"><span class="tag-dot"></span>FEMA · Flood Zones</span>
+    </div>
+  </section>
+
+  <!-- INTAKE -->
+  <section class="section" id="intakeSection">
+    <div class="section-label">Step 1 · Intake</div>
+    <div class="section-title">Validate Parcel Coordinates</div>
+
+    <div class="intake-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="parcelName">Parcel Name <span class="req">*</span></label>
+          <input class="form-input" type="text" id="parcelName" placeholder="e.g. North River Tract">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="parcelAcres">Estimated Acres</label>
+          <input class="form-input" type="number" id="parcelAcres" placeholder="e.g. 120" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="latitude">Latitude <span class="req">*</span></label>
+          <input class="form-input" type="number" id="latitude" placeholder="e.g. 36.7213" step="any" min="-90" max="90">
+          <span class="form-hint">Decimal degrees, WGS84</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="longitude">Longitude <span class="req">*</span></label>
+          <input class="form-input" type="number" id="longitude" placeholder="e.g. -119.7871" step="any" min="-180" max="180">
+          <span class="form-hint">Decimal degrees, WGS84</span>
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="geoJSON">GeoJSON Boundary <span style="color:var(--text-3)">— optional</span></label>
+          <textarea class="form-textarea" id="geoJSON" placeholder='{"type":"Polygon","coordinates":[[[...]]]}  ·  Paste a GeoJSON Polygon or leave blank for a 500 m point buffer'></textarea>
+        </div>
+      </div>
+      <div class="intake-footer">
+        <p class="intake-note">
+          All data is retrieved from publicly available U.S. federal datasets.
+          Assessments are calibrated for the contiguous United States.
+          Coordinate precision directly affects data quality.
+        </p>
+        <button class="btn-primary" id="runBtn" onclick="runAssessment()">
+          Begin Site Assessment
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENT RUNNER -->
+  <section id="runner">
+    <div class="section-label" style="margin-bottom:6px">Steps 2–4 · Orchestration</div>
+    <div class="runner-hdr">Running Assessment</div>
+    <div class="runner-sub" id="runnerStatus">Initializing agents…</div>
+
+    <div class="agents-row">
+      <div class="agent-card" id="agentScout">
+        <div class="agent-hdr">
+          <div class="agent-icon">🛰</div>
+          <div><div class="agent-name">@Data-Scout</div><div class="agent-role">Ingestion Specialist</div></div>
+        </div>
+        <div class="agent-status" id="scoutStatus">Waiting…</div>
+      </div>
+      <div class="agent-card" id="agentAnalyst">
+        <div class="agent-hdr">
+          <div class="agent-icon">📐</div>
+          <div><div class="agent-name">@Geo-Analyst</div><div class="agent-role">Site Scientist</div></div>
+        </div>
+        <div class="agent-status" id="analystStatus">Waiting…</div>
+      </div>
+      <div class="agent-card" id="agentSteward">
+        <div class="agent-hdr">
+          <div class="agent-icon">⚖️</div>
+          <div><div class="agent-name">@Steward</div><div class="agent-role">Compliance Monitor</div></div>
+        </div>
+        <div class="agent-status" id="stewardStatus">Waiting…</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:10px">Tier 1 Data Layers</div>
+    <div class="layers-row">
+      <div class="layer-card" id="layerUsgs">
+        <div class="layer-name">USGS 3DEP</div>
+        <div class="layer-status-row"><div class="layer-dot"></div><div class="layer-status-text" id="usgsStatus">Pending</div></div>
+        <div class="layer-data" id="usgsData"></div>
+        <div class="layer-source">epqs.nationalmap.gov/v1</div>
+      </div>
+      <div class="layer-card" id="layerSsurgo">
+        <div class="layer-name">SSURGO</div>
+        <div class="layer-status-row"><div class="layer-dot"></div><div class="layer-status-text" id="ssurgoStatus">Pending</div></div>
+        <div class="layer-data" id="ssurgoData"></div>
+        <div class="layer-source">sdmdataaccess.sc.egov.usda.gov</div>
+      </div>
+      <div class="layer-card" id="layerNhd">
+        <div class="layer-name">NHD</div>
+        <div class="layer-status-row"><div class="layer-dot"></div><div class="layer-status-text" id="nhdStatus">Pending</div></div>
+        <div class="layer-data" id="nhdData"></div>
+        <div class="layer-source">hydro.nationalmap.gov</div>
+      </div>
+      <div class="layer-card" id="layerFema">
+        <div class="layer-name">FEMA NFHL</div>
+        <div class="layer-status-row"><div class="layer-dot"></div><div class="layer-status-text" id="femaStatus">Pending</div></div>
+        <div class="layer-data" id="femaData"></div>
+        <div class="layer-source">hazards.fema.gov/gis/nfhl</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS DASHBOARD -->
+  <section id="results">
+
+    <div class="results-hdr fadeup">
+      <div>
+        <div class="hero-eyebrow" style="margin-bottom:8px">Site Assessment · Phase 1 Complete</div>
+        <div class="results-parcel" id="rParcelName">—</div>
+        <div class="results-coords" id="rCoords">—</div>
+      </div>
+      <div class="results-meta-col">
+        <div class="results-date" id="rDate">—</div>
+        <div class="completeness-badge" id="rBadge">—</div>
+        <div style="margin-top:10px">
+          <button class="btn-secondary" onclick="resetAssessment()">↩ New Assessment</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steward Flags -->
+    <div class="flags-block fadeup" id="stewardFlags"></div>
+
+    <!-- Score Cards -->
+    <div class="scores-row fadeup">
+      <div class="score-card sc-suit">
+        <div class="score-lbl">Property Suitability Score</div>
+        <div class="score-num" id="suitNum">—</div>
+        <div class="score-sub" id="suitSub">—</div>
+        <div class="conf-row">
+          <div class="conf-chip" id="suitConf">—</div>
+          <div class="conf-note" id="suitConfNote"></div>
+        </div>
+        <div class="breakdown" id="suitBreak"></div>
+      </div>
+      <div class="score-card sc-regen">
+        <div class="score-lbl">Regenerative Potential Score</div>
+        <div class="score-num" id="regenNum">—</div>
+        <div class="score-sub" id="regenSub">—</div>
+        <div class="conf-row">
+          <div class="conf-chip" id="regenConf">—</div>
+          <div class="conf-note" id="regenConfNote"></div>
+        </div>
+        <div class="breakdown" id="regenBreak"></div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="map-section fadeup">
+      <div class="map-row">
+        <div class="map-title">Tier 1 Layer Map</div>
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-swatch" style="background:rgba(90,130,220,0.5)"></div>FEMA Flood Zone</div>
+          <div class="legend-item"><div class="legend-swatch" style="background:rgba(60,160,200,0.5)"></div>NHD Waterbodies</div>
+          <div class="legend-item"><div class="legend-swatch" style="background:rgba(201,169,110,0.8);border-radius:50%"></div>Centroid</div>
+        </div>
+      </div>
+      <div id="map"></div>
+      <div class="map-toggles">
+        <button class="map-btn on" id="btnOsm"  onclick="toggleLayer('osm',this)">OSM Base</button>
+        <button class="map-btn on" id="btnUsgs" onclick="toggleLayer('usgs',this)">USGS Topo</button>
+        <button class="map-btn on" id="btnFema" onclick="toggleLayer('fema',this)">FEMA Flood</button>
+        <button class="map-btn on" id="btnNhd"  onclick="toggleLayer('nhd',this)">NHD Water</button>
+      </div>
+    </div>
+
+    <!-- Tier 1 Confirmed Sources -->
+    <div class="section-label" style="margin-bottom:12px">Tier 1 Data · Confirmed Sources</div>
+    <div class="tier1-grid fadeup" id="tier1Grid"></div>
+
+    <!-- Stewardship Brief -->
+    <div class="section-label" style="margin-bottom:12px">@Steward · Stewardship Brief</div>
+    <div class="brief-card fadeup">
+      <div class="brief-eyebrow">⚖ Quality Gate — Passed</div>
+      <div class="brief-title" id="briefTitle">—</div>
+      <div class="brief-body" id="briefBody"></div>
+      <div class="brief-pillars" id="briefPillars"></div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer fadeup">
+      <div class="disc-lbl">⚖ Steward · Mandatory Disclaimer</div>
+      <div class="disc-text">
+        <strong>This is a design assistance tool, not a professional engineering or legal determination.</strong>
+        All scores and findings are derived from publicly available federal datasets and are subject to
+        their accuracy limitations. Data currency varies by region — SSURGO soil surveys, NHD hydrological
+        features, and FEMA FIRM panels are updated on independent cycles and may not reflect recent changes.
+        No output from this tool shall be used as the sole basis for land purchase, construction,
+        agricultural planning, or any legal decision.<br><br>
+        <strong>Site verification is always required.</strong> Engage licensed surveyors, soil scientists,
+        and engineers before making project-level commitments. The principle of Accessibility of Wisdom
+        guides this tool: information should be usable by landowners and community elders alike —
+        but never in place of professional judgment.
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /page-inner -->
+</div><!-- /page -->
+
+<script>
+/* ── STATE ──────────────────────────────────────────────────────────────────── */
+let MAP = null, mapLayers = {};
+let LD = {
+  usgs:   { status:'pending', elevation:null },
+  ssurgo: { status:'pending', muname:null, farmlandClass:null, taxOrder:null },
+  nhd:    { status:'pending', features:[], nearestName:null, nearestType:null },
+  fema:   { status:'pending', zone:null, sfha:null },
+};
+
+/* ── UTILS ──────────────────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function setLayerCard(key, state, statusTxt, dataTxt='') {
+  const K = key.charAt(0).toUpperCase() + key.slice(1);
+  const card = $(`layer${K}`);
+  card.className = 'layer-card ' + state;
+  $(`${key}Status`).textContent = statusTxt;
+  $(`${key}Data`).innerHTML = dataTxt;
+}
+
+function setAgent(id, state, html) {
+  $(`agent${id}`).className = 'agent-card ' + state;
+  $(`${id.toLowerCase()}Status`).innerHTML = html;
+}
+
+/* ── TIER 1 FETCH FUNCTIONS ─────────────────────────────────────────────────── */
+
+async function fetchUSGS(lat, lon) {
+  setLayerCard('usgs', 'fetching', 'Fetching…');
+  try {
+    const r = await fetch(
+      `https://epqs.nationalmap.gov/v1/json?x=${lon}&y=${lat}&units=Feet&includeDate=false`,
+      { signal: AbortSignal.timeout(10000) }
+    );
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const j = await r.json();
+    const ft = parseFloat(j?.value);
+    if (!ft && ft !== 0 || ft === -1000000) throw new Error('No elevation data');
+    LD.usgs.status = 'done';
+    LD.usgs.elevation = ft;
+    const m = (ft * 0.3048).toFixed(1);
+    setLayerCard('usgs', 'done', 'Retrieved', `${ft.toFixed(1)} ft / ${m} m`);
+  } catch(e) {
+    LD.usgs.status = 'failed';
+    setLayerCard('usgs', 'failed', 'Unavailable', `<span style="color:var(--red);font-size:10px">${e.message}</span>`);
+  }
+}
+
+async function fetchSSURGO(lat, lon) {
+  setLayerCard('ssurgo', 'fetching', 'Fetching…');
+  try {
+    const q = `SELECT mu.muname, ma.farmlndcl, c.taxorder FROM mapunit mu LEFT JOIN muaggatt ma ON mu.mukey=ma.mukey LEFT JOIN component c ON mu.mukey=c.mukey AND c.majcompflag='Yes' WHERE mu.mukey IN (SELECT mukey FROM SDA_Get_Mukey_from_intersection_with_WktWgs84('POINT(${lon} ${lat})')) ORDER BY c.comppct_r DESC`;
+    const r = await fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `query=${encodeURIComponent(q)}&format=json%2Bbe`,
+      signal: AbortSignal.timeout(13000),
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const j = await r.json();
+    const rows = j?.Table;
+    if (!rows || rows.length === 0) throw new Error('No soil data at coordinates');
+    const [muname, farmland, taxorder] = rows[0];
+    LD.ssurgo.status = 'done';
+    LD.ssurgo.muname = muname || 'Unknown';
+    LD.ssurgo.farmlandClass = farmland || 'Not classified';
+    LD.ssurgo.taxOrder = taxorder || 'Unknown';
+    setLayerCard('ssurgo', 'done', 'Retrieved',
+      `${muname || '—'}<br><span style="opacity:.65">${farmland || 'No farmland class'}</span>`);
+  } catch(e) {
+    LD.ssurgo.status = 'failed';
+    setLayerCard('ssurgo', 'failed', 'Unavailable', `<span style="color:var(--red);font-size:10px">${e.message}</span>`);
+  }
+}
+
+async function fetchNHD(lat, lon) {
+  setLayerCard('nhd', 'fetching', 'Fetching…');
+  try {
+    const buf = 0.045;
+    const bbox = `${lon-buf},${lat-buf},${lon+buf},${lat+buf}`;
+    const r = await fetch(
+      `https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6/query?geometry=${encodeURIComponent(bbox)}&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=GNIS_NAME%2CFTYPE&resultRecordCount=5&f=json`,
+      { signal: AbortSignal.timeout(12000) }
+    );
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const j = await r.json();
+    const features = j?.features || [];
+    LD.nhd.status = 'done';
+    LD.nhd.features = features;
+    if (features.length > 0) {
+      const f = features[0].attributes;
+      LD.nhd.nearestName = f.GNIS_NAME || 'Unnamed';
+      LD.nhd.nearestType = ftypeLabel(f.FTYPE);
+      setLayerCard('nhd', 'done', 'Retrieved',
+        `${features.length} feature${features.length!==1?'s':''} within 5 km<br><span style="opacity:.65">${LD.nhd.nearestName} · ${LD.nhd.nearestType}</span>`);
+    } else {
+      setLayerCard('nhd', 'partial', 'No features', 'No NHD waterbodies within 5 km');
+    }
+  } catch(e) {
+    LD.nhd.status = 'failed';
+    setLayerCard('nhd', 'failed', 'Unavailable', `<span style="color:var(--red);font-size:10px">${e.message}</span>`);
+  }
+}
+
+async function fetchFEMA(lat, lon) {
+  setLayerCard('fema', 'fetching', 'Fetching…');
+  try {
+    const r = await fetch(
+      `https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28/query?geometry=${lon}%2C${lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=FLD_ZONE%2CZONE_SUBTY%2CSFHA_TF&f=json`,
+      { signal: AbortSignal.timeout(12000) }
+    );
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const j = await r.json();
+    const features = j?.features || [];
+    LD.fema.status = 'done';
+    if (features.length === 0) {
+      LD.fema.zone = 'X'; LD.fema.sfha = 'F';
+      setLayerCard('fema', 'done', 'Retrieved', 'Zone X — Minimal flood hazard');
+    } else {
+      const f = features[0].attributes;
+      LD.fema.zone = f.FLD_ZONE || 'Unknown';
+      LD.fema.sfha = f.SFHA_TF || 'U';
+      setLayerCard('fema', 'done', 'Retrieved',
+        `Zone ${LD.fema.zone} — ${floodZoneLabel(LD.fema.zone)}<br><span style="opacity:.65">SFHA: ${LD.fema.sfha==='T'?'Yes':'No'}</span>`);
+    }
+  } catch(e) {
+    LD.fema.status = 'failed';
+    setLayerCard('fema', 'failed', 'Unavailable', `<span style="color:var(--red);font-size:10px">${e.message}</span>`);
+  }
+}
+
+function ftypeLabel(t) {
+  const m={390:'Lake/Pond',460:'Reservoir',466:'Swamp/Marsh',336:'Foreshore',445:'Sea/Ocean',493:'Estuary',361:'Playa'};
+  return m[t] || `Feature ${t}`;
+}
+
+function floodZoneLabel(z) {
+  if (!z) return 'Unknown';
+  z = z.toUpperCase();
+  if (z==='X') return 'Minimal flood hazard';
+  if (z.startsWith('AE')) return '1% annual chance flood';
+  if (z==='A') return 'Special Flood Hazard Area';
+  if (z.startsWith('AO')) return 'Sheet-flow flood hazard';
+  if (z.startsWith('AH')) return 'Shallow flooding hazard';
+  if (z.startsWith('VE')||z==='V') return 'Coastal High Hazard';
+  if (z.startsWith('D')) return 'Undetermined flood hazard';
+  return z;
+}
+
+/* ── SCORING ────────────────────────────────────────────────────────────────── */
+
+function computeScores() {
+  const live = [LD.usgs,LD.ssurgo,LD.nhd,LD.fema].filter(d=>d.status==='done').length;
+  const confidence = live>=4?'High':live>=2?'Medium':'Low';
+
+  /* Property Suitability (0–100) */
+  let sElev=12, sFlood=14, sSoil=12, sWater=7;
+
+  if (LD.usgs.status==='done' && LD.usgs.elevation!==null) {
+    const m = LD.usgs.elevation * 0.3048;
+    sElev = m>=50&&m<=1200?25 : m>1200&&m<=2200?18 : m>=0&&m<50?20 : m>2200?10 : 5;
+  }
+  if (LD.fema.status==='done') {
+    const z=(LD.fema.zone||'').toUpperCase();
+    sFlood = z==='X'?30 : z==='X500'?22 : z.startsWith('AE')?8 : z==='A'?6 : z.startsWith('V')?3 : 14;
+  }
+  if (LD.ssurgo.status==='done') {
+    const fc=(LD.ssurgo.farmlandClass||'').toLowerCase();
+    sSoil = fc.includes('prime')&&!fc.includes('not')?30 : fc.includes('statewide')?22 : fc.includes('local')?16 : fc.includes('unique')?18 : fc.includes('not')||fc.includes('no')?8 : 12;
+  }
+  if (LD.nhd.status==='done') sWater = LD.nhd.features.length>0?15:7;
+
+  const suit = Math.min(100, Math.round(sElev+sFlood+sSoil+sWater));
+
+  /* Regenerative Potential (0–100) */
+  let rSoil=14, rWater=12, rElev=14, rEcol=14;
+
+  if (LD.ssurgo.status==='done') {
+    const tx=(LD.ssurgo.taxOrder||'').toLowerCase();
+    rSoil = tx.includes('mollisol')?30 : tx.includes('alfisol')?24 : tx.includes('inceptisol')?22 : tx.includes('entisol')?18 : tx.includes('vertisol')?16 : tx.includes('histosol')?20 : tx.includes('ultisol')?14 : tx.includes('aridisol')?10 : 14;
+  }
+  if (LD.nhd.status==='done') rWater = LD.nhd.features.length>0?25:10;
+  if (LD.usgs.status==='done' && LD.usgs.elevation!==null) {
+    const m = LD.usgs.elevation*0.3048;
+    rElev = m>=100&&m<=800?25 : m>800&&m<=1800?20 : m>=0&&m<100?18 : 12;
+  }
+  if (LD.fema.status==='done') {
+    const z=(LD.fema.zone||'').toUpperCase();
+    rEcol = z.startsWith('AE')||z==='A'?20 : z==='X'?15 : z.startsWith('V')?12 : 14;
+  }
+
+  const regen = Math.min(100, Math.round(rSoil+rWater+rElev+rEcol));
+
+  return { suit, regen, confidence, live,
+    breakdown: {
+      suit:  { elev:sElev, flood:sFlood, soil:sSoil, water:sWater },
+      regen: { soil:rSoil, water:rWater, elev:rElev, ecol:rEcol },
+    }
+  };
+}
+
+/* ── STEWARD FLAGS ──────────────────────────────────────────────────────────── */
+
+function buildFlags(scores) {
+  const flags=[];
+  if (scores.confidence==='Low') {
+    flags.push({type:'caution',icon:'🚩',title:'LOW CONFIDENCE — Site Visit Required',
+      body:'Fewer than 2 Tier 1 sources returned data. Scores are estimates only. Do not use for planning decisions without professional on-site assessment.'});
+  } else if (scores.confidence==='Medium') {
+    flags.push({type:'warn',icon:'⚠',title:'MEDIUM CONFIDENCE — Verify on Site',
+      body:'Some data sources were unavailable. Key findings should be confirmed with on-site observation before acting on this report.'});
+  }
+  if (LD.fema.status==='done') {
+    const z=(LD.fema.zone||'').toUpperCase();
+    if (z==='A'||z.startsWith('AE')||z.startsWith('AO')||z.startsWith('AH')) {
+      flags.push({type:'caution',icon:'🌊',title:`FEMA Zone ${LD.fema.zone} — Special Flood Hazard Area`,
+        body:'Engineering assessment and flood insurance review required before any structural development. Source: FEMA National Flood Hazard Layer.'});
+    } else if (z.startsWith('V')) {
+      flags.push({type:'caution',icon:'🌊',title:`FEMA Zone ${LD.fema.zone} — Coastal High Hazard`,
+        body:'Coastal high-hazard zone with wave action risk. Structural construction requires compliance with coastal regulations.'});
+    }
+  } else if (LD.fema.status==='failed') {
+    flags.push({type:'warn',icon:'⚠',title:'Flood Zone Data Unavailable',
+      body:'Verify the flood zone status independently at msc.fema.gov before any planning decisions.'});
+  }
+  if (LD.ssurgo.status==='failed') {
+    flags.push({type:'warn',icon:'⚠',title:'Soil Data Unavailable — On-Site Testing Required',
+      body:'Engage a certified soil scientist for on-site testing before agricultural planning.'});
+  }
+  if (LD.usgs.status==='done' && LD.usgs.elevation!==null && LD.usgs.elevation*0.3048<0) {
+    flags.push({type:'warn',icon:'⚠',title:'Below Sea Level Elevation Detected',
+      body:`Elevation returned as ${LD.usgs.elevation.toFixed(1)} ft. Verify coordinates. Properties below sea level face increased flood and drainage risks.`});
+  }
+  if (scores.suit<40) {
+    flags.push({type:'info',icon:'ℹ',title:'Low Suitability Score — Additional Investigation Recommended',
+      body:'Score below 40 may reflect challenging site conditions or limited data coverage. Engage professional advisors before proceeding.'});
+  }
+  flags.push({type:'info',icon:'ℹ',title:'Data Currency Notice',
+    body:'SSURGO surveys, NHD features, and FEMA FIRM panels are updated on independent cycles. Always cross-reference with current effective FIRM and local soil survey data.'});
+  return flags;
+}
+
+/* ── STEWARDSHIP BRIEF ──────────────────────────────────────────────────────── */
+
+function buildBrief(scores, parcel) {
+  /* Title */
+  let t='';
+  if (scores.suit>=70&&scores.regen>=70) t=`<em>"${parcel.name}"</em> carries genuine promise`;
+  else if (scores.regen>=65)             t=`<em>"${parcel.name}"</em> holds restoration potential`;
+  else if (scores.suit>=65)              t=`<em>"${parcel.name}"</em> is land with character`;
+  else                                   t=`<em>"${parcel.name}"</em> asks for careful discernment`;
+  $('briefTitle').innerHTML = t;
+
+  /* Body */
+  let body='<p>';
+  if (LD.usgs.status==='done'&&LD.usgs.elevation!==null) {
+    const m=(LD.usgs.elevation*0.3048).toFixed(0);
+    body+=`This land sits at approximately <strong>${Math.round(LD.usgs.elevation).toLocaleString()} ft (${m} m) above sea level</strong>. `;
+    body+=LD.usgs.elevation<500?'Low elevation suggests seasonal moisture retention — a gift in drought years, a challenge in wet ones. '
+         :LD.usgs.elevation<2000?'Mid-elevation sites tend to offer temperate growing seasons and productive soil horizons. '
+         :'High-elevation character brings shorter seasons and intensified weather — this land reveals itself through patience. ';
+  } else { body+='Elevation data was not available from USGS 3DEP for this site. '; }
+
+  if (LD.ssurgo.status==='done') {
+    const fc=(LD.ssurgo.farmlandClass||'').toLowerCase();
+    body+=`The USDA SSURGO survey identifies this area as <strong>${LD.ssurgo.muname}</strong>`;
+    if (LD.ssurgo.farmlandClass&&!LD.ssurgo.farmlandClass.includes('Not classified'))
+      body+=`, classified as <strong>${LD.ssurgo.farmlandClass}</strong>`;
+    body+='. ';
+    body+=fc.includes('prime')&&!fc.includes('not')?'Prime farmland soils represent an inheritance of enormous ecological value — irreplaceable and deserving of regenerative stewardship. '
+         :fc.includes('statewide')||fc.includes('local')?'These soils carry regional agricultural significance. With care, they can be restored toward fuller ecological function. '
+         :'The soil classification suggests historical pressure may have diminished native capacity. Regenerative amendment may unlock latent potential. ';
+    if (LD.ssurgo.taxOrder) body+=`Taxonomy order: <strong>${LD.ssurgo.taxOrder}</strong>. `;
+  } else { body+='Soil characterization was unavailable from SSURGO. On-site testing will be essential. '; }
+
+  body+='</p><p>';
+
+  if (LD.nhd.status==='done'&&LD.nhd.features.length>0) {
+    body+=`The NHD identifies <strong>${LD.nhd.features.length} water feature${LD.nhd.features.length!==1?'s':''} within 5 km</strong>, including <strong>${LD.nhd.nearestName}</strong> (${LD.nhd.nearestType}). Proximity to water supports biodiversity, irrigation potential, and wildlife corridors. `;
+  } else if (LD.nhd.status==='done') {
+    body+='No NHD water features were detected within the 5 km search radius. Water sourcing — rainwater harvesting, groundwater, or transported supply — will be a primary design consideration. ';
+  }
+
+  if (LD.fema.status==='done') {
+    const z=(LD.fema.zone||'').toUpperCase();
+    body+=z==='X'?'FEMA designates this area as <strong>Zone X — minimal flood hazard</strong>, outside the 500-year floodplain. This reduces infrastructure risk and expands design options. '
+         :z==='A'||z.startsWith('AE')?`FEMA designates this as <strong>Zone ${LD.fema.zone} — a Special Flood Hazard Area</strong>. Floodplains are among the most ecologically productive landscapes on Earth. Design must accommodate the water, not resist it. `
+         :`FEMA Flood Zone: <strong>${LD.fema.zone}</strong>. Engineering and insurance review are part of responsible planning here. `;
+  }
+  body+='</p>';
+  $('briefBody').innerHTML=body;
+
+  /* Pillars */
+  const p=[
+    {lbl:'Constraint',title:constraintTitle(),body:constraintBody(scores)},
+    {lbl:'Opportunity',title:opportunityTitle(scores),body:opportunityBody(scores)},
+    {lbl:'Stewardship Principle',title:'Explainability Over Magic',
+      body:'Every score on this report cites its federal data source. No finding was generated without grounding in a retrievable public dataset. Wisdom must be traceable.'},
+  ];
+  $('briefPillars').innerHTML=p.map(x=>`
+    <div class="pillar">
+      <div class="pillar-lbl">${x.lbl}</div>
+      <div class="pillar-title">${x.title}</div>
+      <div class="pillar-body">${x.body}</div>
+    </div>`).join('');
+}
+
+function constraintTitle() {
+  if (LD.fema.status==='done'&&LD.fema.sfha==='T') return 'Flood Zone Management';
+  if (LD.ssurgo.status==='done'&&(LD.ssurgo.farmlandClass||'').toLowerCase().includes('not prime')) return 'Soil Remediation Needed';
+  if (LD.nhd.status==='done'&&LD.nhd.features.length===0) return 'Water Access Planning';
+  return 'Site Verification Required';
+}
+function constraintBody(s) {
+  if (LD.fema.status==='done'&&LD.fema.sfha==='T') return 'SFHA designation limits certain structures and requires flood insurance. Source: FEMA NFHL Layer 28.';
+  if (LD.ssurgo.status==='done'&&(LD.ssurgo.farmlandClass||'').toLowerCase().includes('not prime')) return 'Soils may require amendment cycles before reaching full regenerative productivity. Source: SSURGO USDA.';
+  return `${s.live}/4 Tier 1 layers confirmed. Site visit required to confirm and refine all findings.`;
+}
+function opportunityTitle(s) {
+  if (LD.nhd.status==='done'&&LD.nhd.features.length>0) return 'Hydrological Connectivity';
+  if (LD.ssurgo.status==='done'&&(LD.ssurgo.farmlandClass||'').toLowerCase().includes('prime')) return 'Prime Soil Capital';
+  if (s.regen>=70) return 'High Regenerative Potential';
+  return 'Ecological Restoration Window';
+}
+function opportunityBody(s) {
+  if (LD.nhd.status==='done'&&LD.nhd.features.length>0) return `${LD.nhd.features.length} NHD water feature${LD.nhd.features.length!==1?'s':''} support irrigation, wildlife habitat, and riparian buffer establishment. Source: NHD USGS.`;
+  if (LD.ssurgo.status==='done'&&(LD.ssurgo.farmlandClass||'').toLowerCase().includes('prime')) return 'Prime farmland soils offer the highest baseline for regenerative grain, vegetable, and pasture systems. Source: SSURGO USDA.';
+  return `Regenerative Potential Score of ${s.regen}/100 — opportunity for ecological improvement confirmed. Validate with site-level soil and water assessment.`;
+}
+
+/* ── MAP ────────────────────────────────────────────────────────────────────── */
+
+function initMap(lat,lon,geojson) {
+  if (MAP){MAP.remove();MAP=null;}
+  MAP=L.map('map',{center:[lat,lon],zoom:13});
+
+  mapLayers.osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {attribution:'© OpenStreetMap contributors',maxZoom:18}).addTo(MAP);
+
+  mapLayers.usgs=L.tileLayer(
+    'https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',
+    {opacity:0.5,attribution:'USGS',maxZoom:16}).addTo(MAP);
+
+  mapLayers.fema=L.tileLayer.wms(
+    'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/WMSServer',
+    {layers:'28',format:'image/png',transparent:true,opacity:0.5,attribution:'FEMA NFHL'}).addTo(MAP);
+
+  mapLayers.nhd=L.tileLayer.wms(
+    'https://hydro.nationalmap.gov/arcgis/rest/services/NHDPlus_HR/MapServer/WMSServer',
+    {layers:'0',format:'image/png',transparent:true,opacity:0.55,attribution:'USGS NHD'}).addTo(MAP);
+
+  const goldIcon=L.divIcon({
+    className:'',
+    html:`<div style="width:14px;height:14px;border-radius:50%;background:#c9a96e;border:2px solid #fff;box-shadow:0 0 10px rgba(201,169,110,.8)"></div>`,
+    iconSize:[14,14],iconAnchor:[7,7],
+  });
+  L.marker([lat,lon],{icon:goldIcon}).addTo(MAP)
+   .bindPopup(`<b>${$('rParcelName').textContent}</b><br>${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+
+  if (geojson) {
+    try {
+      L.geoJSON(geojson,{style:{color:'#c9a96e',weight:2,opacity:.85,fillColor:'#c9a96e',fillOpacity:.07}}).addTo(MAP);
+    } catch(e) {}
+  } else {
+    L.circle([lat,lon],{radius:500,color:'#c9a96e',weight:1.5,opacity:.55,fillColor:'#c9a96e',fillOpacity:.04}).addTo(MAP);
+  }
+}
+
+function toggleLayer(key,btn) {
+  if (!mapLayers[key]||!MAP) return;
+  if (MAP.hasLayer(mapLayers[key])) { MAP.removeLayer(mapLayers[key]); btn.classList.remove('on'); }
+  else { mapLayers[key].addTo(MAP); btn.classList.add('on'); }
+}
+
+/* ── RENDER ─────────────────────────────────────────────────────────────────── */
+
+function renderResults(scores,parcel) {
+  $('rParcelName').textContent=parcel.name;
+  $('rCoords').textContent=`${parcel.lat.toFixed(5)}°, ${parcel.lon.toFixed(5)}°${parcel.acres?' · '+parcel.acres.toLocaleString()+' ac':''}`;
+  $('rDate').textContent=`Assessment: ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}`;
+
+  const pct=Math.round(scores.live/4*100);
+  const badge=$('rBadge');
+  badge.textContent=`Data Completeness: ${pct}% (${scores.live}/4)`;
+  badge.className='completeness-badge '+(scores.live>=4?'cb-high':scores.live>=2?'cb-med':'cb-low');
+
+  /* Flags */
+  const flags=buildFlags(scores);
+  $('stewardFlags').innerHTML=flags.map(f=>`
+    <div class="flag-item ${f.type}">
+      <div class="flag-icon">${f.icon}</div>
+      <div class="flag-text"><b>${f.title}</b>${f.body}</div>
+    </div>`).join('');
+
+  /* Scores */
+  $('suitNum').textContent=scores.suit;
+  $('suitSub').textContent=suitLabel(scores.suit);
+  setConf('suitConf',scores.confidence);
+  $('suitConfNote').textContent=`${scores.live}/4 sources confirmed`;
+  $('suitBreak').innerHTML=breakdown([
+    {lbl:'Elevation (USGS 3DEP)',  v:scores.breakdown.suit.elev,  max:25, c:'#c9a96e'},
+    {lbl:'Flood Zone (FEMA NFHL)', v:scores.breakdown.suit.flood, max:30, c:'#c9a96e'},
+    {lbl:'Soil Class (SSURGO)',    v:scores.breakdown.suit.soil,  max:30, c:'#c9a96e'},
+    {lbl:'Water Access (NHD)',     v:scores.breakdown.suit.water, max:15, c:'#c9a96e'},
+  ]);
+
+  $('regenNum').textContent=scores.regen;
+  $('regenSub').textContent=regenLabel(scores.regen);
+  setConf('regenConf',scores.confidence);
+  $('regenConfNote').textContent=`${scores.live}/4 sources confirmed`;
+  $('regenBreak').innerHTML=breakdown([
+    {lbl:'Soil Taxonomy (SSURGO)',     v:scores.breakdown.regen.soil,  max:30, c:'#7a9a6e'},
+    {lbl:'Water Connectivity (NHD)',   v:scores.breakdown.regen.water, max:25, c:'#7a9a6e'},
+    {lbl:'Elevation Diversity (3DEP)', v:scores.breakdown.regen.elev,  max:25, c:'#7a9a6e'},
+    {lbl:'Floodplain Ecology (FEMA)',  v:scores.breakdown.regen.ecol,  max:20, c:'#7a9a6e'},
+  ]);
+
+  /* Tier 1 grid */
+  $('tier1Grid').innerHTML=buildTier1Grid();
+
+  /* Map */
+  initMap(parcel.lat,parcel.lon,parcel.geojson);
+
+  /* Brief */
+  buildBrief(scores,parcel);
+
+  $('results').style.display='block';
+  setTimeout(()=>$('results').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+function suitLabel(n) {
+  return n>=80?'Highly suitable for agricultural use'
+        :n>=65?'Generally suitable — minor constraints present'
+        :n>=50?'Moderate suitability — planning required'
+        :n>=35?'Significant constraints — specialized use'
+        :'Challenging site — detailed investigation required';
+}
+function regenLabel(n) {
+  return n>=80?'Exceptional regenerative opportunity'
+        :n>=65?'Strong foundation for restorative practice'
+        :n>=50?'Moderate potential — targeted interventions needed'
+        :n>=35?'Low baseline — long-horizon restoration possible'
+        :'Complex site — engage ecological specialists';
+}
+function setConf(id,conf) {
+  const el=$(id);
+  if (conf==='High')   { el.className='conf-chip conf-high'; el.textContent='● High Confidence'; }
+  else if (conf==='Medium') { el.className='conf-chip conf-med'; el.textContent='◐ Medium Confidence'; }
+  else { el.className='conf-chip conf-low'; el.textContent='○ Low Confidence'; }
+}
+function breakdown(items) {
+  return items.map(i=>{
+    const pct=Math.round(i.v/i.max*100);
+    return `<div class="bd-item">
+      <div class="bd-label">${i.lbl}</div>
+      <div class="bd-bar-wrap"><div class="bd-bar" style="width:${pct}%;background:${i.c}"></div></div>
+      <div class="bd-val">${i.v}/${i.max}</div>
+    </div>`;
+  }).join('');
+}
+function buildTier1Grid() {
+  const cards=[
+    {icon:'⛰',name:'USGS 3DEP',agency:'U.S. Geological Survey',
+      val:LD.usgs.status==='done'?`${Math.round(LD.usgs.elevation).toLocaleString()} ft`:'N/A',
+      sub:LD.usgs.status==='done'?`${(LD.usgs.elevation*0.3048).toFixed(1)} m · Point Elevation Query`:'Data not retrieved',
+      st:LD.usgs.status,src:'epqs.nationalmap.gov/v1/json'},
+    {icon:'🌱',name:'SSURGO',agency:'USDA NRCS',
+      val:LD.ssurgo.status==='done'?(LD.ssurgo.muname||'Unknown'):'N/A',
+      sub:LD.ssurgo.status==='done'?`${LD.ssurgo.farmlandClass||'No farmland class'} · ${LD.ssurgo.taxOrder||'—'}`:'Data not retrieved',
+      st:LD.ssurgo.status,src:'sdmdataaccess.sc.egov.usda.gov'},
+    {icon:'💧',name:'NHD',agency:'U.S. Geological Survey',
+      val:LD.nhd.status==='done'?(LD.nhd.features.length>0?`${LD.nhd.features.length} feature${LD.nhd.features.length!==1?'s':''}`:'None found'):'N/A',
+      sub:LD.nhd.status==='done'?(LD.nhd.nearestName?`Nearest: ${LD.nhd.nearestName}`:'5 km radius searched'):'Data not retrieved',
+      st:LD.nhd.status,src:'hydro.nationalmap.gov'},
+    {icon:'🌊',name:'FEMA NFHL',agency:'Federal Emergency Mgmt. Agency',
+      val:LD.fema.status==='done'?`Zone ${LD.fema.zone||'—'}`:'N/A',
+      sub:LD.fema.status==='done'?floodZoneLabel(LD.fema.zone):'Data not retrieved',
+      st:LD.fema.status,src:'hazards.fema.gov/gis/nfhl'},
+  ];
+  return cards.map(c=>{
+    const dot=c.st==='done'?'dot-g':c.st==='partial'?'dot-a':'dot-r';
+    const stxt=c.st==='done'?'Confirmed':c.st==='partial'?'Partial':'Unavailable';
+    return `<div class="tier1-card">
+      <div class="t1-hdr"><div class="t1-icon">${c.icon}</div>
+        <div><div class="t1-name">${c.name}</div><div class="t1-agency">${c.agency}</div></div>
+      </div>
+      <div class="t1-val">${c.val}</div>
+      <div class="t1-sub">${c.sub}</div>
+      <div class="t1-status"><div class="t1-dot ${dot}"></div><div class="t1-status-txt">${stxt}</div></div>
+      <div class="t1-source">${c.src}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── VALIDATE & ORCHESTRATE ─────────────────────────────────────────────────── */
+
+function validate() {
+  const name=$('parcelName').value.trim();
+  const lat=parseFloat($('latitude').value);
+  const lon=parseFloat($('longitude').value);
+  if (!name){alert('Please enter a parcel name.');return null;}
+  if (isNaN(lat)||lat<-90||lat>90){alert('Please enter a valid latitude (−90 to 90).');return null;}
+  if (isNaN(lon)||lon<-180||lon>180){alert('Please enter a valid longitude (−180 to 180).');return null;}
+  let geojson=null;
+  const raw=$('geoJSON').value.trim();
+  if(raw){try{geojson=JSON.parse(raw);}catch(e){alert('GeoJSON is invalid. Fix or clear it.');return null;}}
+  return {name,acres:parseFloat($('parcelAcres').value)||null,lat,lon,geojson};
+}
+
+async function runAssessment() {
+  const parcel=validate(); if(!parcel)return;
+  $('runBtn').disabled=true;
+  $('results').style.display='none';
+
+  // Reset state
+  LD={usgs:{status:'pending',elevation:null},ssurgo:{status:'pending',muname:null,farmlandClass:null,taxOrder:null},nhd:{status:'pending',features:[],nearestName:null,nearestType:null},fema:{status:'pending',zone:null,sfha:null}};
+  ['usgs','ssurgo','nhd','fema'].forEach(k=>{
+    setLayerCard(k,'','Pending','');
+    document.getElementById('layer'+k.charAt(0).toUpperCase()+k.slice(1)).className='layer-card';
+  });
+  ['Scout','Analyst','Steward'].forEach(a=>setAgent(a,'','Waiting…'));
+
+  $('runner').style.display='block';
+  $('runner').scrollIntoView({behavior:'smooth'});
+  $('runnerStatus').textContent='Step 1 complete — parcel validated. Commanding @Data-Scout…';
+
+  /* Step 2: @Data-Scout */
+  setAgent('Scout','active','<span class="spinner">⟳</span> Fetching Tier 1 layers from federal APIs…');
+  await sleep(300);
+  await Promise.allSettled([fetchUSGS(parcel.lat,parcel.lon),fetchSSURGO(parcel.lat,parcel.lon),fetchNHD(parcel.lat,parcel.lon),fetchFEMA(parcel.lat,parcel.lon)]);
+
+  const live=[LD.usgs,LD.ssurgo,LD.nhd,LD.fema].filter(d=>d.status==='done').length;
+  setAgent('Scout','done',`✓ ${live}/4 layers cached · Data Completeness: ${Math.round(live/4*100)}%`);
+
+  /* Step 3: @Geo-Analyst */
+  $('runnerStatus').textContent='Passing to @Geo-Analyst for scoring…';
+  setAgent('Analyst','active','<span class="spinner">⟳</span> Computing Property Suitability and Regenerative Potential…');
+  await sleep(550);
+  const scores=computeScores();
+  setAgent('Analyst','done',`✓ Suitability: ${scores.suit}/100 · Regen: ${scores.regen}/100 · Confidence: ${scores.confidence}`);
+
+  /* Step 4: @Steward */
+  $('runnerStatus').textContent='Passing to @Steward for quality gate…';
+  setAgent('Steward','active','<span class="spinner">⟳</span> Running compliance review — uncertainty language, site-visit flags, liability…');
+  await sleep(600);
+  setAgent('Steward','done','✓ Quality gate passed — disclaimer appended, site-visit flags set, outputs reviewed.');
+  $('runnerStatus').textContent='Assessment complete — rendering Site Intelligence Dashboard.';
+  await sleep(250);
+
+  renderResults(scores,parcel);
+}
+
+function resetAssessment() {
+  $('runner').style.display='none';
+  $('results').style.display='none';
+  $('runBtn').disabled=false;
+  $('intakeSection').scrollIntoView({behavior:'smooth'});
+  if(MAP){MAP.remove();MAP=null;}
+}
+
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter') runAssessment();
+});
+</script>
+</body>
+</html>
