@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN Land Design Atlas v2.0 — Complete Product Map</title>
+<meta name="description" content="A land intelligence system built around the belief that land design is an act of stewardship, not control. 29 feature domains. 4 phases. One coherent vision.">
+<link rel="canonical" href="https://hub.ogden.ag/atlas/">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── DESIGN TOKENS ───────────────────────────────────────────────────── */
+:root {
+  --bg:         #0b0f16;
+  --surface:    #161d28;
+  --surface-2:  #1e2636;
+  --surface-3:  #252f42;
+  --border:     rgba(255,255,255,0.06);
+  --border-md:  rgba(255,255,255,0.11);
+  --border-hi:  rgba(255,255,255,0.18);
+  --text-1:     #ede8da;
+  --text-2:     #8c95aa;
+  --text-3:     #8292a8;
+  --gold:       #c9a96e;
+  --gold-dim:   rgba(201,169,110,0.10);
+  --gold-bd:    rgba(201,169,110,0.28);
+  --green:      #52b584;
+  --green-dim:  rgba(82,181,132,0.10);
+  --green-bd:   rgba(82,181,132,0.28);
+  --amber:      #e8a93e;
+  --amber-dim:  rgba(232,169,62,0.10);
+  --amber-bd:   rgba(232,169,62,0.28);
+  --red:        #e05c5c;
+  --red-dim:    rgba(224,92,92,0.08);
+  --red-bd:     rgba(224,92,92,0.28);
+  --blue:       #6aadee;
+  --blue-dim:   rgba(106,173,238,0.10);
+  --blue-bd:    rgba(106,173,238,0.28);
+  --sage:       #7a9a6e;
+  --sage-dim:   rgba(122,154,110,0.10);
+  --sage-bd:    rgba(122,154,110,0.28);
+  --moon:       #a08fd4;
+  --moon-dim:   rgba(160,143,212,0.10);
+  --moon-bd:    rgba(160,143,212,0.28);
+  --radius:     10px;
+  --radius-lg:  16px;
+  --font-disp:  'Cormorant Garamond', Georgia, serif;
+  --font-body:  'Instrument Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+  --ease:       cubic-bezier(.22,.68,0,1.2);
+}
+
+/* ── LIGHT MODE ──────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:         #faf6ef;
+  --surface:    #f0ebe0;
+  --surface-2:  #e5ddd0;
+  --surface-3:  #d9cfbf;
+  --border:     rgba(80,55,30,0.10);
+  --border-md:  rgba(80,55,30,0.18);
+  --border-hi:  rgba(80,55,30,0.30);
+  --text-1:     #1e1a14;
+  --text-2:     #4a4035;
+  --text-3:     #6a5a4a;
+  --gold:       #7a5818;
+  --gold-dim:   rgba(122,88,24,0.10);
+  --gold-bd:    rgba(122,88,24,0.28);
+  --green:      #1a7a48;
+  --green-dim:  rgba(26,122,72,0.10);
+  --green-bd:   rgba(26,122,72,0.28);
+  --amber:      #8a5410;
+  --amber-dim:  rgba(138,84,16,0.10);
+  --amber-bd:   rgba(138,84,16,0.28);
+  --red:        #aa2222;
+  --red-dim:    rgba(170,34,34,0.08);
+  --red-bd:     rgba(170,34,34,0.28);
+  --blue:       #1a5a9a;
+  --blue-dim:   rgba(26,90,154,0.10);
+  --blue-bd:    rgba(26,90,154,0.28);
+  --sage:       #3a5a32;
+  --sage-dim:   rgba(58,90,50,0.10);
+  --sage-bd:    rgba(58,90,50,0.28);
+  --moon:       #5a3a9a;
+  --moon-dim:   rgba(90,58,154,0.10);
+  --moon-bd:    rgba(90,58,154,0.28);
+}
+[data-theme="light"] body::before { opacity: 0.15; }
+
+/* ── THEME TOGGLE ────────────────────────────────────────────────────── */
+.theme-toggle {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border-md);
+  color: var(--text-2); font-size: 15px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0; margin-left: 8px;
+}
+.theme-toggle:hover { border-color: var(--gold-bd); color: var(--gold); }
+
+/* ── RESET + BASE ────────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-1);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* ── NAV ─────────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(11,15,22,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 60px;
+}
+.nav-brand {
+  font-family: var(--font-disp);
+  font-size: 20px; font-weight: 400;
+  color: var(--text-1); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-brand-sub {
+  font-size: 11px; font-family: var(--font-mono);
+  color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3); text-decoration: none;
+  padding: 6px 11px; border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-link:hover { color: var(--text-2); background: var(--surface); }
+.nav-link.active { color: var(--gold); background: var(--gold-dim); }
+
+/* ── LAYOUT ──────────────────────────────────────────────────────────── */
+.page { position: relative; z-index: 1; padding-top: 60px; }
+.page-inner { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+/* ── HERO ────────────────────────────────────────────────────────────── */
+.hero {
+  padding: 72px 0 56px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -1px; left: 0;
+  width: 60px; height: 1px; background: var(--gold); opacity: 0.7;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 28px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.hero-title {
+  font-family: var(--font-disp);
+  font-size: clamp(42px,5.5vw,72px); font-weight: 400; line-height: 1.08;
+  margin-bottom: 20px; color: var(--text-1);
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-desc {
+  font-size: 17px; color: var(--text-2);
+  max-width: 600px; line-height: 1.85; margin-bottom: 32px;
+  font-family: var(--font-disp); font-weight: 300;
+}
+.hero-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-family: var(--font-mono);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+  background: var(--surface); border: 1px solid var(--border-md);
+  padding: 5px 11px; border-radius: 4px;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; background: var(--gold-dim);
+  border: 1px solid var(--gold-bd); border-radius: var(--radius);
+  color: var(--gold); font-family: var(--font-body);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: rgba(201,169,110,0.18); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; background: transparent;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  color: var(--text-3); font-family: var(--font-body);
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--border-hi); color: var(--text-2); }
+
+/* ── SECTION ─────────────────────────────────────────────────────────── */
+.section {
+  padding: 56px 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+.section-label {
+  font-size: 11px; font-family: var(--font-mono);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+}
+.section-label::before { content: ''; width: 18px; height: 1px; background: currentColor; opacity: 0.4; }
+.section-title {
+  font-family: var(--font-disp); font-size: 32px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 10px; line-height: 1.2;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-desc {
+  font-size: 15px; color: var(--text-2); line-height: 1.85;
+  max-width: 660px; margin-bottom: 36px;
+  font-family: var(--font-disp); font-weight: 300;
+}
+
+/* ── DESIGN PRINCIPLES ───────────────────────────────────────────────── */
+.principles-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.principle-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 24px 22px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s;
+}
+.principle-card:hover { border-color: var(--gold-bd); }
+.principle-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.principle-name {
+  font-family: var(--font-disp); font-size: 19px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 10px; line-height: 1.3;
+}
+.principle-name em { font-style: italic; color: var(--gold); }
+.principle-desc { font-size: 12px; color: var(--text-2); line-height: 1.75; }
+
+/* ── PHASES ──────────────────────────────────────────────────────────── */
+.phases-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+}
+.phase-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 26px 22px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.phase-card.live  { border-color: var(--green-bd); }
+.phase-card.next  { border-color: var(--gold-bd); }
+.phase-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.phase-card.live::before     { background: var(--green); }
+.phase-card.next::before     { background: var(--gold); }
+.phase-card.upcoming::before { background: var(--surface-3); }
+.phase-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.1em;
+  padding: 3px 9px; border-radius: 20px; margin-bottom: 16px;
+  align-self: flex-start; font-weight: 500;
+}
+.phase-badge.live     { background: var(--green-dim); color: var(--green);  border: 1px solid var(--green-bd); }
+.phase-badge.next     { background: var(--gold-dim);  color: var(--gold);   border: 1px solid var(--gold-bd); }
+.phase-badge.upcoming { background: var(--surface-2); color: var(--text-3); border: 1px solid var(--border-md); }
+.phase-num {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 6px;
+}
+.phase-name {
+  font-family: var(--font-disp); font-size: 24px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 10px; line-height: 1.15;
+}
+.phase-capability {
+  font-size: 12px; color: var(--text-2); line-height: 1.75;
+  margin-bottom: 14px; flex: 1;
+}
+.phase-audience {
+  font-size: 11px; color: var(--text-3); font-family: var(--font-mono);
+  padding-top: 12px; border-top: 1px solid var(--border);
+}
+.phase-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none;
+  color: var(--green); transition: gap 0.2s;
+}
+.phase-link:hover { gap: 10px; }
+
+/* ── DATA TIERS TABLE ────────────────────────────────────────────────── */
+.tiers-wrap {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.tiers-table { width: 100%; border-collapse: collapse; }
+.tiers-table th {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-3);
+  padding: 13px 20px; text-align: left;
+  border-bottom: 1px solid var(--border-md); background: var(--surface-2);
+}
+.tiers-table td {
+  padding: 16px 20px; font-size: 12px; color: var(--text-2);
+  border-bottom: 1px solid var(--border); line-height: 1.65; vertical-align: top;
+}
+.tiers-table tr:last-child td { border-bottom: none; }
+.tiers-table td strong { color: var(--text-1); font-weight: 500; }
+.tier-badge {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.08em;
+  padding: 3px 9px; border-radius: 4px; font-weight: 500; white-space: nowrap;
+}
+.tier-1 { background: var(--green-dim); color: var(--green);  border: 1px solid var(--green-bd); }
+.tier-2 { background: var(--gold-dim);  color: var(--gold);   border: 1px solid var(--gold-bd); }
+.tier-3 { background: var(--amber-dim); color: var(--amber);  border: 1px solid var(--amber-bd); }
+.tier-examples {
+  font-size: 11px; color: var(--text-3); font-family: var(--font-mono);
+  margin-top: 5px; line-height: 1.7;
+}
+
+/* ── AI GUARDRAILS ───────────────────────────────────────────────────── */
+.ai-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+}
+.ai-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 22px;
+  transition: border-color 0.25s;
+}
+.ai-card:hover { border-color: var(--sage-bd); }
+.ai-card-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ai-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--sage-dim); border: 1px solid var(--sage-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.ai-standard-name {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--sage);
+}
+.ai-standard-desc { font-size: 12px; color: var(--text-2); line-height: 1.75; }
+
+/* ── DOMAINS FILTER ──────────────────────────────────────────────────── */
+.domains-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+.filter-btn {
+  font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 6px 13px; border-radius: 6px;
+  border: 1px solid var(--border-md); background: var(--surface);
+  color: var(--text-3); cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--border-hi); color: var(--text-2); }
+.filter-btn.active { background: var(--surface-2); border-color: var(--border-hi); color: var(--text-1); }
+.filter-btn[data-filter="p1"].active  { background: var(--green-dim); border-color: var(--green-bd); color: var(--green); }
+.filter-btn[data-filter="p2"].active  { background: var(--gold-dim);  border-color: var(--gold-bd);  color: var(--gold); }
+.filter-btn[data-filter="p3"].active  { background: var(--amber-dim); border-color: var(--amber-bd); color: var(--amber); }
+.filter-btn[data-filter="p4"].active  { background: var(--blue-dim);  border-color: var(--blue-bd);  color: var(--blue); }
+.filter-btn[data-filter="mt"].active  { background: var(--moon-dim);  border-color: var(--moon-bd);  color: var(--moon); }
+
+/* ── DOMAIN CARDS ────────────────────────────────────────────────────── */
+.domains-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.domain-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px 18px;
+  transition: border-color 0.25s, background 0.25s;
+}
+.domain-card:hover { border-color: var(--border-hi); background: var(--surface-2); }
+.domain-card.hidden { display: none; }
+.domain-num {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 6px;
+}
+.domain-name {
+  font-family: var(--font-disp); font-size: 18px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 7px; line-height: 1.3;
+}
+.domain-desc { font-size: 11px; color: var(--text-3); line-height: 1.7; margin-bottom: 13px; }
+.domain-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+
+/* ── PHASE TAGS ──────────────────────────────────────────────────────── */
+.phase-tag {
+  display: inline-flex; align-items: center;
+  font-size: 9px; font-family: var(--font-mono); letter-spacing: 0.1em;
+  padding: 2px 7px; border-radius: 3px; font-weight: 500;
+}
+.pt-p1     { background: var(--green-dim); color: var(--green);  border: 1px solid var(--green-bd); }
+.pt-p2     { background: var(--gold-dim);  color: var(--gold);   border: 1px solid var(--gold-bd); }
+.pt-p3     { background: var(--amber-dim); color: var(--amber);  border: 1px solid var(--amber-bd); }
+.pt-p4     { background: var(--blue-dim);  color: var(--blue);   border: 1px solid var(--blue-bd); }
+.pt-mt     { background: var(--moon-dim);  color: var(--moon);   border: 1px solid var(--moon-bd); }
+.pt-future { background: var(--surface-2); color: var(--text-3); border: 1px solid var(--border-md); }
+
+/* ── MT IDENTITY ─────────────────────────────────────────────────────── */
+.mt-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.mt-card {
+  background: var(--surface); border: 1px solid var(--moon-bd);
+  border-radius: var(--radius-lg); padding: 18px 16px;
+  position: relative; overflow: hidden;
+  transition: background 0.25s;
+}
+.mt-card:hover { background: var(--surface-2); }
+.mt-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--moon), transparent);
+}
+.mt-phase { margin-bottom: 8px; }
+.mt-name { font-size: 12px; color: var(--text-2); line-height: 1.55; }
+
+/* ── REGULATORY STRIP ────────────────────────────────────────────────── */
+.reg-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.reg-card {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 20px;
+  transition: border-color 0.25s;
+}
+.reg-card:hover { border-color: var(--amber-bd); }
+.reg-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+.reg-name {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 6px;
+}
+.reg-desc { font-size: 12px; color: var(--text-2); line-height: 1.7; }
+
+/* ── CALLOUT ─────────────────────────────────────────────────────────── */
+.callout {
+  background: var(--surface); border: 1px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 44px 40px;
+  position: relative; overflow: hidden;
+}
+.callout::before {
+  content: ''; position: absolute; top: 0; left: 32px; right: 32px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.35), transparent);
+}
+.callout-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.callout-eyebrow::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+  display: inline-block; animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+.callout-title {
+  font-family: var(--font-disp); font-size: clamp(28px,3.5vw,44px); font-weight: 400;
+  color: var(--text-1); margin-bottom: 16px; line-height: 1.15;
+}
+.callout-title em { font-style: italic; color: var(--gold); }
+.callout-body {
+  font-family: var(--font-disp); font-size: 16px; font-weight: 300;
+  color: var(--text-2); line-height: 1.9; max-width: 640px; margin-bottom: 28px;
+}
+.callout-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ── UX PRINCIPLES ───────────────────────────────────────────────────── */
+.ux-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.ux-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px;
+  transition: border-color 0.25s;
+}
+.ux-card:hover { border-color: var(--blue-bd); }
+.ux-card::before {
+  content: attr(data-glyph);
+  font-family: var(--font-disp); font-size: 28px; color: var(--blue);
+  opacity: 0.4; display: block; margin-bottom: 10px; line-height: 1;
+}
+.ux-name {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue); margin-bottom: 7px;
+}
+.ux-desc { font-size: 11px; color: var(--text-3); line-height: 1.7; }
+
+/* ── FOOTER ──────────────────────────────────────────────────────────── */
+.page-footer {
+  padding: 52px 0 40px;
+  border-top: 1px solid var(--border);
+}
+.footer-inner {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 32px; flex-wrap: wrap;
+}
+.footer-brand {
+  font-family: var(--font-disp); font-size: 22px; font-weight: 400;
+  color: var(--text-1); margin-bottom: 5px;
+}
+.footer-tagline { font-size: 12px; color: var(--text-3); font-style: italic; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.footer-link {
+  font-size: 11px; font-family: var(--font-mono); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-3); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--text-2); }
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fadeup { animation: fadeUp 0.7s var(--ease) both; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+@media (max-width: 1020px) {
+  .phases-row { grid-template-columns: 1fr 1fr; }
+  .ai-grid { grid-template-columns: 1fr 1fr; }
+  .mt-grid { grid-template-columns: repeat(3, 1fr); }
+  .ux-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .page-inner { padding: 0 18px; }
+  .principles-grid { grid-template-columns: 1fr 1fr; }
+  .domains-grid { grid-template-columns: 1fr 1fr; }
+  .reg-grid { grid-template-columns: 1fr 1fr; }
+  .callout { padding: 32px 24px; }
+  .tiers-table th:nth-child(4),
+  .tiers-table td:nth-child(4) { display: none; }
+}
+@media (max-width: 580px) {
+  .principles-grid { grid-template-columns: 1fr; }
+  .phases-row { grid-template-columns: 1fr; }
+  .domains-grid { grid-template-columns: 1fr; }
+  .ai-grid { grid-template-columns: 1fr; }
+  .mt-grid { grid-template-columns: 1fr 1fr; }
+  .reg-grid { grid-template-columns: 1fr; }
+  .ux-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="topNav">
+  <a href="/" class="nav-brand" aria-label="OGDEN — home">
+    OGDEN <span style="color:var(--text-3);margin:0 7px">·</span>
+    <span class="nav-brand-sub">Atlas v2.0</span>
+  </a>
+  <div class="nav-links">
+    <a href="/bbos/" class="nav-link">BBOS</a>
+    <a href="/moontrance/" class="nav-link">Moontrance</a>
+    <a href="/site-intelligence/" class="nav-link">Site Intelligence</a>
+    <a href="/atlas/" class="nav-link active">Atlas</a>
+  </div>
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()"
+    aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    <span id="themeIcon" aria-hidden="true">☀</span>
+  </button>
+</nav>
+
+<div class="page">
+<div class="page-inner">
+
+  <!-- ── HERO ─────────────────────────────────────────────────────────── -->
+  <section class="hero fadeup">
+    <div class="hero-eyebrow">OGDEN · Land Design Atlas · v2.0</div>
+    <h1 class="hero-title">A tool for seeing land <em>whole</em><br>and building it wisely.</h1>
+    <p class="hero-desc">
+      A land intelligence system built around the belief that land design is an act of stewardship, not control.
+      29 feature domains. 4 delivery phases. One coherent vision grounded in ecological, spiritual, and economic reality.
+    </p>
+    <div class="hero-row">
+      <a href="/site-intelligence/" class="btn-primary">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;flex-shrink:0;"></span>
+        Open Phase 1 — Site Intelligence
+      </a>
+      <a href="#phases" class="btn-secondary">View Roadmap</a>
+      <div class="hero-tag">29 Domains</div>
+      <div class="hero-tag">4 Phases</div>
+      <div class="hero-tag">Tier 1 Auto-Populated</div>
+    </div>
+  </section>
+
+  <!-- ── DESIGN PHILOSOPHY ─────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-label">Product Philosophy</div>
+    <h2 class="section-title">Before features,<br>there is <em>intention</em>.</h2>
+    <p class="section-desc">
+      The OGDEN Land Design Atlas is not a drawing application. It is a land intelligence system.
+      Every feature, every AI output, every interface decision is grounded in six core values
+      that make it distinct from any generic land-planning tool.
+    </p>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <div class="principle-name"><em>Stewardship</em> over extraction</div>
+        <div class="principle-desc">The tool asks "what does this land need?" before "what can this land produce?". Assessments lead with ecological opportunity, not yield potential.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-name"><em>Phased</em> humility</div>
+        <div class="principle-desc">Not everything is built at once. The Atlas rewards sequenced, realistic buildout — not fantasy master plans. Cost and complexity warnings are features, not obstacles.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-name"><em>Explainability</em> over magic</div>
+        <div class="principle-desc">Every AI output, every suggestion, every score must be traceable. If the Atlas can't explain why it made a recommendation, it should not make one.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-name"><em>Spiritual</em> intentionality</div>
+        <div class="principle-desc">Prayer spaces, quiet zones, dawn/dusk viewpoints, and contemplative circulation are first-class design elements — not optional add-ons.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-name"><em>Honesty</em> about uncertainty</div>
+        <div class="principle-desc">Data gaps are surfaced, not hidden. Confidence levels appear on analyses. The Atlas flags what it doesn't know.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-name"><em>Accessibility</em> of wisdom</div>
+        <div class="principle-desc">The tool should be usable by a landowner with no GIS training, a community elder evaluating a proposal, and a developer reading technical specs — simultaneously.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHASES ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="phases">
+    <div class="section-label">Phased Rollout Strategy</div>
+    <h2 class="section-title">A <em>thin full-stack</em> approach.</h2>
+    <p class="section-desc">
+      Each phase delivers a complete, usable experience across the core workflow — not a half-built feature set.
+      No phase should feel like a beta. Each phase should feel like the product.
+    </p>
+    <div class="phases-row">
+      <div class="phase-card live">
+        <div class="phase-badge live">
+          <span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;"></span>
+          Live
+        </div>
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-name">Site Intelligence</div>
+        <div class="phase-capability">Property intake, terrain visualization, automated site assessment, data layer display from 8 federal sources, basic zoning tools.</div>
+        <div class="phase-audience">Internal use · Early landowner pilots</div>
+        <a href="/site-intelligence/" class="phase-link">Open Site Intelligence →</a>
+      </div>
+      <div class="phase-card next">
+        <div class="phase-badge next">In Design</div>
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-name">Design Atlas</div>
+        <div class="phase-capability">Full structure and zone planning, hydrology tools, livestock + crop design, phasing timeline, rule-based design logic, economic placeholders.</div>
+        <div class="phase-audience">Developers · Design partners</div>
+      </div>
+      <div class="phase-card upcoming">
+        <div class="phase-badge upcoming">Upcoming</div>
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-name">Collaboration + AI</div>
+        <div class="phase-capability">Multi-user access, AI-assisted outputs with guardrails, educational interpretive layer, full scenario modeling, collaboration workflows.</div>
+        <div class="phase-audience">Investors · Broader partners</div>
+      </div>
+      <div class="phase-card upcoming">
+        <div class="phase-badge upcoming">Horizon</div>
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-name">Public + Portal</div>
+        <div class="phase-capability">Public storytelling portal, full export suite, mobile fieldwork tools, template marketplace, advanced geospatial and AR/VR.</div>
+        <div class="phase-audience">Landowners · Funders · Public</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DATA SOURCING ─────────────────────────────────────────────────── -->
+  <section class="section" id="data">
+    <div class="section-label">Data Sourcing Strategy</div>
+    <h2 class="section-title">Every layer has a <em>source</em>.</h2>
+    <p class="section-desc">
+      The most common failure mode in land intelligence tools: features that look impressive but silently produce
+      empty or wrong outputs because the underlying data doesn't exist. Every data type in the Atlas has a defined
+      source tier — nothing is fabricated.
+    </p>
+    <div class="tiers-wrap">
+      <table class="tiers-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Label</th>
+            <th>Meaning</th>
+            <th>Sources</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><strong>Auto-populated</strong></td>
+            <td>Fetched automatically from public APIs on project creation. Always available.</td>
+            <td>
+              <div class="tier-examples">
+                Elevation (USGS 3DEP) · Parcel boundaries (county GIS) · Soils (SSURGO)
+                · Hydrology (NHD) · Land cover (NLCD) · Climate normals (NOAA)
+                · Floodplains (FEMA) · Wetlands (NWI)
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><strong>User-provided</strong></td>
+            <td>Requires upload or manual entry. Unlocks advanced features when present.</td>
+            <td>
+              <div class="tier-examples">
+                Drone imagery · Orthomosaic · LiDAR · Survey files · Site photos
+                · Soil test results · Water test data · Title map · Legal description
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-3">Tier 3</span></td>
+            <td><strong>Derived / estimated</strong></td>
+            <td>Calculated from Tier 1 + 2 data. Confidence depends on input quality. Always labeled.</td>
+            <td>
+              <div class="tier-examples">
+                Slope · Aspect · Curvature · Watershed delineation · Viewshed
+                · Microclimate estimates · Frost pocket probability · Runoff accumulation
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── AI GUARDRAILS ─────────────────────────────────────────────────── -->
+  <section class="section" id="ai">
+    <div class="section-label">AI Guardrails Framework</div>
+    <h2 class="section-title">A thoughtful <em>collaborator</em>,<br>not an oracle.</h2>
+    <p class="section-desc">
+      AI is a powerful co-designer — and a liability if it speaks with false confidence.
+      Every AI output in the Atlas must meet six non-negotiable standards before it reaches a user.
+    </p>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="ai-card-hdr">
+          <div class="ai-icon">🔗</div>
+          <div class="ai-standard-name">Sourced Reasoning</div>
+        </div>
+        <div class="ai-standard-desc">Every suggestion cites which data inputs it drew from. "Based on slope data (USGS 3DEP), soil drainage class (SSURGO), and your uploaded site plan…"</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-hdr">
+          <div class="ai-icon">📊</div>
+          <div class="ai-standard-name">Confidence Display</div>
+        </div>
+        <div class="ai-standard-desc">Every output carries a confidence level: High (well-sourced data, clear signal), Medium (some data gaps), Low (inference-heavy — verify on site).</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-hdr">
+          <div class="ai-icon">💬</div>
+          <div class="ai-standard-name">Uncertainty Language</div>
+        </div>
+        <div class="ai-standard-desc">Low-confidence outputs use hedged language: "This area may be prone to…" — never "This area is a frost pocket." The language matches the evidence.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-hdr">
+          <div class="ai-icon">🚩</div>
+          <div class="ai-standard-name">Site Visit Flags</div>
+        </div>
+        <div class="ai-standard-desc">Any output with confidence below Medium that would influence a significant design decision triggers a "Verify on site" flag. This is a feature, not a disclaimer.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-hdr">
+          <div class="ai-icon">🚫</div>
+          <div class="ai-standard-name">No Hallucinated Specifics</div>
+        </div>
+        <div class="ai-standard-desc">AI must not generate specific cost figures, yield projections, or regulatory determinations unless they are drawn from real data sources cited in the output.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-hdr">
+          <div class="ai-icon">✏️</div>
+          <div class="ai-standard-name">Editable Outputs</div>
+        </div>
+        <div class="ai-standard-desc">All AI-generated text — summaries, design briefs, investor narratives — is editable by the user. AI output is a draft, not a decree.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── REGULATORY LAYER ───────────────────────────────────────────────── -->
+  <section class="section" id="regulatory">
+    <div class="section-label">Regulatory Intelligence</div>
+    <h2 class="section-title">Where beautiful designs <em>die</em> — and where they survive.</h2>
+    <p class="section-desc">
+      A design that cannot be permitted is not a design — it is a dream.
+      The Atlas surfaces regulatory reality early so it can be designed around, not discovered after construction.
+    </p>
+    <div class="reg-grid">
+      <div class="reg-card">
+        <span class="reg-icon">🗺</span>
+        <div class="reg-name">Zoning + Setbacks</div>
+        <div class="reg-desc">Current zoning designation, permitted use summary, and visual setback overlays — front, rear, side, and riparian — drawn on the parcel map.</div>
+      </div>
+      <div class="reg-card">
+        <span class="reg-icon">🌊</span>
+        <div class="reg-name">Floodplains + Wetlands</div>
+        <div class="reg-desc">FEMA flood zone designation with link to FIRM map. NWI wetlands with applicable buffer zones visualized on the design canvas.</div>
+      </div>
+      <div class="reg-card">
+        <span class="reg-icon">📋</span>
+        <div class="reg-name">Permit Checklist</div>
+        <div class="reg-desc">Auto-generated list of likely permits based on proposed uses. Regulatory risk score for the proposed design. Phase-specific permit dependency warnings.</div>
+      </div>
+      <div class="reg-card">
+        <span class="reg-icon">💧</span>
+        <div class="reg-name">Water + Easements</div>
+        <div class="reg-desc">Well and septic setback distances, water rights notes, utility and conservation easement overlays, agricultural exemption status.</div>
+      </div>
+      <div class="reg-card">
+        <span class="reg-icon">🏠</span>
+        <div class="reg-name">Hospitality + Events</div>
+        <div class="reg-desc">Zoning constraints on retreat and guest use flagged. Event permit requirements for public gatherings surfaced. Short-term rental notes integrated.</div>
+      </div>
+      <div class="reg-card">
+        <span class="reg-icon">⚠️</span>
+        <div class="reg-name">Professional Review Flag</div>
+        <div class="reg-desc">AI-triggered alert when proposed design raises complex regulatory questions that require a licensed engineer, attorney, or hydrologist to resolve.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE DOMAINS ───────────────────────────────────────────────── -->
+  <section class="section" id="domains">
+    <div class="section-label">Feature Atlas</div>
+    <h2 class="section-title">29 domains.<br>One coherent <em>system</em>.</h2>
+    <p class="section-desc">
+      Each domain is a first-class design concern, not an afterthought.
+      Filter by phase to see what ships when, or by OGDEN Identity to see the features that make this tool distinctly OGDEN.
+    </p>
+    <div class="domains-filter">
+      <button class="filter-btn active" data-filter="all">All Domains</button>
+      <button class="filter-btn" data-filter="p1">● Phase 1 — Live</button>
+      <button class="filter-btn" data-filter="p2">Phase 2 — Design</button>
+      <button class="filter-btn" data-filter="p3">Phase 3 — AI + Collab</button>
+      <button class="filter-btn" data-filter="p4">Phase 4 — Public</button>
+      <button class="filter-btn" data-filter="mt">OGDEN Identity [MT]</button>
+    </div>
+    <div class="domains-grid" id="domainsGrid">
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">01 · Property Intake</div>
+        <div class="domain-name">Project Creation & Property Intake</div>
+        <div class="domain-desc">Address, parcel ID, GPS coordinate input. Draw or import parcel boundaries (KML/KMZ/GeoJSON/Shapefile). Upload title maps, site plans, photos. Zoning notes, climate region, bioregion metadata.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Core</span>
+          <span class="phase-tag pt-p2">P2 Templates + compare</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">02 · Terrain Visualization</div>
+        <div class="domain-name">Base Map, Imagery & Terrain</div>
+        <div class="domain-desc">Satellite, aerial, topographic, street, and hybrid views. Terrain mesh, contour lines, elevation shading, hillshade, slope/aspect heatmaps, 2D/2.5D/3D modes, cross-section profiles, viewshed analysis.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 2D + terrain</span>
+          <span class="phase-tag pt-p2">P2 3D + analysis</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">03 · Environmental Data</div>
+        <div class="domain-name">Site Data Layers & Environmental Inputs</div>
+        <div class="domain-desc">8 Tier 1 layers auto-populated: elevation (USGS 3DEP), soils (SSURGO), hydrology (NHD), wetlands (NWI), floodplains (FEMA), land cover (NLCD), climate (NOAA), parcel data. Tier 2 upload for drone, LiDAR, soil tests.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Tier 1 auto</span>
+          <span class="phase-tag pt-p2">P2 Tier 2 upload</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">04 · Site Assessment</div>
+        <div class="domain-name">Site Assessment & Diagnostic Atlas</div>
+        <div class="domain-desc">Automated site summary with source attribution. Suitability, regenerative potential, buildability, water resilience, agricultural, and habitat sensitivity scores — each with confidence indicators. Risk and opportunity summaries.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Core scores</span>
+          <span class="phase-tag pt-p2">P2 Full diagnostic</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">05 · Hydrology</div>
+        <div class="domain-name">Hydrology & Water Systems Planning</div>
+        <div class="domain-desc">Water flow visualization, watershed delineation, catchment identification, drainage extraction. Pond, swale, berm, check dam placement. Roof catchment calculation, gravity irrigation, water budget calculator, drought and storm resilience scores.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Visualization</span>
+          <span class="phase-tag pt-p2">P2 Full design</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">06 · Solar, Wind & Climate</div>
+        <div class="domain-name">Climate Analysis</div>
+        <div class="domain-desc">Sun path, shade analysis, solar exposure heatmap. Structure and tree shadow casting, passive solar siting. Prevailing wind, windbreak zones, frost pocket mapping, heat sink identification, seasonal comfort map, microclimate opportunity map.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Core</span>
+          <span class="phase-tag pt-p2">P2 Simulation</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">07 · Soil + Ecology</div>
+        <div class="domain-name">Soil, Ecology & Regeneration Diagnostics</div>
+        <div class="domain-desc">Soil type and drainage classification (SSURGO). Soil restoration opportunity map, mulching and compost zones, food forest and silvopasture candidates, native planting, pollinator habitat, biodiversity corridors, carbon sequestration potential.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Visualization</span>
+          <span class="phase-tag pt-p2">P2 Intervention planning</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2 mt">
+        <div class="domain-num">08 · Land Use Zoning</div>
+        <div class="domain-name">Functional Zone Planning</div>
+        <div class="domain-desc">Draw custom zones with naming, color coding, and use assignment. Habitation, food production, livestock, commons, guest/retreat, education, event, prayer/spiritual, quiet contemplation, service, and preservation zones.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Core</span>
+          <span class="phase-tag pt-p2">P2 Conflict detection</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3 mt">
+        <div class="domain-num">09 · Structures</div>
+        <div class="domain-name">Structures & Built Environment</div>
+        <div class="domain-desc">Place, rotate, and resize structures from a library: earthships, cabins, yurts, pavilions, greenhouses, barns, workshops, prayer spaces, bathhouses, classrooms, glamping layouts. Setback, solar orientation, and wind shelter analysis.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Placement</span>
+          <span class="phase-tag pt-p3">P3 Analysis</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3 mt">
+        <div class="domain-num">10 · Circulation</div>
+        <div class="domain-name">Access, Circulation & Movement</div>
+        <div class="domain-desc">Main, secondary, emergency, and service access planning. Pedestrian paths, trails, farm lanes, animal corridors, accessible routes, public vs private layers. Arrival sequence design, quiet circulation routes, event flow and night lighting.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Core</span>
+          <span class="phase-tag pt-p3">P3 Analysis</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3 mt">
+        <div class="domain-num">11 · Livestock</div>
+        <div class="domain-name">Livestock System Design</div>
+        <div class="domain-desc">Species planner, rotational grazing cell design, paddock sizing calculator, recovery period planner, water points, shelter and shade access. Chicken and rabbit tractors, fencing layout, fertility distribution heatmaps, predator risk zones.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Design</span>
+          <span class="phase-tag pt-p3">P3 Integration</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3">
+        <div class="domain-num">12 · Crops + Agroforestry</div>
+        <div class="domain-name">Crop, Orchard & Agroforestry Design</div>
+        <div class="domain-desc">Orchard, row crop, food forest, and agroforestry band placement. Windbreaks, shelterbelts, silvopasture, pollinator strips. Tree spacing calculator, canopy maturity simulation, shade succession forecasting, frost-safe zone detection.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Placement</span>
+          <span class="phase-tag pt-p3">P3 Simulation</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3">
+        <div class="domain-num">13 · Utilities + Energy</div>
+        <div class="domain-name">Utilities, Energy & Support Systems</div>
+        <div class="domain-desc">Solar array, battery room, well/pump, water tanks, greywater zones, blackwater and composting toilet planning. Rain catchment, firewood flow, waste sorting, biochar station, tool storage. Off-grid readiness score, redundancy planning.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Placement</span>
+          <span class="phase-tag pt-p3">P3 Systems analysis</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3 mt">
+        <div class="domain-num">14 · Vision Layer</div>
+        <div class="domain-name">Vision Layer & Concept Overlay</div>
+        <div class="domain-desc">Toggle current land vs vision. Before/after comparison, stage-by-stage reveal, design narrative mode. "Signs in creation" interpretive mode, spiritual storytelling layer, guided flyover, scene bookmarks, reference imagery per feature.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Core</span>
+          <span class="phase-tag pt-p3">P3 Narrative suite</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3">
+        <div class="domain-num">15 · Timeline + Phasing</div>
+        <div class="domain-name">Timeline, Phasing & Staged Buildout</div>
+        <div class="domain-desc">Timeline slider with Year 0/1/3/5/Full Vision modes. Custom phase creation, stage dependencies, milestone view, build sequence map, infrastructure-first and revenue-first sequencing. Cost and labor by phase. Permit dependency warnings.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Core</span>
+          <span class="phase-tag pt-p3">P3 Scenario modes</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p3 p4">
+        <div class="domain-num">16 · Simulation</div>
+        <div class="domain-name">Simulation & Scenario Modeling</div>
+        <div class="domain-desc">Water flow, flood, and drought simulation. Wind exposure, tree maturity, and canopy expansion. Erosion mitigation, grazing pressure, carrying capacity scenarios. Build cost and revenue ranges. Best/base/worst case. Climate shift overlays (P4).</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p3">P3 Core</span>
+          <span class="phase-tag pt-p4">P4 Climate</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p3 mt">
+        <div class="domain-num">17 · Rule-Based Intelligence</div>
+        <div class="domain-name">Design Rules Engine</div>
+        <div class="domain-desc">Siting rules for structures, orchards, water, grazing, quiet zones, and sacred zones. Solar access, guest privacy, ecological buffer, wildlife protection rules. Rule scoring, conflict alerts, explainable recommendations. User-adjustable priority weights.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p3">P3</span>
+          <span class="phase-tag pt-mt">MT Template</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p3">
+        <div class="domain-num">18 · AI-Assisted Design</div>
+        <div class="domain-name">AI Design Support</div>
+        <div class="domain-desc">AI site summaries with data attribution and confidence. Feature placement suggestions with explainability. Design briefs, investor narratives, landowner pitches — all editable and labeled as AI drafts. Data gap detection, "needs site visit" flags. User feedback loop.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p3">P3</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p3 p4 mt">
+        <div class="domain-num">19 · Educational Layer</div>
+        <div class="domain-name">Educational & Interpretive Layer</div>
+        <div class="domain-desc">Clickable hotspots with side panel explanations. Feature rationale cards tied to purpose and meaning. Ecology, water, livestock, agroforestry, and spiritual symbolism explanation modes. "Why here, not there?" and "What if omitted?" panels. Voiceover script export.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p3">P3 Core</span>
+          <span class="phase-tag pt-p4">P4 Public suite</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p3">
+        <div class="domain-num">20 · Collaboration</div>
+        <div class="domain-name">Collaboration, Teamwork & Review</div>
+        <div class="domain-desc">Multi-user access with Owner, Designer, Reviewer, and Viewer roles. Map commenting, suggest-edit mode, task assignment, approval workflows, revision requests. Version comparison, change log, snapshot sharing. Community review mode. View-only shareable link.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p3">P3</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3">
+        <div class="domain-num">21 · Decision Support</div>
+        <div class="domain-name">Feasibility & Decision Support</div>
+        <div class="domain-desc">Feasibility summary, constraint checklist, missing information checklist. Access, water, agricultural, livestock, hospitality, and energy feasibility notes. Capital intensity, operational complexity, seasonal vulnerability, and phasing realism scores.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Core</span>
+          <span class="phase-tag pt-p3">P3 Full suite</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3">
+        <div class="domain-num">22 · Economic Planning</div>
+        <div class="domain-name">Business Modeling & Economics</div>
+        <div class="domain-desc">Cost estimates with regional benchmarks (low/mid/high ranges). Revenue stream tagging, enterprise templates for orchard/livestock/retreat/education. Cashflow sequence chart, break-even analysis, mission-weighted modeling. Investor dashboard, grant-readiness checklist.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Placeholders</span>
+          <span class="phase-tag pt-p3">P3 Full model</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p3 p4">
+        <div class="domain-num">23 · Reporting + Export</div>
+        <div class="domain-name">Reporting, Export & Presentation</div>
+        <div class="domain-desc">PDF site assessment, design brief, feature schedule, phasing report, investor presentation, educational booklet exports. GIS layer export (KML/GeoJSON), branded presentation mode, flyover video export, QR-share link, interactive public share mode.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Basic</span>
+          <span class="phase-tag pt-p3">P3 Full suite</span>
+          <span class="phase-tag pt-p4">P4 Advanced</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p2 p4">
+        <div class="domain-num">24 · Mobile + Fieldwork</div>
+        <div class="domain-name">Mobile, Fieldwork & Site Visit Tools</div>
+        <div class="domain-desc">Mobile-friendly map with GPS location, geotagged photo and voice memo capture, site checklist mode, offline field mode with sync. Soil/water/structure issue logging, walk route recording, as-built update mode, site visit report generation.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p2">P2 Basic field</span>
+          <span class="phase-tag pt-p4">P4 Full suite</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p3 p4 mt">
+        <div class="domain-num">25 · Template System</div>
+        <div class="domain-name">Reusable Design Frameworks</div>
+        <div class="domain-desc">Project, property type, and design style templates. OGDEN template, regenerative farm, retreat center, homestead, educational farm, livestock-first, water-retention-first, degraded land restoration, men's cohort campus, family-oriented community templates.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p3">P3 Core</span>
+          <span class="phase-tag pt-p4">P4 Marketplace</span>
+          <span class="phase-tag pt-mt">MT Templates</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2">
+        <div class="domain-num">26 · Governance</div>
+        <div class="domain-name">Administration & Data Integrity</div>
+        <div class="domain-desc">User management, workspace management, access controls, project ownership transfer. Backup and restore, audit log, data provenance notes, assumption tracking, confidence ratings per analysis, QA checklists, locked approval states.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1 Basics</span>
+          <span class="phase-tag pt-p2">P2 Full suite</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p4 mt">
+        <div class="domain-num">27 · Public Portal</div>
+        <div class="domain-name">Public Storytelling Portal</div>
+        <div class="domain-desc">Interactive public property view, guided tour, stage-reveal story, mission story overlay. Donation and support CTA integration, inquiry forms. Public-safe data masking, branded storytelling scenes, narrated site journey, before/after slider.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p4">P4</span>
+          <span class="phase-tag pt-mt">MT</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p4">
+        <div class="domain-num">28 · Advanced Geospatial</div>
+        <div class="domain-name">Future-Ready Geospatial</div>
+        <div class="domain-desc">LiDAR import, drone point cloud, photogrammetry mesh, high-resolution 3D tiles. Sensor data integration (soil, water, weather, grazing). Satellite change detection, vegetation health monitoring, AR site walkthrough, VR immersive mode, multi-property portfolio.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-future">Future</span>
+        </div>
+      </div>
+
+      <div class="domain-card" data-phases="p1 p2 p3 mt">
+        <div class="domain-num">29 · OGDEN Identity</div>
+        <div class="domain-name">OGDEN-Specific Identity Features</div>
+        <div class="domain-desc">Prayer pavilion siting, scenic overlook, men's cohort training zones, hospitality sequence design, Islamic-adab privacy logic, educational immersion routes, regeneration and remembrance storytelling, dawn/sunset viewpoint planning, water/land/worship integration layer.</div>
+        <div class="domain-tags">
+          <span class="phase-tag pt-p1">P1</span>
+          <span class="phase-tag pt-p2">P2</span>
+          <span class="phase-tag pt-p3">P3</span>
+          <span class="phase-tag pt-mt">MT Identity</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── OGDEN IDENTITY FEATURES ───────────────────────────────────────── -->
+  <section class="section" id="identity">
+    <div class="section-label">OGDEN Identity · [MT] Features</div>
+    <h2 class="section-title">Identity features,<br>not <em>add-ons</em>.</h2>
+    <p class="section-desc">
+      These features reflect the soul of the project and are treated with the same engineering care as any core feature.
+      They are not a separate track. They are woven through every phase.
+    </p>
+    <div class="mt-grid">
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p1">P1</div>
+        <div class="mt-name">Prayer pavilion siting logic and quiet reflection zone planning</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p1">P1</div>
+        <div class="mt-name">Scenic overlook and community commons planning</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Men's cohort training zone and family expansion stage planning</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Hospitality sequence planning — arrival through departure</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Islamic-adab-conscious privacy logic for zone adjacencies</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Educational immersion route planning</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Regeneration + remembrance storytelling layer</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Staged vision: from raw land to heaven-like experience</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Dawn and sunset experience viewpoint planning</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Fire circle and gathering space placement logic</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p2">P2</div>
+        <div class="mt-name">Water, land, and worship integration layer</div>
+      </div>
+      <div class="mt-card">
+        <div class="mt-phase phase-tag pt-p3">P3</div>
+        <div class="mt-name">"Signs in creation" interpretive mode across all feature types</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── UX PRINCIPLES ─────────────────────────────────────────────────── -->
+  <section class="section" id="ux">
+    <div class="section-label">Interface Design</div>
+    <h2 class="section-title">The interface should feel like<br>standing on <em>land</em>.</h2>
+    <p class="section-desc">
+      Not operating software. Every UX decision is an opportunity to reinforce the values of the Atlas.
+    </p>
+    <div class="ux-grid">
+      <div class="ux-card" data-glyph="◎">
+        <div class="ux-name">Contemplative Navigation</div>
+        <div class="ux-desc">Camera movement is smooth and unhurried. Pan and zoom feel like walking, not clicking. No jarring transitions or frantic energy.</div>
+      </div>
+      <div class="ux-card" data-glyph="◻">
+        <div class="ux-name">Presence Over Density</div>
+        <div class="ux-desc">Default views show less, not more. The land should be visible. Data layers are surfaced intentionally, not piled on top of each other.</div>
+      </div>
+      <div class="ux-card" data-glyph="◈">
+        <div class="ux-name">Honest Feedback</div>
+        <div class="ux-desc">Errors and limitations stated plainly. No spinning loaders that hide failures. No empty charts. Honest empty states with clear next steps.</div>
+      </div>
+      <div class="ux-card" data-glyph="◐">
+        <div class="ux-name">Progressive Depth</div>
+        <div class="ux-desc">Simple mode shows what matters. Advanced mode reveals the Atlas's full capability. Users are never overwhelmed before they are ready.</div>
+      </div>
+      <div class="ux-card" data-glyph="◷">
+        <div class="ux-name">Respect for Time</div>
+        <div class="ux-desc">Every workflow should be completable in fewer steps than the user expects. The Atlas does more work so the user does less.</div>
+      </div>
+      <div class="ux-card" data-glyph="◇">
+        <div class="ux-name">Quiet Confidence</div>
+        <div class="ux-desc">Visual language is calm, grounded, and authoritative — not playful or trendy. Earth tones, natural textures, generous whitespace.</div>
+      </div>
+      <div class="ux-card" data-glyph="◑">
+        <div class="ux-name">Accessibility as Hospitality</div>
+        <div class="ux-desc">High contrast ratios, keyboard navigation, screen reader support, and legible typography are baseline requirements — not afterthoughts.</div>
+      </div>
+      <div class="ux-card" data-glyph="◉">
+        <div class="ux-name">Offline + Low-Tech Ready</div>
+        <div class="ux-desc">Projects cached for offline use. Field annotation without connectivity. View-only shareable links requiring no account. Print layouts for community meetings.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────────────────── -->
+  <section class="section" style="border-bottom:none;padding-bottom:0;">
+    <div class="callout">
+      <div class="callout-eyebrow">Phase 1 · Now Live</div>
+      <h2 class="callout-title">Begin with <em>Site Intelligence</em>.</h2>
+      <p class="callout-body">
+        Drop any parcel address or GPS coordinate. The Atlas fetches eight federal data layers automatically —
+        elevation, soils, hydrology, climate, floodplains, land cover, wetlands, and parcel boundaries —
+        then synthesizes a site assessment with explainable scores and a design brief grounded in the principle
+        of stewardship over extraction.
+      </p>
+      <div class="callout-actions">
+        <a href="/site-intelligence/" class="btn-primary">Open Site Intelligence →</a>
+        <a href="/moontrance/" class="btn-secondary">View Moontrance Collective</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- .page-inner -->
+</div><!-- .page -->
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="page-inner">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">OGDEN</div>
+        <div class="footer-tagline">Land, learning, systems, and stewardship.</div>
+      </div>
+      <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/about/" class="footer-link">About</a>
+        <a href="/bbos/" class="footer-link">BBOS</a>
+        <a href="/moontrance/" class="footer-link">Moontrance</a>
+        <a href="/site-intelligence/" class="footer-link">Site Intelligence</a>
+        <a href="/atlas/" class="footer-link">Atlas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── THEME ──────────────────────────────────────────────────────────── */
+const stored = localStorage.getItem('ogden-theme');
+if (stored) {
+  document.documentElement.setAttribute('data-theme', stored);
+  if (stored === 'light') {
+    document.getElementById('themeIcon').textContent = '☽';
+    document.getElementById('topNav').style.background = 'rgba(250,246,240,0.95)';
+  }
+}
+function toggleTheme() {
+  const curr = document.documentElement.getAttribute('data-theme');
+  const next = curr === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ogden-theme', next);
+  document.getElementById('themeIcon').textContent = next === 'light' ? '☽' : '☀';
+  document.getElementById('topNav').style.background =
+    next === 'light' ? 'rgba(250,246,240,0.95)' : 'rgba(11,15,22,0.92)';
+}
+
+/* ── DOMAIN FILTER ──────────────────────────────────────────────────── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.domain-card').forEach(card => {
+      if (filter === 'all') {
+        card.classList.remove('hidden');
+      } else {
+        const phases = card.dataset.phases || '';
+        card.classList.toggle('hidden', !phases.includes(filter));
+      }
+    });
+  });
+});
+
+/* ── SCROLL-IN ANIMATION ────────────────────────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+
+document.querySelectorAll(
+  '.principle-card, .phase-card, .domain-card, .ai-card, .mt-card, .reg-card, .ux-card'
+).forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = `opacity 0.55s cubic-bezier(.22,.68,0,1.2) ${(i % 6) * 55}ms, transform 0.55s cubic-bezier(.22,.68,0,1.2) ${(i % 6) * 55}ms`;
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
