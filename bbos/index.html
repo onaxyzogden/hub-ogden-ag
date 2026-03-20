@@ -331,7 +331,7 @@ nav.scrolled {
 .hero-scroll-label {
   font-family: 'DM Mono', monospace;
   font-size: 0.75rem; letter-spacing: 0.2em;
-  color: rgba(196,151,58,0.4); text-transform: uppercase;
+  color: rgba(196,151,58,0.75); text-transform: uppercase;
   writing-mode: vertical-rl;
 }
 
@@ -394,7 +394,7 @@ nav.scrolled {
 .ayah-source {
   font-family: 'DM Mono', monospace;
   font-size: 0.75rem; letter-spacing: 0.12em;
-  color: rgba(196,151,58,0.45);
+  color: rgba(196,151,58,0.8);
   margin-top: 0.6rem; text-transform: uppercase;
 }
 /* Right side pillars */
@@ -476,7 +476,7 @@ nav.scrolled {
 .client-card:hover::before { opacity: 1; }
 .client-number {
   font-family: 'DM Mono', monospace;
-  font-size: 0.75rem; color: rgba(196,151,58,0.4);
+  font-size: 0.75rem; color: rgba(196,151,58,0.8);
   letter-spacing: 0.18em; margin-bottom: 1rem;
 }
 .client-title {
@@ -586,7 +586,7 @@ nav.scrolled {
 .stage-code {
   font-family: 'DM Mono', monospace;
   font-size: 0.75rem; letter-spacing: 0.18em;
-  color: rgba(196,151,58,0.55); text-transform: uppercase;
+  color: rgba(196,151,58,0.8); text-transform: uppercase;
   margin-bottom: 0.4rem;
 }
 .stage-name {
@@ -599,14 +599,14 @@ nav.scrolled {
 .stage-attr {
   font-family: 'DM Mono', monospace;
   font-size: 0.75rem; letter-spacing: 0.12em;
-  color: var(--gold-pale); opacity: 0.5;
+  color: var(--gold-pale);
   text-transform: uppercase;
   white-space: nowrap; margin-top: 0.25rem;
   flex-shrink: 0; align-self: flex-start;
   padding-top: 0.6rem;
 }
 .stage-toggle {
-  font-size: 0.875rem; color: rgba(196,151,58,0.4);
+  font-size: 0.875rem; color: rgba(196,151,58,0.75);
   transition: transform 0.3s, color 0.2s;
   flex-shrink: 0; align-self: flex-start;
   padding-top: 0.55rem; margin-left: 0.5rem;
@@ -644,7 +644,7 @@ nav.scrolled {
   display: flex; align-items: flex-start; gap: 0.6rem;
 }
 .stage-deliv-list li::before {
-  content: '—'; color: rgba(196,151,58,0.4);
+  content: '—'; color: rgba(196,151,58,0.8);
   flex-shrink: 0; margin-top: 0.05rem;
 }
 
@@ -719,7 +719,7 @@ nav.scrolled {
   margin-top: 0.3rem;
 }
 .cta-mode-arrow {
-  font-size: 0.875rem; color: rgba(196,151,58,0.4);
+  font-size: 0.875rem; color: rgba(196,151,58,0.75);
   align-self: flex-end;
   transition: color 0.2s, transform 0.2s;
 }
@@ -749,7 +749,7 @@ nav.scrolled {
 .site-footer-logo:hover { color: var(--gold-light); }
 .site-footer-tagline {
   font-size: 0.875rem; font-weight: 400;
-  color: #4a5a74; line-height: 1.75; max-width: 280px;
+  color: var(--steel-mid); line-height: 1.75; max-width: 280px;
 }
 .site-footer-col-title {
   font-family: 'DM Mono', monospace;
@@ -763,7 +763,7 @@ nav.scrolled {
 }
 .site-footer-links a {
   font-size: 0.875rem; font-weight: 400;
-  color: #4a5a74; text-decoration: none; transition: color 0.2s;
+  color: var(--steel-mid); text-decoration: none; transition: color 0.2s;
 }
 .site-footer-links a:hover { color: var(--gold); }
 .site-footer-bottom {
@@ -774,12 +774,12 @@ nav.scrolled {
   align-items: center; flex-wrap: wrap; gap: 0.5rem;
 }
 .site-footer-copyright {
-  font-size: 0.75rem; color: #3a4a5c;
+  font-size: 0.75rem; color: var(--steel-mid);
 }
 .site-footer-ornament {
   font-family: 'Playfair Display', serif;
   font-size: 0.875rem; font-style: italic;
-  color: rgba(196,151,58,0.35);
+  color: rgba(196,151,58,0.8);
 }
 
 /* ── SCROLL ANIMATIONS ── */
@@ -858,7 +858,10 @@ nav.scrolled {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .fade-up { opacity: 1 !important; transform: none !important; }
+  .fade-up,
+  .hero-eyebrow, .hero-h1, .hero-sub, .hero-actions, .hero-scroll {
+    opacity: 1 !important; transform: none !important; animation: none !important;
+  }
   #page-veil { display: none !important; }
 }
 
@@ -971,7 +974,7 @@ nav.scrolled {
     <li><a href="#work-with">Work Together</a></li>
     <li><a href="../moontrance/">Moontrance</a></li>
   </ul>
-  <a href="#work-with" class="nav-cta">Begin</a>
+  <a href="intake/" class="nav-cta">Begin</a>
   <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-haspopup="dialog">
     <span></span><span></span><span></span>
   </button>
@@ -1114,13 +1117,13 @@ nav.scrolled {
     <div class="stages-list" role="list">
       <div class="stages-spine" aria-hidden="true"></div>
 
-      <!-- Stage 00 -->
+      <!-- Stage 01 -->
       <div class="stage-item fade-up" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">00</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 00 · Intake</p>
-            <p class="stage-name">Begin with the truth of where you are</p>
+            <p class="stage-code">Stage 01 · Intake</p>
+            <h3 class="stage-name">Begin with the truth of where you are</h3>
           </div>
           <p class="stage-attr">Al-Awwal · The First</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
@@ -1140,13 +1143,13 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 01 -->
+      <!-- Stage 02 -->
       <div class="stage-item fade-up delay-1" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">01</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 01 · Qualification</p>
-            <p class="stage-name">Verify what you can actually deliver</p>
+            <p class="stage-code">Stage 02 · Qualification</p>
+            <h3 class="stage-name">Verify what you can actually deliver</h3>
           </div>
           <p class="stage-attr">Al-Khabir · The All-Aware</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
@@ -1166,20 +1169,20 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 02 -->
+      <!-- Stage 03 -->
       <div class="stage-item fade-up delay-2" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">02</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 02 · Identity Alignment</p>
-            <p class="stage-name">Ensure the business is actually an expression of you</p>
+            <p class="stage-code">Stage 03 · Identity Alignment</p>
+            <h3 class="stage-name">Ensure the business is actually an expression of you</h3>
           </div>
           <p class="stage-attr">Al-Haqq · The Truth</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
         </div>
         <div class="stage-body" role="region">
           <div class="stage-body-inner">
-            <p class="stage-desc">A business built on an aspirational version of yourself will drift. Stage 02 aligns the offer direction, positioning, and business model with your actual identity — the way you genuinely work, what you are genuinely called to, and what your real constraints allow. Truth is the structural material.</p>
+            <p class="stage-desc">A business built on an aspirational version of yourself will drift. Stage 03 aligns the offer direction, positioning, and business model with your actual identity — the way you genuinely work, what you are genuinely called to, and what your real constraints allow. Truth is the structural material.</p>
             <div class="stage-deliverables">
               <p class="stage-deliv-title">Deliverables</p>
               <ul class="stage-deliv-list">
@@ -1192,13 +1195,13 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 03 -->
+      <!-- Stage 04 -->
       <div class="stage-item fade-up" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">03</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 03 · Offer Architecture</p>
-            <p class="stage-name">Structure what you sell with the care of a covenant</p>
+            <p class="stage-code">Stage 04 · Offer Architecture</p>
+            <h3 class="stage-name">Structure what you sell with the care of a covenant</h3>
           </div>
           <p class="stage-attr">Al-Adl · The Just</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
@@ -1219,13 +1222,13 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 04 -->
+      <!-- Stage 05 -->
       <div class="stage-item fade-up delay-1" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">04</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 04 · Outreach</p>
-            <p class="stage-name">Find the right people without distorting yourself to reach them</p>
+            <p class="stage-code">Stage 05 · Outreach</p>
+            <h3 class="stage-name">Find the right people without distorting yourself to reach them</h3>
           </div>
           <p class="stage-attr">Al-Waliy · The Protecting Friend</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
@@ -1245,20 +1248,20 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 05 -->
+      <!-- Stage 06 -->
       <div class="stage-item fade-up delay-2" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">05</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 05 · Sales</p>
-            <p class="stage-name">The fit call as a discernment conversation, not a close</p>
+            <p class="stage-code">Stage 06 · Sales</p>
+            <h3 class="stage-name">The fit call as a discernment conversation, not a close</h3>
           </div>
           <p class="stage-attr">Al-Hakam · The Judge</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
         </div>
         <div class="stage-body" role="region">
           <div class="stage-body-inner">
-            <p class="stage-desc">Fit-call scripts and graceful No-Fit disqualification frameworks. The goal of Stage 05 is accurate discernment — it is as important to decline a misfit clearly and with care as it is to onboard a good one. A graceful no is an act of respect on both sides.</p>
+            <p class="stage-desc">Fit-call scripts and graceful No-Fit disqualification frameworks. The goal of Stage 06 is accurate discernment — it is as important to decline a misfit clearly and with care as it is to onboard a good one. A graceful no is an act of respect on both sides.</p>
             <div class="stage-deliverables">
               <p class="stage-deliv-title">Deliverables</p>
               <ul class="stage-deliv-list">
@@ -1271,20 +1274,20 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 06 -->
+      <!-- Stage 07 -->
       <div class="stage-item fade-up" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">06</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 06 · Fulfillment</p>
-            <p class="stage-name">Deliver with the excellence that reflects the giver of all excellence</p>
+            <p class="stage-code">Stage 07 · Fulfillment</p>
+            <h3 class="stage-name">Deliver with the excellence that reflects the giver of all excellence</h3>
           </div>
           <p class="stage-attr">Al-Muhsin · The Doer of Good</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
         </div>
         <div class="stage-body" role="region">
           <div class="stage-body-inner">
-            <p class="stage-desc">Client intake forms, Execution SOPs, Quality Control Checklists. The Prophet ﷺ said: Allah loves that when any of you does a job, he does it with itqan — with excellence and mastery. Stage 06 builds the system that makes excellence repeatable rather than dependent on how you feel on a given day.</p>
+            <p class="stage-desc">Client intake forms, Execution SOPs, Quality Control Checklists. The Prophet ﷺ said: Allah loves that when any of you does a job, he does it with itqan — with excellence and mastery. Stage 07 builds the system that makes excellence repeatable rather than dependent on how you feel on a given day.</p>
             <div class="stage-deliverables">
               <p class="stage-deliv-title">Deliverables</p>
               <ul class="stage-deliv-list">
@@ -1297,13 +1300,13 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 07 -->
+      <!-- Stage 08 -->
       <div class="stage-item fade-up delay-1" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">07</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 07 · Retention</p>
-            <p class="stage-name">Stay in genuine relationship after the work is done</p>
+            <p class="stage-code">Stage 08 · Retention</p>
+            <h3 class="stage-name">Stay in genuine relationship after the work is done</h3>
           </div>
           <p class="stage-attr">Al-Wadud · The Loving</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
@@ -1323,20 +1326,20 @@ nav.scrolled {
         </div>
       </div>
 
-      <!-- Stage 08 -->
+      <!-- Stage 09 -->
       <div class="stage-item fade-up delay-2" role="listitem">
         <div class="stage-node" aria-hidden="true"><span class="stage-node-num">08</span></div>
         <div class="stage-header">
           <div class="stage-meta">
-            <p class="stage-code">Stage 08 · Optimisation</p>
-            <p class="stage-name">Measure what matters and tend to the people who deliver it</p>
+            <p class="stage-code">Stage 09 · Optimisation</p>
+            <h3 class="stage-name">Measure what matters and tend to the people who deliver it</h3>
           </div>
           <p class="stage-attr">Al-Raqib · The Watchful</p>
           <span class="stage-toggle" aria-hidden="true">▾</span>
         </div>
         <div class="stage-body" role="region">
           <div class="stage-body-inner">
-            <p class="stage-desc">Canonical Metrics tracking — Fit-to-Close Rate, Unprompted Referral Rate, Delivery Completion Rate — alongside a team vitality management system. Stage 08 is the continuous cycle. The business that cannot account for itself cannot be improved, and the business that burns out the people running it has not been built on soul.</p>
+            <p class="stage-desc">Canonical Metrics tracking — Fit-to-Close Rate, Unprompted Referral Rate, Delivery Completion Rate — alongside a team vitality management system. Stage 09 is the continuous cycle. The business that cannot account for itself cannot be improved, and the business that burns out the people running it has not been built on soul.</p>
             <div class="stage-deliverables">
               <p class="stage-deliv-title">Deliverables</p>
               <ul class="stage-deliv-list">
@@ -1432,9 +1435,8 @@ nav.scrolled {
       <p class="site-footer-col-title">OGDEN</p>
       <ul class="site-footer-links">
         <li><a href="../">Hub Home</a></li>
-        <li><a href="#philosophy">BBOS Philosophy</a></li>
-        <li><a href="#stages">Nine Stages</a></li>
-        <li><a href="#work-with">Work Together</a></li>
+        <li><a href="intake/">Apply to BBOS</a></li>
+        <li><a href="project/">Your Dashboard</a></li>
       </ul>
     </div>
   </div>
