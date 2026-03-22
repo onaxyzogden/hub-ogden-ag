@@ -2,762 +2,1110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OGDEN — Build Business On Soul · The Moontrance Collective</title>
-<meta name="description" content="OGDEN is a digital entrepreneur bridging strategic precision with soul-led execution. Home of BBOS and The Moontrance Collective.">
-<link rel="canonical" href="https://hub.ogden.ag">
+<title>The Work of Yousef — BBOS · Moontrance · OGDEN Atlas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow-x:hidden}
-body{font-family:'DM Sans',sans-serif;background:#080810;cursor:none}
-
-.cursor{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
-.cursor-ring{width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s}
-
-body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;opacity:0.5}
-
-.gateway{display:flex;height:100vh;min-height:100vh;width:100vw;position:relative;overflow:hidden;opacity:1}
-
-
-.panel{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;transition:flex 0.85s cubic-bezier(0.77,0,0.175,1);cursor:none}
-.panel:hover{flex:1.65}
-.gateway:has(.panel-bbos:hover) .panel-moon{flex:0.55}
-.gateway:has(.panel-moon:hover) .panel-bbos{flex:0.55}
-
-.panel-bbos{background:#060d1a}
-.panel-bbos::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 35% 50%,rgba(20,40,85,0.95) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 75% 15%,rgba(200,150,42,0.06) 0%,transparent 60%)}
-
-.bbos-grid{position:absolute;inset:0;overflow:hidden;opacity:0.22}
-.bbos-grid::before{content:'';position:absolute;inset:-50%;background-image:linear-gradient(rgba(200,150,42,1) 1px,transparent 1px),linear-gradient(90deg,rgba(200,150,42,1) 1px,transparent 1px);background-size:55px 55px;transform:perspective(500px) rotateX(28deg) rotateZ(-4deg);animation:gridDrift 25s linear infinite}
-@keyframes gridDrift{from{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(0)}to{transform:perspective(500px) rotateX(28deg) rotateZ(-4deg) translateY(55px)}}
-
-/* Moontrance palette: --sage:#7A8C6E  --earth:#6B4F3A  --gold:#C4A35A  --dark-green:#3A4A32  --cream:#F5F0E8 */
-.panel-moon{background:#1e2a18}
-.panel-moon::before{content:'';position:absolute;inset:0;background:
-  /* warm gold moon-glow at centre */
-  radial-gradient(ellipse 55% 50% at 50% 50%, rgba(196,163,90,0.13) 0%, transparent 55%),
-  /* sage-green mid atmosphere */
-  radial-gradient(ellipse 85% 75% at 48% 48%, rgba(122,140,110,0.18) 0%, transparent 65%),
-  /* earth-brown lower warmth */
-  radial-gradient(ellipse 60% 45% at 30% 75%, rgba(107,79,58,0.12) 0%, transparent 55%),
-  /* deep forest-green edge */
-  radial-gradient(ellipse 140% 120% at 50% 52%, rgba(58,74,50,0.55) 0%, transparent 88%)}
-
-.stars{position:absolute;inset:0;overflow:hidden}
-.star{position:absolute;background:rgba(245,240,232,0.9);border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
-@keyframes twinkle{0%,100%{opacity:var(--mn,0.1);transform:scale(1)}50%{opacity:var(--mx,0.5);transform:scale(1.4)}}
-
-.moon-orb{position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(196,163,90,0.14);top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04);animation:moonPulse 9s ease-in-out infinite}
-.moon-orb::before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(196,163,90,0.08)}
-@keyframes moonPulse{0%,100%{box-shadow:0 0 80px rgba(196,163,90,0.07),0 0 160px rgba(58,74,50,0.1),inset 0 0 60px rgba(196,163,90,0.04)}50%{box-shadow:0 0 110px rgba(196,163,90,0.12),0 0 220px rgba(58,74,50,0.16),inset 0 0 80px rgba(196,163,90,0.07)}}
-
-.divider{position:absolute;top:0;bottom:0;left:50%;width:1px;z-index:10;background:linear-gradient(to bottom,transparent,rgba(200,150,42,0.5) 20%,rgba(200,150,42,0.65) 50%,rgba(196,133,58,0.5) 80%,transparent);transform:translateX(-50%);pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
-.gateway:has(.panel-bbos:hover) .divider{left:62%}
-.gateway:has(.panel-moon:hover) .divider{left:38%}
-
-.ogden-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;text-align:center;pointer-events:none;transition:left 0.85s cubic-bezier(0.77,0,0.175,1)}
-.gateway:has(.panel-bbos:hover) .ogden-mark{left:62%}
-.gateway:has(.panel-moon:hover) .ogden-mark{left:38%}
-
-.ogden-ring{width:70px;height:70px;border-radius:50%;background:#080810;border:1px solid rgba(200,150,42,0.3);display:flex;align-items:center;justify-content:center;position:relative}
-.ogden-ring::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(200,150,42,0.1)}
-.ogden-letter{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;color:#C4973A;letter-spacing:0.05em}
-
-.panel-content{position:relative;z-index:5;text-align:center;padding:48px;pointer-events:none}
-.panel:hover .panel-content{pointer-events:auto}
-
-.bbos-eyebrow,.moon-eyebrow{font-size:0.875rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:18px;opacity:0;transform:translateY(10px);transition:opacity 0.5s 0.1s,transform 0.5s 0.1s}
-.bbos-eyebrow{font-family:'DM Sans',sans-serif;color:rgba(200,150,42,0.88)}
-.moon-eyebrow{font-family:'DM Sans',sans-serif;font-weight:500;color:rgba(163,180,143,0.9);font-style:normal;letter-spacing:0.22em}
-.panel-bbos:hover .bbos-eyebrow,.panel-moon:hover .moon-eyebrow{opacity:1;transform:none}
-
-.bbos-title{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#fff;line-height:1.2;margin-bottom:14px}
-.bbos-title em{font-style:italic;color:#C4973A}
-.moon-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,64px);font-weight:400;color:#f0ebe0;line-height:1.2;margin-bottom:14px;letter-spacing:0.02em}
-.moon-title em{font-style:italic;color:#C4A35A}
-
-.panel-tagline{max-width:300px;margin:0 auto 36px;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.2s,transform 0.5s 0.2s;line-height:1.75}
-.panel:hover .panel-tagline{opacity:1;transform:none}
-.bbos-tagline{font-size:1rem;color:#8A8A8A}
-.moon-tagline{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;font-style:normal;color:rgba(200,220,190,0.82);line-height:1.7}
-
-.panel-cta{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:3px;font-size:0.875rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;cursor:none;opacity:0;transform:translateY(8px);transition:opacity 0.5s 0.3s,transform 0.5s 0.3s,background 0.2s,color 0.2s,border-color 0.2s}
-.panel:hover .panel-cta{opacity:1;transform:none}
-.cta-bbos{background:rgba(200,150,42,0.1);color:#C4973A;border:1px solid rgba(200,150,42,0.28)}
-.cta-bbos:hover{background:rgba(200,150,42,0.2);color:#c8962a;border-color:#B8891A}
-.cta-moon{background:rgba(122,140,110,0.1);color:rgba(196,163,90,0.85);border:1px solid rgba(122,140,110,0.28)}
-.cta-moon:hover{background:rgba(122,140,110,0.2);color:#c4a35a;border-color:rgba(196,163,90,0.5)}
-
-.panel-idle-label{font-family:'Cinzel',serif;font-size:0.875rem;letter-spacing:0.22em;text-transform:uppercase;position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;transition:opacity 0.4s}
-.panel-bbos .panel-idle-label{color:#C4973A}
-.panel-moon .panel-idle-label{color:#9ABF90}
-.panel:hover .panel-idle-label{opacity:0}
-
-.top-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  padding: 0 48px;
-  height: 64px;
-  display: flex; align-items: center; justify-content: space-between;
-  z-index: 100;
-  background: rgba(8,8,16,0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(200,150,42,0.12);
-  pointer-events: auto;
+:root {
+  --bg-deep: #0a0a08;
+  --bg-section: #0f0f0c;
+  --bg-card: #161612;
+  --bg-card-hover: #1c1c17;
+  --gold: #c8a84e;
+  --gold-dim: #8a7234;
+  --gold-glow: #c8a84e22;
+  --green: #4a7c59;
+  --green-light: #6b9e78;
+  --green-dim: #2d4d36;
+  --cream: #e8e0d0;
+  --cream-dim: #a89e8e;
+  --text-primary: #e8e0d0;
+  --text-secondary: #a89e8e;
+  --text-muted: #6b6355;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
 }
-.nav-brand {
-  font-family: 'Cinzel', serif;
-  font-size: 0.875rem; font-weight: 600;
-  color: rgba(200,150,42,0.82);
-  letter-spacing: 0.3em; text-transform: uppercase;
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) var(--bg-deep);
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════
+   NOISE TEXTURE OVERLAY
+   ═══════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════
+   SCROLL SECTIONS
+   ═══════════════════════════════ */
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px;
+  position: relative;
+}
+
+.section-content {
+  max-width: 800px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════
+   HERO — THE OPENING
+   ═══════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse 60% 50% at 50% 40%, #1a1812 0%, var(--bg-deep) 100%);
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s ease both;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.15;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s ease both;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-subtitle {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto 3.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s ease both;
+}
+
+/* ═══════════════════════════════
+   THE FORK — TWO PATHS
+   ═══════════════════════════════ */
+.fork-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s ease both;
+}
+
+.fork-path {
+  position: relative;
+  padding: 28px 36px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
   text-decoration: none;
-  pointer-events: auto;
-  transition: color 0.2s;
-  flex: 0 0 auto;
+  color: var(--cream);
+  transition: all 0.4s ease;
+  min-width: 260px;
+  text-align: center;
+  overflow: hidden;
 }
-.nav-brand:hover { color: rgba(200,150,42,0.9); }
-.nav-side {
-  display: flex; align-items: center; gap: 2rem;
-  list-style: none;
+
+.fork-path::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--gold-glow), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fork-path:hover {
+  border-color: var(--gold);
+  background: #1a1710;
+}
+
+.fork-path:hover::before {
+  opacity: 1;
+}
+
+.fork-label {
+  position: relative;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.fork-desc {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp 1s 1.8s ease both;
+}
+
+.scroll-hint span {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold-dim), transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════
+   STORY JOURNEY (New Here path)
+   ═══════════════════════════════ */
+#story-journey {
+  display: block;
+}
+
+#story-journey.hidden {
+  display: none;
+}
+
+/* Section dividers */
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold-dim);
+  margin: 0 auto 3rem;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* The Before */
+.before-text {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--cream-dim);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.before-text strong {
+  color: var(--cream);
+  font-weight: 400;
+}
+
+.before-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 2.5rem;
+}
+
+.before-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  border-left: 2px solid var(--text-muted);
+  opacity: 0.7;
+}
+
+.before-item .num {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  min-width: 20px;
+  padding-top: 2px;
+}
+
+.before-item p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* The Turning */
+.turning-text {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--cream);
+}
+
+.turning-text em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.turning-sub {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* The After */
+.after-statement {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+  font-weight: 300;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--cream);
+  margin-bottom: 3rem;
+}
+
+.after-pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 2rem;
+}
+
+.pillar {
+  padding: 32px 28px;
+  border: 1px solid var(--green-dim);
+  border-radius: 2px;
+  background: linear-gradient(170deg, #11150f, var(--bg-card));
+  transition: all 0.4s ease;
+}
+
+.pillar:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+
+.pillar-icon {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  margin-bottom: 12px;
+}
+
+.pillar h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+
+.pillar p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* The Bridge — Project Cards */
+.bridge-intro {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 300;
+  text-align: center;
+  color: var(--cream);
+  margin-bottom: 3.5rem;
+}
+
+.project-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.project-card {
+  padding: 40px 36px;
+  border: 1px solid #2a2720;
+  border-radius: 3px;
+  background: var(--bg-card);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card[data-project="bbos"]::after { background: var(--gold); }
+.project-card[data-project="moontrance"]::after { background: var(--green); }
+.project-card[data-project="atlas"]::after { background: var(--cream-dim); }
+
+.project-card:hover {
+  border-color: #3a3730;
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+}
+
+.project-card:hover::after {
+  transform: scaleX(1);
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.project-card-name {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--cream);
+}
+
+.project-card[data-project="bbos"] .project-card-name { color: var(--gold); }
+.project-card[data-project="moontrance"] .project-card-name { color: var(--green-light); }
+
+.project-card-tag {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border: 1px solid #2a2720;
+  border-radius: 1px;
+}
+
+.project-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.project-card-line {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--cream-dim);
+}
+
+/* The Invitation */
+.invitation-text {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+}
+
+.invitation-sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.invitation-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 40px;
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.cta-button:hover {
+  color: var(--bg-deep);
+}
+
+.cta-button:hover::before {
+  transform: scaleX(1);
+}
+
+.cta-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-arrow {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ═══════════════════════════════
+   DIRECT NAV (Jump path)
+   ═══════════════════════════════ */
+#direct-nav {
+  display: none;
+  min-height: 100vh;
+  background: var(--bg-section);
+}
+
+#direct-nav.active {
+  display: flex;
+}
+
+.direct-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  max-width: 960px;
+  width: 100%;
+}
+
+.direct-card {
+  padding: 48px 36px;
+  border: 1px solid #2a2720;
+  border-radius: 3px;
+  background: var(--bg-card);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.direct-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.direct-card[data-project="bbos"]::before { background: var(--gold); }
+.direct-card[data-project="moontrance"]::before { background: var(--green); }
+.direct-card[data-project="atlas"]::before { background: var(--cream-dim); }
+
+.direct-card:hover {
+  border-color: #3a3730;
+  background: var(--bg-card-hover);
+  transform: translateY(-4px);
+}
+
+.direct-card-stage {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.direct-card h2 {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.direct-card[data-project="bbos"] h2 { color: var(--gold); }
+.direct-card[data-project="moontrance"] h2 { color: var(--green-light); }
+.direct-card[data-project="atlas"] h2 { color: var(--cream); }
+
+.direct-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
   flex: 1;
 }
-.nav-side.nav-left { justify-content: flex-start; margin-right: 2rem; }
-.nav-side.nav-right { justify-content: flex-end; margin-left: 2rem; }
-.nav-side a {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  text-decoration: none;
-  pointer-events: auto; cursor: none;
-  position: relative;
-  transition: color 0.2s;
-}
-.nav-side.nav-left a  { color: #B8891A; }
-.nav-side.nav-right a { color: #7A9A70; }
-.nav-side a::after {
-  content: '';
-  position: absolute; bottom: -3px; left: 0; right: 0;
-  height: 1px;
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.25s ease;
-}
-.nav-side.nav-left  a::after { background: rgba(200,150,42,0.7); }
-.nav-side.nav-right a::after { background: rgba(163,180,143,0.7); }
-.nav-side a:hover { color: rgba(255,255,255,0.75); }
-.nav-side a:hover::after { transform: scaleX(1); }
-/* Active state */
-.nav-side a.nav-active { color: rgba(255,255,255,0.85); }
-.nav-side a.nav-active::after { transform: scaleX(1); }
 
-@media(max-width:768px){
-  html,body{overflow:auto}
-  .gateway{flex-direction:column;height:auto;min-height:100vh}
-  .panel{flex:none!important;min-height:55vh}
-  .panel-content{padding:40px 28px}
-  .bbos-eyebrow,.moon-eyebrow,.panel-tagline,.panel-cta{opacity:1!important;transform:none!important}
-  .ogden-mark{display:none}
-  .divider{display:none}
-  body{cursor:auto}
-  .cursor,.cursor-ring{display:none}
-  .top-nav { padding: 0 20px; height: 56px; justify-content: center; position: relative; }
-  /* Hide nav links on mobile — logo only, centred */
-  .nav-side { display: none; }
-  /* Absolute-centre the brand so it's pixel-perfect regardless of flex residue */
-  .nav-brand { position: absolute; left: 50%; transform: translateX(-50%); font-size: 0.875rem; }
-  .panel-bbos { padding-top: 56px; }
-  /* Hide idle labels on mobile — CTA buttons are already visible */
-  .panel-idle-label { display: none; }
+.direct-card-arrow {
+  margin-top: 24px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
 }
 
-  /* ── PAGE TRANSITION VEIL ── */
-  #page-veil {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #080810;
-    opacity: 1;
-    pointer-events: none;
-    transition: none;
-  }
-  #page-veil.fade-active {
-    transition: opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-  }
-  #page-veil.cleared { opacity: 0; pointer-events: none; }
+.direct-card:hover .direct-card-arrow {
+  color: var(--cream);
+}
 
+/* Back button */
+.back-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: 1px solid #2a2720;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 2px;
+  z-index: 100;
+  display: none;
+  transition: all 0.3s ease;
+}
 
-  /* ── PREFERS REDUCED MOTION ── */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-    .reveal, .fade-up {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-    #page-veil { display: none !important; }
-  }
+.back-btn.show {
+  display: block;
+}
 
+.back-btn:hover {
+  color: var(--cream);
+  border-color: var(--cream-dim);
+}
 
-  .drawer-close-btn {
-    position: absolute; top: 1.4rem; right: 1.5rem;
-    background: none; border: none;
-    font-size: 1.1rem; color: rgba(245,240,232,0.5);
-    cursor: pointer; padding: 0.5rem;
-    line-height: 1; transition: color 0.2s;
-    z-index: 10;
-  }
-  .drawer-close-btn:hover { color: rgba(196,163,90,0.9); }
+/* ═══════════════════════════════
+   BISMILLAH FOOTER
+   ═══════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 80px 24px 60px;
+  border-top: 1px solid #1a1815;
+}
 
+.footer-bismillah {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--gold-dim);
+  margin-bottom: 12px;
+}
 
-  /* ── FOCUS VISIBLE STYLES ── */
-  :focus { outline: none; }
-  :focus-visible {
-    outline: 2px solid #C4A35A;
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-  .nav-hamburger:focus-visible,
-  .drawer-close-btn:focus-visible {
-    outline: 2px solid #C4A35A;
-    outline-offset: 4px;
-  }
-  .nav-links a:focus-visible,
-  .nav-cta:focus-visible,
-  .nav-logo:focus-visible {
-    outline: 2px solid #C4A35A;
-    outline-offset: 4px;
-    border-radius: 2px;
-  }
-  /* Fallback for browsers that don't support :focus-visible */
-  @supports not selector(:focus-visible) {
-    body.keyboard-nav *:focus {
-      outline: 2px solid #C4A35A !important;
-      outline-offset: 3px !important;
-    }
-  }
+.footer-credit {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
 
+/* ═══════════════════════════════
+   PROGRESS BAR
+   ═══════════════════════════════ */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  z-index: 1000;
+  transition: width 0.1s linear;
+  width: 0%;
+}
 
-  /* ── VISUALLY HIDDEN (for screen-reader-only content) ── */
-  .visually-hidden {
-    position: absolute;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
-  }
+/* ═══════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  /* ── SKIP LINK ── */
-  .skip-link {
-    position: absolute;
-    top: -100%;
-    left: 1rem;
-    z-index: 99999;
-    background: #C4A35A;
-    color: #1a1610;
-    font-family: 'DM Sans', Arial, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 0 0 4px 4px;
-    text-decoration: none;
-    transition: top 0.2s;
-  }
-  .skip-link:focus { top: 0; }
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
 
-
-  /* ── HUB FOOTER ── */
-  .hub-footer {
-    background: #040a14;
-    border-top: 1px solid rgba(200,150,42,0.1);
-    padding: 2.5rem 3rem;
-    text-align: center;
-  }
-  .hub-footer-inner {
-    max-width: 900px; margin: 0 auto;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 1rem;
-  }
-  .hub-footer-logo {
-    font-family: 'Cinzel', serif;
-    font-size: 1rem; font-weight: 600;
-    letter-spacing: 0.28em; text-transform: uppercase;
-    color: rgba(200,150,42,0.7); text-decoration: none;
-    transition: color 0.2s;
-  }
-  .hub-footer-logo:hover { color: rgba(200,150,42,0.95); }
-  .hub-footer-tagline {
-    font-size: 0.875rem; font-weight: 300;
-    color: rgba(255,255,255,0.5); letter-spacing: 0.04em;
-  }
-  .hub-footer-nav {
-    display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 0.3rem 1.8rem;
-  }
-  .hub-footer-nav a {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.5); text-decoration: none;
-    transition: color 0.2s;
-  }
-  .hub-footer-nav a:hover { color: rgba(200,150,42,0.8); }
-  .hub-footer-copy {
-    font-size: 0.75rem; color: rgba(255,255,255,0.45);
-    letter-spacing: 0.05em;
-  }
-
-  /* ── ABOUT CONNECTOR SECTION ─────────────────────────────────────── */
-  .about-connector {
-    background: #07090f;
-    border-top: 1px solid rgba(200,150,42,0.1);
-    padding: 6rem 3rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .about-connector::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(20,35,70,0.5) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .about-inner {
-    max-width: 860px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-  .about-eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: rgba(200,150,42,0.75);
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  .about-heading {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.75rem, 3.5vw, 2.6rem);
-    font-weight: 400;
-    color: rgba(255,255,255,0.88);
-    line-height: 1.3;
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  .about-heading em {
-    font-style: italic;
-    color: #C4973A;
-  }
-  .about-body {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 300;
-    color: rgba(255,255,255,0.65);
-    line-height: 1.85;
-    text-align: center;
-    max-width: 680px;
-    margin: 0 auto 3rem;
-  }
-  .about-divider-glyph {
-    text-align: center;
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    color: rgba(200,150,42,0.25);
-    letter-spacing: 0.5em;
-    margin: 2.5rem 0;
-  }
-  .about-two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-    margin-top: 2rem;
-  }
-  @media (max-width: 640px) {
-    .about-two-col { grid-template-columns: 1fr; gap: 2rem; }
-    .about-connector { padding: 4rem 1.5rem; }
-  }
-  .about-card {
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(200,150,42,0.1);
-    border-radius: 6px;
-    padding: 2rem;
-    text-decoration: none;
-    display: block;
-    transition: border-color 0.25s, background 0.25s, transform 0.2s;
-  }
-  .about-card:hover {
-    border-color: rgba(200,150,42,0.28);
-    background: rgba(255,255,255,0.04);
-    transform: translateY(-2px);
-  }
-  .about-card-tag {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-  .about-card-tag.tag-bbos  { color: rgba(200,150,42,0.92); }
-  .about-card-tag.tag-moon  { color: rgba(163,180,151,0.92); }
-  .about-card-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: rgba(255,255,255,0.82);
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
-  }
-  .about-card-desc {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 300;
-    color: rgba(255,255,255,0.58);
-    line-height: 1.75;
-  }
-  .about-card-arrow {
-    display: block;
-    margin-top: 1.25rem;
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .about-card.card-bbos .about-card-arrow { color: rgba(200,150,42,0.78); }
-  .about-card.card-moon .about-card-arrow { color: rgba(163,180,151,0.78); }
-
-  /* ── DARK MODE (hub is already dark — confirm for OS-level awareness) */
-  :root { color-scheme: dark; }
-  @media (prefers-color-scheme: light) {
-    /* Gateway is intentionally dark. On light OS, keep the palette
-       but ensure text contrast is not harmed */
-    .about-body { color: rgba(255,255,255,0.55); }
-  }
-
-  .scroll-hint {
-    position: fixed;
-    bottom: 2.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    opacity: 0.45;
-    animation: hintBob 2.5s ease-in-out infinite;
-    pointer-events: none;
-    transition: opacity 0.4s;
-  }
-  .scroll-hint.hidden { opacity: 0; }
-  .scroll-hint-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(200,150,42,0.7);
-  }
-  .scroll-hint-arrow {
-    width: 18px; height: 18px;
-    border-right: 1px solid rgba(200,150,42,0.5);
-    border-bottom: 1px solid rgba(200,150,42,0.5);
-    transform: rotate(45deg);
-  }
-  @keyframes hintBob {
-    0%,100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(6px); }
-  }
-  @media (max-width: 768px) { .scroll-hint { display: none; } }
+/* ═══════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════ */
+@media (max-width: 640px) {
+  .section { padding: 60px 20px; }
+  .fork-container { flex-direction: column; align-items: center; }
+  .fork-path { min-width: 100%; max-width: 320px; }
+  .project-card { padding: 28px 24px; }
+  .after-pillars { grid-template-columns: 1fr; }
+  .direct-grid { grid-template-columns: 1fr; }
+  .direct-card { padding: 36px 28px; }
+  .before-item { padding: 16px 18px; }
+}
 </style>
-
-<link rel="stylesheet" href="/assets/css/site.css">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://hub.ogden.ag">
-<meta property="og:title" content="OGDEN — Build Business On Soul">
-<meta property="og:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
-<meta property="og:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="OGDEN — Build Business On Soul">
-<meta name="twitter:description" content="Home of BBOS and The Moontrance Collective. Strategic precision meets soul-led execution.">
-<meta name="twitter:image" content="https://hub.ogden.ag/assets/og/ogden-hub.jpg">
-<meta name="theme-color" content="#080810">
 </head>
 <body>
-<div id="page-veil"></div>
 
-<nav class="top-nav" role="navigation" aria-label="Main navigation">
-  <ul class="nav-side nav-left">
-    <li><a href="bbos/">What is BBOS</a></li>
-    <li><a href="bbos/project/">Systems</a></li>
-  </ul>
-  <a href="./" class="nav-brand">OGDEN</a>
-  <ul class="nav-side nav-right">
-    <li><a href="moontrance/">Moontrance</a></li>
-    <li><a href="moontrance/acquisition/">Find Land</a></li>
-  </ul>
-</nav>
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
 
-<div class="scroll-hint" id="scrollHint" aria-hidden="true"><span class="scroll-hint-label">Scroll</span><div class="scroll-hint-arrow"></div></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- Back Button -->
+<button class="back-btn" id="backBtn" onclick="goHome()">← Back</button>
 
+<!-- ═══════════════════════════════════
+     HERO — THE OPENING
+     ═══════════════════════════════════ -->
+<section class="section" id="hero">
+  <div>
+    <p class="hero-eyebrow">Barakah · Land · Community</p>
 
+    <h1 class="hero-title">
+      What if the work you do<br>
+      could be <em>an act of worship?</em>
+    </h1>
 
-<main id="main-content" aria-label="Main content">
-<h1 class="visually-hidden">OGDEN — Build Business On Soul &amp; The Moontrance Collective</h1>
-<div class="gateway">
+    <p class="hero-subtitle">
+      Three projects. One vision. A life built on land held in trust,
+      business guided by divine names, and community rooted in covenant.
+    </p>
 
-  <div class="panel panel-bbos" data-href="bbos/">
-    <div class="bbos-grid"></div>
-    <div class="panel-content">
-      <div class="bbos-eyebrow">Strategy · Systems · Soul</div>
-      <h2 class="bbos-title">Build Business<br><em>On Soul</em></h2>
-      <p class="panel-tagline bbos-tagline">A comprehensive operating system for the soul-centered entrepreneur. Precision without the cage.</p>
-      <a href="bbos/" class="panel-cta cta-bbos">Enter BBOS →</a>
+    <div class="fork-container">
+      <a class="fork-path" href="#before" onclick="startJourney(event)">
+        <span class="fork-label">I'm New Here</span>
+        <span class="fork-desc">Start from the beginning</span>
+      </a>
+      <a class="fork-path" href="#direct-nav" onclick="showDirect(event)">
+        <span class="fork-label">Take Me There</span>
+        <span class="fork-desc">BBOS · Moontrance · Atlas</span>
+      </a>
     </div>
-    <div class="panel-idle-label">BBOS</div>
   </div>
 
-  <div class="divider"></div>
-  <div class="ogden-mark">
-    <div class="ogden-ring"><span class="ogden-letter">O</span></div>
+  <div class="scroll-hint" id="scrollHint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
+</section>
 
-  <div class="panel panel-moon" data-href="moontrance/">
-    <div class="stars" id="stars"></div>
-    <div class="moon-orb"></div>
-    <div class="panel-content">
-      <div class="moon-eyebrow">Agritourism · Land · Ontario</div>
-      <h2 class="moon-title">The Moontrance<br><em>Collective</em></h2>
-      <p class="panel-tagline moon-tagline">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors.</p>
-      <a href="moontrance/" class="panel-cta cta-moon">Enter the Collective →</a>
+<!-- ═══════════════════════════════════
+     STORY JOURNEY — For New Visitors
+     ═══════════════════════════════════ -->
+<div id="story-journey">
+
+  <!-- THE BEFORE — Name the world as it is -->
+  <section class="section" id="before">
+    <div class="section-content">
+      <p class="section-tag">The world as it is</p>
+      <div class="section-divider"></div>
+
+      <p class="before-text">
+        Most of us were handed a model that was <strong>never designed for us</strong>.
+      </p>
+
+      <div class="before-list">
+        <div class="before-item">
+          <span class="num">01</span>
+          <p>Build a business — but detach it from your soul. Growth at any cost. Revenue is the only measure of success.</p>
+        </div>
+        <div class="before-item">
+          <span class="num">02</span>
+          <p>Buy land — with debt you were told not to carry. Build wealth on a foundation your tradition calls harm.</p>
+        </div>
+        <div class="before-item">
+          <span class="num">03</span>
+          <p>Find community — in borrowed spaces, scattered across cities, connected by group chats that go quiet.</p>
+        </div>
+      </div>
     </div>
-    <div class="panel-idle-label">Moontrance</div>
-  </div>
+  </section>
+
+  <!-- THE TURNING POINT -->
+  <section class="section" id="turning">
+    <div class="section-content">
+      <p class="section-tag">The question that changed everything</p>
+      <div class="section-divider"></div>
+
+      <p class="turning-text">
+        What if <em>taqwa</em> wasn't just personal piety — <br>
+        but the operating system for everything you build?
+      </p>
+
+      <p class="turning-sub">
+        What if the names of Allah weren't just recited but <em>lived through</em> — 
+        in how you qualify a client, structure an offer, steward a piece of land,
+        and bind a community together?
+      </p>
+    </div>
+  </section>
+
+  <!-- THE AFTER — The world being built -->
+  <section class="section" id="after">
+    <div class="section-content">
+      <p class="section-tag">The world being built</p>
+      <div class="section-divider"></div>
+
+      <p class="after-statement">
+        This is not a theory. It's being built — <br>
+        one document, one acre, one covenant at a time.
+      </p>
+
+      <div class="after-pillars">
+        <div class="pillar">
+          <p class="pillar-icon">Business</p>
+          <h3>Business as Ibadah</h3>
+          <p>A nine-stage operating system where each phase is governed by specific divine attributes. Not productivity advice. A complete spiritual-operational architecture.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-icon">Land</p>
+          <h3>Land Held in Trust</h3>
+          <p>Riba-free acquisition. A Waqf conversion clause from day one. Intelligence-driven site selection that respects the land before anything is placed on it.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-icon">Community</p>
+          <h3>Community as Covenant</h3>
+          <p>Not a neighbourhood. A founding covenant. Shura governance with an Amir. Tiered membership. A community that begins with shared principles, not shared postcode.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE BRIDGE — Three Projects -->
+  <section class="section" id="bridge" style="min-height: auto; padding-top: 120px; padding-bottom: 120px;">
+    <div class="section-content">
+      <p class="section-tag">The vehicles</p>
+      <div class="section-divider"></div>
+
+      <p class="bridge-intro">
+        Three projects, each one a different face<br>
+        of the same unified vision.
+      </p>
+
+      <div class="project-cards">
+        <a class="project-card" data-project="bbos" href="#">
+          <div class="project-card-header">
+            <span class="project-card-name">BBOS</span>
+            <span class="project-card-tag">Operating System</span>
+          </div>
+          <p class="project-card-desc">
+            The Barakah Business Operating System. Nine stages from intake to optimization,
+            each governed by the Asmaul Husna. Built on the framework of
+            <em>takhallaq bi akhlāq Allāh</em> — adorning your conduct with divine qualities.
+          </p>
+          <p class="project-card-line">"What does it look like when Al-Hakeem governs your strategy?"</p>
+        </a>
+
+        <a class="project-card" data-project="moontrance" href="#">
+          <div class="project-card-header">
+            <span class="project-card-name">Moontrance Collective</span>
+            <span class="project-card-tag">Land & Community</span>
+          </div>
+          <p class="project-card-desc">
+            An intentional Muslim community and agritourism venture in Ontario.
+            Two-entity legal architecture. Zero debt against the land. Shura governance.
+            A Founding Covenant that precedes the first shovel.
+          </p>
+          <p class="project-card-line">"The community begins before the land is bought."</p>
+        </a>
+
+        <a class="project-card" data-project="atlas" href="#">
+          <div class="project-card-header">
+            <span class="project-card-name">OGDEN Atlas</span>
+            <span class="project-card-tag">Land Intelligence</span>
+          </div>
+          <p class="project-card-desc">
+            A land intelligence and design system supporting the Moontrance acquisition.
+            Soil, water, zoning, topology — mapped before a single commitment is made.
+            The land speaks first.
+          </p>
+          <p class="project-card-line">"Know the land before you ask anything of it."</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE INVITATION -->
+  <section class="section" id="invitation">
+    <div class="section-content">
+      <p class="section-tag">The invitation</p>
+      <div class="section-divider"></div>
+
+      <p class="invitation-text">
+        This isn't looking for customers.<br>
+        It's looking for <em>co-creators</em>.
+      </p>
+
+      <p class="invitation-sub">
+        People of action who feel the misalignment in the current model
+        and want to build something that lasts — not just for a quarter,
+        but for generations.
+      </p>
+
+      <div class="invitation-cta">
+        <a class="cta-button" href="#">
+          <span>Begin a Conversation</span>
+          <svg class="cta-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
 </div>
 
-<script>
-const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
-(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
-window.addEventListener('scroll', function() {
-  var hint = document.getElementById('scrollHint');
-  if (hint && window.scrollY > 40) hint.classList.add('hidden');
-}, { passive: true });
-document.querySelectorAll('.panel,a').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='58px';ring.style.height='58px';ring.style.borderColor='rgba(200,150,42,0.45)'});
-  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(255,255,255,0.4)'});
-});
-const sc=document.getElementById('stars');
-for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${-Math.random()*5}s;--mn:${0.05+Math.random()*0.1};--mx:${0.3+Math.random()*0.5}`;sc.appendChild(s)}
-</script>
+<!-- ═══════════════════════════════════
+     DIRECT NAV — For Returning Visitors
+     ═══════════════════════════════════ -->
+<section class="section" id="direct-nav">
+  <div class="section-content" style="max-width: 960px;">
+    <p class="section-tag" style="margin-bottom: 3rem;">Choose your path</p>
 
-<section class="about-connector" aria-labelledby="about-heading">
-  <div class="about-inner">
-    <p class="about-eyebrow">One Ecosystem · Two Paths</p>
-    <h2 class="about-heading" id="about-heading">
-      Both sides of this house share<br><em>the same foundation</em>
-    </h2>
-    <p class="about-body">
-      BBOS and The Moontrance Collective are distinct in what they do — one is a business operating framework, the other is a land-based agritourism ecosystem. But they're not separate projects that happen to share a domain. They're two expressions of the same conviction: that the way you build something matters as much as what you build. That rigour and soul are not in tension. That a business, a land, a life — these can be structured with both precision and meaning.
-    </p>
-    <div class="about-divider-glyph">· · ·</div>
-    <p class="about-body" style="margin-bottom:0">
-      Whether you're here to build a business from honest foundations, or to find and activate land that can hold a community — you're in the right place.
-    </p>
-    <div class="about-two-col" style="margin-top:3rem">
-      <a href="bbos/" class="about-card card-bbos">
-        <span class="about-card-tag tag-bbos">BBOS · Framework</span>
-        <p class="about-card-name">Build Business On Soul</p>
-        <p class="about-card-desc">A nine-stage operating system for the soul-centred entrepreneur. Strategy, systems, and spiritual accountability — woven into a single coherent framework that takes you from first principles to sustainable, ethical revenue.</p>
-        <span class="about-card-arrow">Enter BBOS →</span>
+    <div class="direct-grid">
+      <a class="direct-card" data-project="bbos" href="#">
+        <span class="direct-card-stage">Operating System</span>
+        <h2>BBOS</h2>
+        <p>The Barakah Business Operating System. Nine stages. Governed by the Asmaul Husna. Business as an act of worship — with operational rigour to match the spiritual intent.</p>
+        <span class="direct-card-arrow">Enter → </span>
       </a>
-      <a href="moontrance/" class="about-card card-moon">
-        <span class="about-card-tag tag-moon">Moontrance · Land</span>
-        <p class="about-card-name">The Moontrance Collective</p>
-        <p class="about-card-desc">A grounded ecosystem for finding, evaluating, and activating agritourism land in Ontario's most promising rural corridors. Guest experiences, offer economics, and a structured acquisition toolkit — built for people who want to steward land with intention.</p>
-        <span class="about-card-arrow">Enter the Collective →</span>
+
+      <a class="direct-card" data-project="moontrance" href="#">
+        <span class="direct-card-stage">Land & Community</span>
+        <h2>Moontrance</h2>
+        <p>Intentional Muslim community and agritourism in Ontario. Riba-free land. Shura governance. A Founding Covenant. The community begins before the first acre is acquired.</p>
+        <span class="direct-card-arrow">Enter → </span>
+      </a>
+
+      <a class="direct-card" data-project="atlas" href="#">
+        <span class="direct-card-stage">Land Intelligence</span>
+        <h2>OGDEN Atlas</h2>
+        <p>Site selection and land design intelligence. Soil, water, zoning, topology — mapped and understood before any commitment. Let the land speak first.</p>
+        <span class="direct-card-arrow">Enter → </span>
       </a>
     </div>
   </div>
 </section>
 
-<footer class="hub-footer" role="contentinfo" aria-label="Site footer">
-  <div class="hub-footer-inner">
-    <a href="./" class="hub-footer-logo">OGDEN</a>
-    <p class="hub-footer-tagline">Build Business On Soul · The Moontrance Collective</p>
-    <nav class="hub-footer-nav" aria-label="Footer navigation">
-      <a href="bbos/">BBOS</a>
-      <a href="moontrance/">Moontrance</a>
-      <a href="moontrance/collective/">The Collective</a>
-      <a href="moontrance/acquisition/">Acquisition Hub</a>
-    </nav>
-    <p class="hub-footer-copy">© 2026 OGDEN. All rights reserved.</p>
-  </div>
+<!-- ═══════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════ -->
+<footer class="footer" id="footer">
+  <p class="footer-bismillah">Bismillāhi r-Raḥmāni r-Raḥīm</p>
+  <p class="footer-credit">Built with intention · Guided by divine names</p>
 </footer>
 
-
-
 <script>
-    // ── PAGE TRANSITION VEIL ──
-  (function () {
-    var veil = document.getElementById('page-veil');
-    if (!veil) return;
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+let currentPath = 'home'; // home | journey | direct
 
-        function clearVeil() {
-      veil.classList.remove('cleared');
-      veil.classList.remove('fade-active');
-      // Force browser repaint so opacity:1 is committed before transition starts
-      void veil.offsetHeight;
-      veil.classList.add('fade-active');
-      setTimeout(function () { veil.classList.add('cleared'); }, 30);
+// ═══════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════
+function startJourney(e) {
+  e.preventDefault();
+  currentPath = 'journey';
+  document.getElementById('story-journey').classList.remove('hidden');
+  document.getElementById('direct-nav').classList.remove('active');
+  document.getElementById('backBtn').classList.add('show');
+  document.getElementById('scrollHint').style.display = 'none';
+  
+  // Smooth scroll to first story section
+  setTimeout(() => {
+    document.getElementById('before').scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+function showDirect(e) {
+  e.preventDefault();
+  currentPath = 'direct';
+  document.getElementById('story-journey').classList.add('hidden');
+  document.getElementById('direct-nav').classList.add('active');
+  document.getElementById('backBtn').classList.add('show');
+  document.getElementById('scrollHint').style.display = 'none';
+  
+  setTimeout(() => {
+    document.getElementById('direct-nav').scrollIntoView({ behavior: 'smooth' });
+    // Trigger visibility
+    const content = document.querySelector('#direct-nav .section-content');
+    setTimeout(() => content.classList.add('visible'), 200);
+  }, 100);
+}
+
+function goHome() {
+  currentPath = 'home';
+  document.getElementById('story-journey').classList.add('hidden');
+  document.getElementById('direct-nav').classList.remove('active');
+  document.getElementById('backBtn').classList.remove('show');
+  document.getElementById('scrollHint').style.display = 'flex';
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════
+// SCROLL OBSERVER — Fade in sections
+// ═══════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
     }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: '0px 0px -60px 0px'
+});
 
-    clearVeil();
+document.querySelectorAll('.section-content').forEach(el => {
+  observer.observe(el);
+});
 
-    // Back/forward cache restore — re-run full clearVeil sequence
-    window.addEventListener('pageshow', function (e) {
-      if (e.persisted) { clearVeil(); }
-    });
+// ═══════════════════════════════
+// PROGRESS BAR
+// ═══════════════════════════════
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = total > 0 ? (scrolled / total) * 100 : 0;
+  document.getElementById('progressBar').style.width = progress + '%';
+});
 
-    function navigateTo(href) {
-      veil.classList.remove('cleared');
-      setTimeout(function () { window.location.href = href; }, 620);
-    }
-
-    document.addEventListener('click', function (e) {
-      var anchor = e.target.closest('a');
-      if (!anchor) return;
-      var href = anchor.getAttribute('href');
-      if (!href) return;
-      if (href.startsWith('#') || href.startsWith('http') || href.startsWith('//') || anchor.target === '_blank') return;
-      e.preventDefault();
-      navigateTo(href);
-    });
-
-    document.querySelectorAll('[data-href]').forEach(function (el) {
-      el.addEventListener('click', function (e) {
-        e.preventDefault();
-        navigateTo(el.dataset.href);
+// ═══════════════════════════════
+// STAGGERED BEFORE ITEMS
+// ═══════════════════════════════
+const beforeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const items = entry.target.querySelectorAll('.before-item');
+      items.forEach((item, i) => {
+        setTimeout(() => {
+          item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          item.style.opacity = '1';
+          item.style.transform = 'translateX(0)';
+        }, i * 200);
       });
-    });
-  })();
-</script>
-<script>
-  // ── HUB NAV ACTIVE STATE ON PANEL HOVER ──
-  (function () {
-    var bbosLinks  = document.querySelectorAll('.nav-left a');
-    var moonLinks  = document.querySelectorAll('.nav-right a');
-    var bboPanel   = document.querySelector('.panel-bbos');
-    var moonPanel  = document.querySelector('.panel-moon');
-
-    function setActive(links) {
-      bbosLinks.forEach(function(a) { a.classList.remove('nav-active'); });
-      moonLinks.forEach(function(a) { a.classList.remove('nav-active'); });
-      if (links) links.forEach(function(a) { a.classList.add('nav-active'); });
     }
+  });
+}, { threshold: 0.2 });
 
-    if (bboPanel) {
-      bboPanel.addEventListener('mouseenter', function() { setActive(bbosLinks); });
-      bboPanel.addEventListener('mouseleave', function() { setActive(null); });
-    }
-    if (moonPanel) {
-      moonPanel.addEventListener('mouseenter', function() { setActive(moonLinks); });
-      moonPanel.addEventListener('mouseleave', function() { setActive(null); });
-    }
-  })();
+document.querySelectorAll('.before-list').forEach(el => {
+  // Set initial state
+  el.querySelectorAll('.before-item').forEach(item => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(-12px)';
+  });
+  beforeObserver.observe(el);
+});
 
-</script>
-<script>
-
-  // ── ARIA ENHANCEMENTS ──
-  (function () {
-    // Nav landmarks
-    var nav = document.querySelector('nav, .top-nav');
-    if (nav && !nav.getAttribute('role')) nav.setAttribute('role', 'navigation');
-    if (nav && !nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Main navigation');
-
-    // Footer landmark
-    var footer = document.querySelector('footer, .site-footer');
-    if (footer && !footer.getAttribute('role')) footer.setAttribute('role', 'contentinfo');
-
-    // Main content landmark
-    var main = document.querySelector('main, .gateway, #hero, .hero, section');
-    if (main && main.tagName !== 'MAIN' && !main.getAttribute('role')) {
-      var mainEl = document.createElement('div');
-      // Wrap is too invasive — just mark the first section
-      main.setAttribute('role', 'main');
-    }
-
-    // Drawer ARIA
-    var drawer = document.querySelector('.nav-drawer');
-    var hamburger = document.querySelector('.nav-hamburger');
-    if (drawer) {
-      drawer.setAttribute('role', 'dialog');
-      drawer.setAttribute('aria-modal', 'true');
-      drawer.setAttribute('aria-label', 'Navigation menu');
-    }
-    if (hamburger) {
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.setAttribute('aria-haspopup', 'dialog');
-    }
-
-    // Update aria-expanded on hamburger toggle
-    if (hamburger && drawer) {
-      var mo = new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          if (m.attributeName === 'class') {
-            var isOpen = drawer.classList.contains('open');
-            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-          }
-        });
-      });
-      mo.observe(drawer, { attributes: true });
-    }
-
-    // Drawer close button wires to hamburger close
-    var closeBtn = document.querySelector('.drawer-close-btn');
-    var hamburgerBtn = document.querySelector('.nav-hamburger');
-    if (closeBtn && hamburgerBtn) {
-      closeBtn.addEventListener('click', function() { hamburgerBtn.click(); });
-    }
-
-    // FAQ accordion ARIA
-    document.querySelectorAll('.faq-item').forEach(function(item, i) {
-      var trigger = item.querySelector('.faq-question, [onclick], h3, button');
-      var content = item.querySelector('.faq-answer, .faq-body, p');
-      if (trigger && content) {
-        var id = 'faq-panel-' + i;
-        content.setAttribute('id', id);
-        trigger.setAttribute('aria-controls', id);
-        trigger.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
-        // Update on open/close
-        var faqObs = new MutationObserver(function() {
-          trigger.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
-        });
-        faqObs.observe(item, { attributes: true });
-      }
-    });
-
-    // Focus visible ring for keyboard nav
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Tab') document.body.classList.add('keyboard-nav');
-    });
-    document.addEventListener('mousedown', function() {
-      document.body.classList.remove('keyboard-nav');
-    });
-  })();
-
+// Initial state: story journey hidden
+document.getElementById('story-journey').classList.add('hidden');
 </script>
 </body>
 </html>
