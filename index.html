@@ -214,6 +214,7 @@ body::before {
   cursor: pointer;
   text-decoration: none;
   color: var(--cream);
+  font: inherit;
   transition: all 0.4s ease;
   min-width: 260px;
   text-align: center;
@@ -241,7 +242,7 @@ body::before {
 .fork-desc {
   position: relative;
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -262,7 +263,7 @@ body::before {
 }
 .scroll-hint span {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -284,7 +285,7 @@ body::before {
 
 .section-tag {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -369,6 +370,7 @@ body::before {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
   margin-top: 2rem;
+  list-style: none;
 }
 .pillar {
   padding: 32px 28px;
@@ -380,7 +382,7 @@ body::before {
 .pillar:hover { border-color: var(--green); transform: translateY(-2px); }
 .pillar-icon {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--green-light);
@@ -419,7 +421,7 @@ body::before {
 
 .project-card {
   padding: 40px 36px;
-  border: 1px solid #2a2720;
+  border: 1px solid #6a655e;
   border-radius: 3px;
   background: var(--bg-card);
   cursor: pointer;
@@ -442,7 +444,7 @@ body::before {
 .project-card[data-project="bbos"]::after { background: var(--gold); }
 .project-card[data-project="moontrance"]::after { background: var(--green); }
 .project-card[data-project="atlas"]::after { background: var(--cream-dim); }
-.project-card:hover { border-color: #3a3730; background: var(--bg-card-hover); transform: translateY(-3px); }
+.project-card:hover { border-color: #8a7e70; background: var(--bg-card-hover); transform: translateY(-3px); }
 .project-card:hover::after { transform: scaleX(1); }
 
 .project-card-header {
@@ -461,12 +463,12 @@ body::before {
 .project-card[data-project="moontrance"] .project-card-name { color: var(--green-light); }
 .project-card-tag {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
   padding: 4px 10px;
-  border: 1px solid #2a2720;
+  border: 1px solid #6a655e;
   border-radius: 1px;
 }
 .project-card-desc {
@@ -553,10 +555,14 @@ body::before {
   gap: 28px;
   max-width: 960px;
   width: 100%;
+  list-style: none;
+}
+.direct-grid li {
+  display: contents;
 }
 .direct-card {
   padding: 48px 36px;
-  border: 1px solid #2a2720;
+  border: 1px solid #6a655e;
   border-radius: 3px;
   background: var(--bg-card);
   cursor: pointer;
@@ -577,11 +583,11 @@ body::before {
 .direct-card[data-project="bbos"]::before { background: var(--gold); }
 .direct-card[data-project="moontrance"]::before { background: var(--green); }
 .direct-card[data-project="atlas"]::before { background: var(--cream-dim); }
-.direct-card:hover { border-color: #3a3730; background: var(--bg-card-hover); transform: translateY(-4px); }
+.direct-card:hover { border-color: #8a7e70; background: var(--bg-card-hover); transform: translateY(-4px); }
 
 .direct-card-stage {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -605,7 +611,7 @@ body::before {
 .direct-card-arrow {
   margin-top: 24px;
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -622,12 +628,12 @@ body::before {
   top: 28px;
   left: 28px;
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
   background: var(--bg-deep);
-  border: 1px solid #2a2720;
+  border: 1px solid #6a655e;
   padding: 8px 16px;
   cursor: pointer;
   border-radius: 2px;
@@ -655,7 +661,7 @@ body::before {
 }
 .footer-credit {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -733,14 +739,14 @@ body::before {
     </p>
 
     <nav class="fork-container" aria-label="Choose your experience">
-      <a class="fork-path" href="#before" onclick="startJourney(event)" role="button">
+      <button class="fork-path" onclick="startJourney(event)" type="button">
         <span class="fork-label">I'm New Here</span>
         <span class="fork-desc">Start from the beginning</span>
-      </a>
-      <a class="fork-path" href="#direct-nav" onclick="showDirect(event)" role="button">
+      </button>
+      <button class="fork-path" onclick="showDirect(event)" type="button">
         <span class="fork-label">Take Me There</span>
         <span class="fork-desc">BBOS · Moontrance · Atlas</span>
-      </a>
+      </button>
     </nav>
   </div>
 
@@ -813,23 +819,23 @@ body::before {
         one document, one acre, one covenant at a time.
       </h2>
 
-      <div class="after-pillars" role="list">
-        <article class="pillar" role="listitem">
+      <ul class="after-pillars">
+        <li class="pillar">
           <p class="pillar-icon" aria-hidden="true">Business</p>
           <h3>Business as Ibadah</h3>
           <p>A nine-stage operating system where each phase is governed by specific divine attributes. Not productivity advice. A complete spiritual-operational architecture.</p>
-        </article>
-        <article class="pillar" role="listitem">
+        </li>
+        <li class="pillar">
           <p class="pillar-icon" aria-hidden="true">Land</p>
           <h3>Land Held in Trust</h3>
           <p>Riba-free acquisition. A Waqf conversion clause from day one. Intelligence-driven site selection that respects the land before anything is placed on it.</p>
-        </article>
-        <article class="pillar" role="listitem">
+        </li>
+        <li class="pillar">
           <p class="pillar-icon" aria-hidden="true">Community</p>
           <h3>Community as Covenant</h3>
           <p>Not a neighbourhood. A founding covenant. Shura governance with an Amir. Tiered membership. A community that begins with shared principles, not shared postcode.</p>
-        </article>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -922,30 +928,36 @@ body::before {
      ═══════════════════════════════════ -->
 <section class="section" id="direct-nav" aria-label="Project navigation" aria-hidden="true" tabindex="-1">
   <div class="section-content" style="max-width: 960px;">
-    <h2 class="section-tag" style="margin-bottom: 3rem; font-size: 0.6rem;">Choose your path</h2>
+    <h2 class="section-tag" style="margin-bottom: 3rem;">Choose your path</h2>
 
-    <div class="direct-grid" role="list">
-      <a class="direct-card" data-project="bbos" href="#" role="listitem" aria-label="Enter BBOS — the Barakah Business Operating System">
-        <span class="direct-card-stage">Operating System</span>
-        <h3>BBOS</h3>
-        <p>The Barakah Business Operating System. Nine stages. Governed by the Asmaul Husna. Business as an act of worship — with operational rigour to match the spiritual intent.</p>
-        <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
-      </a>
+    <ul class="direct-grid">
+      <li>
+        <a class="direct-card" data-project="bbos" href="#" aria-label="Enter BBOS — the Barakah Business Operating System">
+          <span class="direct-card-stage">Operating System</span>
+          <h3>BBOS</h3>
+          <p>The Barakah Business Operating System. Nine stages. Governed by the Asmaul Husna. Business as an act of worship — with operational rigour to match the spiritual intent.</p>
+          <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
+        </a>
+      </li>
 
-      <a class="direct-card" data-project="moontrance" href="#" role="listitem" aria-label="Enter Moontrance — intentional Muslim community">
-        <span class="direct-card-stage">Land &amp; Community</span>
-        <h3>Moontrance</h3>
-        <p>Intentional Muslim community and agritourism in Ontario. Riba-free land. Shura governance. A Founding Covenant. The community begins before the first acre is acquired.</p>
-        <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
-      </a>
+      <li>
+        <a class="direct-card" data-project="moontrance" href="#" aria-label="Enter Moontrance — intentional Muslim community">
+          <span class="direct-card-stage">Land &amp; Community</span>
+          <h3>Moontrance</h3>
+          <p>Intentional Muslim community and agritourism in Ontario. Riba-free land. Shura governance. A Founding Covenant. The community begins before the first acre is acquired.</p>
+          <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
+        </a>
+      </li>
 
-      <a class="direct-card" data-project="atlas" href="#" role="listitem" aria-label="Enter Atlas — land intelligence system">
-        <span class="direct-card-stage">Land Intelligence</span>
-        <h3>Atlas</h3>
-        <p>Site selection and land design intelligence. Soil, water, zoning, topology — mapped and understood before any commitment. Let the land speak first.</p>
-        <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
-      </a>
-    </div>
+      <li>
+        <a class="direct-card" data-project="atlas" href="#" aria-label="Enter Atlas — land intelligence system">
+          <span class="direct-card-stage">Land Intelligence</span>
+          <h3>Atlas</h3>
+          <p>Site selection and land design intelligence. Soil, water, zoning, topology — mapped and understood before any commitment. Let the land speak first.</p>
+          <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
+        </a>
+      </li>
+    </ul>
   </div>
 </section>
 
