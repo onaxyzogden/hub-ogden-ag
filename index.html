@@ -44,7 +44,7 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-dim) var(--bg-deep);
-  scroll-snap-type: y proximity;
+  scroll-snap-type: y mandatory;
 }
 
 /* ═══════════════════════════════
@@ -57,7 +57,7 @@ html {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  html { scroll-behavior: auto; scroll-snap-type: none; }
+  html { scroll-behavior: auto; scroll-snap-type: none !important; }
   .section-content { opacity: 1 !important; transform: none !important; }
   .before-item { opacity: 1 !important; transform: none !important; }
 }

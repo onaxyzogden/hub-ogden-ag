@@ -8,9 +8,9 @@
 <style>
 :root { --bg-deep: #0a0a08; --bg-card: #161612; --bg-card-hover: #1c1c17; --green: #5a9469; --green-light: #7db68c; --green-mid: #4a8058; --green-dim: #3d6b4a; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #7db68c; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--green-dim) var(--bg-deep); scroll-snap-type: y proximity; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-snap-type: none; } .section-content { opacity: 1 !important; transform: none !important; } }
-body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--green-dim) var(--bg-deep); scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch;}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html, body { scroll-snap-type: none !important; } .section-content { opacity: 1 !important; transform: none !important; } }
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; scroll-snap-type: y mandatory;}
 body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
 .skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--green-light); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10000; border-radius: 2px; }
 .skip-link:focus { top: 16px; }
