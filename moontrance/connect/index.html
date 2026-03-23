@@ -24,10 +24,10 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 
 .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 10050; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 52px; background: rgba(10, 10, 8, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(106, 101, 94, 0.2); }
 .site-header-left { display: flex; align-items: center; gap: 16px; }
-.site-logo { font-family: var(--mono); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream); text-decoration: none; transition: color 0.3s ease; }
+.site-logo { font-family: var(--mono); font-size: 0.9rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream); text-decoration: none; transition: color 0.3s ease; }
 .site-logo:hover { color: var(--green-light); }
 .site-header-sep { width: 1px; height: 16px; background: rgba(106, 101, 94, 0.4); }
-.site-header-link { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
+.site-header-link { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
 .site-header-link:hover { color: var(--cream); }
 .site-header-link.project-active { color: var(--cream); }
 @media (max-width: 640px) { .site-header-left { gap: 10px; } .site-header-link { display: none; } }
@@ -37,14 +37,14 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 .section-content { max-width: 800px; width: 100%; opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
 .section-content.visible { opacity: 1; transform: translateY(0); }
 .section-divider { width: 60px; height: 1px; background: var(--green-mid); margin: 0 auto 3rem; }
-.section-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; text-align: center; }
+.section-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; text-align: center; }
 .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 1s 1.5s ease both; }
-.scroll-hint span { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
+.scroll-hint span { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
 .scroll-chevron { animation: bounce 2s ease-in-out infinite; }
 .scroll-chevron svg { display: block; }
 
 #hero { text-align: center; background: radial-gradient(ellipse 60% 50% at 50% 40%, #0f150e 0%, var(--bg-deep) 100%); }
-.hero-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s 0.2s ease both; }
+.hero-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s 0.2s ease both; }
 .hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.2; color: var(--green-light); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
 .hero-sub { font-family: var(--sans); font-weight: 300; font-size: 1.05rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; opacity: 0; animation: fadeUp 1s 0.8s ease both; }
 .heading { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 300; line-height: 1.6; text-align: center; color: var(--cream); margin-bottom: 2.5rem; }
@@ -52,9 +52,9 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 .covenant-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 2rem; }
 .covenant-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border-left: 2px solid var(--green-dim); transition: border-color 0.3s ease; }
 .covenant-item:hover { border-color: var(--green-light); }
-.covenant-item .num { font-family: var(--mono); font-size: 0.7rem; color: var(--green-mid); min-width: 20px; padding-top: 2px; }
+.covenant-item .num { font-family: var(--mono); font-size: 0.8rem; color: var(--green-mid); min-width: 20px; padding-top: 2px; }
 .covenant-item h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
-.covenant-item p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.covenant-item p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
 
 .cta-section { text-align: center; }
 .cta-text { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; }
@@ -68,9 +68,9 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 .footer { text-align: center; padding: 100px 24px 60px; border-top: 1px solid #1a1815; scroll-snap-align: end; }
 .footer-arabic { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.8; color: var(--green-light); margin-bottom: 16px; direction: rtl; }
 .footer-transliteration { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--green-mid); margin-bottom: 8px; }
-.footer-translation { font-family: var(--sans); font-size: 0.85rem; font-weight: 300; color: var(--text-secondary); margin-bottom: 40px; }
+.footer-translation { font-family: var(--sans); font-size: 0.9rem; font-weight: 300; color: var(--text-secondary); margin-bottom: 40px; }
 .footer-divider { width: 40px; height: 1px; background: var(--green-mid); margin: 0 auto 40px; }
-.footer-credit { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
+.footer-credit { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
 
 .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--green-light); z-index: 1000; width: 0%; transition: width 0.1s linear; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; } }
@@ -142,7 +142,7 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 
     <p class="cta-sub">No forms. No applications. Just an honest conversation between people who might build something together. Tell us about yourself, what drew you here, and what you'd bring to the founding.</p>
 
-    <a class="cta-button" href="mailto:yousef@ogden.ag?subject=Moontrance%20—%20Founding%20Interest" aria-label="Send an email to begin a conversation"><span>Begin a Conversation</span></a>
+    <a class="cta-button" href="/cdn-cgi/l/email-protection#5f26302a2c3a391f30383b3a31713e38602c2a3d353a3c2b62123030312b2d3e313c3a7a6d6fbddfcb7a6d6f19302a313b3631387a6d6f16312b3a2d3a2c2b" aria-label="Send an email to begin a conversation"><span>Begin a Conversation</span></a>
   </div>
 </section>
 
@@ -151,7 +151,7 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
   <div class="section-content" style="text-align: center;">
     <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
     <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
-    <p style="font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-muted);">Sahih Muslim · 1631</p>
+    <p style="font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-muted);">Sahih Muslim · 1631</p>
   </div>
 </section>
 
@@ -165,11 +165,8 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
   <p class="footer-credit">Built with intention · Guided by divine names</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 document.querySelectorAll('.section-content').forEach(el => observer.observe(el));
 window.addEventListener('scroll', () => { const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100; document.getElementById('progressBar').style.width = Math.min(p, 100) + '%'; });
-document.addEventListener('click', function(e) { const link = e.target.closest('a[href]'); if (!link) return; const href = link.getAttribute('href'); if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return; if (e.metaKey || e.ctrlKey || e.shiftKey) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; e.preventDefault(); document.body.classList.add('page-leaving'); setTimeout(function() { window.location.href = href; }, 400); });
-</script>
-</body>
-</html>
+document.addEventListener('click', function(e) { const link = e.target.closest('a[href]'); if (!link) return; const href = link.getAttribute('href'); if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return; if (e.metaKey || e.ctrlKey || e.shiftKey) return; if (window.matchMedia('(prefers-reduced
