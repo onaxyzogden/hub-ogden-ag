@@ -3,1340 +3,1622 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OGDEN — BBOS · Moontrance · Atlas</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>OGDEN — Barakah · Land · Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-/* ═══════════════════════════════
-   DESIGN TOKENS
-   All contrast ratios verified against WCAG 2.1 AA (4.5:1 normal text, 3:1 large text)
-   ═══════════════════════════════ */
-:root {
-  --bg-deep: #0a0a08;
-  --bg-section: #0f0f0c;
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* noise overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.5;
+}
+
+/* ─── VIEW SYSTEM ─── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* view transition */
+@keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
+.view.active { animation: viewIn 0.5s ease forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .view.active { animation: none; }
+}
+
+
+/* ═══════════════════════════════════════════════
+   ① HERO VIEW — dark, atmospheric
+   Tokens matching index.html
+═══════════════════════════════════════════════ */
+#hero {
+  --bg: #0a0a08;
   --bg-card: #161612;
-  --bg-card-hover: #1c1c17;
-  /* Gold — adjusted for contrast */
-  --gold: #d4b45c;          /* ~7.2:1 on --bg-deep */
-  --gold-mid: #b89a44;      /* ~5.5:1 on --bg-deep */
-  --gold-dim: #9e8540;      /* ~4.6:1 on --bg-deep — meets AA normal */
-  --gold-glow: #c8a84e22;
-  /* Green — adjusted */
-  --green: #5a9469;         /* ~4.7:1 on --bg-deep */
-  --green-light: #7db68c;   /* ~6.5:1 on --bg-deep */
-  --green-dim: #3d6b4a;     /* decorative borders only */
-  /* Text — all AA compliant */
-  --cream: #e8e0d0;         /* ~13.2:1 on --bg-deep */
-  --cream-dim: #b8ae9e;     /* ~7.4:1 on --bg-deep */
-  --text-primary: #e8e0d0;
-  --text-secondary: #b8ae9e;
-  --text-muted: #8a7e70;    /* ~4.5:1 on --bg-deep */
-  /* Focus */
-  --focus-ring: #d4b45c;
-  /* Fonts */
+  --accent: #c8bca6;
+  --accent-mid: #a89c88;
+  --accent-dim: #8a7e6a;
+  --cream: #e8e0d0;
+  --cream-dim: #b8ae9e;
+  --muted: #8a7e70;
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'DM Sans', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', monospace;
-}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-html {
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gold-dim) var(--bg-deep);
-}
-
-/* ═══════════════════════════════
-   REDUCED MOTION (WCAG 2.3.3)
-   ═══════════════════════════════ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  html { scroll-behavior: auto;  }
-  .section-content { opacity: 1 !important; transform: none !important; }
-  .before-item { opacity: 1 !important; transform: none !important; }
-}
-
-body {
-  background: var(--bg-deep);
-  color: var(--text-primary);
+  background: var(--bg);
+  color: var(--cream);
   font-family: var(--sans);
   font-weight: 300;
-  line-height: 1.7;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Noise overlay (decorative) */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* ═══════════════════════════════
-   SKIP LINK (WCAG 2.4.1)
-   ═══════════════════════════════ */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 16px;
-  padding: 12px 24px;
-  background: var(--gold);
-  color: var(--bg-deep);
-  font-family: var(--sans);
-  font-weight: 500;
-  font-size: 0.9rem;
-  text-decoration: none;
-  z-index: 10000;
-  border-radius: 2px;
-  transition: top 0.2s ease;
-}
-.skip-link:focus { top: 16px; }
-
-/* ═══════════════════════════════
-   FOCUS INDICATORS (WCAG 2.4.7)
-   ═══════════════════════════════ */
-:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 3px;
-}
-.fork-path:focus-visible,
-.project-card:focus-visible,
-.direct-card:focus-visible,
-.cta-button:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 4px;
-}
-.back-btn:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-/* ═══════════════════════════════
-   SECTIONS
-   ═══════════════════════════════ */
-.section {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 80px 24px;
-  position: relative;
-}
-
-.section-content {
-  max-width: 800px;
-  width: 100%;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.section-content.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ═══════════════════════════════
-   HERO
-   ═══════════════════════════════ */
-#hero {
-  min-height: 100vh;
   justify-content: center;
-  text-align: center;
-  background: radial-gradient(ellipse 60% 50% at 50% 40%, #1a1812 0%, var(--bg-deep) 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 80px 24px 60px;
 }
 
-.hero-eyebrow {
+/* topographic contours */
+#hero-topo {
+  position: absolute; inset: 0; overflow: hidden;
+  opacity: 0.06; pointer-events: none;
+}
+#hero-topo svg { width: 100%; height: 100%; }
+
+/* hero background radial */
+#hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 45%, rgba(18,17,14,0.8) 0%, rgba(10,10,8,0.2) 60%),
+    radial-gradient(ellipse 40% 30% at 20% 20%, rgba(200,188,166,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  text-align: center;
+  max-width: 780px;
+  width: 100%;
+}
+
+.hero-tag {
   font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.35em;
+  font-size: 0.78rem;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--gold-dim);
-  margin-bottom: 2.5rem;
+  color: var(--accent-dim);
+  margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeUp 1s 0.3s ease both;
+  animation: fadeUp 0.9s 0.2s ease both;
 }
 
 .hero-title {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
   line-height: 1.15;
   color: var(--cream);
   margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
   opacity: 0;
-  animation: fadeUp 1s 0.6s ease both;
-}
-.hero-title .accent {
-  font-style: italic;
-  color: var(--gold);
+  animation: fadeUp 0.9s 0.5s ease both;
 }
 
-.hero-subtitle {
-  font-family: var(--sans);
-  font-weight: 300;
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  max-width: 520px;
+.hero-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--cream-dim);
+  max-width: 540px;
   margin: 0 auto 3.5rem;
   opacity: 0;
-  animation: fadeUp 1s 0.9s ease both;
+  animation: fadeUp 0.9s 0.8s ease both;
 }
 
-/* ═══════════════════════════════
-   FORK
-   ═══════════════════════════════ */
-.fork-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  opacity: 0;
-  animation: fadeUp 1s 1.2s ease both;
-}
-
-.fork-path {
-  position: relative;
-  padding: 28px 36px;
-  border: 1px solid var(--gold-mid);
-  border-radius: 2px;
-  background: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--cream);
-  font: inherit;
-  transition: all 0.4s ease;
-  min-width: 260px;
-  text-align: center;
-  overflow: hidden;
-}
-.fork-path::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--gold-glow), transparent);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.fork-path:hover { border-color: var(--gold); background: #1a1710; }
-.fork-path:hover::before { opacity: 1; }
-
-.fork-label {
-  position: relative;
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 400;
-  display: block;
-  margin-bottom: 6px;
-}
-.fork-desc {
-  position: relative;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-/* Scroll hint (decorative) */
-.scroll-hint {
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
+/* ─── HERO PATHWAY CARDS ─── */
+.hero-paths {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 16px;
+  max-width: 560px;
+  margin: 0 auto;
   opacity: 0;
-  animation: fadeUp 1s 1.8s ease both;
+  animation: fadeUp 0.9s 1.1s ease both;
 }
-.scroll-hint span {
+
+.hero-path-card {
+  padding: 28px 32px;
+  border: 1px solid rgba(200,188,166,0.18);
+  border-radius: 3px;
+  background: var(--bg-card);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.hero-path-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-path-card:hover {
+  border-color: var(--accent-dim);
+  background: #1c1c17;
+  transform: translateY(-2px);
+}
+
+.hero-path-card:hover::after { transform: scaleX(1); }
+
+.path-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.path-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.path-tag {
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 3px 9px;
+  border: 1px solid rgba(200,188,166,0.2);
+  border-radius: 1px;
+}
+
+.path-desc {
+  font-size: 0.88rem;
+  color: var(--cream-dim);
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+
+.path-sub-tags {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.hero-scroll-hint {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0;
+  animation: fadeUp 0.9s 1.5s ease both;
+}
+
+.hero-scroll-hint span {
+  font-family: var(--mono);
+  font-size: 0.72rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--text-muted);
-}
-.scroll-chevron {
-  animation: bounce 2s ease-in-out infinite;
-}
-.scroll-chevron svg {
-  display: block;
+  color: var(--muted);
 }
 
-/* ═══════════════════════════════
-   STORY JOURNEY
-   ═══════════════════════════════ */
-#story-journey { display: block; }
-#story-journey.hidden { display: none; }
+.scroll-chevron { animation: bounce 2s ease-in-out infinite; }
 
-.section-divider { width: 60px; height: 1px; background: var(--gold-mid); margin: 0 auto 3rem; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(6px); opacity: 1; } }
 
-.section-tag {
+@media (max-width: 640px) {
+  .hero-paths { gap: 12px; }
+  .hero-path-card { padding: 22px 22px; }
+  .path-header { flex-direction: column; gap: 8px; }
+}
+
+
+/* ═══════════════════════════════════════════════
+   ② JOURNEY VIEW — dark, index.html aesthetic
+═══════════════════════════════════════════════ */
+#journey {
+  --bg-deep: #0a0a08;
+  --bg-section: #0f0f0c;
+  --bg-card: #161612;
+  --bg-card-hover: #1c1c17;
+  --accent: #c8bca6;
+  --accent-mid: #a89c88;
+  --accent-dim: #8a7e6a;
+  --cream: #e8e0d0;
+  --cream-dim: #b8ae9e;
+  --muted: #8a7e70;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+
+  background: var(--bg-deep);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-weight: 300;
+}
+
+/* ─── JOURNEY NAV ─── */
+.j-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 52px;
+  background: rgba(10,10,8,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(200,188,166,0.1);
+}
+
+.j-nav-logo {
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cream);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.j-nav-logo:hover { color: var(--accent); }
+
+.j-nav-back {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.j-nav-back:hover { color: var(--accent); }
+
+/* progress bar */
+.j-progress {
+  position: fixed; top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  z-index: 300;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ─── JOURNEY SECTIONS ─── */
+.j-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 90px 24px 80px;
+  position: relative;
+}
+
+.j-section:nth-child(odd) { background: var(--bg-deep); }
+.j-section:nth-child(even) { background: var(--bg-section); }
+
+.j-content {
+  max-width: 800px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.j-content.visible { opacity: 1; transform: translateY(0); }
+
+.j-divider {
+  width: 56px; height: 1px;
+  background: var(--accent-mid);
+  margin: 0 auto 2.5rem;
+}
+
+.j-tag {
+  font-family: var(--mono);
+  font-size: 0.78rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--gold-dim);
-  margin-bottom: 2rem;
+  color: var(--accent-dim);
+  margin-bottom: 1.75rem;
   text-align: center;
 }
 
-/* Before */
-.before-text {
+.j-heading {
   font-family: var(--serif);
-  font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 300;
-  line-height: 1.6;
-  color: var(--cream-dim);
-  text-align: center;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  line-height: 1.35;
+  color: var(--cream);
   margin-bottom: 2rem;
+  text-align: center;
 }
-.before-text strong { color: var(--cream); font-weight: 400; }
 
-.before-list {
+.j-heading .accent {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.j-body {
+  font-size: 0.95rem;
+  color: var(--cream-dim);
+  line-height: 1.85;
+  text-align: center;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* ─── BEFORE LIST ─── */
+.j-before-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 2.5rem;
+}
+
+.j-before-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 22px;
+  border-left: 2px solid var(--muted);
+}
+
+.j-before-item .num {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  min-width: 18px;
+  padding-top: 2px;
+}
+
+.j-before-item p {
+  font-size: 0.9rem;
+  color: var(--cream-dim);
+  line-height: 1.7;
+}
+
+/* ─── JOURNEY PATHWAY CARDS (section-level) ─── */
+.j-pathways {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 2.5rem;
-  list-style: none;
-}
-.before-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px 24px;
-  border-left: 2px solid var(--text-muted);
-}
-.before-item .num {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  min-width: 20px;
-  padding-top: 2px;
-}
-.before-item p {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
 }
 
-/* Turning */
-.turning-text {
-  font-family: var(--serif);
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 300;
-  line-height: 1.5;
-  text-align: center;
-  color: var(--cream);
-}
-.turning-text .accent, .invitation-text .accent {
-  font-style: italic;
-  color: var(--gold);
-}
-.turning-sub {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  text-align: center;
-  margin-top: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* After */
-.after-statement {
-  font-family: var(--serif);
-  font-size: clamp(1.3rem, 2.8vw, 1.8rem);
-  font-weight: 300;
-  line-height: 1.6;
-  text-align: center;
-  color: var(--cream);
-  margin-bottom: 3rem;
-}
-
-.after-pillars {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
-  margin-top: 2rem;
-  list-style: none;
-}
-.pillar {
-  padding: 32px 28px;
-  border: 1px solid var(--green-dim);
-  border-radius: 2px;
-  background: linear-gradient(170deg, #11150f, var(--bg-card));
-  transition: all 0.4s ease;
-}
-.pillar:hover { border-color: var(--green); transform: translateY(-2px); }
-.pillar-icon {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--green-light);
-  margin-bottom: 12px;
-}
-.pillar h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 1.25rem;
-  color: var(--cream);
-  margin-bottom: 10px;
-}
-.pillar p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* Bridge — Project Cards */
-.bridge-intro {
-  font-family: var(--serif);
-  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-  font-weight: 300;
-  text-align: center;
-  color: var(--cream);
-  margin-bottom: 3.5rem;
-}
-
-.project-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.project-card {
-  padding: 40px 36px;
-  border: 1px solid #6a655e;
+.j-pathway-card {
+  padding: 32px 30px;
+  border: 1px solid rgba(200,188,166,0.18);
   border-radius: 3px;
   background: var(--bg-card);
   cursor: pointer;
   text-decoration: none;
   color: inherit;
   display: block;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative; overflow: hidden;
 }
-.project-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.project-card[data-project="bbos"]::after { background: var(--gold); }
-.project-card[data-project="moontrance"]::after { background: var(--green); }
-.project-card[data-project="atlas"]::after { background: var(--cream-dim); }
-.project-card:hover { border-color: #8a7e70; background: var(--bg-card-hover); transform: translateY(-3px); }
-.project-card:hover::after { transform: scaleX(1); }
 
-.project-card-header {
+.j-pathway-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.j-pathway-card:hover {
+  border-color: var(--accent-dim);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.j-pathway-card:hover::after { transform: scaleX(1); }
+
+.j-pathway-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
-.project-card-name {
+
+.j-pathway-name {
   font-family: var(--serif);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 400;
-  color: var(--cream);
+  color: var(--accent);
 }
-.project-card[data-project="bbos"] .project-card-name { color: var(--gold); }
-.project-card[data-project="moontrance"] .project-card-name { color: var(--green-light); }
-.project-card-tag {
+
+.j-pathway-tag {
   font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.3em;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 4px 10px;
-  border: 1px solid #6a655e;
+  color: var(--muted);
+  padding: 3px 9px;
+  border: 1px solid rgba(200,188,166,0.18);
   border-radius: 1px;
 }
-.project-card-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
+
+.j-pathway-desc {
+  font-size: 0.88rem;
+  color: var(--cream-dim);
   line-height: 1.7;
+  margin-bottom: 10px;
 }
-.project-card-line {
+
+.j-pathway-arrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  transition: color 0.3s;
+}
+
+.j-pathway-card:hover .j-pathway-arrow { color: var(--accent); }
+
+/* ─── HADITH SECTION ─── */
+.j-hadith-text {
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  line-height: 1.8;
+  color: var(--cream);
+  direction: rtl;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.j-hadith-translation {
   font-family: var(--serif);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-style: italic;
   color: var(--cream-dim);
-}
-
-/* Invitation */
-.invitation-text {
-  font-family: var(--serif);
-  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-  font-weight: 300;
-  line-height: 1.5;
+  max-width: 520px;
+  margin: 0 auto 10px;
+  line-height: 1.75;
   text-align: center;
-  color: var(--cream);
-  margin-bottom: 1.5rem;
 }
-.invitation-sub {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
+
+.j-hadith-source {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
   text-align: center;
-  margin-bottom: 3rem;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
 }
-.invitation-cta { display: flex; justify-content: center; }
 
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 40px;
-  border: 1px solid var(--gold);
-  border-radius: 2px;
-  background: transparent;
-  color: var(--gold);
-  font-family: var(--serif);
-  font-size: 1.1rem;
-  font-weight: 400;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-}
-.cta-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 0;
-}
-.cta-button:hover { color: var(--bg-deep); }
-.cta-button:hover::before { transform: scaleX(1); }
-.cta-button span { position: relative; z-index: 1; }
-.cta-arrow { position: relative; z-index: 1; transition: transform 0.3s ease; }
-.cta-button:hover .cta-arrow { transform: translateX(4px); }
-
-/* ═══════════════════════════════
-   DIRECT NAV
-   ═══════════════════════════════ */
-#direct-nav {
-  display: none;
-  min-height: 100vh;
-  background: var(--bg-section);
-}
-#direct-nav[aria-hidden="false"] { display: flex; }
-
-.direct-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 28px;
-  max-width: 960px;
-  width: 100%;
-  list-style: none;
-}
-.direct-grid li {
-  display: contents;
-}
-.direct-card {
-  padding: 48px 36px;
-  border: 1px solid #6a655e;
-  border-radius: 3px;
-  background: var(--bg-card);
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-}
-.direct-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-}
-.direct-card[data-project="bbos"]::before { background: var(--gold); }
-.direct-card[data-project="moontrance"]::before { background: var(--green); }
-.direct-card[data-project="atlas"]::before { background: var(--cream-dim); }
-.direct-card:hover { border-color: #8a7e70; background: var(--bg-card-hover); transform: translateY(-4px); }
-
-.direct-card-stage {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.direct-card h2 {
-  font-family: var(--serif);
-  font-size: 1.8rem;
-  font-weight: 400;
-  margin-bottom: 16px;
-}
-.direct-card[data-project="bbos"] h2 { color: var(--gold); }
-.direct-card[data-project="moontrance"] h2 { color: var(--green-light); }
-.direct-card[data-project="atlas"] h2 { color: var(--cream); }
-.direct-card p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  flex: 1;
-}
-.direct-card-arrow {
-  margin-top: 24px;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: color 0.3s ease;
-}
-.direct-card:hover .direct-card-arrow { color: var(--cream); }
-
-/* Back button */
-.back-btn {
-  position: fixed;
-  top: 28px;
-  left: 28px;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+/* ─── JOURNEY FOOTER ─── */
+.j-footer {
+  text-align: center;
+  padding: 80px 24px 56px;
+  border-top: 1px solid rgba(200,188,166,0.08);
   background: var(--bg-deep);
-  border: 1px solid #6a655e;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 2px;
-  z-index: 100;
-  display: none;
-  transition: all 0.3s ease;
 }
-.back-btn.show { display: block; }
-.back-btn:hover { color: var(--cream); border-color: var(--cream-dim); }
 
-/* ═══════════════════════════════
-   FOOTER
-   ═══════════════════════════════ */
-.footer {
-  text-align: center;
-  padding: 100px 24px 60px;
-  border-top: 1px solid #1a1815;
-}
-.footer-arabic {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
+.j-footer-arabic {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   line-height: 1.8;
-  color: var(--gold);
-  margin-bottom: 16px;
+  color: var(--accent);
+  margin-bottom: 12px;
   direction: rtl;
 }
-.footer-transliteration {
+
+.j-footer-transliteration {
   font-family: var(--serif);
-  font-size: 1rem;
   font-style: italic;
-  color: var(--gold-mid);
-  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: var(--accent-mid);
+  margin-bottom: 6px;
 }
-.footer-translation {
-  font-family: var(--sans);
-  font-size: 0.9rem;
+
+.j-footer-translation {
+  font-size: 0.88rem;
   font-weight: 300;
-  color: var(--text-secondary);
-  margin-bottom: 40px;
+  color: var(--cream-dim);
+  margin-bottom: 36px;
 }
-.footer-divider {
-  width: 40px;
-  height: 1px;
-  background: var(--gold-mid);
-  margin: 0 auto 40px;
+
+.j-footer-line {
+  width: 36px; height: 1px;
+  background: var(--accent-mid);
+  margin: 0 auto 36px;
 }
-.footer-credit {
+
+.j-footer-credit {
   font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.3em;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--muted);
 }
 
-/* Progress bar (decorative) */
-.progress-bar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--gold), var(--green));
-  z-index: 1000;
-  transition: width 0.1s linear;
-  width: 0%;
-}
-
-/* ═══════════════════════════════
-   ANIMATIONS
-   ═══════════════════════════════ */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; }
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  50% { transform: translateY(8px); opacity: 1; }
-}
-
-/* ═══════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════ */
 @media (max-width: 640px) {
-  .section { padding: 60px 20px; }
-  .fork-container { flex-direction: column; align-items: center; }
-  .fork-path { min-width: 100%; max-width: 320px; }
-  .project-card { padding: 28px 24px; }
-  .after-pillars { grid-template-columns: 1fr; }
-  .direct-grid { grid-template-columns: 1fr; }
-  .direct-card { padding: 36px 28px; }
-  .before-item { padding: 16px 18px; }
+  .j-section { padding: 80px 20px 70px; }
+  .j-pathway-card { padding: 24px 22px; }
+  .j-pathway-header { flex-direction: column; gap: 8px; }
+  .j-before-item { padding: 14px 16px; }
 }
 
 
-/* ═══════════ PAGE TRANSITIONS ═══════════ */
-body {
-  opacity: 0;
-  animation: pageIn 0.6s ease forwards;
-}
-body.page-leaving {
-  animation: pageOut 0.4s ease forwards;
-}
-@keyframes pageIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes pageOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  body { animation: none; opacity: 1; }
-  body.page-leaving { animation: none; }
+/* ═══════════════════════════════════════════════
+   ③ PRODUCTS VIEW — light parchment, BBOS aesthetic
+═══════════════════════════════════════════════ */
+#products {
+  --ink: #0e0d0b;
+  --parchment: #f5f0e8;
+  --bone: #ede7d9;
+  --dust: #d4c9b5;
+  --gold: #b8924a;
+  --gold-light: #d4aa66;
+  --gold-muted: #8a6b35;
+  --ember: #7a3b1e;
+  --moss: #3a4a35;
+  --deep: #1a1714;
+  --mid: #3d3830;
+  --soft: #6b6158;
+  --faint: #6e6358;
+  --line: rgba(184,146,74,0.2);
+  --line-soft: rgba(14,13,11,0.08);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.6;
 }
 
-
-/* ═══════════ SITE HEADER ═══════════ */
-.site-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 10050;
+/* ─── PRODUCTS NAV ─── */
+.p-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 24px; height: 52px;
-  background: rgba(10, 10, 8, 0.85);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(106, 101, 94, 0.2);
-}
-.site-header-left {
-  display: flex; align-items: center; gap: 16px;
-}
-.site-logo {
-  font-family: var(--mono); font-size: 0.9rem; font-weight: 400;
-  letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--cream, #e8e0d0); text-decoration: none; transition: color 0.3s ease;
-}
-.site-logo:hover { color: var(--gold, #d4b45c); }
-.site-header-sep { width: 1px; height: 16px; background: rgba(106, 101, 94, 0.4); }
-.site-header-link {
-  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--text-muted, #8a7e70);
-  text-decoration: none; transition: color 0.3s ease;
-}
-.site-header-link:hover { color: var(--cream, #e8e0d0); }
-.site-header-link.project-active { color: var(--cream, #e8e0d0); }
-.site-header-nav {
-  display: flex; align-items: center; gap: 20px; list-style: none;
-}
-.site-header-nav a {
-  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--text-muted, #8a7e70);
-  text-decoration: none; transition: color 0.3s ease; padding: 4px 0;
-}
-.site-header-nav a:hover { color: var(--cream, #e8e0d0); }
-.site-header-nav a.active, .site-header-nav a.section-active {
-  color: var(--cream, #e8e0d0); border-bottom: 1px solid var(--cream, #e8e0d0);
-}
-.site-header-toggle {
-  display: none; background: none; border: none;
-  color: var(--text-muted, #8a7e70); cursor: pointer; padding: 8px; font: inherit;
-}
-.site-header-toggle:hover { color: var(--cream, #e8e0d0); }
-@media (max-width: 640px) {
-  .site-header-left { gap: 10px; }
-  .site-header-link { display: none; }
-  .site-header-nav {
-    display: none; position: absolute; top: 52px; left: 0; right: 0;
-    flex-direction: column; background: rgba(10, 10, 8, 0.95);
-    backdrop-filter: blur(12px); padding: 16px 24px; gap: 12px;
-    border-bottom: 1px solid rgba(106, 101, 94, 0.2);
-  }
-  .site-header-nav.open { display: flex; }
-  .site-header-toggle { display: block; }
-}
-/* Offset content for fixed header */
-.section:first-of-type { padding-top: 132px; }
-
-
-/* ═══════════ MOBILE SCROLL FIX ═══════════ */
-@media (max-height: 750px), (max-width: 640px) {
-  .section { padding: 50px 20px; }
-  .section:first-of-type { padding-top: 80px; }
-  .scroll-hint { bottom: 12px; }
-  .fork-path { padding: 18px 24px; min-width: 100%; }
-  .fork-label { font-size: 1rem; }
-  .fork-desc { font-size: 0.75rem; }
-  .fork-container { gap: 12px; margin-top: 1.5rem; }
-  .hero-title, .hero-tag, .hero-sub { margin-bottom: 0.8rem; }
-  .before-list, .expect-list, .covenant-list { gap: 12px; }
-  .pathway-card { padding: 24px 20px; }
-  .exp-card { padding: 24px 20px; }
-  .tier-card { padding: 28px 22px; }
+  padding: 0 2.5rem; height: 52px;
+  background: rgba(245,240,232,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-soft);
 }
 
+.p-nav-mark {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; cursor: pointer;
+}
+
+.p-nav-symbol {
+  font-family: var(--serif);
+  font-size: 1rem; color: var(--gold);
+}
+
+.p-nav-name {
+  font-family: var(--mono);
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--mid);
+}
+
+.p-nav-back {
+  font-family: var(--mono);
+  font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--soft);
+  cursor: pointer; transition: color 0.2s;
+  text-decoration: none;
+}
+
+.p-nav-back:hover { color: var(--gold); }
+
+/* ─── MARQUEE BAND ─── */
+.p-band {
+  padding-top: 52px;
+  overflow: hidden;
+  background: var(--bone);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.p-band-track {
+  display: flex; gap: 3.5rem;
+  padding: 0.85rem 2.5rem;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.p-band-item {
+  font-family: var(--mono);
+  font-size: 0.72rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--faint);
+  flex-shrink: 0;
+}
+
+.p-band-item span { color: var(--gold-muted); }
+
+/* ─── PRODUCTS HEADER ─── */
+.p-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2.5rem 3rem;
+}
+
+.p-section-label {
+  font-family: var(--mono);
+  font-size: 0.72rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold-muted);
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+
+.p-section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--line); max-width: 120px;
+}
+
+.p-header h2 {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.18; color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.p-header h2 em { font-style: italic; color: var(--gold-muted); }
+
+.p-header-sub {
+  font-size: 1rem; color: var(--soft); line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ─── PRODUCT GRID ─── */
+.p-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem 5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border: 1px solid var(--dust);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ─── PRODUCT CARD (BBOS-style row layout) ─── */
+.p-card {
+  background: var(--parchment);
+  border-bottom: 1px solid var(--dust);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.p-card:last-child { border-bottom: none; }
+.p-card:hover { background: var(--bone); }
+
+.p-card-left {
+  padding: 3rem 3rem 3rem 2.5rem;
+  border-right: 1px solid var(--dust);
+  display: flex;
+  flex-direction: column;
+}
+
+.p-card-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-muted);
+  margin-bottom: 1.5rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line); border-radius: 2px;
+  width: fit-content;
+}
+
+.p-card-eyebrow span { color: var(--gold); }
+
+.p-card-name {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+  line-height: 1.1; color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.p-card-name em { font-style: italic; color: var(--gold-muted); }
+
+.p-card-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem; color: var(--soft);
+  margin-bottom: 1.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--line);
+  line-height: 1.7;
+}
+
+.p-card-prose {
+  font-size: 0.95rem; color: var(--mid);
+  line-height: 1.85; flex: 1;
+  margin-bottom: 2rem;
+}
+
+.p-card-prose p { margin-bottom: 1rem; }
+.p-card-prose strong { color: var(--ink); font-weight: 600; }
+
+.p-card-actions {
+  display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+}
+
+.btn-p-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--ink); color: var(--parchment);
+  padding: 0.75rem 1.75rem;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  text-decoration: none; border-radius: 2px;
+  border: 1.5px solid var(--ink);
+  transition: all 0.22s; cursor: pointer;
+}
+
+.btn-p-primary:hover { background: var(--gold-muted); border-color: var(--gold-muted); }
+
+.btn-p-secondary {
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--soft); text-decoration: none;
+  border-bottom: 1px solid var(--dust);
+  padding-bottom: 0.15rem;
+  transition: all 0.2s; cursor: pointer;
+}
+
+.btn-p-secondary:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ─── PRODUCT CARD RIGHT PANELS ─── */
+.p-card-right {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Stage panel — used for BBOS */
+.stage-panel {
+  border: 1px solid var(--dust);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(14,13,11,0.08);
+  flex: 1;
+}
+
+.stage-panel-header {
+  padding: 0.85rem 1.4rem;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.stage-panel-title {
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dust);
+}
+
+.stage-status {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: var(--mono); font-size: 0.72rem;
+  color: var(--gold-light); letter-spacing: 0.1em;
+}
+
+.status-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold-light);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.stage-list { padding: 0.25rem 0; }
+
+.stage-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  padding: 0.65rem 1.4rem;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background 0.15s; gap: 0.75rem;
+}
+
+.stage-item:last-child { border-bottom: none; }
+.stage-item:hover { background: rgba(184,146,74,0.04); }
+.stage-item.active { background: rgba(184,146,74,0.07); }
+
+.stage-code {
+  font-family: var(--mono); font-size: 0.7rem;
+  color: var(--gold-muted); letter-spacing: 0.1em;
+}
+
+.stage-name {
+  font-family: var(--sans); font-size: 0.82rem;
+  font-weight: 500; color: var(--ink); margin-bottom: 0.1rem;
+}
+
+.stage-attr {
+  font-family: var(--serif); font-style: italic;
+  font-size: 0.75rem; color: var(--faint);
+}
+
+.stage-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--dust);
+}
+
+.stage-dot.done { background: var(--gold); }
+.stage-dot.active { background: var(--gold-light); box-shadow: 0 0 5px var(--gold-light); animation: pulse 2s ease-in-out infinite; }
+.stage-dot.gate { background: var(--ember); }
+
+.amanah-notice {
+  padding: 0.75rem 1.4rem;
+  background: rgba(122,59,30,0.06);
+  border-top: 1px solid rgba(122,59,30,0.14);
+  display: flex; align-items: flex-start; gap: 0.5rem;
+}
+
+.amanah-icon { font-family: var(--serif); font-size: 0.82rem; color: var(--ember); flex-shrink: 0; }
+.amanah-text { font-family: var(--mono); font-size: 0.7rem; color: var(--ember); line-height: 1.6; letter-spacing: 0.03em; }
+
+/* Distinction cards — for Moontrance & Atlas */
+.distinction-stack {
+  display: flex; flex-direction: column; gap: 1rem; flex: 1;
+}
+
+.d-card {
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--dust); border-radius: 3px;
+  background: var(--bone); position: relative;
+}
+
+.d-card::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: var(--gold);
+}
+
+.d-card.ember::before { background: var(--ember); }
+.d-card.moss::before { background: var(--moss); }
+
+.d-label {
+  font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-muted); margin-bottom: 0.5rem;
+}
+
+.d-card.ember .d-label { color: var(--ember); }
+.d-card.moss .d-label { color: var(--moss); }
+
+.d-text {
+  font-family: var(--serif); font-style: italic;
+  font-size: 0.9rem; color: var(--mid); line-height: 1.65;
+}
+
+/* Spec grid — for Atlas phases */
+.spec-grid {
+  border: 1px solid var(--dust); border-radius: 3px;
+  overflow: hidden; flex: 1;
+}
+
+.spec-row {
+  display: grid; grid-template-columns: 120px 1fr;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.spec-row:last-child { border-bottom: none; }
+
+.spec-key {
+  padding: 0.85rem 1rem;
+  background: rgba(14,13,11,0.03);
+  border-right: 1px solid var(--line-soft);
+  font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--soft); display: flex; align-items: center;
+}
+
+.spec-val {
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem; color: var(--mid); line-height: 1.5;
+  display: flex; align-items: center;
+}
+
+.spec-val strong { color: var(--ink); font-weight: 500; }
+
+/* ─── DARK CTA (matches BBOS cta-section) ─── */
+.p-cta {
+  background: var(--ink);
+  padding: 5.5rem 0;
+}
+
+.p-cta-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  text-align: center;
+}
+
+.p-cta-arabic {
+  font-family: var(--serif);
+  font-size: 1.4rem; color: var(--gold-light);
+  direction: rtl; margin-bottom: 0.4rem; line-height: 2;
+}
+
+.p-cta-transliteration {
+  font-family: var(--serif); font-style: italic;
+  font-size: 0.82rem; color: rgba(245,240,232,0.6);
+  margin-bottom: 2.5rem;
+}
+
+.p-cta h2 {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 1.2; color: var(--parchment);
+  margin-bottom: 1.25rem;
+}
+
+.p-cta h2 em { font-style: italic; color: var(--gold-light); }
+
+.p-cta-desc {
+  font-size: 1rem; color: rgba(245,240,232,0.65);
+  line-height: 1.8; margin-bottom: 2.5rem;
+  max-width: 580px; margin-left: auto; margin-right: auto;
+}
+
+.p-cta-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 2rem; flex-wrap: wrap;
+}
+
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--ink);
+  padding: 0.9rem 2.2rem;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none; border-radius: 2px;
+  font-weight: 500; border: 1.5px solid var(--gold);
+  transition: all 0.22s; cursor: pointer;
+}
+
+.btn-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+.btn-ghost-light {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: rgba(245,240,232,0.8);
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer;
+  border-bottom: 1px solid rgba(245,240,232,0.3);
+  padding-bottom: 0.15rem;
+  transition: all 0.2s;
+}
+
+.btn-ghost-light:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+/* ─── PRODUCTS FOOTER ─── */
+.p-footer {
+  background: var(--deep);
+  padding: 2rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.p-footer-mark {
+  font-family: var(--mono); font-size: 0.72rem;
+  color: rgba(245,240,232,0.45); letter-spacing: 0.15em; text-transform: uppercase;
+}
+
+.p-footer-mark span { color: var(--gold-muted); }
+
+.p-footer-line {
+  font-family: var(--serif); font-style: italic;
+  font-size: 0.78rem; color: rgba(245,240,232,0.4);
+}
+
+/* ─── PRODUCTS RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .p-nav { padding: 0 1.25rem; }
+  .p-grid { margin: 0 1.5rem; }
+  .p-card { grid-template-columns: 1fr; }
+  .p-card-left { border-right: none; padding: 2rem 1.5rem; }
+  .p-card-right { padding: 0 1.5rem 2rem; border-top: 1px solid var(--dust); }
+  .stage-panel { max-height: 320px; overflow-y: auto; }
+  .p-header { padding: 4rem 1.5rem 2rem; }
+  .p-cta-inner { padding: 0 1.5rem; }
+  .p-footer { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .j-content { opacity: 1; transform: none; transition: none; }
+  .p-band-track { animation: none; }
+  .status-dot { animation: none; }
+  .stage-dot.active { animation: none; }
+}
 </style>
 </head>
 <body>
 
-<!-- Skip Link (WCAG 2.4.1) -->
-<a class="skip-link" href="#main-content">Skip to main content</a>
 
-<!-- Progress Bar (decorative — hidden from AT) -->
-<div class="progress-bar" id="progressBar" role="presentation" aria-hidden="true"></div>
+<!-- ═══════════════════════════════
+     ① HERO
+═══════════════════════════════ -->
+<div id="hero" class="view active" role="main">
 
-<!-- Back Button -->
-<button class="back-btn" id="backBtn" onclick="goHome()" aria-label="Return to home">
-  <span aria-hidden="true">←</span> Back
-</button>
-
-
-<header class="site-header" role="banner">
-  <div class="site-header-left">
-      <a class="site-logo" href="/">OGDEN</a>
-      <a class="site-header-link" href="/bbos/">BBOS</a>
-      <a class="site-header-link" href="/moontrance/">Moontrance</a>
-      <a class="site-header-link" href="/atlas/">Atlas</a>
+  <div id="hero-topo" aria-hidden="true">
+    <svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="700" cy="450" rx="680" ry="400" stroke="#c8bca6" stroke-width="0.6"/>
+      <ellipse cx="700" cy="450" rx="550" ry="300" stroke="#c8bca6" stroke-width="0.6"/>
+      <ellipse cx="700" cy="450" rx="420" ry="210" stroke="#c8bca6" stroke-width="0.6"/>
+      <ellipse cx="700" cy="450" rx="300" ry="135" stroke="#c8bca6" stroke-width="0.6"/>
+      <ellipse cx="700" cy="450" rx="190" ry="76" stroke="#c8bca6" stroke-width="0.6"/>
+      <ellipse cx="700" cy="450" rx="95" ry="36" stroke="#c8bca6" stroke-width="0.6"/>
+      <path d="M0 520 Q250 480 500 535 Q750 590 1000 510 Q1200 450 1400 520" stroke="#c8bca6" stroke-width="0.5"/>
+      <path d="M0 590 Q300 550 600 600 Q900 655 1200 580 Q1330 550 1400 590" stroke="#c8bca6" stroke-width="0.5"/>
+    </svg>
   </div>
-  
-</header>
 
-
-<main id="main-content">
-
-<!-- ═══════════════════════════════════
-     HERO
-     ═══════════════════════════════════ -->
-<section class="section" id="hero" aria-label="Introduction">
-  <div>
-    <p class="hero-eyebrow" aria-hidden="true">Barakah · Land · Community</p>
+  <div class="hero-inner">
+    <p class="hero-tag">Barakah · Land · Community</p>
 
     <h1 class="hero-title">
       Most of us were handed a model<br>
-      that was <span class="accent">never designed for us</span>.
+      that was <em>never designed for us</em>.
     </h1>
 
-    <p class="hero-subtitle">
+    <p class="hero-sub">
       The way we were taught to build businesses, buy land, and find community
       was built on assumptions that don't hold — not for how we want to live,
       and not for what we believe.
     </p>
 
-    <nav class="fork-container" aria-label="Choose your experience">
-      <button class="fork-path" onclick="startJourney(event)" type="button">
-        <span class="fork-label">I'm New Here</span>
-        <span class="fork-desc">Start from the beginning</span>
-      </button>
-      <button class="fork-path" onclick="showDirect(event)" type="button">
-        <span class="fork-label">Take Me There</span>
-        <span class="fork-desc">BBOS · Moontrance · Atlas</span>
-      </button>
+    <nav class="hero-paths" aria-label="Choose your path">
+
+      <a class="hero-path-card" onclick="showView('journey')" href="#" role="button" aria-label="Start from the beginning — read the full story">
+        <div class="path-header">
+          <span class="path-name">I'm New Here</span>
+          <span class="path-tag">The Story</span>
+        </div>
+        <p class="path-desc">Start from the beginning. Understand what OGDEN is, why it exists, and what it's building — before choosing where to enter.</p>
+        <span class="path-sub-tags">BBOS · Moontrance · Atlas — explained →</span>
+      </a>
+
+      <a class="hero-path-card" onclick="showView('products')" href="#" role="button" aria-label="Go directly to the three products">
+        <div class="path-header">
+          <span class="path-name">Take Me There</span>
+          <span class="path-tag">The Products</span>
+        </div>
+        <p class="path-desc">You know where you're going. Go directly to the three OGDEN systems and choose your entry point.</p>
+        <span class="path-sub-tags">BBOS · Moontrance · Atlas</span>
+      </a>
+
     </nav>
   </div>
 
-  <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+  <div class="hero-scroll-hint" aria-hidden="true">
     <span>Scroll</span>
-    <div class="scroll-chevron">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-        <path d="M6 9l6 6 6-6" stroke="var(--gold-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <span class="scroll-chevron">
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+        <path d="M1 1L8 8L15 1" stroke="#8a7e70" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
-    </div>
+    </span>
   </div>
-</section>
 
-<!-- ═══════════════════════════════════
-     STORY JOURNEY
-     ═══════════════════════════════════ -->
-<div id="story-journey" role="region" aria-label="The story journey">
+</div>
 
-  <!-- BEFORE -->
-  <section class="section" id="before" aria-label="The world as it is" tabindex="-1">
-    <div class="section-content">
-      <p class="section-tag">The world as it is</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
 
-      <h2 class="before-text">
-        You already feel it. Here's <strong>where the fractures show</strong>.
+<!-- ═══════════════════════════════
+     ② JOURNEY (dark, index.html style)
+═══════════════════════════════ -->
+<div id="journey" class="view" role="main">
+
+  <div id="j-progress" class="j-progress" role="progressbar" aria-label="Reading progress"></div>
+
+  <nav class="j-nav" aria-label="Journey navigation">
+    <a class="j-nav-logo" onclick="showView('hero')" href="#" aria-label="OGDEN — Return to start">OGDEN</a>
+    <a class="j-nav-back" onclick="showView('hero')" href="#" aria-label="Return to start">← Return to start</a>
+  </nav>
+
+  <!-- Section 1: Before — The Problem -->
+  <section class="j-section" id="j-s1" aria-labelledby="j-h1">
+    <div class="j-content">
+      <p class="j-tag">The before</p>
+      <div class="j-divider" role="presentation"></div>
+      <h2 class="j-heading" id="j-h1">
+        You feel it. The model
+        <span class="accent">wasn't built for a life like this</span>.
       </h2>
-
-      <ol class="before-list" role="list">
-        <li class="before-item">
-          <span class="num" aria-hidden="true">01</span>
-          <p>Build a business — but detach it from your soul. Growth at any cost. Revenue is the only measure of success.</p>
-        </li>
-        <li class="before-item">
-          <span class="num" aria-hidden="true">02</span>
-          <p>Buy land — with debt you were told not to carry. Build wealth on a foundation your tradition calls harm.</p>
-        </li>
-        <li class="before-item">
-          <span class="num" aria-hidden="true">03</span>
-          <p>Find community — in borrowed spaces, scattered across cities, connected by group chats that go quiet.</p>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- TURNING POINT -->
-  <section class="section" id="turning" aria-label="The turning point" tabindex="-1">
-    <div class="section-content">
-      <p class="section-tag">The question that changed everything</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-      <h2 class="turning-text">
-        What if the work you do<br>
-        could be <span class="accent">an act of worship?</span>
-      </h2>
-
-      <p class="turning-sub">
-        What if taqwa wasn't just personal piety — but the operating system
-        for everything you build? What if the names of Allah weren't just recited
-        but lived through — in how you qualify a client, structure an offer,
-        steward a piece of land, and bind a community together?
+      <p class="j-body">
+        You want land that serves a purpose beyond return. A business that is an act of ibadah, not just income.
+        Community built on something deeper than convenience. But every framework you've been handed was designed for someone else's priorities.
       </p>
-    </div>
-  </section>
 
-  <!-- AFTER -->
-  <section class="section" id="after" aria-label="The world being built" tabindex="-1">
-    <div class="section-content">
-      <p class="section-tag">The world being built</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-      <h2 class="after-statement">
-        This is not a theory. It's being built — <br>
-        one document, one acre, one covenant at a time.
-      </h2>
-
-      <ul class="after-pillars">
-        <li class="pillar">
-          <p class="pillar-icon" aria-hidden="true">Business</p>
-          <h3>Business as Ibadah</h3>
-          <p>A nine-stage operating system where each phase is governed by specific divine attributes. Not productivity advice. A complete spiritual-operational architecture.</p>
+      <ul class="j-before-list" aria-label="The fractures most people face">
+        <li class="j-before-item">
+          <span class="num" aria-hidden="true">01</span>
+          <p>Land planning tools built for developers — they ask what the land can produce, never what it needs.</p>
         </li>
-        <li class="pillar">
-          <p class="pillar-icon" aria-hidden="true">Land</p>
-          <h3>Land Held in Trust</h3>
-          <p>Riba-free acquisition. A Waqf conversion clause from day one. Intelligence-driven site selection that respects the land before anything is placed on it.</p>
+        <li class="j-before-item">
+          <span class="num" aria-hidden="true">02</span>
+          <p>Business frameworks built for extraction — they optimise for output before they ask about intention.</p>
         </li>
-        <li class="pillar">
-          <p class="pillar-icon" aria-hidden="true">Community</p>
-          <h3>Community as Covenant</h3>
-          <p>Not a neighbourhood. A founding covenant. Shura governance with an Amir. Tiered membership. A community that begins with shared principles, not shared postcode.</p>
+        <li class="j-before-item">
+          <span class="num" aria-hidden="true">03</span>
+          <p>Community models built for transactions — they have no language for what actually holds people together.</p>
         </li>
       </ul>
     </div>
   </section>
 
-  <!-- BRIDGE — Project Cards -->
-  <section class="section" id="bridge" aria-label="The three projects" tabindex="-1" style="min-height: auto; padding-top: 120px; padding-bottom: 120px;">
-    <div class="section-content">
-      <p class="section-tag">The vehicles</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-      <h2 class="bridge-intro">
-        Three projects, each one a different face<br>
-        of the same unified vision.
+  <!-- Section 2: The Cost -->
+  <section class="j-section" id="j-s2" aria-labelledby="j-h2">
+    <div class="j-content">
+      <p class="j-tag">The cost</p>
+      <div class="j-divider" role="presentation"></div>
+      <h2 class="j-heading" id="j-h2">
+        Beautiful plans that
+        <span class="accent">never become real land</span>.
       </h2>
-
-      <div class="project-cards">
-        <a class="project-card" data-project="bbos" href="/bbos/" aria-label="BBOS — the Barakah Business Operating System">
-          <div class="project-card-header">
-            <span class="project-card-name">BBOS</span>
-            <span class="project-card-tag">Operating System</span>
-          </div>
-          <p class="project-card-desc">
-            The Barakah Business Operating System. Nine stages from intake to optimization,
-            each governed by the Asmaul Husna. Built on the framework of
-            <span style="font-style:italic;">takhallaq bi akhlāq Allāh</span> — adorning your conduct with divine qualities.
-          </p>
-          <p class="project-card-line">"What does it look like when Al-Hakeem governs your strategy?"</p>
-        </a>
-
-        <a class="project-card" data-project="moontrance" href="/moontrance/" aria-label="Moontrance Collective — intentional Muslim community and agritourism">
-          <div class="project-card-header">
-            <span class="project-card-name">Moontrance Collective</span>
-            <span class="project-card-tag">Land &amp; Community</span>
-          </div>
-          <p class="project-card-desc">
-            An intentional Muslim community and agritourism venture in Ontario.
-            Two-entity legal architecture. Zero debt against the land. Shura governance.
-            A Founding Covenant that precedes the first shovel.
-          </p>
-          <p class="project-card-line">"The community begins before the land is bought."</p>
-        </a>
-
-        <a class="project-card" data-project="atlas" href="/atlas/" aria-label="Atlas — land intelligence and design system">
-          <div class="project-card-header">
-            <span class="project-card-name">Atlas</span>
-            <span class="project-card-tag">Land Intelligence</span>
-          </div>
-          <p class="project-card-desc">
-            A land intelligence and design system supporting the Moontrance acquisition.
-            Soil, water, zoning, topology — mapped before a single commitment is made.
-            The land speaks first.
-          </p>
-          <p class="project-card-line">"Know the land before you ask anything of it."</p>
-        </a>
-      </div>
+      <p class="j-body">
+        Every year, families purchase land without the intelligence to read it. Investors fund projects that weren't designed to last. Communities are planned without accounting for how people actually live, worship, and grow together. The tools fail — not because they're broken, but because they were never designed for this.
+      </p>
     </div>
   </section>
 
-  <!-- INVITATION -->
-  <section class="section" id="invitation" aria-label="The invitation" tabindex="-1">
-    <div class="section-content">
-      <p class="section-tag">The invitation</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
+  <!-- Section 3: The Turn — After -->
+  <section class="j-section" id="j-s3" aria-labelledby="j-h3">
+    <div class="j-content">
+      <p class="j-tag">The turn</p>
+      <div class="j-divider" role="presentation"></div>
+      <h2 class="j-heading" id="j-h3">
+        What if the tools were built for
+        <span class="accent">stewardship, not strategy</span>?
+      </h2>
+      <p class="j-body">
+        OGDEN exists because those tools need to be built from different premises. Not yield potential first. Not exit strategy first. What does this land need? What is sitting in the operator's heart before any strategy is written? What does a community built on something lasting actually require?
+      </p>
+      <p class="j-body" style="margin-top: 1rem;">
+        Three systems. Each answering a different version of that question.
+      </p>
+    </div>
+  </section>
 
-      <h2 class="invitation-text">
-        This isn't looking for customers.<br>
-        It's looking for <span class="accent">co-creators</span>.
+  <!-- Section 4: Pathways -->
+  <section class="j-section" id="j-s4" aria-labelledby="j-h4">
+    <div class="j-content">
+      <p class="j-tag">The three systems</p>
+      <div class="j-divider" role="presentation"></div>
+      <h2 class="j-heading" id="j-h4">
+        Choose where you want to <span class="accent">enter</span>.
       </h2>
 
-      <p class="invitation-sub">
-        People of action who feel the misalignment in the current model
-        and want to build something that lasts — not just for a quarter,
-        but for generations.
+      <nav class="j-pathways" aria-label="OGDEN products">
+        <a class="j-pathway-card" onclick="showView('products'); highlightCard('bbos')" href="#" aria-label="Explore BBOS — Barakah Business Operating System">
+          <div class="j-pathway-header">
+            <span class="j-pathway-name">BBOS</span>
+            <span class="j-pathway-tag">Business System</span>
+          </div>
+          <p class="j-pathway-desc">The Barakah Business Operating System. A nine-stage pipeline for operators who believe honesty is not a constraint — it is the only viable foundation. Each stage asks something of your capacity, your integrity, and your intention.</p>
+          <span class="j-pathway-arrow">Enter the pipeline →</span>
+        </a>
+
+        <a class="j-pathway-card" onclick="showView('products'); highlightCard('moontrance')" href="#" aria-label="Explore Moontrance — the living property">
+          <div class="j-pathway-header">
+            <span class="j-pathway-name">Moontrance</span>
+            <span class="j-pathway-tag">Living Property</span>
+          </div>
+          <p class="j-pathway-desc">A living property integrating regenerative agriculture, Islamic-adab-conscious hospitality, men's cohort development, family life, education, and the experience of witnessing signs of the Creator in the natural world.</p>
+          <span class="j-pathway-arrow">See the vision →</span>
+        </a>
+
+        <a class="j-pathway-card" onclick="showView('products'); highlightCard('atlas')" href="#" aria-label="Explore the Atlas — land intelligence system">
+          <div class="j-pathway-header">
+            <span class="j-pathway-name">Atlas</span>
+            <span class="j-pathway-tag">Land Intelligence</span>
+          </div>
+          <p class="j-pathway-desc">The OGDEN Land Design Atlas — a land intelligence system covering 30 design domains. Ecological, spiritual, economic, and generational. Built on the belief that land design is an act of stewardship, not control.</p>
+          <span class="j-pathway-arrow">Explore the Atlas →</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Section 5: Hadith -->
+  <section class="j-section" id="j-hadith" aria-labelledby="j-hadith-label">
+    <div class="j-content" style="text-align: center;">
+      <p class="j-hadith-text" lang="ar" id="j-hadith-label">
+        إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ
+      </p>
+      <p class="j-hadith-translation">
+        "When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."
+      </p>
+      <p class="j-hadith-source">Sahih Muslim · 1631</p>
+    </div>
+  </section>
+
+  <!-- Journey Footer -->
+  <footer class="j-footer" role="contentinfo">
+    <p class="j-footer-arabic" lang="ar" aria-label="Bismillah in Arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+    <p class="j-footer-transliteration">Bismillāhi r-Raḥmāni r-Raḥīm</p>
+    <p class="j-footer-translation">In the name of God, the Most Gracious, the Most Merciful</p>
+    <div class="j-footer-line" role="presentation"></div>
+    <p class="j-footer-credit">Built with intention · Guided by divine names</p>
+  </footer>
+
+</div><!-- /journey -->
+
+
+<!-- ═══════════════════════════════
+     ③ PRODUCTS (light parchment, BBOS style)
+═══════════════════════════════ -->
+<div id="products" class="view" role="main">
+
+  <nav class="p-nav" aria-label="Products navigation">
+    <a class="p-nav-mark" onclick="showView('hero')" href="#" aria-label="OGDEN — Return to start">
+      <span class="p-nav-symbol" aria-hidden="true">⧁</span>
+      <span class="p-nav-name">OGDEN</span>
+    </a>
+    <a class="p-nav-back" onclick="showView('hero')" href="#" aria-label="Return to start">← Return to start</a>
+  </nav>
+
+  <!-- Marquee band -->
+  <div class="p-band" aria-hidden="true">
+    <div class="p-band-track">
+      <span class="p-band-item"><span>BBOS</span> · Nine-stage pipeline</span>
+      <span class="p-band-item"><span>Moontrance</span> · Living property</span>
+      <span class="p-band-item"><span>Atlas</span> · Land intelligence</span>
+      <span class="p-band-item"><span>Al-Awwal</span> · Integrity of beginnings</span>
+      <span class="p-band-item"><span>Al-Ḥaqq</span> · The unchanging real</span>
+      <span class="p-band-item"><span>Al-Baṣīr</span> · Genuine seeing</span>
+      <span class="p-band-item"><span>Stewardship</span> · not extraction</span>
+      <span class="p-band-item"><span>Phased humility</span> · sequenced, realistic</span>
+      <!-- duplicate -->
+      <span class="p-band-item"><span>BBOS</span> · Nine-stage pipeline</span>
+      <span class="p-band-item"><span>Moontrance</span> · Living property</span>
+      <span class="p-band-item"><span>Atlas</span> · Land intelligence</span>
+      <span class="p-band-item"><span>Al-Awwal</span> · Integrity of beginnings</span>
+      <span class="p-band-item"><span>Al-Ḥaqq</span> · The unchanging real</span>
+      <span class="p-band-item"><span>Al-Baṣīr</span> · Genuine seeing</span>
+      <span class="p-band-item"><span>Stewardship</span> · not extraction</span>
+      <span class="p-band-item"><span>Phased humility</span> · sequenced, realistic</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="p-header">
+    <p class="p-section-label">Choose where to begin</p>
+    <h2>Three systems. <em>One vision.</em></h2>
+    <p class="p-header-sub">Each product is a different entry point into the OGDEN system — for business, for land, for experience. Choose the one that speaks to where you are right now.</p>
+  </header>
+
+  <!-- Product cards grid -->
+  <div class="p-grid" role="list" aria-label="OGDEN products">
+
+    <!-- ── BBOS ── -->
+    <article class="p-card" id="p-bbos" role="listitem" aria-labelledby="p-bbos-name">
+      <div class="p-card-left">
+        <div class="p-card-eyebrow" aria-hidden="true">⧁ &nbsp;<span>Business System</span></div>
+
+        <h3 class="p-card-name" id="p-bbos-name">BBOS — <em>Barakah Business</em><br>Operating System</h3>
+
+        <div class="p-card-tagline">
+          <span lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span><br>
+          Build your business on <em>documented truth</em>.
+        </div>
+
+        <div class="p-card-prose">
+          <p>
+            BBOS is a <strong>nine-stage operating system</strong> for operators who believe honesty is not a constraint — it is the only viable foundation.
+          </p>
+          <p>
+            Before any strategy is produced, the system runs a diagnostic on the operator's own interior condition. The Five Distortions — Control, Outcome, Validation, Identity, Comfort — are surfaced, not assumed away. Then, and only then, does the AI generation engine engage.
+          </p>
+          <p>
+            This is not a workflow tool. It is a covenant system. <strong>Take the time the honest work requires.</strong>
+          </p>
+        </div>
+
+        <div class="p-card-actions">
+          <a href="#" class="btn-p-primary">⧁ &nbsp; Begin My Pipeline</a>
+          <a href="#" class="btn-p-secondary">Understand the architecture →</a>
+        </div>
+      </div>
+
+      <div class="p-card-right">
+        <div class="stage-panel" aria-label="BBOS Pipeline — Nine Stages">
+          <div class="stage-panel-header">
+            <span class="stage-panel-title">BBOS Pipeline — Nine Stages</span>
+            <span class="stage-status"><span class="status-dot" aria-hidden="true"></span> Live System</span>
+          </div>
+          <div class="stage-list">
+            <div class="stage-item">
+              <span class="stage-code">00 · INT</span>
+              <div><div class="stage-name">Intake</div><div class="stage-attr">Al-Awwal · Ash-Shahīd</div></div>
+              <div class="stage-dot done"></div>
+            </div>
+            <div class="stage-item active">
+              <span class="stage-code">01 · QAL</span>
+              <div><div class="stage-name">Qualification & Alignment</div><div class="stage-attr">Al-Ḥaqq · Al-Khabīr</div></div>
+              <div class="stage-dot active"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">02 · STR</span>
+              <div><div class="stage-name">Strategy</div><div class="stage-attr">Al-Baṣīr</div></div>
+              <div class="stage-dot gate"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">03 · OFR</span>
+              <div><div class="stage-name">Offer</div><div class="stage-attr">Al-ʿAdl · Al-Muqsiṭ</div></div>
+              <div class="stage-dot"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">04 · OUT</span>
+              <div><div class="stage-name">Outreach</div><div class="stage-attr">Ar-Razzāq · As-Sittīr</div></div>
+              <div class="stage-dot"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">05 · SAL</span>
+              <div><div class="stage-name">Sales</div><div class="stage-attr">Al-Laṭīf · As-Sittīr</div></div>
+              <div class="stage-dot"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">06 · FUL</span>
+              <div><div class="stage-name">Fulfillment</div><div class="stage-attr">Al-Muḥsin · Al-Walī</div></div>
+              <div class="stage-dot"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">07 · RET</span>
+              <div><div class="stage-name">Retention</div><div class="stage-attr">Ash-Shakūr · Al-Wadūd</div></div>
+              <div class="stage-dot"></div>
+            </div>
+            <div class="stage-item">
+              <span class="stage-code">08 · OPT</span>
+              <div><div class="stage-name">Optimization</div><div class="stage-attr">Al-Ḥasīb · Al-Quddūs</div></div>
+              <div class="stage-dot"></div>
+            </div>
+          </div>
+          <div class="amanah-notice" role="note">
+            <span class="amanah-icon" aria-hidden="true">⧁</span>
+            <span class="amanah-text">Amanah Gate active at Stage 01. A No-Go here is not a failure — it is the system protecting the Barakah of everything that follows.</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── MOONTRANCE ── -->
+    <article class="p-card" id="p-moontrance" role="listitem" aria-labelledby="p-moon-name">
+      <div class="p-card-left">
+        <div class="p-card-eyebrow" aria-hidden="true">✦ &nbsp;<span>Living Property</span></div>
+
+        <h3 class="p-card-name" id="p-moon-name">Moontrance —<br><em>A place built around presence</em></h3>
+
+        <div class="p-card-tagline">
+          A living property integrating regenerative land, Islamic-adab-conscious hospitality, and the experience of witnessing signs of the Creator.
+        </div>
+
+        <div class="p-card-prose">
+          <p>
+            Moontrance is not a retreat centre. It is a <strong>lived experiment</strong> in what land, community, and economy look like when they are designed from different premises.
+          </p>
+          <p>
+            Men's cohort development. Family life. Regenerative agriculture. Educational immersion. Hospitality rooted in adab. Each element placed with intention, phased with humility, and explained — not just designed.
+          </p>
+          <p>
+            The land serves the community. The community serves what lasts. <strong>The Atlas makes the vision legible.</strong>
+          </p>
+        </div>
+
+        <div class="p-card-actions">
+          <a href="#" class="btn-p-primary">See the Vision</a>
+          <a href="#" class="btn-p-secondary">Explore the phases →</a>
+        </div>
+      </div>
+
+      <div class="p-card-right">
+        <div class="distinction-stack">
+          <div class="d-card">
+            <div class="d-label">Design principle</div>
+            <div class="d-text">The tool asks 'what does this land need?' before 'what can this land produce?'. Assessments lead with ecological opportunity, not yield potential.</div>
+          </div>
+          <div class="d-card moss">
+            <div class="d-label">The program</div>
+            <div class="d-text">Prayer pavilion and quiet reflection zones are first-class design elements — not optional add-ons. Dawn and sunset viewpoints are placed before structures.</div>
+          </div>
+          <div class="d-card ember">
+            <div class="d-label">The identity</div>
+            <div class="d-text">This is not a generic retreat product. It is a OGDEN tool — the vision of a living property that can be built, visited, and learned from. Every feature is traceable to this identity.</div>
+          </div>
+          <div class="d-card">
+            <div class="d-label">Staged vision</div>
+            <div class="d-text">Four build phases. Each one complete. No phase should feel like a beta — each phase should feel like the product.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── ATLAS ── -->
+    <article class="p-card" id="p-atlas" role="listitem" aria-labelledby="p-atlas-name">
+      <div class="p-card-left">
+        <div class="p-card-eyebrow" aria-hidden="true">◎ &nbsp;<span>Land Intelligence</span></div>
+
+        <h3 class="p-card-name" id="p-atlas-name">Atlas — <em>For seeing land whole</em><br>and building it wisely</h3>
+
+        <div class="p-card-tagline">
+          A land intelligence system covering 30 design domains — ecological, spiritual, economic, and generational.
+        </div>
+
+        <div class="p-card-prose">
+          <p>
+            The Atlas is not a drawing application. It is a <strong>land intelligence system</strong> built around the belief that land design is an act of stewardship, not control.
+          </p>
+          <p>
+            Seven federal public APIs auto-populated on project creation. A rule-based site assessment engine scoring across six dimensions. AI outputs that carry confidence levels, data source citations, and a 'needs site visit' flag — never authoritative.
+          </p>
+          <p>
+            <strong>Explainability over magic.</strong> If the Atlas can't explain why it made a recommendation, it should not make one.
+          </p>
+        </div>
+
+        <div class="p-card-actions">
+          <a href="#" class="btn-p-primary">◎ &nbsp; Enter the Atlas</a>
+          <a href="#" class="btn-p-secondary">Read the product map →</a>
+        </div>
+      </div>
+
+      <div class="p-card-right">
+        <div class="spec-grid" aria-label="Atlas rollout phases">
+          <div class="spec-row">
+            <div class="spec-key">Phase 1</div>
+            <div class="spec-val"><strong>Site Intelligence</strong> — Property intake, terrain visualization, automated site assessment, data layer display</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Phase 2</div>
+            <div class="spec-val"><strong>Design Atlas</strong> — Full structure & zone planning, hydrology tools, livestock + crop design, rule-based logic</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Phase 3</div>
+            <div class="spec-val"><strong>Collaboration + AI</strong> — Multi-user access, AI-assisted outputs with guardrails, scenario modeling</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Phase 4</div>
+            <div class="spec-val"><strong>Public + Portal</strong> — Storytelling portal, mobile fieldwork, template marketplace</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Data</div>
+            <div class="spec-val">USGS 3DEP · SSURGO · NHD · NWI · FEMA · NOAA · NLCD — <strong>all auto-populated</strong></div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">AI Model</div>
+            <div class="spec-val">Confidence-rated · Source-cited · Editable · Never authoritative — <strong>every output</strong></div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-key">Domains</div>
+            <div class="spec-val"><strong>30 design domains</strong> — ecological, spiritual, economic, generational</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /p-grid -->
+
+  <!-- Dark CTA -->
+  <div class="p-cta" role="complementary" aria-labelledby="p-cta-h">
+    <div class="p-cta-inner">
+      <p class="p-cta-arabic" lang="ar" dir="rtl" aria-label="Bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+      <p class="p-cta-transliteration">Bismillāhi r-raḥmāni r-raḥīm</p>
+
+      <h2 id="p-cta-h">
+        Atlas serves Moontrance.<br>
+        The land serves the community.<br>
+        The community serves <em>what lasts</em>.
+      </h2>
+
+      <p class="p-cta-desc">
+        The right parcel doesn't just hold the concept — it amplifies it. These tools exist so the vision is placed on land that can actually carry it.
       </p>
 
-      <div class="invitation-cta">
-        <a class="cta-button" href="/moontrance/connect/" aria-label="Begin a conversation about joining the work">
-          <span>Begin a Conversation</span>
-          <svg class="cta-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
-            <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
+      <div class="p-cta-actions">
+        <a href="#" class="btn-gold">⧁ &nbsp; Begin My Pipeline</a>
+        <a onclick="showView('journey')" href="#" class="btn-ghost-light">Read the full story →</a>
       </div>
     </div>
-  </section>
-
-</div>
-
-<!-- ═══════════════════════════════════
-     DIRECT NAV
-     ═══════════════════════════════════ -->
-<section class="section" id="direct-nav" aria-label="Project navigation" aria-hidden="true" tabindex="-1">
-  <div class="section-content" style="max-width: 960px;">
-    <h2 class="section-tag" style="margin-bottom: 3rem;">Choose your path</h2>
-
-    <ul class="direct-grid">
-      <li>
-        <a class="direct-card" data-project="bbos" href="/bbos/" aria-label="Enter BBOS — the Barakah Business Operating System">
-          <span class="direct-card-stage">Operating System</span>
-          <h3>BBOS</h3>
-          <p>The Barakah Business Operating System. Nine stages. Governed by the Asmaul Husna. Business as an act of worship — with operational rigour to match the spiritual intent.</p>
-          <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
-        </a>
-      </li>
-
-      <li>
-        <a class="direct-card" data-project="moontrance" href="/moontrance/" aria-label="Enter Moontrance — intentional Muslim community">
-          <span class="direct-card-stage">Land &amp; Community</span>
-          <h3>Moontrance</h3>
-          <p>Intentional Muslim community and agritourism in Ontario. Riba-free land. Shura governance. A Founding Covenant. The community begins before the first acre is acquired.</p>
-          <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
-        </a>
-      </li>
-
-      <li>
-        <a class="direct-card" data-project="atlas" href="/atlas/" aria-label="Enter Atlas — land intelligence system">
-          <span class="direct-card-stage">Land Intelligence</span>
-          <h3>Atlas</h3>
-          <p>Site selection and land design intelligence. Soil, water, zoning, topology — mapped and understood before any commitment. Let the land speak first.</p>
-          <span class="direct-card-arrow" aria-hidden="true">Enter →</span>
-        </a>
-      </li>
-    </ul>
   </div>
-</section>
 
+  <footer class="p-footer" role="contentinfo">
+    <p class="p-footer-mark">OGDEN &nbsp;·&nbsp; <span>Barakah · Land · Community</span></p>
+    <p class="p-footer-line">Built with intention · Guided by divine names</p>
+  </footer>
 
-<!-- HADITH — Ongoing Benefit -->
-<section class="section" id="hadith" aria-label="Hadith on ongoing benefit" tabindex="-1" style="">
-  <div class="section-content" style="text-align: center;">
-    <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream, #e8e0d0); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
-    <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim, #b8ae9e); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
-    <p style="font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-muted, #8a7e70);">Sahih Muslim · 1631</p>
-  </div>
-</section>
+</div><!-- /products -->
 
-</main>
-
-<!-- FOOTER -->
-<footer class="footer" id="footer" role="contentinfo">
-  <p class="footer-arabic" lang="ar" aria-label="Bismillah in Arabic script">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
-  <p class="footer-transliteration" lang="ar-Latn">Bismillāhi r-Raḥmāni r-Raḥīm</p>
-  <p class="footer-translation">In the name of God, the Most Gracious, the Most Merciful</p>
-  <div class="footer-divider" role="presentation" aria-hidden="true"></div>
-  <p class="footer-credit">Built with intention · Guided by divine names</p>
-</footer>
 
 <script>
-// ═══════════════════════════════
-// STATE & MOTION PREFERENCE
-// ═══════════════════════════════
-let currentPath = 'home';
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function smoothScroll(el) {
-  if (prefersReducedMotion) {
-    el.scrollIntoView();
-  } else {
-    el.scrollIntoView({ behavior: 'smooth' });
+// ─── VIEW MANAGEMENT ───
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById(name);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (name === 'journey') initJourney();
   }
 }
 
-// ═══════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════
-function startJourney(e) {
-  e.preventDefault();
-  currentPath = 'journey';
-  
-  const story = document.getElementById('story-journey');
-  const direct = document.getElementById('direct-nav');
-  
-  story.classList.remove('hidden');
-  story.setAttribute('aria-hidden', 'false');
-  direct.setAttribute('aria-hidden', 'true');
-  direct.style.display = 'none';
-  
-  document.getElementById('backBtn').classList.add('show');
-  document.getElementById('scrollHint').style.display = 'none';
-  
+// ─── HIGHLIGHT PRODUCT CARD ON ARRIVAL ───
+function highlightCard(id) {
   setTimeout(() => {
-    smoothScroll(document.getElementById('before'));
-    document.getElementById('before').focus({ preventScroll: true });
-  }, 100);
+    const card = document.getElementById('p-' + id);
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    card.style.transition = 'background 0.3s';
+    card.style.background = 'rgba(184,146,74,0.06)';
+    setTimeout(() => { card.style.background = ''; }, 1800);
+  }, 300);
 }
 
-function showDirect(e) {
-  e.preventDefault();
-  currentPath = 'direct';
-  
-  const story = document.getElementById('story-journey');
-  const direct = document.getElementById('direct-nav');
-  
-  story.classList.add('hidden');
-  story.setAttribute('aria-hidden', 'true');
-  direct.style.display = 'flex';
-  direct.setAttribute('aria-hidden', 'false');
-  
-  document.getElementById('backBtn').classList.add('show');
-  document.getElementById('scrollHint').style.display = 'none';
-  
-  setTimeout(() => {
-    smoothScroll(direct);
-    const content = direct.querySelector('.section-content');
-    setTimeout(() => {
-      content.classList.add('visible');
-      direct.focus({ preventScroll: true });
-    }, 200);
-  }, 100);
+// ─── JOURNEY: SCROLL REVEAL ───
+function initJourney() {
+  const els = document.querySelectorAll('#journey .j-content');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+  els.forEach(el => { el.classList.remove('visible'); obs.observe(el); });
+
+  // Progress bar
+  const bar = document.getElementById('j-progress');
+  const onScroll = () => {
+    const doc = document.getElementById('journey');
+    if (!doc || !document.getElementById('journey').classList.contains('active')) return;
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.width = Math.min((scrolled / total) * 100, 100) + '%';
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
 
-function goHome() {
-  currentPath = 'home';
-  
-  const story = document.getElementById('story-journey');
-  const direct = document.getElementById('direct-nav');
-  
-  story.classList.add('hidden');
-  story.setAttribute('aria-hidden', 'true');
-  direct.style.display = 'none';
-  direct.setAttribute('aria-hidden', 'true');
-  
-  document.getElementById('backBtn').classList.remove('show');
-  document.getElementById('scrollHint').style.display = 'flex';
-  
-  if (prefersReducedMotion) {
-    window.scrollTo({ top: 0 });
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  
-  setTimeout(() => {
-    document.querySelector('.fork-path').focus();
-  }, 500);
+// Handle hash-based routing (hero, journey, products)
+const hash = window.location.hash.replace('#','');
+if (['journey','products'].includes(hash)) {
+  showView(hash);
+  if (hash === 'journey') initJourney();
 }
-
-// ═══════════════════════════════
-// INTERSECTION OBSERVER — Fade in
-// ═══════════════════════════════
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, {
-  threshold: 0.15,
-  rootMargin: '0px 0px -60px 0px'
-});
-document.querySelectorAll('.section-content').forEach(el => observer.observe(el));
-
-// ═══════════════════════════════
-// PROGRESS BAR
-// ═══════════════════════════════
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = total > 0 ? (scrolled / total) * 100 : 0;
-  document.getElementById('progressBar').style.width = progress + '%';
-});
-
-// ═══════════════════════════════
-// STAGGERED BEFORE ITEMS (motion-aware)
-// ═══════════════════════════════
-if (!prefersReducedMotion) {
-  const beforeObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const items = entry.target.querySelectorAll('.before-item');
-        items.forEach((item, i) => {
-          setTimeout(() => {
-            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            item.style.opacity = '1';
-            item.style.transform = 'translateX(0)';
-          }, i * 200);
-        });
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll('.before-list').forEach(el => {
-    el.querySelectorAll('.before-item').forEach(item => {
-      item.style.opacity = '0';
-      item.style.transform = 'translateX(-12px)';
-    });
-    beforeObserver.observe(el);
-  });
-}
-
-// ═══════════════════════════════
-// INITIAL STATE
-// ═══════════════════════════════
-document.getElementById('story-journey').classList.add('hidden');
-document.getElementById('story-journey').setAttribute('aria-hidden', 'true');
-
-
-// ═══════════ ACTIVE NAV HIGHLIGHT ═══════════
-(function() {
-  const navLinks = document.querySelectorAll('.site-header-nav a[href^="#"]');
-  if (!navLinks.length) return;
-
-  const sections = [];
-  navLinks.forEach(link => {
-    const id = link.getAttribute('href').substring(1);
-    const section = document.getElementById(id);
-    if (section) sections.push({ el: section, link: link });
-  });
-
-  if (!sections.length) return;
-
-  const headerHeight = 60;
-
-  function updateActive() {
-    let current = null;
-    const scrollY = window.scrollY + headerHeight + 100;
-    
-    for (let i = sections.length - 1; i >= 0; i--) {
-      if (sections[i].el.offsetTop <= scrollY) {
-        current = sections[i];
-        break;
-      }
-    }
-
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      link.removeAttribute('aria-current');
-    });
-
-    if (current) {
-      current.link.classList.add('active');
-      current.link.setAttribute('aria-current', 'true');
-    }
-  }
-
-  window.addEventListener('scroll', updateActive, { passive: true });
-  updateActive();
-})();
-
-
-// ═══════════ PAGE TRANSITION — FADE OUT ═══════════
-document.addEventListener('click', function(e) {
-  const link = e.target.closest('a[href]');
-  if (!link) return;
-  
-  const href = link.getAttribute('href');
-  
-  // Skip hash links (on-page anchors), skip external links, skip skip-link
-  if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return;
-  
-  // Skip if modifier keys held (new tab etc)
-  if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-  
-  // Respect reduced motion
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  
-  e.preventDefault();
-  document.body.classList.add('page-leaving');
-  
-  setTimeout(function() {
-    window.location.href = href;
-  }, 400);
-});
-
 </script>
 </body>
 </html>
