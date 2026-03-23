@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN Atlas — Land Intelligence & Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:          #0a0906;
+    --bark:         #1a1510;
+    --char:         #111009;
+    --parchment:    #f0ebe0;
+    --bone:         #d8d0bf;
+    --dust:         #8a8070;
+    --gold:         #b89050;
+    --gold-light:   #cca866;
+    --gold-muted:   #7a6035;
+    --ember:        #6a3018;
+    --moss:         #2a3a28;
+    --line:         rgba(184,144,80,0.18);
+    --line-soft:    rgba(240,235,224,0.06);
+
+    --serif:  'Cormorant Garamond', Georgia, serif;
+    --mono:   'DM Mono', monospace;
+    --sans:   'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--char);
+    color: var(--parchment);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── BACKGROUND LAYERS ── */
+  .hero-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  /* Topographic contour lines via SVG pattern */
+  .topo-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0.055;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cdefs%3E%3CradialGradient id='rg' cx='45%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23b89050' stop-opacity='1'/%3E%3Cstop offset='100%25' stop-color='%23b89050' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cellipse cx='360' cy='320' rx='280' ry='220' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='220' ry='170' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='165' ry='125' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='115' ry='85' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='70' ry='50' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='35' ry='25' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='200' cy='500' rx='180' ry='140' fill='none' stroke='url(%23rg)' stroke-width='0.8' opacity='0.5'/%3E%3Cellipse cx='200' cy='500' rx='130' ry='100' fill='none' stroke='url(%23rg)' stroke-width='0.8' opacity='0.5'/%3E%3Cellipse cx='200' cy='500' rx='85' ry='65' fill='none' stroke='url(%23rg)' stroke-width='0.8' opacity='0.5'/%3E%3Cellipse cx='600' cy='180' rx='150' ry='110' fill='none' stroke='url(%23rg)' stroke-width='0.7' opacity='0.4'/%3E%3Cellipse cx='600' cy='180' rx='100' ry='75' fill='none' stroke='url(%23rg)' stroke-width='0.7' opacity='0.4'/%3E%3Cellipse cx='600' cy='180' rx='58' ry='44' fill='none' stroke='url(%23rg)' stroke-width='0.7' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 75vw 75vw;
+    background-position: 60% 30%;
+    background-repeat: no-repeat;
+  }
+
+  /* Radial vignette/glow */
+  .glow-layer {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 55% at 55% 35%, rgba(184,144,80,0.05) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 20% 70%, rgba(106,48,24,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 100% 80% at 50% 100%, rgba(10,9,6,0.6) 0%, transparent 50%);
+  }
+
+  /* Noise grain */
+  .grain-layer {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem 5rem;
+  }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--dust);
+    margin-bottom: 2.25rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  /* ── HEADLINE ── */
+  .headline {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2.8rem, 6.5vw, 5.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-align: center;
+    color: var(--parchment);
+    max-width: 780px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.35s forwards;
+  }
+
+  /* ── SUBHEADLINE ── */
+  .subhead {
+    font-family: var(--sans);
+    font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+    font-weight: 300;
+    color: var(--bone);
+    line-height: 1.8;
+    text-align: center;
+    max-width: 560px;
+    margin-bottom: 3.75rem;
+    opacity: 0.82;
+    animation: fadeUp 0.9s ease 0.5s forwards;
+    opacity: 0;
+  }
+
+  .subhead em {
+    font-style: italic;
+    color: var(--gold-light);
+    font-family: var(--serif);
+  }
+
+  /* ── DIVIDER ── */
+  .rule {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--line), transparent);
+    margin: 0 auto 3rem;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.75s forwards;
+  }
+
+  /* ── PATHWAY CARDS ── */
+  .pathways {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.85s forwards;
+  }
+
+  .pathway {
+    position: relative;
+    padding: 1.75rem 2rem;
+    background: rgba(10, 9, 6, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(184,144,80,0.14);
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+  }
+
+  .pathway::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 140% 120% at 50% 120%, rgba(184,144,80,0.07) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .pathway:hover {
+    background: rgba(18, 16, 11, 0.82);
+    border-color: rgba(184,144,80,0.32);
+  }
+  .pathway:hover::before { opacity: 1; }
+
+  /* Gold left accent — slides in on hover */
+  .pathway::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    transform: scaleY(0);
+    transition: transform 0.4s ease;
+    transform-origin: center;
+  }
+
+  .pathway:hover::after { transform: scaleY(1); }
+
+  .pathway-body { flex: 1; min-width: 0; }
+
+  .pathway-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pathway-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--parchment);
+    line-height: 1.2;
+    transition: color 0.2s;
+  }
+
+  .pathway:hover .pathway-title { color: #fff; }
+
+  .pathway-tag {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    border: 1px solid rgba(184,144,80,0.25);
+    padding: 0.22rem 0.55rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .pathway:hover .pathway-tag {
+    border-color: rgba(184,144,80,0.55);
+    color: var(--gold-light);
+  }
+
+  .pathway-desc {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: rgba(216,208,191,0.55);
+    line-height: 1.65;
+    transition: color 0.2s;
+  }
+
+  .pathway:hover .pathway-desc { color: rgba(216,208,191,0.82); }
+
+  .pathway-arrow {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: rgba(184,144,80,0.35);
+    flex-shrink: 0;
+    transition: color 0.25s, transform 0.25s;
+  }
+
+  .pathway:hover .pathway-arrow {
+    color: var(--gold-light);
+    transform: translateX(4px);
+  }
+
+  /* ── SCROLL HINT ── */
+  .scroll-hint {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.4s forwards;
+  }
+
+  .scroll-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(138,128,112,0.55);
+  }
+
+  .scroll-chevron {
+    width: 16px;
+    height: 16px;
+    border-right: 1px solid rgba(138,128,112,0.35);
+    border-bottom: 1px solid rgba(138,128,112,0.35);
+    transform: rotate(45deg);
+    animation: bounce 2.4s ease-in-out 1.8s infinite;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%       { transform: rotate(45deg) translateY(5px); }
+  }
+
+  /* ── FOCUS ── */
+  .pathway:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* ── REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 560px) {
+    .headline { font-size: 2.6rem; }
+    .pathway { padding: 1.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="hero-backdrop" aria-hidden="true">
+  <div class="topo-layer"></div>
+  <div class="glow-layer"></div>
+  <div class="grain-layer"></div>
+</div>
+
+<!-- Main content -->
+<main class="page">
+
+  <p class="eyebrow">Land Intelligence &amp; Design System</p>
+
+  <h1 class="headline">Know the Land Before<br>You Ask Anything of It</h1>
+
+  <p class="subhead">
+    Stop wasting months on the wrong property. Atlas maps everything that matters —
+    soil, water, zoning, ecology, design potential, and even <em>prayer space orientation</em> —
+    so you can find land that actually carries the vision,
+    not just land that looks good in photos.
+  </p>
+
+  <div class="rule" aria-hidden="true"></div>
+
+  <!-- Pathway cards -->
+  <nav class="pathways" aria-label="Choose your entry point">
+
+    <a href="#products" class="pathway" aria-label="Take Me There — go directly into the Atlas">
+      <div class="pathway-body">
+        <div class="pathway-header">
+          <span class="pathway-title">Take Me There</span>
+          <span class="pathway-tag">The Platform</span>
+        </div>
+        <p class="pathway-desc">
+          You know what you're here for. Go directly into the Atlas
+          and begin your first site assessment.
+        </p>
+      </div>
+      <span class="pathway-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a href="#story" class="pathway" aria-label="I'm New Here — explore the Atlas story">
+      <div class="pathway-body">
+        <div class="pathway-header">
+          <span class="pathway-title">I'm New Here</span>
+          <span class="pathway-tag">The Story</span>
+        </div>
+        <p class="pathway-desc">
+          Understand what the Atlas is, why it exists, and what it sees in your land —
+          before choosing where to enter.
+        </p>
+      </div>
+      <span class="pathway-arrow" aria-hidden="true">↓</span>
+    </a>
+
+  </nav>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint" aria-hidden="true">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-chevron"></div>
+  </div>
+
+</main>
+
+</body>
+</html>
