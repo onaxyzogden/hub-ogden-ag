@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Begin the Intake Charter — BBOS</title>
+<meta name="description" content="The BBOS Intake Charter begins here. Six honest declarations. No performance required.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-:root { --bg-deep: #0a0a08; --bg-card: #161612; --bg-card-hover: #1c1c17; --gold: #d4b45c; --gold-mid: #b89a44; --gold-dim: #9e8540; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #d4b45c; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
+:root { --bg-deep: #0a0a08; --bg-card: #161612; --bg-card-hover: #1c1c17; --gold: #d4b45c; --gold-mid: #b89a44; --gold-dim: #9e8540; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #d4b45c; --error: #c47a7a; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold-dim) var(--bg-deep); scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch;}
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } html, body { scroll-snap-type: none !important; } .section-content { opacity: 1 !important; transform: none !important; } }
-body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; scroll-snap-type: y mandatory;}
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold-dim) var(--bg-deep); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } .section-content { opacity: 1 !important; transform: none !important; } }
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
 body { opacity: 0; animation: pageIn 0.6s ease forwards; }
 body.page-leaving { animation: pageOut 0.4s ease forwards; }
@@ -18,14 +19,13 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 @keyframes pageOut { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { body { animation: none; opacity: 1; } body.page-leaving { animation: none; } }
 
-.skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--gold); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10000; border-radius: 2px; }
+.skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--gold); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10060; border-radius: 2px; }
 .skip-link:focus { top: 16px; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 
-/* HEADER */
 .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 10050; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 52px; background: rgba(10, 10, 8, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(106, 101, 94, 0.2); }
 .site-header-left { display: flex; align-items: center; gap: 16px; }
-.site-logo { font-family: var(--mono); font-size: 0.9rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream); text-decoration: none; transition: color 0.3s ease; }
+.site-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream); text-decoration: none; transition: color 0.3s ease; }
 .site-logo:hover { color: var(--gold); }
 .site-header-sep { width: 1px; height: 16px; background: rgba(106, 101, 94, 0.4); }
 .site-header-link { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
@@ -33,77 +33,75 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 .site-header-link.project-active { color: var(--cream); }
 @media (max-width: 640px) { .site-header-left { gap: 10px; } .site-header-link { display: none; } }
 
-.section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 24px; position: relative; scroll-snap-align: start; }
-.section:first-of-type { padding-top: 132px; }
-.section-content { max-width: 800px; width: 100%; opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
-.section-content.visible { opacity: 1; transform: translateY(0); }
-.section-divider { width: 60px; height: 1px; background: var(--gold-mid); margin: 0 auto 3rem; }
-.section-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2rem; text-align: center; }
-.scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 1s 1.5s ease both; }
-.scroll-hint span { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
-.scroll-chevron { animation: bounce 2s ease-in-out infinite; }
-.scroll-chevron svg { display: block; }
+.page-content { max-width: 640px; margin: 0 auto; padding: 120px 24px 80px; }
 
-#hero { text-align: center; background: radial-gradient(ellipse 60% 50% at 50% 40%, #1a1610 0%, var(--bg-deep) 100%); }
-.hero-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s 0.2s ease both; }
-.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.2; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
-.hero-sub { font-family: var(--sans); font-weight: 300; font-size: 1.05rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; opacity: 0; animation: fadeUp 1s 0.8s ease both; }
-.heading { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 300; line-height: 1.6; text-align: center; color: var(--cream); margin-bottom: 2.5rem; }
+.hero-area { text-align: center; margin-bottom: 3rem; }
+.hero-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 1.5rem; }
+.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.2; color: var(--gold); margin-bottom: 1.25rem; }
+.hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 520px; margin: 0 auto; }
 
-.expect-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 2rem; }
-.expect-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border-left: 2px solid var(--gold-dim); transition: border-color 0.3s ease; }
-.expect-item:hover { border-color: var(--gold); }
-.expect-item .num { font-family: var(--mono); font-size: 0.8rem; color: var(--gold-dim); min-width: 20px; padding-top: 2px; }
-.expect-item h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
-.expect-item p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+.divider { width: 60px; height: 1px; background: var(--gold-mid); margin: 0 auto 2.5rem; }
 
-.ayah-block { text-align: center; padding: 32px 0; margin-top: 1rem; }
-.ayah-arabic { font-size: clamp(1.2rem, 2.5vw, 1.6rem); line-height: 1.8; color: var(--gold); direction: rtl; margin-bottom: 12px; }
-.ayah-translation { font-family: var(--serif); font-size: 0.95rem; font-style: italic; color: var(--cream-dim); max-width: 480px; margin: 0 auto 8px; }
-.ayah-source { font-family: var(--mono); font-size: 0.88rem; color: var(--text-muted); letter-spacing: 0.15em; }
+/* CALLOUT */
+.callout { padding: 20px 24px; border-radius: 2px; margin-bottom: 2rem; border-left: 3px solid; }
+.callout-amanah { background: rgba(212, 180, 92, 0.06); border-color: var(--gold-dim); }
+.callout-time { background: rgba(90, 148, 105, 0.06); border-color: #3d6b4a; }
+.callout-title { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 400; }
+.callout-time .callout-title { color: #7db68c; }
+.callout p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
 
-.cta-section { text-align: center; }
-.cta-text { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; }
-.cta-sub { font-size: 0.95rem; color: var(--text-secondary); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.8; }
-.cta-button { display: inline-flex; align-items: center; gap: 12px; padding: 16px 40px; border: 1px solid var(--gold); border-radius: 2px; background: transparent; color: var(--gold); font-family: var(--serif); font-size: 1.1rem; font-weight: 400; text-decoration: none; cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden; }
-.cta-button::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0; }
-.cta-button:hover { color: var(--bg-deep); }
-.cta-button:hover::before { transform: scaleX(1); }
-.cta-button span { position: relative; z-index: 1; }
+/* FORM */
+.form-field { margin-bottom: 1.5rem; }
+.form-field label, .form-field .field-legend { display: block; font-weight: 400; font-size: 0.95rem; color: var(--cream); margin-bottom: 6px; }
+.form-field .required { color: var(--gold); margin-left: 2px; }
+.form-field .field-hint { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 10px; font-style: italic; line-height: 1.5; }
+.form-field input, .form-field textarea { width: 100%; padding: 13px 16px; background: var(--bg-card); border: 1px solid #6a655e; border-radius: 2px; color: var(--text-primary); font-family: var(--sans); font-size: 0.95rem; font-weight: 300; line-height: 1.6; transition: border-color 0.3s ease; }
+.form-field input:focus, .form-field textarea:focus { border-color: var(--gold-mid); outline: none; }
+.form-field input::placeholder, .form-field textarea::placeholder { color: var(--text-muted); }
+.form-field .field-error { font-size: 0.8rem; color: var(--error); margin-top: 4px; display: none; }
+.form-field .field-error.show { display: block; }
 
-.footer { text-align: center; padding: 100px 24px 60px; border-top: 1px solid #1a1815; scroll-snap-align: end; }
+/* RADIO OPTIONS */
+.radio-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.radio-opt { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border: 1px solid #6a655e; border-radius: 2px; background: var(--bg-card); cursor: pointer; transition: all 0.3s ease; }
+.radio-opt:hover { border-color: var(--gold-dim); background: var(--bg-card-hover); }
+.radio-opt.selected { border-color: var(--gold-mid); background: rgba(212, 180, 92, 0.06); }
+.radio-opt input[type="radio"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; min-width: 18px; border: 1px solid #6a655e; border-radius: 50%; background: transparent; cursor: pointer; position: relative; margin-top: 3px; transition: all 0.2s ease; }
+.radio-opt input[type="radio"]:checked { border-color: var(--gold); background: var(--gold-mid); }
+.radio-opt input[type="radio"]:checked::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; border-radius: 50%; background: var(--bg-deep); }
+.radio-opt input[type="radio"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.opt-label { font-size: 0.95rem; color: var(--cream); margin-bottom: 2px; }
+.opt-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* SUBMIT */
+.submit-row { display: flex; align-items: center; gap: 16px; margin-top: 2.5rem; flex-wrap: wrap; }
+.submit-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; border: 1px solid var(--gold); border-radius: 2px; background: transparent; color: var(--gold); font-family: var(--serif); font-size: 1.05rem; font-weight: 400; cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden; }
+.submit-btn::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0; }
+.submit-btn:hover { color: var(--bg-deep); }
+.submit-btn:hover::before { transform: scaleX(1); }
+.submit-btn:disabled { opacity: 0.5; cursor: wait; }
+.submit-btn:disabled::before { transform: scaleX(0); }
+.submit-btn span { position: relative; z-index: 1; }
+
+/* SUCCESS */
+.success-msg { display: none; text-align: center; padding: 4rem 0; }
+.success-msg.show { display: block; }
+.success-icon { font-size: 2rem; margin-bottom: 1.5rem; }
+.success-title { font-family: var(--serif); font-size: 1.6rem; color: var(--gold); margin-bottom: 1rem; }
+.success-body { font-size: 0.95rem; color: var(--text-secondary); max-width: 440px; margin: 0 auto; line-height: 1.8; }
+
+.footer { text-align: center; padding: 80px 24px 60px; border-top: 1px solid #1a1815; }
 .footer-arabic { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.8; color: var(--gold); margin-bottom: 16px; direction: rtl; }
 .footer-transliteration { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--gold-mid); margin-bottom: 8px; }
 .footer-translation { font-family: var(--sans); font-size: 0.9rem; font-weight: 300; color: var(--text-secondary); margin-bottom: 40px; }
 .footer-divider { width: 40px; height: 1px; background: var(--gold-mid); margin: 0 auto 40px; }
 .footer-credit { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
 
-.progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 1000; width: 0%; transition: width 0.1s linear; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; } }
-@keyframes bounce { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(8px); opacity: 1; } }
-@media (max-width: 640px) { .section { padding: 60px 20px; } .expect-item { padding: 16px 18px; } }
-
-/* ═══════════ MOBILE SCROLL FIX ═══════════ */
-@media (max-height: 750px), (max-width: 640px) {
-  .section { padding: 50px 20px; }
-  .section:first-of-type { padding-top: 80px; }
-  .scroll-hint { bottom: 12px; }
-  .fork-path { padding: 18px 24px; min-width: 100%; }
-  .fork-label { font-size: 1rem; }
-  .fork-desc { font-size: 0.75rem; }
-  .fork-container { gap: 12px; margin-top: 1.5rem; }
-  .hero-title, .hero-tag, .hero-sub { margin-bottom: 0.8rem; }
-  .before-list, .expect-list, .covenant-list { gap: 12px; }
-  .pathway-card { padding: 24px 20px; }
-  .exp-card { padding: 24px 20px; }
-  .tier-card { padding: 28px 22px; }
-}
-
+@media (max-width: 640px) { .page-content { padding: 90px 20px 60px; } .radio-opt { padding: 12px 14px; } }
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
-<div class="progress-bar" id="progressBar" role="presentation" aria-hidden="true"></div>
 
 <header class="site-header" role="banner">
   <div class="site-header-left">
@@ -117,78 +115,91 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
 </header>
 
 <main id="main-content">
+  <div class="page-content">
 
-<section class="section" id="hero" aria-label="Intake Charter">
-  <div>
-    <p class="hero-tag">BBOS · Intake Charter</p>
-    <h1 class="hero-title">The First Honest<br>Conversation</h1>
-    <p class="hero-sub">The intake charter exists so we can both understand what's real before anything is committed. It is not a sales call. It is a declaration — made before Ash-Shahīd, the Witness.</p>
-  </div>
-  <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><div class="scroll-chevron"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke="var(--gold-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-</section>
-
-<section class="section" id="what" aria-label="What the intake asks" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">What the intake asks</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="heading">Six honest declarations.<br>No performance required.</h2>
-
-    <ol class="expect-list">
-      <li class="expect-item"><span class="num" aria-hidden="true">01</span><div><h3>Capital</h3><p>What you actually have available — not what you hope to have. Runway, reserves, and the honest picture of your financial position.</p></div></li>
-      <li class="expect-item"><span class="num" aria-hidden="true">02</span><div><h3>Skills</h3><p>What you can verifiably do. Not aspirations — evidence. The intake asks for proof links, not self-assessments.</p></div></li>
-      <li class="expect-item"><span class="num" aria-hidden="true">03</span><div><h3>Proof</h3><p>Integrity proof links — portfolio, testimonials, past work, credentials. What can be shown to someone who doesn't already know you.</p></div></li>
-      <li class="expect-item"><span class="num" aria-hidden="true">04</span><div><h3>Constraints</h3><p>Time, energy, aversions, health, obligations. The things that shape what you can actually carry — named without shame, because constraints are honest data.</p></div></li>
-      <li class="expect-item"><span class="num" aria-hidden="true">05</span><div><h3>Geography</h3><p>Where you operate, who you can serve, what your market looks like from where you actually stand.</p></div></li>
-      <li class="expect-item"><span class="num" aria-hidden="true">06</span><div><h3>Regulatory Pre-Check</h3><p>Licenses, certifications, insurance, legal requirements. What's in place and what's missing — flagged before it becomes a problem downstream.</p></div></li>
-    </ol>
-  </div>
-</section>
-
-<section class="section" id="why" aria-label="Why it matters" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">Why it matters</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="heading">Everything built above this<br>rests on the honesty of this foundation.</h2>
-
-    <div class="ayah-block">
-      <p class="ayah-arabic" lang="ar">اللَّهُمَّ أَرِنَا الْحَقَّ حَقًّا وَارْزُقْنَا اتِّبَاعَهُ</p>
-      <p class="ayah-translation">"O Allah, show us the truth as truth and grant us the ability to follow it."</p>
-      <p class="ayah-source">From the supplications of the Prophet ﷺ</p>
+    <div class="hero-area">
+      <p class="hero-tag">BBOS · Intake Charter · v3.0</p>
+      <h1 class="hero-title">Before You Begin</h1>
+      <p class="hero-sub">This form is your foundational charter. Every field feeds directly into your Strategic Mandate. Vague inputs produce vague strategy.</p>
     </div>
 
-    <p style="font-size: 0.95rem; color: var(--text-secondary); text-align: center; max-width: 580px; margin: 2rem auto 0; line-height: 1.8;">The intake does not ask who you want to be. It asks who you are right now. A gap in the intake is not a failure — it is honest data that protects both of us from building on a foundation that cannot hold.</p>
+    <div class="divider" role="presentation" aria-hidden="true"></div>
+
+    <!-- FORM WRAPPER -->
+    <div id="form-wrap">
+
+      <div class="callout callout-amanah">
+        <p class="callout-title">Amanah Standard</p>
+        <p>Every section of this form has an integrity checkpoint. Answers that cannot be substantiated with evidence will be flagged during the review process. Complete it honestly — not optimistically.</p>
+      </div>
+
+      <div class="callout callout-time">
+        <p class="callout-title">Before you start</p>
+        <p>This form takes most people <strong style="color: var(--cream); font-weight: 400;">12–15 minutes</strong> to complete. Your progress is saved automatically — you can stop and resume at any time.</p>
+      </div>
+
+      <div class="form-field">
+        <label for="f-name">Full Name <span class="required">*</span></label>
+        <input type="text" id="f-name" placeholder="Your full name" autocomplete="name">
+        <p class="field-error" id="e-name">Please enter your name.</p>
+      </div>
+
+      <div class="form-field">
+        <label for="f-email">Email Address <span class="required">*</span></label>
+        <p class="field-hint">Used by the BBOS team to confirm receipt and follow up. Not shared or used for marketing.</p>
+        <input type="email" id="f-email" placeholder="you@example.com" autocomplete="email">
+        <p class="field-error" id="e-email">A valid email address is required.</p>
+      </div>
+
+      <div class="form-field">
+        <label for="f-phone">Phone Number <span style="font-weight: 300; color: var(--text-muted); font-size: 0.85rem;">(optional)</span></label>
+        <p class="field-hint">Useful if the team needs to reach you quickly. Include your country code if outside Canada.</p>
+        <input type="tel" id="f-phone" placeholder="e.g. +1 416 555 0123" autocomplete="tel">
+      </div>
+
+      <div class="form-field">
+        <p class="field-legend">Which best describes your current situation? <span class="required">*</span></p>
+        <p class="field-hint">This helps us understand your starting point and review your intake in the right context.</p>
+        <div class="radio-group" id="situation-group">
+          <label class="radio-opt" onclick="this.classList.add('selected'); this.parentElement.querySelectorAll('.radio-opt').forEach(o => { if(o!==this) o.classList.remove('selected') })">
+            <input type="radio" name="situation" value="starting">
+            <div><div class="opt-label">Starting from scratch</div><div class="opt-desc">No active business revenue yet. Building for the first time.</div></div>
+          </label>
+          <label class="radio-opt" onclick="this.classList.add('selected'); this.parentElement.querySelectorAll('.radio-opt').forEach(o => { if(o!==this) o.classList.remove('selected') })">
+            <input type="radio" name="situation" value="rebuilding">
+            <div><div class="opt-label">Rebuilding or pivoting</div><div class="opt-desc">Previous business experience, but changing direction or restarting.</div></div>
+          </label>
+          <label class="radio-opt" onclick="this.classList.add('selected'); this.parentElement.querySelectorAll('.radio-opt').forEach(o => { if(o!==this) o.classList.remove('selected') })">
+            <input type="radio" name="situation" value="scaling">
+            <div><div class="opt-label">Active business, seeking to scale</div><div class="opt-desc">Existing revenue and clients. Optimising or expanding.</div></div>
+          </label>
+        </div>
+        <p class="field-error" id="e-situation">Please select your current situation.</p>
+      </div>
+
+      <div class="submit-row">
+        <button type="button" class="submit-btn" id="submit-btn" onclick="submitIntake()"><span>Begin the Charter →</span></button>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="success-msg" id="intake-success" role="status">
+      <p class="success-icon">✦</p>
+      <p class="success-title">Your intake has been received.</p>
+      <p class="success-body">Thank you for taking the time to complete this honestly. The Amanah standard you held is exactly the foundation this work requires. Someone from the BBOS team will be in touch within 48 hours.</p>
+    </div>
+
   </div>
-</section>
-
-<section class="section cta-section" id="begin" aria-label="Begin" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">Ready</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="cta-text">When you're ready,<br>the intake is here.</h2>
-
-    <p class="cta-sub">You can complete the intake in your own time. There is no deadline, no pressure, and no commitment until we both agree the foundation is sound.</p>
-
-    <a class="cta-button" href="/cdn-cgi/l/email-protection#156c7a60667073557a7271707b3b74722a6660777f7076612857575a463027255c7b61747e70302725567d7467617067" aria-label="Begin the intake charter via email"><span>Begin the Intake Charter</span></a>
-
-    <p style="font-family: var(--mono); font-size: 0.88rem; color: var(--text-muted); margin-top: 2rem; letter-spacing: 0.1em;">Intake can also be completed by uploading a file or pasting answers directly in conversation.</p>
-  </div>
-</section>
-
-<!-- HADITH -->
-<section class="section" id="hadith" aria-label="Hadith on ongoing benefit" tabindex="-1" style="scroll-snap-align: start;">
-  <div class="section-content" style="text-align: center;">
-    <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
-    <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
-    <p style="font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-muted);">Sahih Muslim · 1631</p>
-  </div>
-</section>
-
 </main>
 
-<footer class="footer" id="footer" role="contentinfo">
+<!-- HADITH -->
+<div style="text-align:center; padding: 80px 24px 0;">
+  <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
+  <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
+  <p style="font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-muted);">Sahih Muslim · 1631</p>
+</div>
+
+<footer class="footer" role="contentinfo">
   <p class="footer-arabic" lang="ar" aria-label="Bismillah in Arabic script">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
   <p class="footer-transliteration" lang="ar-Latn">Bismillāhi r-Raḥmāni r-Raḥīm</p>
   <p class="footer-translation">In the name of God, the Most Gracious, the Most Merciful</p>
@@ -196,8 +207,51 @@ body.page-leaving { animation: pageOut 0.4s ease forwards; }
   <p class="footer-credit">Built with intention · Guided by divine names</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-document.querySelectorAll('.section-content').forEach(el => observer.observe(el));
-window.addEventListener('scroll', () => { const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100; document.getElementById('progressBar').style.width = Math.min(p, 100) + '%'; });
-document.addEventListener('click', function(e) { const link = e.target.closest('a[href]'); if (!link) return; const href = link.getAttribute('href'); if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return; if (e.metaKey || e.ctrlKey || e.shiftKey) return; if (window.matchMedia('(prefers-reduced-motion: reduce
+<script>
+'use strict';
+
+const INTAKE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxFq3VxKhWETUdSb8c-T2YPW7QxeYPxKhtoLjBQrMheiPwtjkVqLmh0VdwUq5-nz-FbCQ/exec';
+
+function showErr(id, show) { const el = document.getElementById(id); if (el) el.classList.toggle('show', show); }
+function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+async function submitIntake() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const situation = document.querySelector('input[name="situation"]:checked');
+  
+  let ok = true;
+  showErr('e-name', !name); if (!name) ok = false;
+  showErr('e-email', !validEmail(email)); if (!validEmail(email)) ok = false;
+  showErr('e-situation', !situation); if (!situation) ok = false;
+  if (!ok) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Sending…';
+
+  try {
+    await fetch(INTAKE_ENDPOINT, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        formType: 'bbos-intake',
+        name,
+        email,
+        phone: phone || 'not provided',
+        situation: situation.value
+      })
+    });
+  } catch(e) { console.warn('Intake send error:', e); }
+
+  document.getElementById('form-wrap').style.display = 'none';
+  document.getElementById('intake-success').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Page transitions
+document.addEventListener('click', function(e) { const link = e.target.closest('a[href]'); if (!link) return; const href = link.getAttribute('href'); if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return; if (e.metaKey || e.ctrlKey || e.shiftKey) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; e.preventDefault(); document.body.classList.add('page-leaving'); setTimeout(function() { window.location.href = href; }, 400); });
+</script>
+</body>
+</html>
