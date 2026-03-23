@@ -16,6 +16,7 @@
   --gold:       #b89050;
   --gold-light: #cca866;
   --gold-muted: #7a6035;
+  --gold-accessible: #9d7a40;
   --line:       rgba(184,144,80,0.18);
   --line-soft:  rgba(240,235,224,0.06);
   --serif: 'Cormorant Garamond', Georgia, serif;
@@ -33,6 +34,22 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+
+/* ── SKIP NAV ── */
+.skip-nav {
+  position: absolute;
+  top: -999px; left: 1rem;
+  z-index: 9999;
+  background: var(--parchment);
+  color: var(--ink);
+  padding: 0.6rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border-radius: 2px;
+}
+.skip-nav:focus { top: 0.75rem; }
 
 /* ── FIXED BACKGROUND ── */
 .bg-fixed {
@@ -103,11 +120,11 @@ body {
   background: rgba(240,235,224,0.08);
   margin: 0 1.5rem; flex-shrink: 0;
 }
-.nav-sections { display: flex; align-items: center; gap: 1.4rem; list-style: none; }
+.nav-sections { display: flex; align-items: center; gap: 1.4rem; list-style: none; margin-left: auto; }
 .nav-sections a {
   font-family: var(--mono); font-size: 0.67rem;
   letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(138,128,112,0.65); text-decoration: none;
+  color: var(--dust); text-decoration: none;
   padding-bottom: 2px; border-bottom: 1px solid transparent;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -192,7 +209,7 @@ body {
 .pathway:hover .pathway-title { color: #fff; }
 .pathway-tag {
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--gold-muted);
+  text-transform: uppercase; color: var(--gold-accessible);
   border: 1px solid rgba(184,144,80,0.22); padding: 0.2rem 0.5rem;
   border-radius: 2px; white-space: nowrap;
   transition: color 0.2s, border-color 0.2s;
@@ -200,7 +217,7 @@ body {
 .pathway:hover .pathway-tag { color: var(--gold-light); border-color: rgba(184,144,80,0.5); }
 .pathway-desc {
   font-family: var(--sans); font-size: 0.78rem; font-weight: 300;
-  color: rgba(216,208,191,0.5); line-height: 1.65; transition: color 0.2s;
+  color: rgba(216,208,191,0.70); line-height: 1.65; transition: color 0.2s;
 }
 .pathway:hover .pathway-desc { color: rgba(216,208,191,0.8); }
 .pathway-arrow {
@@ -217,7 +234,7 @@ body {
 .section-inner--wide { max-width: 780px; margin: 0 auto; }
 
 .sec-eyebrow {
-  font-family: var(--mono); font-size: 0.65rem;
+  font-family: var(--mono); font-size: 0.67rem;
   letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--dust); text-align: center; margin-bottom: 1.4rem;
 }
@@ -227,14 +244,23 @@ body {
   margin: 0 auto 3rem;
 }
 .sec-headline {
-  font-family: var(--serif); font-weight: 300;
-  font-size: clamp(1.9rem, 3.8vw, 3rem);
-  line-height: 1.2; color: var(--parchment);
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.18; color: var(--parchment);
   text-align: center; margin-bottom: 1.75rem;
+  letter-spacing: 0.01em;
 }
 .sec-headline em { font-style: italic; color: var(--gold-light); }
+.sec-subheadline {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+  line-height: 1.18; color: var(--parchment);
+  text-align: center; margin-bottom: 1.75rem;
+  letter-spacing: 0.01em;
+}
+.sec-subheadline em { font-style: italic; color: var(--gold-light); }
 .sec-body {
-  font-family: var(--sans); font-size: 0.92rem; font-weight: 300;
+  font-family: var(--sans); font-size: 0.9rem; font-weight: 300;
   color: rgba(216,208,191,0.65); line-height: 1.85;
   text-align: center; max-width: 620px; margin: 0 auto;
 }
@@ -242,33 +268,44 @@ body {
 
 /* ── NUMBERED LIST ── */
 .num-list {
-  list-style: none; margin-top: 4.5rem;
-  border-left: 1px solid rgba(240,235,224,0.08);
+  list-style: none;
+  margin-top: 4.5rem;
 }
 .num-item {
-  display: grid; grid-template-columns: 48px 1fr;
-  gap: 0 1.5rem; padding: 2rem 0 2rem 2rem;
-  border-bottom: 1px solid rgba(240,235,224,0.05);
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0;
+  padding: 2.5rem 0 2.5rem 0;
+  position: relative;
   opacity: 0; transform: translateY(14px);
   transition: opacity 0.55s ease, transform 0.55s ease;
 }
+/* Per-item left border — inset top/bottom to show gap between items */
+.num-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: rgba(240,235,224,0.14);
+}
 .num-item.visible { opacity: 1; transform: translateY(0); }
-.num-item:last-child { border-bottom: none; }
 .num-index {
   font-family: var(--mono); font-size: 0.67rem;
-  letter-spacing: 0.08em; color: var(--gold-muted);
-  padding-top: 0.2rem;
+  letter-spacing: 0.08em; color: var(--gold-accessible);
+  padding-top: 0.25rem; padding-left: 2rem;
 }
 .num-title {
-  font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
-  color: var(--parchment); margin-bottom: 0.5rem; line-height: 1.3;
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+  color: var(--parchment); margin-bottom: 0.6rem; line-height: 1.3;
 }
 .num-text {
-  font-family: var(--sans); font-size: 0.85rem; font-weight: 300;
-  color: rgba(216,208,191,0.58); line-height: 1.8;
+  font-family: var(--sans); font-size: 0.9rem; font-weight: 300;
+  color: rgba(216,208,191,0.72); line-height: 1.82;
 }
 .num-item.no-title .num-text {
-  color: rgba(216,208,191,0.7); font-size: 0.9rem;
+  color: rgba(216,208,191,0.78); font-size: 0.9rem;
 }
 
 /* ── SEPARATOR ── */
@@ -292,7 +329,7 @@ body {
 .cta-headline em { font-style: italic; color: var(--gold-light); }
 .cta-sub {
   font-family: var(--sans); font-size: 0.9rem; font-weight: 300;
-  color: rgba(216,208,191,0.52); line-height: 1.8; margin-bottom: 3rem;
+  color: rgba(216,208,191,0.70); line-height: 1.8; margin-bottom: 3rem;
 }
 .cta-btn {
   display: inline-flex; align-items: center; gap: 0.75rem;
@@ -355,15 +392,17 @@ body {
   <div class="grain-layer"></div>
 </div>
 
-<!-- NAV -->
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<header>
 <nav class="nav" aria-label="Site navigation">
   <a href="/" class="nav-brand">OGDEN</a>
   <div class="nav-div" aria-hidden="true"></div>
   <ul class="nav-products">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">BBOS</a></li>
-    <li><a href="#">Moontrance</a></li>
-    <li><a href="#" class="nav-active">Atlas</a></li>
+    <li><a href="#" aria-label="Home — coming soon">Home</a></li>
+    <li><a href="#" aria-label="BBOS — coming soon">BBOS</a></li>
+    <li><a href="#" aria-label="Moontrance — coming soon">Moontrance</a></li>
+    <li><a href="#" class="nav-active" aria-current="page">Atlas</a></li>
   </ul>
   <div class="nav-div2" aria-hidden="true"></div>
   <ul class="nav-sections">
@@ -374,13 +413,14 @@ body {
     <li><a href="#connect" data-sec="connect">Connect</a></li>
   </ul>
 </nav>
+</header>
 
-<main>
+<main id="main-content">
 
 <!-- ══ HERO ══ -->
-<section class="hero">
+<section class="hero" aria-labelledby="hero-h1">
   <p class="hero-eyebrow">Land Intelligence &amp; Design System</p>
-  <h1 class="hero-headline">Know the Land Before<br>You Ask Anything of It</h1>
+  <h1 class="hero-headline" id="hero-h1">Know the Land Before<br>You Ask Anything of It</h1>
   <p class="hero-sub">
     Stop wasting months on the wrong property. Atlas maps everything that matters —
     soil, water, zoning, ecology, design potential, and even <em>prayer space orientation</em> —
@@ -421,12 +461,12 @@ body {
 </section>
 
 <!-- ══ PROBLEM ══ -->
-<div class="sep"></div>
-<section class="section" id="problem">
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="problem" aria-labelledby="prob-h">
   <div class="section-inner">
     <p class="sec-eyebrow reveal">How it usually goes</p>
-    <div class="sec-rule reveal"></div>
-    <h2 class="sec-headline reveal">
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="prob-h">
       Most buyers waste months on the wrong land.<br>
       The script sounds like this.
     </h2>
@@ -452,12 +492,12 @@ body {
 </section>
 
 <!-- ══ TURNING ══ -->
-<div class="sep"></div>
-<section class="section" id="turning">
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="turning" aria-labelledby="turn-h">
   <div class="section-inner">
     <p class="sec-eyebrow reveal">The question that changed everything</p>
-    <div class="sec-rule reveal"></div>
-    <h2 class="sec-headline reveal">
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="turn-h">
       What if <em>the land spoke first</em> —<br>and the decision followed?
     </h2>
     <p class="sec-body reveal">
@@ -471,12 +511,12 @@ body {
 </section>
 
 <!-- ══ SYSTEM ══ -->
-<div class="sep"></div>
-<section class="section" id="system">
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="system" aria-labelledby="sys-h">
   <div class="section-inner">
     <p class="sec-eyebrow reveal">What Atlas provides</p>
-    <div class="sec-rule reveal"></div>
-    <h2 class="sec-headline reveal">
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="sys-h">
       Every question the land can answer —<br><em>answered before you commit.</em>
     </h2>
     <p class="sec-body reveal">
@@ -489,23 +529,23 @@ body {
 </section>
 
 <!-- ══ EXPLORE ══ -->
-<div class="sep"></div>
-<section class="section" id="explore">
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="explore" aria-labelledby="exp-h">
   <div class="section-inner--wide">
     <p class="sec-eyebrow reveal">Atlas · Operations</p>
-    <div class="sec-rule reveal"></div>
-    <h2 class="sec-headline reveal" style="font-size: clamp(2.2rem, 5vw, 3.8rem); margin-bottom: 1.25rem;">
-      30 Domains. Three Categories.<br>Nothing Assumed.
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="exp-h">
+      Nothing Assumed.
     </h2>
     <p class="sec-body reveal">
       From environmental baselines to buildout sequencing to mission-critical identity features —
       the full arc of land intelligence, mapped before any commitment is made.
     </p>
 
-    <div style="margin-top: 5.5rem;">
+    <div style="margin-top: 14rem;">
       <p class="sec-eyebrow reveal">From scan to commitment</p>
-      <div class="sec-rule reveal"></div>
-      <h3 class="sec-headline reveal" style="font-size: clamp(1.7rem, 3.2vw, 2.5rem);">
+      <div class="sec-rule reveal" aria-hidden="true"></div>
+      <h3 class="sec-subheadline reveal">
         Five clear stages.<br>No guessing about what comes next.
       </h3>
     </div>
@@ -551,10 +591,10 @@ body {
 </section>
 
 <!-- ══ CLOSING CTA ══ -->
-<div class="sep"></div>
-<section class="cta-section" id="connect">
+<div class="sep" aria-hidden="true"></div>
+<section class="cta-section" id="connect" aria-labelledby="cta-h">
   <div class="cta-inner">
-    <h2 class="cta-headline reveal">
+    <h2 class="cta-headline reveal" id="cta-h">
       The land is ready to answer.<br><em>Are you ready to ask?</em>
     </h2>
     <p class="cta-sub reveal">
