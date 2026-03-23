@@ -159,6 +159,23 @@ body.page-leaving {
 /* Offset content for fixed header */
 .section:first-of-type { padding-top: 132px; }
 
+
+/* ═══════════ MOBILE SCROLL FIX ═══════════ */
+@media (max-height: 750px), (max-width: 640px) {
+  .section { padding: 50px 20px; }
+  .section:first-of-type { padding-top: 80px; }
+  .scroll-hint { bottom: 12px; }
+  .fork-path { padding: 18px 24px; min-width: 100%; }
+  .fork-label { font-size: 1rem; }
+  .fork-desc { font-size: 0.75rem; }
+  .fork-container { gap: 12px; margin-top: 1.5rem; }
+  .hero-title, .hero-tag, .hero-sub { margin-bottom: 0.8rem; }
+  .before-list, .expect-list, .covenant-list { gap: 12px; }
+  .pathway-card { padding: 24px 20px; }
+  .exp-card { padding: 24px 20px; }
+  .tier-card { padding: 28px 22px; }
+}
+
 </style>
 </head>
 <body>
