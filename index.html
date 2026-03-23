@@ -44,6 +44,7 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-dim) var(--bg-deep);
+  scroll-snap-type: y proximity;
 }
 
 /* ═══════════════════════════════
@@ -56,7 +57,7 @@ html {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  html { scroll-behavior: auto; }
+  html { scroll-behavior: auto; scroll-snap-type: none; }
   .section-content { opacity: 1 !important; transform: none !important; }
   .before-item { opacity: 1 !important; transform: none !important; }
 }
@@ -131,6 +132,7 @@ body::before {
   align-items: center;
   padding: 80px 24px;
   position: relative;
+  scroll-snap-align: start;
 }
 
 .section-content {
@@ -257,7 +259,7 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   opacity: 0;
   animation: fadeUp 1s 1.8s ease both;
 }
@@ -268,11 +270,11 @@ body::before {
   text-transform: uppercase;
   color: var(--text-muted);
 }
-.scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--gold-mid), transparent);
-  animation: pulse 2s ease-in-out infinite;
+.scroll-chevron {
+  animation: bounce 2s ease-in-out infinite;
+}
+.scroll-chevron svg {
+  display: block;
 }
 
 /* ═══════════════════════════════
@@ -651,6 +653,7 @@ body::before {
   text-align: center;
   padding: 100px 24px 60px;
   border-top: 1px solid #1a1815;
+  scroll-snap-align: end;
 }
 .footer-arabic {
   font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -709,6 +712,10 @@ body::before {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.8; }
 }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
 
 /* ═══════════════════════════════
    RESPONSIVE
@@ -723,6 +730,88 @@ body::before {
   .direct-card { padding: 36px 28px; }
   .before-item { padding: 16px 18px; }
 }
+
+
+/* ═══════════ PAGE TRANSITIONS ═══════════ */
+body {
+  opacity: 0;
+  animation: pageIn 0.6s ease forwards;
+}
+body.page-leaving {
+  animation: pageOut 0.4s ease forwards;
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pageOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; opacity: 1; }
+  body.page-leaving { animation: none; }
+}
+
+
+/* ═══════════ SITE HEADER ═══════════ */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 52px;
+  background: rgba(10, 10, 8, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(106, 101, 94, 0.2);
+}
+.site-header-left {
+  display: flex; align-items: center; gap: 16px;
+}
+.site-logo {
+  font-family: var(--mono); font-size: 0.75rem; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--cream, #e8e0d0); text-decoration: none; transition: color 0.3s ease;
+}
+.site-logo:hover { color: var(--gold, #d4b45c); }
+.site-header-sep { width: 1px; height: 16px; background: rgba(106, 101, 94, 0.4); }
+.site-header-link {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text-muted, #8a7e70);
+  text-decoration: none; transition: color 0.3s ease;
+}
+.site-header-link:hover { color: var(--cream, #e8e0d0); }
+.site-header-link.project-active { color: var(--cream, #e8e0d0); }
+.site-header-nav {
+  display: flex; align-items: center; gap: 20px; list-style: none;
+}
+.site-header-nav a {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text-muted, #8a7e70);
+  text-decoration: none; transition: color 0.3s ease; padding: 4px 0;
+}
+.site-header-nav a:hover { color: var(--cream, #e8e0d0); }
+.site-header-nav a.active, .site-header-nav a.section-active {
+  color: var(--cream, #e8e0d0); border-bottom: 1px solid var(--cream, #e8e0d0);
+}
+.site-header-toggle {
+  display: none; background: none; border: none;
+  color: var(--text-muted, #8a7e70); cursor: pointer; padding: 8px; font: inherit;
+}
+.site-header-toggle:hover { color: var(--cream, #e8e0d0); }
+@media (max-width: 640px) {
+  .site-header-left { gap: 10px; }
+  .site-header-link { display: none; }
+  .site-header-nav {
+    display: none; position: absolute; top: 52px; left: 0; right: 0;
+    flex-direction: column; background: rgba(10, 10, 8, 0.95);
+    backdrop-filter: blur(12px); padding: 16px 24px; gap: 12px;
+    border-bottom: 1px solid rgba(106, 101, 94, 0.2);
+  }
+  .site-header-nav.open { display: flex; }
+  .site-header-toggle { display: block; }
+}
+/* Offset content for fixed header */
+.section:first-of-type { padding-top: 132px; }
+
 </style>
 </head>
 <body>
@@ -737,6 +826,18 @@ body::before {
 <button class="back-btn" id="backBtn" onclick="goHome()" aria-label="Return to home">
   <span aria-hidden="true">←</span> Back
 </button>
+
+
+<header class="site-header" role="banner">
+  <div class="site-header-left">
+      <a class="site-logo" href="/">OGDEN</a>
+      <a class="site-header-link" href="/bbos/">BBOS</a>
+      <a class="site-header-link" href="/moontrance/">Moontrance</a>
+      <a class="site-header-link" href="/atlas/">Atlas</a>
+  </div>
+  
+</header>
+
 
 <main id="main-content">
 
@@ -772,7 +873,11 @@ body::before {
 
   <div class="scroll-hint" id="scrollHint" aria-hidden="true">
     <span>Scroll</span>
-    <div class="scroll-line"></div>
+    <div class="scroll-chevron">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M6 9l6 6 6-6" stroke="var(--gold-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -871,7 +976,7 @@ body::before {
       </h2>
 
       <div class="project-cards">
-        <a class="project-card" data-project="bbos" href="#" aria-label="BBOS — the Barakah Business Operating System">
+        <a class="project-card" data-project="bbos" href="/bbos/" aria-label="BBOS — the Barakah Business Operating System">
           <div class="project-card-header">
             <span class="project-card-name">BBOS</span>
             <span class="project-card-tag">Operating System</span>
@@ -884,7 +989,7 @@ body::before {
           <p class="project-card-line">"What does it look like when Al-Hakeem governs your strategy?"</p>
         </a>
 
-        <a class="project-card" data-project="moontrance" href="#" aria-label="Moontrance Collective — intentional Muslim community and agritourism">
+        <a class="project-card" data-project="moontrance" href="/moontrance/" aria-label="Moontrance Collective — intentional Muslim community and agritourism">
           <div class="project-card-header">
             <span class="project-card-name">Moontrance Collective</span>
             <span class="project-card-tag">Land &amp; Community</span>
@@ -897,7 +1002,7 @@ body::before {
           <p class="project-card-line">"The community begins before the land is bought."</p>
         </a>
 
-        <a class="project-card" data-project="atlas" href="#" aria-label="OGDEN Atlas — land intelligence and design system">
+        <a class="project-card" data-project="atlas" href="/atlas/" aria-label="OGDEN Atlas — land intelligence and design system">
           <div class="project-card-header">
             <span class="project-card-name">OGDEN Atlas</span>
             <span class="project-card-tag">Land Intelligence</span>
@@ -931,7 +1036,7 @@ body::before {
       </p>
 
       <div class="invitation-cta">
-        <a class="cta-button" href="#" aria-label="Begin a conversation about joining the work">
+        <a class="cta-button" href="/moontrance/connect/" aria-label="Begin a conversation about joining the work">
           <span>Begin a Conversation</span>
           <svg class="cta-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
             <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -952,7 +1057,7 @@ body::before {
 
     <ul class="direct-grid">
       <li>
-        <a class="direct-card" data-project="bbos" href="#" aria-label="Enter BBOS — the Barakah Business Operating System">
+        <a class="direct-card" data-project="bbos" href="/bbos/" aria-label="Enter BBOS — the Barakah Business Operating System">
           <span class="direct-card-stage">Operating System</span>
           <h3>BBOS</h3>
           <p>The Barakah Business Operating System. Nine stages. Governed by the Asmaul Husna. Business as an act of worship — with operational rigour to match the spiritual intent.</p>
@@ -961,7 +1066,7 @@ body::before {
       </li>
 
       <li>
-        <a class="direct-card" data-project="moontrance" href="#" aria-label="Enter Moontrance — intentional Muslim community">
+        <a class="direct-card" data-project="moontrance" href="/moontrance/" aria-label="Enter Moontrance — intentional Muslim community">
           <span class="direct-card-stage">Land &amp; Community</span>
           <h3>Moontrance</h3>
           <p>Intentional Muslim community and agritourism in Ontario. Riba-free land. Shura governance. A Founding Covenant. The community begins before the first acre is acquired.</p>
@@ -970,7 +1075,7 @@ body::before {
       </li>
 
       <li>
-        <a class="direct-card" data-project="atlas" href="#" aria-label="Enter OGDEN Atlas — land intelligence system">
+        <a class="direct-card" data-project="atlas" href="/atlas/" aria-label="Enter OGDEN Atlas — land intelligence system">
           <span class="direct-card-stage">Land Intelligence</span>
           <h3>OGDEN Atlas</h3>
           <p>Site selection and land design intelligence. Soil, water, zoning, topology — mapped and understood before any commitment. Let the land speak first.</p>
@@ -978,6 +1083,16 @@ body::before {
         </a>
       </li>
     </ul>
+  </div>
+</section>
+
+
+<!-- HADITH — Ongoing Benefit -->
+<section class="section" id="hadith" aria-label="Hadith on ongoing benefit" tabindex="-1" style="scroll-snap-align: start;">
+  <div class="section-content" style="text-align: center;">
+    <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream, #e8e0d0); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
+    <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim, #b8ae9e); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
+    <p style="font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-muted, #8a7e70);">Sahih Muslim · 1631</p>
   </div>
 </section>
 
@@ -1139,6 +1254,75 @@ if (!prefersReducedMotion) {
 // ═══════════════════════════════
 document.getElementById('story-journey').classList.add('hidden');
 document.getElementById('story-journey').setAttribute('aria-hidden', 'true');
+
+
+// ═══════════ ACTIVE NAV HIGHLIGHT ═══════════
+(function() {
+  const navLinks = document.querySelectorAll('.site-header-nav a[href^="#"]');
+  if (!navLinks.length) return;
+
+  const sections = [];
+  navLinks.forEach(link => {
+    const id = link.getAttribute('href').substring(1);
+    const section = document.getElementById(id);
+    if (section) sections.push({ el: section, link: link });
+  });
+
+  if (!sections.length) return;
+
+  const headerHeight = 60;
+
+  function updateActive() {
+    let current = null;
+    const scrollY = window.scrollY + headerHeight + 100;
+    
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].el.offsetTop <= scrollY) {
+        current = sections[i];
+        break;
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
+    });
+
+    if (current) {
+      current.link.classList.add('active');
+      current.link.setAttribute('aria-current', 'true');
+    }
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+
+// ═══════════ PAGE TRANSITION — FADE OUT ═══════════
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a[href]');
+  if (!link) return;
+  
+  const href = link.getAttribute('href');
+  
+  // Skip hash links (on-page anchors), skip external links, skip skip-link
+  if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return;
+  
+  // Skip if modifier keys held (new tab etc)
+  if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+  
+  // Respect reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  
+  e.preventDefault();
+  document.body.classList.add('page-leaving');
+  
+  setTimeout(function() {
+    window.location.href = href;
+  }, 400);
+});
+
 </script>
 </body>
 </html>

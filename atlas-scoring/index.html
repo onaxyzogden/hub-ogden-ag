@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scoring System — OGDEN Atlas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root { --bg-deep: #0a0a08; --bg-card: #161612; --accent: #c8bca6; --accent-mid: #a89c88; --accent-dim: #8a7e6a; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #c8bca6; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--accent-dim) var(--bg-deep); scroll-snap-type: y proximity; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-snap-type: none; } .section-content { opacity: 1 !important; transform: none !important; } }
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+.skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--accent); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10000; border-radius: 2px; } .skip-link:focus { top: 16px; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 24px; position: relative; scroll-snap-align: start; }
+.section-content { max-width: 800px; width: 100%; opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.section-content.visible { opacity: 1; transform: translateY(0); }
+.section-divider { width: 60px; height: 1px; background: var(--accent-mid); margin: 0 auto 3rem; }
+.section-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 2rem; text-align: center; }
+.scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 1s 1.5s ease both; }
+.scroll-hint span { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
+.scroll-chevron { animation: bounce 2s ease-in-out infinite; } .scroll-chevron svg { display: block; }
+
+#hero { text-align: center; background: radial-gradient(ellipse 60% 50% at 50% 40%, #12110e 0%, var(--bg-deep) 100%); }
+.hero-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s 0.2s ease both; }
+.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.2; color: var(--cream); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
+.hero-sub { font-family: var(--sans); font-weight: 300; font-size: 1.05rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; opacity: 0; animation: fadeUp 1s 0.8s ease both; }
+.heading { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 300; line-height: 1.6; text-align: center; color: var(--cream); margin-bottom: 2.5rem; }
+.detail { font-size: 0.95rem; color: var(--text-secondary); text-align: center; max-width: 620px; margin: 0 auto; line-height: 1.8; }
+
+/* SCORING BARS */
+.scoring-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 2rem; }
+.score-row { display: flex; align-items: center; gap: 16px; }
+.score-label { font-size: 0.8rem; color: var(--text-secondary); min-width: 200px; text-align: right; }
+.score-bar-track { flex: 1; height: 6px; background: #1c1c17; border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+.score-weight { font-family: var(--mono); font-size: 0.7rem; color: var(--accent-dim); min-width: 36px; }
+
+/* PROFIT TRAITS */
+.traits-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 2rem; }
+.trait-row { display: flex; align-items: center; gap: 16px; }
+.trait-label { font-size: 0.8rem; color: var(--text-secondary); min-width: 200px; text-align: right; }
+.trait-bar-track { flex: 1; height: 6px; background: #1c1c17; border-radius: 3px; overflow: hidden; }
+.trait-bar-fill { height: 100%; background: var(--accent-mid); border-radius: 3px; }
+.trait-weight { font-family: var(--mono); font-size: 0.7rem; color: var(--accent-dim); min-width: 36px; }
+
+.footer { text-align: center; padding: 100px 24px 60px; border-top: 1px solid #1a1815; scroll-snap-align: end; }
+.footer-arabic { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.8; color: var(--accent); margin-bottom: 16px; direction: rtl; }
+.footer-transliteration { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--accent-mid); margin-bottom: 8px; }
+.footer-translation { font-family: var(--sans); font-size: 0.85rem; font-weight: 300; color: var(--text-secondary); margin-bottom: 40px; }
+.footer-divider { width: 40px; height: 1px; background: var(--accent-mid); margin: 0 auto 40px; }
+.footer-credit { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
+.progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--accent-dim), var(--accent)); z-index: 1000; width: 0%; transition: width 0.1s linear; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(8px); opacity: 1; } }
+@media (max-width: 640px) { .section { padding: 60px 20px; } .score-label, .trait-label { min-width: 120px; font-size: 0.7rem; } }
+@media (max-width: 440px) { .score-row, .trait-row { flex-wrap: wrap; } .score-label, .trait-label { min-width: 100%; text-align: left; } }
+
+
+/* ═══════════ PAGE TRANSITIONS ═══════════ */
+body {
+  opacity: 0;
+  animation: pageIn 0.6s ease forwards;
+}
+body.page-leaving {
+  animation: pageOut 0.4s ease forwards;
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pageOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; opacity: 1; }
+  body.page-leaving { animation: none; }
+}
+
+
+/* ═══════════ SITE HEADER ═══════════ */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 52px;
+  background: rgba(10, 10, 8, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(106, 101, 94, 0.2);
+}
+.site-header-left {
+  display: flex; align-items: center; gap: 16px;
+}
+.site-logo {
+  font-family: var(--mono); font-size: 0.75rem; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--cream, #e8e0d0); text-decoration: none; transition: color 0.3s ease;
+}
+.site-logo:hover { color: var(--gold, #d4b45c); }
+.site-header-sep { width: 1px; height: 16px; background: rgba(106, 101, 94, 0.4); }
+.site-header-link {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text-muted, #8a7e70);
+  text-decoration: none; transition: color 0.3s ease;
+}
+.site-header-link:hover { color: var(--cream, #e8e0d0); }
+.site-header-link.project-active { color: var(--cream, #e8e0d0); }
+.site-header-nav {
+  display: flex; align-items: center; gap: 20px; list-style: none;
+}
+.site-header-nav a {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text-muted, #8a7e70);
+  text-decoration: none; transition: color 0.3s ease; padding: 4px 0;
+}
+.site-header-nav a:hover { color: var(--cream, #e8e0d0); }
+.site-header-nav a.active, .site-header-nav a.section-active {
+  color: var(--cream, #e8e0d0); border-bottom: 1px solid var(--cream, #e8e0d0);
+}
+.site-header-toggle {
+  display: none; background: none; border: none;
+  color: var(--text-muted, #8a7e70); cursor: pointer; padding: 8px; font: inherit;
+}
+.site-header-toggle:hover { color: var(--cream, #e8e0d0); }
+@media (max-width: 640px) {
+  .site-header-left { gap: 10px; }
+  .site-header-link { display: none; }
+  .site-header-nav {
+    display: none; position: absolute; top: 52px; left: 0; right: 0;
+    flex-direction: column; background: rgba(10, 10, 8, 0.95);
+    backdrop-filter: blur(12px); padding: 16px 24px; gap: 12px;
+    border-bottom: 1px solid rgba(106, 101, 94, 0.2);
+  }
+  .site-header-nav.open { display: flex; }
+  .site-header-toggle { display: block; }
+}
+/* Offset content for fixed header */
+.section:first-of-type { padding-top: 132px; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="progress-bar" id="progressBar" role="presentation" aria-hidden="true"></div>
+
+
+<header class="site-header" role="banner">
+  <div class="site-header-left">
+      <a class="site-logo" href="/">OGDEN</a>
+      <span class="site-header-sep" aria-hidden="true"></span>
+      <a class="site-header-link" href="/atlas/">Atlas</a>
+      <a class="site-header-link" href="/bbos/">BBOS</a>
+      <a class="site-header-link" href="/moontrance/">Moontrance</a>
+      <a class="site-header-link project-active" href="/atlas/">Atlas</a>
+  </div>
+  <button class="site-header-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='false'?'true':'false'); this.nextElementSibling.classList.toggle('open')">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false"><path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </button>
+  <ul class="site-header-nav" role="navigation" aria-label="Page sections">
+          <li><a href="/atlas-scoring/" class="section-active" aria-current="page">Scoring</a></li>
+          <li><a href="/atlas-toolkit/">Toolkit</a></li>
+  </ul>
+</header>
+
+
+<main id="main-content">
+<section class="section" id="hero" aria-label="Scoring System">
+  <div>
+    <p class="hero-tag">OGDEN Atlas · Evaluation</p>
+    <h1 class="hero-title">Weighted for Farm-Led<br>Hospitality. Not Generic<br>Real Estate.</h1>
+    <p class="hero-sub">The Parcel Scorecard scores what actually matters for an agritourism concept. Legal zoning carries the most weight. Price-to-value carries the least. Just like it should.</p>
+  </div>
+  <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><div class="scroll-chevron"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke="var(--accent-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+</section>
+
+<section class="section" id="parcel-score" aria-label="Parcel Scorecard" tabindex="-1">
+  <div class="section-content">
+    <p class="section-tag">Parcel Scorecard</p>
+    <div class="section-divider" role="presentation" aria-hidden="true"></div>
+    <h2 class="heading">Ten weighted categories.<br>Red flag penalty system.</h2>
+    <ul class="scoring-list" aria-label="Scoring criteria weights">
+      <li class="score-row"><span class="score-label">Legal / Zoning Compatibility</span><div class="score-bar-track"><div class="score-bar-fill" style="width:100%"></div></div><span class="score-weight">20%</span></li>
+      <li class="score-row"><span class="score-label">Environmental Constraints</span><div class="score-bar-track"><div class="score-bar-fill" style="width:75%"></div></div><span class="score-weight">15%</span></li>
+      <li class="score-row"><span class="score-label">Water &amp; Septic Capacity</span><div class="score-bar-track"><div class="score-bar-fill" style="width:60%"></div></div><span class="score-weight">12%</span></li>
+      <li class="score-row"><span class="score-label">Site Layout Potential</span><div class="score-bar-track"><div class="score-bar-fill" style="width:60%"></div></div><span class="score-weight">12%</span></li>
+      <li class="score-row"><span class="score-label">Access &amp; Visibility</span><div class="score-bar-track"><div class="score-bar-fill" style="width:50%"></div></div><span class="score-weight">10%</span></li>
+      <li class="score-row"><span class="score-label">Landscape Experience</span><div class="score-bar-track"><div class="score-bar-fill" style="width:40%"></div></div><span class="score-weight">8%</span></li>
+      <li class="score-row"><span class="score-label">Proximity to Guests</span><div class="score-bar-track"><div class="score-bar-fill" style="width:40%"></div></div><span class="score-weight">8%</span></li>
+      <li class="score-row"><span class="score-label">Parcel Size &amp; Expansion</span><div class="score-bar-track"><div class="score-bar-fill" style="width:35%"></div></div><span class="score-weight">7%</span></li>
+      <li class="score-row"><span class="score-label">Neighbour Compatibility</span><div class="score-bar-track"><div class="score-bar-fill" style="width:25%"></div></div><span class="score-weight">5%</span></li>
+      <li class="score-row"><span class="score-label">Price vs Revenue Potential</span><div class="score-bar-track"><div class="score-bar-fill" style="width:15%"></div></div><span class="score-weight">3%</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="profit-traits" aria-label="Profit-driving traits" tabindex="-1">
+  <div class="section-content">
+    <p class="section-tag">Profit-Driving Parcel Traits</p>
+    <div class="section-divider" role="presentation" aria-hidden="true"></div>
+    <h2 class="heading">The land itself creates a premium guest experience —<br>with less capital spent on infrastructure.</h2>
+    <ul class="traits-list" aria-label="Profit trait weights">
+      <li class="trait-row"><span class="trait-label">Quiet Depth</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:100%"></div></div><span class="trait-weight">22%</span></li>
+      <li class="trait-row"><span class="trait-label">Circulation Logic</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:82%"></div></div><span class="trait-weight">18%</span></li>
+      <li class="trait-row"><span class="trait-label">View Corridor</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:73%"></div></div><span class="trait-weight">16%</span></li>
+      <li class="trait-row"><span class="trait-label">South/SW Exposure</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:64%"></div></div><span class="trait-weight">14%</span></li>
+      <li class="trait-row"><span class="trait-label">Natural Wind Protection</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:55%"></div></div><span class="trait-weight">12%</span></li>
+      <li class="trait-row"><span class="trait-label">Acoustic Separation</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:45%"></div></div><span class="trait-weight">10%</span></li>
+      <li class="trait-row"><span class="trait-label">Edge / Water Features</span><div class="trait-bar-track"><div class="trait-bar-fill" style="width:36%"></div></div><span class="trait-weight">8%</span></li>
+    </ul>
+    <p class="detail" style="margin-top: 2.5rem;">A high Profit Trait Score means the land itself creates a premium guest experience — with less capital spent on infrastructure. The right parcel doesn't just hold the concept. It amplifies it.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" id="cta" aria-label="Continue" tabindex="-1" style="text-align: center;">
+  <div class="section-content">
+    <p class="section-tag">Next step</p>
+    <div class="section-divider" role="presentation" aria-hidden="true"></div>
+    <h2 class="heading">Now that you know how the land is scored —<br>see the full toolkit that carries you from search to offer.</h2>
+    <a style="display:inline-flex;align-items:center;gap:12px;padding:16px 40px;border:1px solid #c8bca6;border-radius:2px;background:transparent;color:#c8bca6;font-family:var(--serif);font-size:1.1rem;font-weight:400;text-decoration:none;cursor:pointer;transition:all 0.4s ease;" href="/atlas-toolkit/" aria-label="Explore the toolkit and workflow">Explore the Toolkit</a>
+  </div>
+</section>
+
+
+<!-- HADITH — Ongoing Benefit -->
+<section class="section" id="hadith" aria-label="Hadith on ongoing benefit" tabindex="-1" style="scroll-snap-align: start;">
+  <div class="section-content" style="text-align: center;">
+    <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream, #e8e0d0); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
+    <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim, #b8ae9e); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
+    <p style="font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-muted, #8a7e70);">Sahih Muslim · 1631</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" id="footer" role="contentinfo">
+  <p class="footer-arabic" lang="ar" aria-label="Bismillah in Arabic script">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+  <p class="footer-transliteration" lang="ar-Latn">Bismillāhi r-Raḥmāni r-Raḥīm</p>
+  <p class="footer-translation">In the name of God, the Most Gracious, the Most Merciful</p>
+  <div class="footer-divider" role="presentation" aria-hidden="true"></div>
+  <p class="footer-credit">Built with intention · Guided by divine names</p>
+</footer>
+<script>
+const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.section-content').forEach(el => observer.observe(el));
+window.addEventListener('scroll', () => { const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100; document.getElementById('progressBar').style.width = Math.min(p, 100) + '%'; });
+
+
+// ═══════════ ACTIVE NAV HIGHLIGHT ═══════════
+(function() {
+  const navLinks = document.querySelectorAll('.site-header-nav a[href^="#"]');
+  if (!navLinks.length) return;
+
+  const sections = [];
+  navLinks.forEach(link => {
+    const id = link.getAttribute('href').substring(1);
+    const section = document.getElementById(id);
+    if (section) sections.push({ el: section, link: link });
+  });
+
+  if (!sections.length) return;
+
+  const headerHeight = 60;
+
+  function updateActive() {
+    let current = null;
+    const scrollY = window.scrollY + headerHeight + 100;
+    
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].el.offsetTop <= scrollY) {
+        current = sections[i];
+        break;
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
+    });
+
+    if (current) {
+      current.link.classList.add('active');
+      current.link.setAttribute('aria-current', 'true');
+    }
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+
+// ═══════════ PAGE TRANSITION — FADE OUT ═══════════
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a[href]');
+  if (!link) return;
+  
+  const href = link.getAttribute('href');
+  
+  // Skip hash links (on-page anchors), skip external links, skip skip-link
+  if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return;
+  
+  // Skip if modifier keys held (new tab etc)
+  if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+  
+  // Respect reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  
+  e.preventDefault();
+  document.body.classList.add('page-leaving');
+  
+  setTimeout(function() {
+    window.location.href = href;
+  }, 400);
+});
+
+</script>
+</body>
+</html>

@@ -3,81 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBOS — Barakah Business Operating System</title>
+<title>Work Together — BBOS</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-deep: #0a0a08; --bg-section: #0f0f0c; --bg-card: #161612; --bg-card-hover: #1c1c17;
-  --gold: #d4b45c; --gold-mid: #b89a44; --gold-dim: #9e8540; --gold-glow: #c8a84e22;
-  --cream: #e8e0d0; --cream-dim: #b8ae9e;
-  --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70;
-  --focus-ring: #d4b45c;
-  --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace;
-}
+:root { --bg-deep: #0a0a08; --bg-card: #161612; --bg-card-hover: #1c1c17; --gold: #d4b45c; --gold-mid: #b89a44; --gold-dim: #9e8540; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #d4b45c; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold-dim) var(--bg-deep); scroll-snap-type: y proximity; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-  html { scroll-snap-type: none; }
-  .section-content { opacity: 1 !important; transform: none !important; }
-}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-snap-type: none; } .section-content { opacity: 1 !important; transform: none !important; } }
 body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
-
 .skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--gold); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10000; border-radius: 2px; }
 .skip-link:focus { top: 16px; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
-
 .section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 24px; position: relative; scroll-snap-align: start; }
 .section-content { max-width: 800px; width: 100%; opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
 .section-content.visible { opacity: 1; transform: translateY(0); }
 .section-divider { width: 60px; height: 1px; background: var(--gold-mid); margin: 0 auto 3rem; }
 .section-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2rem; text-align: center; }
-
-
-/* SCROLL HINT */
 .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 1s 1.5s ease both; }
 .scroll-hint span { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
 .scroll-chevron { animation: bounce 2s ease-in-out infinite; }
 .scroll-chevron svg { display: block; }
 
-/* HERO — ATTENTION */
 #hero { text-align: center; background: radial-gradient(ellipse 60% 50% at 50% 40%, #1a1610 0%, var(--bg-deep) 100%); }
 .hero-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s 0.2s ease both; }
-.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.2; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
+.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.2; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
 .hero-sub { font-family: var(--sans); font-weight: 300; font-size: 1.05rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; opacity: 0; animation: fadeUp 1s 0.8s ease both; }
-
-/* BODY TEXT */
 .heading { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 300; line-height: 1.6; text-align: center; color: var(--cream); margin-bottom: 2.5rem; }
-.heading .accent { color: var(--gold); font-style: italic; }
 .detail { font-size: 0.95rem; color: var(--text-secondary); text-align: center; max-width: 620px; margin: 0 auto; line-height: 1.8; }
 
-/* BEFORE — pain points */
-.before-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 2.5rem; }
-.before-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border-left: 2px solid var(--text-muted); }
-.before-item .num { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); min-width: 20px; padding-top: 2px; }
-.before-item p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+.tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 2.5rem; list-style: none; }
+.tier-card { padding: 36px 28px; border: 1px solid #6a655e; border-radius: 2px; background: var(--bg-card); display: flex; flex-direction: column; transition: all 0.4s ease; }
+.tier-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+.tier-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 14px; }
+.tier-card h3 { font-family: var(--serif); font-weight: 400; font-size: 1.25rem; color: var(--cream); margin-bottom: 12px; }
+.tier-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; flex: 1; }
+.tier-link { display: inline-block; margin-top: 20px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; transition: color 0.3s ease; }
+.tier-link:hover { color: var(--cream); }
 
-/* AFTER — vision text */
-.after-text { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 300; line-height: 1.5; text-align: center; color: var(--cream); margin-bottom: 2rem; }
-.after-text .accent { color: var(--gold); font-style: italic; }
-.after-detail { font-size: 0.95rem; color: var(--text-secondary); text-align: center; max-width: 580px; margin: 0 auto; line-height: 1.8; }
-
-/* BRIDGE — pathway cards */
-.pathways { display: flex; flex-direction: column; gap: 24px; margin-top: 2.5rem; }
-.pathway-card { padding: 36px 32px; border: 1px solid #6a655e; border-radius: 3px; background: var(--bg-card); cursor: pointer; text-decoration: none; color: inherit; display: block; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
-.pathway-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.pathway-card:hover { border-color: var(--gold-dim); background: var(--bg-card-hover); transform: translateY(-3px); }
-.pathway-card:hover::after { transform: scaleX(1); }
-.pathway-card:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
-.pathway-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.pathway-name { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--gold); }
-.pathway-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); padding: 3px 10px; border: 1px solid #6a655e; border-radius: 1px; }
-.pathway-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; }
-.pathway-arrow { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); transition: color 0.3s ease; }
-.pathway-card:hover .pathway-arrow { color: var(--gold); }
-
-/* CTA — ACTION */
 .cta-section { text-align: center; }
 .cta-text { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; }
 .cta-sub { font-size: 0.95rem; color: var(--text-secondary); max-width: 500px; margin: 0 auto 2.5rem; }
@@ -87,7 +50,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .cta-button:hover::before { transform: scaleX(1); }
 .cta-button span { position: relative; z-index: 1; }
 
-/* FOOTER */
 .footer { text-align: center; padding: 100px 24px 60px; border-top: 1px solid #1a1815; scroll-snap-align: end; }
 .footer-arabic { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.8; color: var(--gold); margin-bottom: 16px; direction: rtl; }
 .footer-transliteration { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--gold-mid); margin-bottom: 8px; }
@@ -98,13 +60,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 1000; width: 0%; transition: width 0.1s linear; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes bounce { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(8px); opacity: 1; } }
-
-@media (max-width: 640px) {
-  .section { padding: 60px 20px; }
-  .pathway-card { padding: 28px 24px; }
-  .pathway-header { flex-direction: column; gap: 8px; }
-  .before-item { padding: 16px 18px; }
-}
+@media (max-width: 640px) { .section { padding: 60px 20px; } .tiers-grid { grid-template-columns: 1fr; } }
 
 
 /* ═══════════ PAGE TRANSITIONS ═══════════ */
@@ -199,7 +155,7 @@ body.page-leaving {
   <div class="site-header-left">
       <a class="site-logo" href="/">OGDEN</a>
       <span class="site-header-sep" aria-hidden="true"></span>
-      <a class="site-header-link" href="/">Home</a>
+      <a class="site-header-link" href="/bbos/">BBOS</a>
       <a class="site-header-link project-active" href="/bbos/">BBOS</a>
       <a class="site-header-link" href="/moontrance/">Moontrance</a>
       <a class="site-header-link" href="/atlas/">Atlas</a>
@@ -208,177 +164,60 @@ body.page-leaving {
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false"><path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
   </button>
   <ul class="site-header-nav" role="navigation" aria-label="Page sections">
-          <li><a href="#before">Before</a></li>
-          <li><a href="#turning">Turning</a></li>
-          <li><a href="#after">After</a></li>
-          <li><a href="#bridge">System</a></li>
-          <li><a href="#cta">Begin</a></li>
+          <li><a href="/bbos-stages/">Stages</a></li>
+          <li><a href="/bbos-who/">Who</a></li>
+          <li><a href="/bbos-engage/" class="section-active" aria-current="page">Engage</a></li>
   </ul>
 </header>
 
 
 <main id="main-content">
 
-<!-- ═══════════════════════════════
-     ATTENTION — The hook
-     ═══════════════════════════════ -->
-<section class="section" id="hero" aria-label="BBOS introduction">
+<section class="section" id="hero" aria-label="Work Together introduction">
   <div>
-    <p class="hero-tag">Barakah Business Operating System</p>
-    <h1 class="hero-title">The business is the<br>act of worship.<br>The system holds it.</h1>
-    <p class="hero-sub">
-      A nine-stage framework for people who started building for Allah —
-      and need a system rigorous enough to keep that intention alive
-      when the operational pressure gets real.
-    </p>
+    <p class="hero-tag">BBOS · Engagement</p>
+    <h1 class="hero-title">Ready to Build Something<br>That Holds Its Intention<br>All the Way Through.</h1>
+    <p class="hero-sub">Three forms, depending on where you are and what you need. All of them start with an honest conversation. The first conversation is a discernment call — for both of us.</p>
   </div>
-  <div class="scroll-hint" aria-hidden="true">
-    <span>Scroll</span>
-    <div class="scroll-chevron"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke="var(--gold-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-  </div>
+  <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><div class="scroll-chevron"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke="var(--gold-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
 </section>
 
-<!-- ═══════════════════════════════
-     INTEREST / BEFORE — The world you're living in
-     ═══════════════════════════════ -->
-<section class="section" id="before" aria-label="The problem" tabindex="-1">
+<section class="section" id="tiers" aria-label="Engagement tiers" tabindex="-1">
   <div class="section-content">
-    <p class="section-tag">You already know this</p>
+    <p class="section-tag">Three paths</p>
     <div class="section-divider" role="presentation" aria-hidden="true"></div>
 
-    <h2 class="heading">
-      You were handed a script.<br>
-      It sounded like this.
-    </h2>
-
-    <ol class="before-list">
-      <li class="before-item">
-        <span class="num" aria-hidden="true">01</span>
-        <p>Build the business — but detach it from your soul. Scale first. Systematize second. The intention can wait. Revenue is the only measure that matters.</p>
+    <h2 class="heading" style="margin-bottom:2rem;">Choose your path.</h2>
+    <ul class="tiers-grid">
+      <li class="tier-card">
+        <p class="tier-label">Independent</p>
+        <h3>Self-Directed Implementation</h3>
+        <p>The full BBOS framework as a structured workbook. All nine stages, all deliverable templates, all decision gates. Work through it in your own time. Starts with the intake charter.</p>
+        <a class="tier-link" href="/bbos/intake/">Begin the intake →</a>
       </li>
-      <li class="before-item">
-        <span class="num" aria-hidden="true">02</span>
-        <p>Outgrow your informal systems — then replace them with frameworks that have no memory of why you started. Efficiency over meaning. Process over presence.</p>
+      <li class="tier-card">
+        <p class="tier-label">Cohort</p>
+        <h3>Guided Implementation</h3>
+        <p>A small cohort working through BBOS together, with live sessions to surface what the framework alone cannot — the gaps you can't see in your own work. Starts with the intake charter.</p>
+        <a class="tier-link" href="/bbos/intake/">Begin the intake →</a>
       </li>
-      <li class="before-item">
-        <span class="num" aria-hidden="true">03</span>
-        <p>Notice the gap between your stated values and your operational reality — and learn to live with it. Everyone does. The market doesn't reward integrity. It rewards speed.</p>
+      <li class="tier-card">
+        <p class="tier-label">Private · Now Open</p>
+        <h3>One-to-One Engagement</h3>
+        <p>Direct work together. For people who need the framework personalised to their specific situation, constraints, and calling. Begin with the intake charter.</p>
+        <a class="tier-link" href="/bbos/intake/">Begin the intake →</a>
       </li>
-    </ol>
+    </ul>
   </div>
 </section>
 
-<!-- ═══════════════════════════════
-     THE TURNING POINT — The question that reframes everything
-     ═══════════════════════════════ -->
-<section class="section" id="turning" aria-label="The turning point" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">The question that changed everything</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <p class="after-text">
-      What if the work you do<br>
-      could be <span class="accent">an act of worship?</span>
-    </p>
-
-    <p class="after-detail">
-      What if taqwa wasn't just personal piety — but the operating system
-      for everything you build? What if the Quran, hadith, Dua, and the names of Allah
-      weren't just recited but lived through — in how you qualify a client, structure an offer,
-      hold a boundary, and reckon honestly with what the system produced?
-    </p>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════
-     DESIRE / AFTER — What it looks like when the system holds
-     ═══════════════════════════════ -->
-<section class="section" id="after" aria-label="The vision" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">What changes</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <p class="after-text">
-      Imagine a system where <span class="accent">every stage</span> —
-      from your first self-declaration to the final reckoning —
-      is anchored to a Name of Allah. Not as ornamentation.
-      As a <span class="accent">structural load</span>.
-    </p>
-
-    <p class="after-detail">
-      Where the framework itself pulls you back to what the business is actually for
-      when capacity is stretched and the pressure is high. Where honest reckoning
-      is built into the architecture — not left to your willpower. Where the
-      Amanah Gate says no before you can say yes to work that isn't yours to carry.
-    </p>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════
-     BRIDGE — The three pathways into the system
-     ═══════════════════════════════ -->
-<section class="section" id="bridge" aria-label="Explore BBOS" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">The system</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="heading" style="margin-bottom: 3rem;">
-      Three ways into how it works.
-    </h2>
-
-    <nav class="pathways" aria-label="BBOS detail pages">
-      <a class="pathway-card" href="/bbos-stages/" aria-label="Explore the nine stages of BBOS">
-        <div class="pathway-header">
-          <span class="pathway-name">The Nine Stages</span>
-          <span class="pathway-tag">Framework</span>
-        </div>
-        <p class="pathway-desc">From intake to optimisation — each stage a decision gate governed by specific divine attributes. You do not move forward until the current stage is pleasing to God.</p>
-        <span class="pathway-arrow">Explore the stages →</span>
-      </a>
-
-      <a class="pathway-card" href="/bbos-who/" aria-label="Learn who BBOS is built for">
-        <div class="pathway-header">
-          <span class="pathway-name">Who It's For</span>
-          <span class="pathway-tag">Alignment</span>
-        </div>
-        <p class="pathway-desc">Three operator profiles — and one honest disclaimer about who this is not for. BBOS asks for honesty at every stage. Not everyone is ready for that conversation.</p>
-        <span class="pathway-arrow">See if it fits →</span>
-      </a>
-
-      <a class="pathway-card" href="/bbos-engage/" aria-label="Learn how to work with BBOS">
-        <div class="pathway-header">
-          <span class="pathway-name">Work Together</span>
-          <span class="pathway-tag">Engagement</span>
-        </div>
-        <p class="pathway-desc">Independent, cohort, or one-to-one. Three paths depending on where you are. All start with the same intake — because the first act of every engagement is honesty.</p>
-        <span class="pathway-arrow">Choose your path →</span>
-      </a>
-    </nav>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════
-     ACTION — The CTA
-     ═══════════════════════════════ -->
 <section class="section cta-section" id="cta" aria-label="Begin" tabindex="-1">
   <div class="section-content">
-    <p class="section-tag">The invitation</p>
+    <p class="section-tag">Not sure which path fits?</p>
     <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="cta-text">
-      The intake charter is the first honest conversation.<br>
-      Everything else follows from there.
-    </h2>
-
-    <p class="cta-sub">
-      No pressure. No commitment yet. Just a structured space
-      to tell the truth about where you are — and find out
-      whether the system can serve what you're building.
-    </p>
-
-    <a class="cta-button" href="/bbos/intake/" aria-label="Begin the BBOS intake charter">
-      <span>Begin the Intake Charter</span>
-    </a>
+    <h2 class="cta-text">The intake form is the first step<br>for all of them.</h2>
+    <p class="cta-sub">It exists to help us both understand what's needed before anything is committed. There is no pressure to work together.</p>
+    <a class="cta-button" href="/bbos/intake/" aria-label="Begin the BBOS intake charter"><span>Begin the Intake Charter</span></a>
   </div>
 </section>
 
@@ -403,14 +242,9 @@ body.page-leaving {
 </footer>
 
 <script>
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 document.querySelectorAll('.section-content').forEach(el => observer.observe(el));
-window.addEventListener('scroll', () => {
-  const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-  document.getElementById('progressBar').style.width = Math.min(p, 100) + '%';
-});
+window.addEventListener('scroll', () => { const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100; document.getElementById('progressBar').style.width = Math.min(p, 100) + '%'; });
 
 
 // ═══════════ ACTIVE NAV HIGHLIGHT ═══════════

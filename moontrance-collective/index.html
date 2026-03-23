@@ -3,76 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moontrance Collective — Land, Community, Covenant</title>
+<title>The Collective — Moontrance</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-deep: #0a0a08; --bg-section: #0f0f0c; --bg-card: #161612; --bg-card-hover: #1c1c17;
-  --green: #5a9469; --green-light: #7db68c; --green-mid: #4a8058; --green-dim: #3d6b4a; --green-glow: #4a7c5922;
-  --cream: #e8e0d0; --cream-dim: #b8ae9e;
-  --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70;
-  --focus-ring: #7db68c;
-  --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace;
-}
+:root { --bg-deep: #0a0a08; --bg-card: #161612; --bg-card-hover: #1c1c17; --green: #5a9469; --green-light: #7db68c; --green-mid: #4a8058; --green-dim: #3d6b4a; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #7db68c; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--green-dim) var(--bg-deep); scroll-snap-type: y proximity; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-  html { scroll-snap-type: none; }
-  .section-content { opacity: 1 !important; transform: none !important; }
-}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-snap-type: none; } .section-content { opacity: 1 !important; transform: none !important; } }
 body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
-
 .skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--green-light); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10000; border-radius: 2px; }
 .skip-link:focus { top: 16px; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
-
 .section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 24px; position: relative; scroll-snap-align: start; }
 .section-content { max-width: 800px; width: 100%; opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
 .section-content.visible { opacity: 1; transform: translateY(0); }
+.section-wide { max-width: 960px; }
 .section-divider { width: 60px; height: 1px; background: var(--green-mid); margin: 0 auto 3rem; }
 .section-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; text-align: center; }
-
-
 .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 1s 1.5s ease both; }
 .scroll-hint span { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
 .scroll-chevron { animation: bounce 2s ease-in-out infinite; }
 .scroll-chevron svg { display: block; }
 
-/* HERO */
 #hero { text-align: center; background: radial-gradient(ellipse 60% 50% at 50% 40%, #0f150e 0%, var(--bg-deep) 100%); }
 .hero-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s 0.2s ease both; }
-.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.2; color: var(--green-light); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
+.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.2; color: var(--green-light); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s 0.5s ease both; }
 .hero-sub { font-family: var(--sans); font-weight: 300; font-size: 1.05rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; opacity: 0; animation: fadeUp 1s 0.8s ease both; }
-
-/* BODY TEXT */
 .heading { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 300; line-height: 1.6; text-align: center; color: var(--cream); margin-bottom: 2.5rem; }
 .heading .accent { color: var(--green-light); font-style: italic; }
 .detail { font-size: 0.95rem; color: var(--text-secondary); text-align: center; max-width: 620px; margin: 0 auto; line-height: 1.8; }
-.turn-text { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 300; line-height: 1.5; text-align: center; color: var(--cream); margin-bottom: 2rem; }
-.turn-text .accent { color: var(--green-light); font-style: italic; }
-.turn-detail { font-size: 0.95rem; color: var(--text-secondary); text-align: center; max-width: 580px; margin: 0 auto; line-height: 1.8; }
 
-/* BEFORE */
-.before-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 2.5rem; }
-.before-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border-left: 2px solid var(--text-muted); }
-.before-item .num { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); min-width: 20px; padding-top: 2px; }
-.before-item p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+/* EXPERIENCE CARDS */
+.exp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 2rem; list-style: none; }
+.exp-card { padding: 32px 28px; border: 1px solid #6a655e; border-radius: 2px; background: var(--bg-card); transition: all 0.4s ease; }
+.exp-card:hover { border-color: var(--green-dim); transform: translateY(-2px); }
+.exp-type { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 10px; }
+.exp-card h3 { font-family: var(--serif); font-weight: 400; font-size: 1.2rem; color: var(--cream); margin-bottom: 10px; }
+.exp-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 
-/* PATHWAY CARDS */
-.pathways { display: flex; flex-direction: column; gap: 24px; margin-top: 2.5rem; }
-.pathway-card { padding: 36px 32px; border: 1px solid #6a655e; border-radius: 3px; background: var(--bg-card); cursor: pointer; text-decoration: none; color: inherit; display: block; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
-.pathway-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--green-light); transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.pathway-card:hover { border-color: var(--green-dim); background: var(--bg-card-hover); transform: translateY(-3px); }
-.pathway-card:hover::after { transform: scaleX(1); }
-.pathway-card:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
-.pathway-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.pathway-name { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--green-light); }
-.pathway-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); padding: 3px 10px; border: 1px solid #6a655e; border-radius: 1px; }
-.pathway-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; }
-.pathway-arrow { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-mid); transition: color 0.3s ease; }
-.pathway-card:hover .pathway-arrow { color: var(--green-light); }
+/* JOURNEY STEPS */
+.journey-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 2rem; }
+.journey-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border-left: 2px solid var(--green-dim); transition: border-color 0.3s ease; }
+.journey-item:hover { border-color: var(--green-light); }
+.journey-item .num { font-family: var(--mono); font-size: 0.7rem; color: var(--green-mid); min-width: 20px; padding-top: 2px; }
+.journey-item h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
+.journey-item p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* STANDARDS */
+.standards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 2rem; list-style: none; }
+.standard { padding: 24px 20px; border-left: 2px solid var(--green-dim); }
+.standard h3 { font-family: var(--serif); font-size: 1rem; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+.standard p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; }
 
 /* CTA */
 .cta-section { text-align: center; }
@@ -84,7 +66,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .cta-button:hover::before { transform: scaleX(1); }
 .cta-button span { position: relative; z-index: 1; }
 
-/* FOOTER */
 .footer { text-align: center; padding: 100px 24px 60px; border-top: 1px solid #1a1815; scroll-snap-align: end; }
 .footer-arabic { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.8; color: var(--green-light); margin-bottom: 16px; direction: rtl; }
 .footer-transliteration { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--green-mid); margin-bottom: 8px; }
@@ -95,7 +76,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--green-light); z-index: 1000; width: 0%; transition: width 0.1s linear; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes bounce { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(8px); opacity: 1; } }
-@media (max-width: 640px) { .section { padding: 60px 20px; } .pathway-card { padding: 28px 24px; } .pathway-header { flex-direction: column; gap: 8px; } .before-item { padding: 16px 18px; } }
+@media (max-width: 640px) { .section { padding: 60px 20px; } .exp-grid { grid-template-columns: 1fr; } .standards-grid { grid-template-columns: 1fr; } .journey-item { padding: 16px 18px; } }
 
 
 /* ═══════════ PAGE TRANSITIONS ═══════════ */
@@ -190,7 +171,7 @@ body.page-leaving {
   <div class="site-header-left">
       <a class="site-logo" href="/">OGDEN</a>
       <span class="site-header-sep" aria-hidden="true"></span>
-      <a class="site-header-link" href="/">Home</a>
+      <a class="site-header-link" href="/moontrance/">Moontrance</a>
       <a class="site-header-link" href="/bbos/">BBOS</a>
       <a class="site-header-link project-active" href="/moontrance/">Moontrance</a>
       <a class="site-header-link" href="/atlas/">Atlas</a>
@@ -199,173 +180,122 @@ body.page-leaving {
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false"><path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
   </button>
   <ul class="site-header-nav" role="navigation" aria-label="Page sections">
-          <li><a href="#before">Before</a></li>
-          <li><a href="#turning">Turning</a></li>
-          <li><a href="#after">Vision</a></li>
-          <li><a href="#bridge">Explore</a></li>
-          <li><a href="#cta">Join</a></li>
+          <li><a href="/moontrance-collective/" class="section-active" aria-current="page">Collective</a></li>
+          <li><a href="/moontrance-economics/">Economics</a></li>
+          <li><a href="/moontrance-acquisition/">Acquisition</a></li>
   </ul>
 </header>
 
 
 <main id="main-content">
 
-<!-- ATTENTION -->
-<section class="section" id="hero" aria-label="Moontrance introduction">
+<section class="section" id="hero" aria-label="The Collective">
   <div>
-    <p class="hero-tag">Intentional Community · Agritourism · Ontario</p>
-    <h1 class="hero-title">Land, Learning<br>&amp; Remembrance</h1>
-    <p class="hero-sub">
-      A faith-rooted destination where families, learners, and seekers experience
-      the beauty of Allah's creation through guided visits, sustainable living workshops,
-      and overnight stays — on land held in trust, within 90 minutes of Toronto.
-    </p>
+    <p class="hero-tag">Moontrance · Experiences</p>
+    <h1 class="hero-title">Calm, Beauty, and<br>Intentional Living</h1>
+    <p class="hero-sub">From guided visits to overnight stays, each experience is designed to help guests connect with the land, learn sustainable ways of living, and experience hospitality rooted in Islamic values.</p>
   </div>
-  <div class="scroll-hint" aria-hidden="true">
-    <span>Scroll</span>
-    <div class="scroll-chevron"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><div class="scroll-chevron"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+</section>
+
+<!-- EXPERIENCES -->
+<section class="section" id="experiences" aria-label="Guest experiences" tabindex="-1" style="min-height: auto; padding-top: 100px; padding-bottom: 100px;">
+  <div class="section-content section-wide">
+    <p class="section-tag">The experiences</p>
+    <div class="section-divider" role="presentation" aria-hidden="true"></div>
+
+    <h2 class="heading">Rest, learning, and reconnection —<br>each one rooted in <span class="accent">land and faith</span>.</h2>
+
+    <ul class="exp-grid">
+      <li class="exp-card">
+        <p class="exp-type">Day Visit</p>
+        <h3>Guided Farm &amp; Land Tour</h3>
+        <p>Step onto the land and discover the living systems, values, and vision behind the destination. A guided introduction to the gardens, animal systems, learning spaces, and the deeper principles that shape how everything is cared for.</p>
+      </li>
+      <li class="exp-card">
+        <p class="exp-type">Day Visit</p>
+        <h3>Family Land Day</h3>
+        <p>Family time that offers more than entertainment. A half-day experience for parents and children — learning about stewardship, food, and creation in a way that feels peaceful and grounded. Meaningful time together in nature.</p>
+      </li>
+      <li class="exp-card">
+        <p class="exp-type">Education</p>
+        <h3>Seasonal Workshops</h3>
+        <p>Practical, values-rooted sessions on soil health, food systems, composting, and stewardship. Guests engage with living systems, observe how they work, and leave with insights they can apply at home.</p>
+      </li>
+      <li class="exp-card">
+        <p class="exp-type">Overnight</p>
+        <h3>Rest &amp; Reconnect Stay</h3>
+        <p>Step away from overstimulation and settle into a space where reflection, simplicity, and hospitality are woven into every detail. A prayer-friendly, halal, values-aligned retreat in nature.</p>
+      </li>
+      <li class="exp-card">
+        <p class="exp-type">Overnight</p>
+        <h3>Family Stewardship Stay</h3>
+        <p>A deeper kind of family getaway — peaceful accommodation, land-based learning, hands-on participation, and moments of reflection that help families reconnect with one another and with the signs of Allah in creation.</p>
+      </li>
+    </ul>
   </div>
 </section>
 
-<!-- INTEREST / BEFORE -->
-<section class="section" id="before" aria-label="The problem" tabindex="-1">
+<!-- WHAT A VISIT FEELS LIKE -->
+<section class="section" id="journey" aria-label="What a visit feels like" tabindex="-1">
   <div class="section-content">
-    <p class="section-tag">You already know this</p>
+    <p class="section-tag">What a visit feels like</p>
     <div class="section-divider" role="presentation" aria-hidden="true"></div>
 
-    <h2 class="heading">
-      You were handed a version of community<br>
-      that was never designed to hold.
-    </h2>
-
-    <ol class="before-list">
-      <li class="before-item">
+    <ol class="journey-list">
+      <li class="journey-item">
         <span class="num" aria-hidden="true">01</span>
-        <p>Find community — in borrowed spaces, on rented land, scattered across cities. Connected by group chats that go quiet. Belonging that depends on a lease renewal.</p>
+        <div><h3>Arrive</h3><p>You arrive to a setting shaped by calm and intention. Quiet spaces, living systems, and an atmosphere that invites you to breathe before you even begin.</p></div>
       </li>
-      <li class="before-item">
+      <li class="journey-item">
         <span class="num" aria-hidden="true">02</span>
-        <p>Buy land — with debt your tradition calls harm. Build a legacy on a mortgage. Call it progress. Carry the weight of riba and call it the cost of doing business.</p>
+        <div><h3>Engage</h3><p>Move through gardens, animal systems, reflection areas, and hands-on experiences that blend learning with beauty. Every element has a purpose behind it.</p></div>
       </li>
-      <li class="before-item">
+      <li class="journey-item">
         <span class="num" aria-hidden="true">03</span>
-        <p>Plan together — without a covenant. No shared principles written down. No governance beyond goodwill. Wonder why it falls apart when the first real disagreement arrives.</p>
+        <div><h3>Reflect</h3><p>Share a halal meal, sit in stillness, walk the land at dusk, or join your children in a moment of learning. Some of the best remembrance happens in between.</p></div>
+      </li>
+      <li class="journey-item">
+        <span class="num" aria-hidden="true">04</span>
+        <div><h3>Learn</h3><p>Leave with practical insight you can carry home — about food systems, stewardship, seasonal rhythms, and what sustainable living actually looks like in practice.</p></div>
+      </li>
+      <li class="journey-item">
+        <span class="num" aria-hidden="true">05</span>
+        <div><h3>Rest</h3><p>If you stay overnight, you are welcomed into thoughtfully prepared accommodations. No performance required. Simply rest, pray, and reconnect with what matters.</p></div>
+      </li>
+      <li class="journey-item">
+        <span class="num" aria-hidden="true">06</span>
+        <div><h3>Return</h3><p>Many guests find themselves wanting to come back. Not for novelty — but because this kind of experience restores something that everyday life depletes.</p></div>
       </li>
     </ol>
   </div>
 </section>
 
-<!-- TURNING POINT -->
-<section class="section" id="turning" aria-label="The turning point" tabindex="-1">
+<!-- HOSPITALITY STANDARDS -->
+<section class="section" id="hospitality" aria-label="Hospitality standards" tabindex="-1">
   <div class="section-content">
-    <p class="section-tag">The question that changed everything</p>
+    <p class="section-tag">The hospitality standard</p>
     <div class="section-divider" role="presentation" aria-hidden="true"></div>
 
-    <p class="turn-text">
-      What if community didn't start with <span class="accent">proximity</span> —<br>
-      but with <span class="accent">covenant?</span>
-    </p>
+    <h2 class="heading">Rooted in Islamic values, shaped by care.<br>You will <span class="accent">never need to check or compromise</span>.</h2>
 
-    <p class="turn-detail">
-      What if there was a place where your family could spend time on the land — learning,
-      resting, reflecting — and come home restored? What if that place was held in trust,
-      not as an investment but as an amana? What if it was governed by shura,
-      sustained by hospitality, and designed from the beginning to become Waqf —
-      ongoing charity that outlasts everyone who built it?
-    </p>
+    <ul class="standards-grid">
+      <li class="standard"><h3>Halal, Always</h3><p>From food to atmosphere, every hospitality choice is made with halal standards at the centre. You will never need to ask or negotiate this.</p></li>
+      <li class="standard"><h3>Privacy-Conscious Design</h3><p>Accommodations and shared spaces designed with privacy, dignity, and family comfort in mind. Safety built into the structure, not just the policy.</p></li>
+      <li class="standard"><h3>Prayer-Friendly Rhythms</h3><p>The experience is paced with salah in mind. Prayer spaces, direction, and quiet time built naturally into the schedule, not squeezed in as an afterthought.</p></li>
+      <li class="standard"><h3>Values-Safe for the Whole Family</h3><p>Parents can relax knowing this is an environment built around the same values they bring to their homes. No filtering needed.</p></li>
+    </ul>
   </div>
 </section>
 
-<!-- DESIRE / AFTER -->
-<section class="section" id="after" aria-label="The vision" tabindex="-1">
+<!-- CTA -->
+<section class="section cta-section" id="cta" aria-label="Visit" tabindex="-1">
   <div class="section-content">
-    <p class="section-tag">What's being built</p>
+    <p class="section-tag">Come spend time on the land</p>
     <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <p class="turn-text">
-      A place of <span class="accent">remembrance</span>, learning,<br>
-      and stewardship — where people encounter<br>
-      the beauty of <span class="accent">Allah's creation</span>.
-    </p>
-
-    <p class="turn-detail">
-      Time spent on the land — learning, resting, and reflecting — can restore
-      something essential in us. Moontrance brings together hospitality, education,
-      and Islamic values in one living, breathing place. Halal always. Prayer-friendly rhythms.
-      Values-safe for the whole family. Not because these are features — because they are
-      the foundation everything else grows from.
-    </p>
-
-    <p class="turn-detail" style="margin-top: 1.5rem;">
-      And the structure that holds it: two entities, zero debt against the land,
-      a Waqf conversion clause from day one, shura governance, and a founding covenant
-      that precedes every other decision. The community starts when the covenant is signed —
-      not when the land is bought.
-    </p>
-  </div>
-</section>
-
-<!-- BRIDGE -->
-<section class="section" id="bridge" aria-label="Explore Moontrance" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">Go deeper</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="heading" style="margin-bottom: 3rem;">
-      Three dimensions of the vision.
-    </h2>
-
-    <nav class="pathways" aria-label="Moontrance detail pages">
-      <a class="pathway-card" href="/moontrance-collective/" aria-label="Explore the Collective — guest experiences and hospitality">
-        <div class="pathway-header">
-          <span class="pathway-name">The Collective</span>
-          <span class="pathway-tag">Experiences</span>
-        </div>
-        <p class="pathway-desc">What it feels like to visit. Guided tours, family land days, seasonal workshops, overnight stays — each experience rooted in land and faith. Halal hospitality built into the structure, not the policy.</p>
-        <span class="pathway-arrow">Explore the experiences →</span>
-      </a>
-
-      <a class="pathway-card" href="/moontrance-economics/" aria-label="Explore the offer economics">
-        <div class="pathway-header">
-          <span class="pathway-name">Offer Economics</span>
-          <span class="pathway-tag">Numbers</span>
-        </div>
-        <p class="pathway-desc">Five offers. One coherent business. Every number laid bare — gross, net, margin, revenue per staff hour, and the monthly operating model that makes the vision financially real.</p>
-        <span class="pathway-arrow">View the economics →</span>
-      </a>
-
-      <a class="pathway-card" href="/moontrance-acquisition/" aria-label="Explore the land acquisition toolkit">
-        <div class="pathway-header">
-          <span class="pathway-name">Acquisition Hub</span>
-          <span class="pathway-tag">Land Search</span>
-        </div>
-        <p class="pathway-desc">Eleven purpose-built tools for finding, scoring, and acquiring the right parcel. Weighted for farm-led hospitality, not generic real estate. The land speaks first.</p>
-        <span class="pathway-arrow">Start the search →</span>
-      </a>
-    </nav>
-  </div>
-</section>
-
-<!-- ACTION -->
-<section class="section cta-section" id="cta" aria-label="Join the founding" tabindex="-1">
-  <div class="section-content">
-    <p class="section-tag">The invitation</p>
-    <div class="section-divider" role="presentation" aria-hidden="true"></div>
-
-    <h2 class="cta-text">
-      Looking for founding members.<br>
-      Not investors. Not spectators.
-    </h2>
-
-    <p class="cta-sub">
-      People who are ready to sign a covenant, steward a piece of land,
-      and build something that their grandchildren will inherit —
-      not as wealth, but as Waqf.
-    </p>
-
-    <a class="cta-button" href="/moontrance/connect/" aria-label="Connect with Moontrance Collective">
-      <span>Begin a Conversation</span>
-    </a>
+    <h2 class="cta-text">A different kind of time together awaits.</h2>
+    <p class="cta-sub">We believe the best hospitality does not ask you to compromise who you are. This destination is designed so that Muslim families, couples, and individuals can experience something genuinely beautiful, genuinely restful, and genuinely aligned with their faith.</p>
+    <a class="cta-button" href="/moontrance/connect/" aria-label="Inquire about visiting"><span>Inquire About a Visit</span></a>
   </div>
 </section>
 
@@ -390,14 +320,9 @@ body.page-leaving {
 </footer>
 
 <script>
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 document.querySelectorAll('.section-content').forEach(el => observer.observe(el));
-window.addEventListener('scroll', () => {
-  const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-  document.getElementById('progressBar').style.width = Math.min(p, 100) + '%';
-});
+window.addEventListener('scroll', () => { const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100; document.getElementById('progressBar').style.width = Math.min(p, 100) + '%'; });
 
 
 // ═══════════ ACTIVE NAV HIGHLIGHT ═══════════
