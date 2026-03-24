@@ -137,6 +137,11 @@ h1 em{font-style:italic;color:var(--gold-muted);}
 .drawer-stage-attrs{font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--soft);}
 .drawer-close{background:none;border:1px solid var(--dust);border-radius:2px;padding:0.4rem 0.7rem;cursor:pointer;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;color:var(--soft);transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
 .drawer-close:hover{background:var(--bone);color:var(--ink);}
+.drawer-header-controls{display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+.drawer-nav{display:flex;align-items:center;gap:0.3rem;}
+.drawer-nav-btn{background:none;border:1px solid var(--dust);border-radius:2px;padding:0.38rem 1.1rem;cursor:pointer;font-family:var(--mono);font-size:0.82rem;color:var(--soft);transition:background 0.2s,color 0.2s,border-color 0.2s;line-height:1;}
+.drawer-nav-btn:hover:not(:disabled){background:var(--bone);color:var(--ink);border-color:var(--gold-muted);}
+.drawer-nav-btn:disabled{opacity:0.28;cursor:default;}
 .drawer-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;gap:2rem;}
 
 /* Drawer anatomy blocks */
@@ -154,6 +159,7 @@ h1 em{font-style:italic;color:var(--gold-muted);}
 .readiness-table{width:100%;border:1px solid var(--dust);border-radius:3px;overflow:hidden;font-size:0.82rem;}
 .readiness-table th{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem 0.85rem;background:var(--bone);border-bottom:1px solid var(--dust);color:var(--soft);text-align:left;}
 .readiness-table td{padding:0.7rem 0.85rem;border-bottom:1px solid var(--line-soft);color:var(--mid);line-height:1.55;vertical-align:top;}
+.readiness-table td:nth-child(2){color:var(--ink);background:rgba(14,13,11,0.03);}
 .readiness-table tr:last-child td{border-bottom:none;}
 .readiness-table td:first-child{border-right:1px solid var(--line-soft);}
 .outputs-list{list-style:none;display:flex;flex-direction:column;gap:0.5rem;}
@@ -364,7 +370,13 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
       <h2 class="drawer-stage-name" id="drawerName"></h2>
       <p class="drawer-stage-attrs" id="drawerAttrs"></p>
     </div>
-    <button class="drawer-close" id="drawerClose" aria-label="Close stage detail">Close ×</button>
+    <div class="drawer-header-controls">
+      <div class="drawer-nav" aria-label="Navigate between stages">
+        <button class="drawer-nav-btn" id="drawerPrev" aria-label="Previous stage">←</button>
+        <button class="drawer-nav-btn" id="drawerNext" aria-label="Next stage">→</button>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="Close stage detail">Close ×</button>
+    </div>
   </div>
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
@@ -935,13 +947,21 @@ const drawer  = document.getElementById('stageDrawer');
 const closeBtn= document.getElementById('drawerClose');
 let _sy = 0, lastFocused = null;
 
+const stageOrder = ['int','qal','str','ofr','out','sal','ful','ret','opt'];
+let currentStageKey = null;
+
 function openDrawer(key) {
+  currentStageKey = key;
   const s = stages[key];
   document.getElementById('drawerCode').textContent  = s.code;
   document.getElementById('drawerName').textContent  = s.name;
   document.getElementById('drawerAttrs').textContent = s.attrs;
   document.getElementById('drawerBody').innerHTML    = buildDrawerContent(key);
   drawer.scrollTop = 0;
+
+  // Navigation is circular — no disabled states
+  document.getElementById('drawerPrev').disabled = false;
+  document.getElementById('drawerNext').disabled = false;
 
   _sy = window.scrollY;
   document.body.style.position = 'fixed';
@@ -987,7 +1007,21 @@ document.querySelectorAll('.attr-cell[data-stage]').forEach(cell => {
 closeBtn.addEventListener('click', closeDrawer);
 closeBtn.addEventListener('touchend', e => { e.preventDefault(); closeDrawer(); }, { passive: false });
 overlay.addEventListener('click', closeDrawer);
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+document.addEventListener('keydown', e => {
+  if (!drawer.classList.contains('open')) return;
+  if (e.key === 'Escape') closeDrawer();
+  if (e.key === 'ArrowRight') navigateDrawer(1);
+  if (e.key === 'ArrowLeft') navigateDrawer(-1);
+});
+
+function navigateDrawer(dir) {
+  const idx = stageOrder.indexOf(currentStageKey);
+  const next = stageOrder[(idx + dir + stageOrder.length) % stageOrder.length];
+  openDrawer(next);
+}
+
+document.getElementById('drawerPrev').addEventListener('click', () => navigateDrawer(-1));
+document.getElementById('drawerNext').addEventListener('click', () => navigateDrawer(1));
 
 // Focus trap in drawer
 drawer.addEventListener('keydown', e => {
