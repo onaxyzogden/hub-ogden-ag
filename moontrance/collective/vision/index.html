@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moontrance Collective — Land, Learning &amp; Remembrance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0d0b;
+    --parchment: #f5f0e8;
+    --bone: #ede7d9;
+    --dust: #d4c9b5;
+    --gold: #b8924a;
+    --gold-light: #d4aa66;
+    --gold-muted: #7a5d2a;
+    --ember: #7a3b1e;
+    --moss: #3a4a35;
+    --moss-light: #4a5f42;
+    --deep: #1a1714;
+    --mid: #3d3830;
+    --soft: #6b6158;
+    --faint: #6e6358;
+    --line: rgba(184,146,74,0.2);
+    --line-soft: rgba(14,13,11,0.08);
+    --earth: #5c4a3a;
+    --sage: #8da87e;
+    --sage-dark: #556b4a;
+    --clay: #a0745a;
+    --moss-on-dark: #7a9e6d;
+
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Instrument Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  .skip-nav {
+    position: absolute; top: -999px; left: 1rem; z-index: 9999;
+    background: var(--ink); color: var(--parchment);
+    padding: 0.6rem 1.25rem; font-family: var(--mono);
+    font-size: 0.75rem; letter-spacing: 0.1em;
+    text-decoration: none; border-radius: 2px;
+  }
+  .skip-nav:focus { top: 1rem; }
+
+  :focus-visible {
+    outline: 2.5px solid var(--gold);
+    outline-offset: 3px; border-radius: 2px;
+  }
+
+  /* ─── HEADER & NAV ─── */
+  .site-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .nav-mark {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none;
+  }
+  .nav-symbol { font-family: var(--serif); font-size: 1.1rem; color: var(--gold-muted); }
+  .nav-name { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--mid); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  .nav-links { display: flex; align-items: center; gap: 1.4rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--soft); text-decoration: none;
+    padding-bottom: 0.2rem; border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a:focus { color: var(--gold-muted); border-bottom-color: var(--gold); }
+  .nav-links a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--gold); font-weight: 500; }
+
+  .nav-cta {
+    background: var(--ink) !important; color: var(--parchment) !important;
+    padding: 0.5rem 1.25rem; border-radius: 2px;
+    border-bottom: none !important; transition: background 0.2s !important;
+  }
+  .nav-cta:hover, .nav-cta:focus { background: var(--gold-muted) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh; display: grid; grid-template-rows: 1fr auto;
+    padding-top: 5rem; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 40%, rgba(184,146,74,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, rgba(122,59,30,0.05) 0%, transparent 50%);
+  }
+  .hero-moon {
+    position: absolute; top: 8%; right: 10%;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 38%, rgba(184,146,74,0.08) 0%, transparent 65%);
+    border: 1px solid rgba(184,146,74,0.12); pointer-events: none;
+  }
+  .hero-moon::after {
+    content: ''; position: absolute; top: 15%; left: 20%;
+    width: 170px; height: 170px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,74,0.04) 0%, transparent 60%);
+    border: 1px solid rgba(184,146,74,0.06);
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center; max-width: 1280px; margin: 0 auto; padding: 6rem 3rem 4rem;
+  }
+  .hero-left { max-width: 580px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-muted); margin-bottom: 2rem;
+    padding: 0.4rem 0.8rem; border: 1px solid var(--line); border-radius: 2px;
+  }
+  .hero-eyebrow span { color: var(--gold); }
+  .hero-dua {
+    font-family: var(--serif); font-style: italic; font-size: 1.05rem;
+    color: var(--soft); line-height: 1.8; margin-bottom: 2.5rem;
+    padding-left: 1.25rem; border-left: 2px solid var(--line);
+  }
+  .hero-dua-arabic { display: block; font-size: 1.35rem; font-style: normal; color: var(--gold-muted); line-height: 2; text-align: right; margin-bottom: 0.4rem; direction: rtl; }
+  .hero-dua-transliteration { display: block; font-size: 0.82rem; font-style: italic; color: var(--faint); margin-bottom: 0.4rem; font-family: var(--serif); }
+  h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.8rem,5vw,4.5rem); line-height: 1.1; color: var(--ink); margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+  h1 em { font-style: italic; color: var(--gold-muted); }
+  .hero-sub { font-size: 1.05rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.75rem; }
+  .hero-sub strong { color: var(--ink); font-weight: 600; }
+  .hero-distinction {
+    font-family: var(--serif); font-style: italic; font-size: 1rem;
+    color: var(--soft); margin-bottom: 2.5rem; padding: 1rem 1.25rem;
+    background: rgba(184,146,74,0.06); border-left: 3px solid var(--gold); line-height: 1.7;
+  }
+  .hero-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--ink); color: var(--parchment); padding: 0.9rem 2rem;
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.15em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px;
+    transition: all 0.25s; border: 1.5px solid var(--ink);
+  }
+  .btn-primary:hover, .btn-primary:focus { background: var(--gold-muted); border-color: var(--gold-muted); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    color: var(--mid); font-family: var(--mono); font-size: 0.75rem;
+    letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+    padding: 0.9rem 0; border-bottom: 1px solid var(--dust); transition: all 0.2s;
+  }
+  .btn-secondary:hover, .btn-secondary:focus { color: var(--gold-muted); border-color: var(--gold); }
+
+  /* ─── HERO RIGHT: PANEL ─── */
+  .hero-right { position: relative; }
+  .exp-panel {
+    background: var(--bone); border: 1px solid var(--dust); border-radius: 4px;
+    overflow: hidden; box-shadow: 0 24px 64px rgba(14,13,11,0.12), 0 4px 16px rgba(14,13,11,0.06);
+  }
+  .exp-panel-header {
+    padding: 1rem 1.5rem; background: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .exp-panel-title { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dust); }
+  .exp-panel-status { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.75rem; color: var(--gold-light); letter-spacing: 0.1em; }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold-light); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .exp-list { padding: 0.5rem 0; }
+  .exp-item {
+    display: grid; grid-template-columns: 40px 1fr auto; align-items: center;
+    padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--line-soft);
+    transition: background 0.15s; gap: 1rem;
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-item:hover { background: rgba(184,146,74,0.05); }
+  .exp-item-icon { font-size: 1.1rem; text-align: center; }
+  .exp-item-name { font-family: var(--sans); font-size: 0.85rem; font-weight: 500; color: var(--ink); margin-bottom: 0.1rem; }
+  .exp-item-attr { font-family: var(--serif); font-style: italic; font-size: 0.8rem; color: var(--faint); }
+  .exp-item-tag { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-muted); padding: 0.15rem 0.5rem; border: 1px solid var(--line); border-radius: 2px; }
+  .exp-notice {
+    margin: 0; padding: 0.85rem 1.5rem; background: rgba(184,146,74,0.07);
+    border-top: 1px solid rgba(184,146,74,0.15);
+    display: flex; align-items: flex-start; gap: 0.6rem;
+  }
+  .exp-notice-icon { font-family: var(--serif); font-size: 0.85rem; color: var(--gold-muted); margin-top: 0.05rem; flex-shrink: 0; }
+  .exp-notice-text { font-family: var(--mono); font-size: 0.75rem; color: var(--gold-muted); line-height: 1.6; letter-spacing: 0.03em; }
+
+  /* ─── HERO BAND ─── */
+  .hero-band { position: relative; z-index: 2; border-top: 1px solid var(--line-soft); overflow: hidden; background: var(--bone); }
+  .hero-band-track { display: flex; gap: 4rem; padding: 1rem 3rem; white-space: nowrap; animation: marquee 40s linear infinite; }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .band-item { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--faint); flex-shrink: 0; }
+  .band-item span { color: var(--gold-muted); }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 6rem 3rem; max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--moss); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(58,74,53,0.2); }
+  h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem,3.5vw,3rem); line-height: 1.2; color: var(--ink); margin-bottom: 1.5rem; }
+  h2 em { font-style: italic; color: var(--gold-muted); }
+
+  /* ─── WHY / PURPOSE ─── */
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-top: 3rem; }
+  .why-prose { font-size: 1.05rem; color: var(--mid); line-height: 1.85; }
+  .why-prose p { margin-bottom: 1.25rem; }
+  .why-prose strong { color: var(--ink); font-weight: 600; }
+  .why-aside { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .distinction-card { padding: 1.5rem; border: 1px solid var(--dust); border-radius: 3px; background: var(--bone); position: relative; }
+  .distinction-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); border-radius: 3px 0 0 3px; }
+  .distinction-label { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-muted); margin-bottom: 0.6rem; }
+  .distinction-text { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--mid); line-height: 1.7; }
+
+  /* ─── EXPERIENCES — DARK SECTION ─── */
+  .experiences-section { background: var(--ink); color: var(--parchment); padding: 6rem 0; }
+  .experiences-inner { max-width: 1280px; margin: 0 auto; padding: 0 3rem; }
+  .experiences-section .section-label { color: var(--sage); }
+  .experiences-section .section-label::after { background: rgba(141,168,126,0.25); }
+  .experiences-section h2 { color: var(--parchment); }
+  .experiences-section h2 em { color: var(--gold-light); }
+  .exp-intro { max-width: 680px; font-size: 1.05rem; color: rgba(245,240,232,0.75); line-height: 1.8; margin-bottom: 2rem; }
+  .exp-category-label {
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light);
+    padding-bottom: 1rem; margin-bottom: 2rem; margin-top: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .exp-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .exp-cards.two-col { grid-template-columns: repeat(2,1fr); }
+  .exp-card {
+    padding: 2rem 1.5rem; background: rgba(14,13,11,0.6); transition: background 0.2s;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .exp-card:hover { background: rgba(184,146,74,0.06); }
+  .exp-card-icon { font-size: 1.2rem; margin-bottom: 0.3rem; }
+  .exp-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--parchment); line-height: 1.25; }
+  .exp-card-desc { font-size: 0.82rem; color: rgba(245,240,232,0.65); line-height: 1.7; flex: 1; }
+  .exp-card-includes { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; }
+  .exp-card-include { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: rgba(245,240,232,0.55); }
+  .exp-card-include::before { content: ''; display: block; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* ─── ATMOSPHERE ─── */
+  .atmosphere-section { background: #f9f5ee; border-top: 1px solid var(--dust); border-bottom: 1px solid var(--dust); }
+  .atmosphere-inner { max-width: 1280px; margin: 0 auto; padding: 6rem 3rem; }
+  .atmosphere-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--dust); border-radius: 4px; overflow: hidden; margin-top: 3rem; }
+  .atm-cell { padding: 2rem 1.5rem; border-right: 1px solid var(--dust); border-bottom: 1px solid var(--dust); background: var(--parchment); transition: background 0.15s; text-align: center; }
+  .atm-cell:nth-child(3n) { border-right: none; }
+  .atm-cell:nth-last-child(-n+3) { border-bottom: none; }
+  .atm-cell:hover { background: var(--bone); }
+  .atm-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 300; font-style: italic; color: var(--dust); line-height: 1; margin-bottom: 0.75rem; }
+  .atm-label { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; color: var(--ink); margin-bottom: 0.5rem; }
+  .atm-body { font-size: 0.82rem; color: var(--soft); line-height: 1.7; }
+  .atm-quote-panel { margin-top: 2.5rem; padding: 2rem; background: var(--ink); border-radius: 3px; text-align: center; }
+  .atm-quote-text { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: rgba(245,240,232,0.85); line-height: 1.6; max-width: 500px; margin: 0 auto; }
+
+  /* ─── VALUES ─── */
+  .values-header { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: end; margin-bottom: 3rem; }
+  .values-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid var(--dust); border-radius: 4px; overflow: hidden; }
+  .value-card { padding: 1.75rem 1.5rem; border-right: 1px solid var(--dust); background: var(--bone); transition: background 0.15s; }
+  .value-card:last-child { border-right: none; }
+  .value-card:hover { background: #ede8da; }
+  .value-num { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; font-style: italic; color: var(--gold); margin-bottom: 0.75rem; }
+  .value-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+  .value-desc { font-size: 0.8rem; color: var(--soft); line-height: 1.6; }
+  .value-banner { margin-top: 2.5rem; padding: 2rem; background: var(--ink); border-radius: 3px; color: var(--parchment); }
+  .value-banner-label { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1rem; }
+  .value-banner-text { font-family: var(--serif); font-style: italic; font-size: 1rem; color: rgba(245,240,232,0.85); line-height: 1.7; margin-bottom: 0.75rem; }
+  .value-banner-sub { font-size: 0.82rem; color: rgba(245,240,232,0.7); line-height: 1.6; }
+  .value-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+  .value-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); padding: 0.25rem 0.6rem; border: 1px solid rgba(212,170,102,0.3); border-radius: 2px; }
+
+  /* ─── PATHS / AUDIENCE ─── */
+  .paths-section { background: var(--bone); padding: 6rem 0; border-top: 1px solid var(--dust); border-bottom: 1px solid var(--dust); }
+  .paths-inner { max-width: 1280px; margin: 0 auto; padding: 0 3rem; }
+  .paths-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--dust); border-radius: 4px; overflow: hidden; margin-top: 3rem; }
+  .path-card { padding: 2.5rem 2rem; border-right: 1px solid var(--dust); background: var(--parchment); transition: background 0.2s; }
+  .path-card:last-child { border-right: none; }
+  .path-card:hover { background: var(--bone); }
+  .path-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .path-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; color: var(--ink); margin-bottom: 0.75rem; }
+  .path-desc { font-size: 0.85rem; color: var(--soft); line-height: 1.7; margin-bottom: 1.25rem; }
+  .path-steps { display: flex; flex-direction: column; gap: 0.4rem; }
+  .path-step { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--mid); }
+  .path-step::before { content: '\2192'; color: var(--gold-muted); font-size: 0.75rem; }
+
+  /* ─── FAQ — DARK ─── */
+  .faq-section { background: var(--ink); padding: 6rem 0; }
+  .faq-inner { max-width: 760px; margin: 0 auto; padding: 0 3rem; }
+  .faq-section .section-label { color: var(--sage); }
+  .faq-section .section-label::after { background: rgba(141,168,126,0.25); }
+  .faq-section h2 { color: var(--parchment); }
+  .faq-section h2 em { color: var(--gold-light); }
+  .faq-list { margin-top: 3rem; }
+  .faq-item { border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .faq-question {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 0; cursor: pointer; gap: 2rem; background: none; border: none; width: 100%; text-align: left;
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--parchment);
+    transition: color 0.3s;
+  }
+  .faq-question:hover, .faq-question:focus { color: var(--gold-light); }
+  .faq-icon { font-size: 1rem; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; font-style: normal; font-family: var(--sans); }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), padding 0.35s ease; font-size: 0.9rem; font-weight: 300; line-height: 1.85; color: rgba(245,240,232,0.65); }
+  .faq-item.open .faq-answer { max-height: var(--faq-h, 320px); padding-bottom: 1.5rem; }
+
+  /* ─── CTA ─── */
+  .cta-section { background: var(--moss); padding: 6rem 0; }
+  .cta-inner { max-width: 900px; margin: 0 auto; padding: 0 3rem; text-align: center; }
+  .cta-arabic { font-family: var(--serif); font-size: 1.5rem; color: rgba(245,240,232,0.75); direction: rtl; margin-bottom: 0.5rem; line-height: 2; }
+  .cta-transliteration { font-family: var(--serif); font-style: italic; font-size: 0.85rem; color: rgba(245,240,232,0.7); margin-bottom: 3rem; }
+  .cta-section h2 { color: var(--parchment); margin-bottom: 1.5rem; }
+  .cta-section h2 em { color: var(--gold-light); }
+  .cta-desc { font-size: 1.05rem; color: rgba(245,240,232,0.7); line-height: 1.8; margin-bottom: 2.5rem; max-width: 620px; margin-left: auto; margin-right: auto; }
+  .cta-actions { display: flex; align-items: center; justify-content: center; gap: 2rem; }
+  .btn-gold { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--gold); color: var(--ink); padding: 1rem 2.5rem; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; border-radius: 2px; font-weight: 500; transition: all 0.25s; border: 1.5px solid var(--gold); }
+  .btn-gold:hover, .btn-gold:focus { background: var(--gold-light); border-color: var(--gold-light); }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 0.6rem; color: rgba(245,240,232,0.85); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(245,240,232,0.4); transition: all 0.2s; }
+  .btn-ghost:hover, .btn-ghost:focus { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* ─── FOOTER ─── */
+  .site-footer { background: var(--deep); padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.05); }
+  .footer-mark { font-family: var(--mono); font-size: 0.75rem; color: rgba(245,240,232,0.6); letter-spacing: 0.15em; text-transform: uppercase; }
+  .footer-mark span { color: var(--gold); }
+  .footer-line { font-family: var(--serif); font-style: italic; font-size: 0.8rem; color: rgba(245,240,232,0.6); }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    .fade-up { opacity: 1; transform: none; transition: none; }
+    .hero-band-track { animation: none; }
+    .status-dot { animation: none; }
+    .nav-drawer { transition: none; }
+    .nav-toggle-bar { transition: none; }
+  }
+
+  /* ─── MOBILE ─── */
+  .nav-toggle { display: none; background: none; border: 1.5px solid var(--dust); border-radius: 2px; padding: 0.45rem 0.6rem; cursor: pointer; gap: 5px; flex-direction: column; justify-content: center; align-items: center; width: 2.5rem; height: 2.5rem; }
+  .nav-toggle-bar { display: block; width: 18px; height: 1.5px; background: var(--ink); border-radius: 1px; transition: transform 0.25s ease, opacity 0.2s ease; transform-origin: center; }
+  .nav-toggle[aria-expanded="true"] .bar-top { transform: translateY(5px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .bar-mid { opacity: 0; transform: scaleX(0); }
+  .nav-toggle[aria-expanded="true"] .bar-bottom { transform: translateY(-5px) rotate(-45deg); }
+  .nav-drawer { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99; background: rgba(245,240,232,0.97); backdrop-filter: blur(16px); padding: 5rem 2rem 2rem; flex-direction: column; gap: 0; overflow-y: auto; transform: translateY(-100%); transition: transform 0.3s ease; }
+  .nav-drawer.open { transform: translateY(0); }
+  .nav-drawer-links { list-style: none; display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--dust); }
+  .nav-drawer-links li { border-bottom: 1px solid var(--line-soft); }
+  .nav-drawer-links a { display: block; padding: 1.1rem 0; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+  .nav-drawer-links a:hover, .nav-drawer-links a:focus-visible { color: var(--gold-muted); }
+  .nav-drawer-cta { display: block; margin-top: 2rem; text-align: center; background: var(--ink); color: var(--parchment) !important; padding: 1rem; border-radius: 2px; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+  .nav-drawer-cta:hover, .nav-drawer-cta:focus { background: var(--gold-muted); }
+
+  @media (max-width: 1100px) {
+    .site-header { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .nav-drawer { display: flex; }
+    section { padding: 4rem 1.5rem; }
+    .hero-content { grid-template-columns: 1fr; padding: 4rem 1.5rem 3rem; }
+    .hero-right { display: none; }
+    .why-grid, .values-header { grid-template-columns: 1fr; gap: 2.5rem; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    .exp-cards, .exp-cards.two-col { grid-template-columns: 1fr; }
+    .atmosphere-grid { grid-template-columns: 1fr 1fr; }
+    .atm-cell:nth-child(2n) { border-right: none; }
+    .atm-cell:nth-child(3n) { border-right: 1px solid var(--dust); }
+    .paths-grid { grid-template-columns: 1fr; }
+    .path-card { border-right: none; border-bottom: 1px solid var(--dust); }
+    .path-card:last-child { border-bottom: none; }
+    .cta-inner { padding: 0 1.5rem; }
+    .site-footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+    .experiences-inner, .atmosphere-inner, .paths-inner, .faq-inner { padding: 0 1.5rem; }
+  }
+  @media (max-width: 640px) {
+    .values-grid { grid-template-columns: 1fr; }
+    .value-card { border-right: none; border-bottom: 1px solid var(--dust); }
+    .value-card:last-child { border-bottom: none; }
+    .atmosphere-grid { grid-template-columns: 1fr; }
+    .atm-cell { border-right: none !important; }
+    .cta-actions { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <a href="#main-content" class="nav-mark" aria-label="Moontrance Collective, return to top">
+    <span class="nav-symbol" aria-hidden="true">&#9789;</span>
+    <span class="nav-name">Moontrance</span>
+  </a>
+  <nav aria-label="Main navigation">
+    <ul class="nav-links" role="list">
+      <li><a href="#purpose" data-section="purpose">Our Purpose</a></li>
+      <li><a href="#experiences" data-section="experiences">Experiences</a></li>
+      <li><a href="#atmosphere" data-section="atmosphere">The Feel</a></li>
+      <li><a href="#values" data-section="values">Our Values</a></li>
+      <li><a href="#paths" data-section="paths">For You</a></li>
+      <li><a href="#faq" data-section="faq">FAQ</a></li>
+      <li><a href="#begin" class="nav-cta" data-section="begin">Follow the Vision</a></li>
+    </ul>
+  </nav>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open navigation menu">
+    <span class="nav-toggle-bar bar-top"></span>
+    <span class="nav-toggle-bar bar-mid"></span>
+    <span class="nav-toggle-bar bar-bottom"></span>
+  </button>
+</header>
+
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <nav aria-label="Mobile navigation">
+    <ul class="nav-drawer-links" role="list">
+      <li><a href="#purpose" data-section="purpose">Our Purpose</a></li>
+      <li><a href="#experiences" data-section="experiences">Experiences</a></li>
+      <li><a href="#atmosphere" data-section="atmosphere">The Feel</a></li>
+      <li><a href="#values" data-section="values">Our Values</a></li>
+      <li><a href="#paths" data-section="paths">For You</a></li>
+      <li><a href="#faq" data-section="faq">FAQ</a></li>
+    </ul>
+    <a href="#begin" class="nav-drawer-cta">&#9789; &nbsp; Follow the Vision</a>
+  </nav>
+</div>
+
+<main id="main-content">
+
+<!-- ─── HERO ─── -->
+<section aria-label="Introduction" class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-moon" aria-hidden="true"></div>
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-left fade-up visible">
+      <p class="hero-eyebrow">&#9789; &nbsp;<span>Ontario, Canada &middot; Vision Phase</span></p>
+
+      <blockquote class="hero-dua">
+        <span class="hero-dua-arabic" lang="ar" dir="rtl">&#1576;&#1616;&#1587;&#1618;&#1605;&#1616; &#1575;&#1604;&#1604;&#1617;&#1614;&#1607;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1618;&#1605;&#1614;&#1606;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1616;&#1610;&#1605;&#1616;</span>
+        <span class="hero-dua-transliteration">Bismillahi r-rahmani r-rahim</span>
+        In the name of Allah, the Most Gracious, the Most Merciful.
+      </blockquote>
+
+      <h1>Land, <em>Learning</em><br>&amp; Remembrance</h1>
+
+      <p class="hero-sub">
+        A <strong>faith-rooted destination</strong> being designed for families, learners, and seekers &mdash; where guided visits, sustainable living workshops, and overnight stays will help guests experience the beauty of creation.
+      </p>
+
+      <p class="hero-distinction">
+        This is not a resort. It is a vision for a living property where hospitality, education, and Islamic values
+        meet in one place &mdash; designed so that every future visit restores something essential. We are in the land acquisition and design phase.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#experiences" class="btn-primary">&#9789; &nbsp; See the Vision</a>
+        <a href="#purpose" class="btn-secondary">Our story &rarr;</a>
+      </div>
+    </div>
+
+    <div class="hero-right fade-up visible">
+      <div class="exp-panel" role="region" aria-label="Experience offerings overview">
+        <div class="exp-panel-header">
+          <span class="exp-panel-title">Moontrance &mdash; Planned Experiences</span>
+          <span class="exp-panel-status"><span class="status-dot" aria-hidden="true"></span> Vision in Development</span>
+        </div>
+        <ul class="exp-list" role="list">
+          <li class="exp-item">
+            <span class="exp-item-icon" aria-hidden="true">&#128506;</span>
+            <div><div class="exp-item-name">Guided Farm &amp; Land Tour</div><div class="exp-item-attr">Discover the living systems and values</div></div>
+            <span class="exp-item-tag">Visit</span>
+          </li>
+          <li class="exp-item">
+            <span class="exp-item-icon" aria-hidden="true">&#129505;</span>
+            <div><div class="exp-item-name">Family Land Day</div><div class="exp-item-attr">Meaningful time together in nature</div></div>
+            <span class="exp-item-tag">Visit</span>
+          </li>
+          <li class="exp-item">
+            <span class="exp-item-icon" aria-hidden="true">&#127793;</span>
+            <div><div class="exp-item-name">Seasonal Workshops</div><div class="exp-item-attr">Practical, values-rooted sessions</div></div>
+            <span class="exp-item-tag">Learn</span>
+          </li>
+          <li class="exp-item">
+            <span class="exp-item-icon" aria-hidden="true">&#127769;</span>
+            <div><div class="exp-item-name">Rest &amp; Reconnect Stay</div><div class="exp-item-attr">Overnight retreat in nature</div></div>
+            <span class="exp-item-tag">Stay</span>
+          </li>
+          <li class="exp-item">
+            <span class="exp-item-icon" aria-hidden="true">&#128106;</span>
+            <div><div class="exp-item-name">Family Stewardship Stay</div><div class="exp-item-attr">A deeper kind of family getaway</div></div>
+            <span class="exp-item-tag">Stay</span>
+          </li>
+        </ul>
+        <div class="exp-notice" role="note">
+          <span class="exp-notice-icon" aria-hidden="true">&#9789;</span>
+          <span class="exp-notice-text">Every experience will be halal, prayer-friendly, and privacy-conscious by design &mdash; not by request.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-band" aria-hidden="true">
+    <div class="hero-band-track">
+      <span class="band-item"><span>Stewardship</span> &middot; Caring for the land</span>
+      <span class="band-item"><span>Learning</span> &middot; Sustainable living</span>
+      <span class="band-item"><span>Remembrance</span> &middot; Connection to Creator</span>
+      <span class="band-item"><span>Hospitality</span> &middot; Halal &amp; values-aligned</span>
+      <span class="band-item"><span>Family</span> &middot; Safe &amp; welcoming</span>
+      <span class="band-item"><span>Prayer</span> &middot; Built into the rhythm</span>
+      <span class="band-item"><span>Stewardship</span> &middot; Caring for the land</span>
+      <span class="band-item"><span>Learning</span> &middot; Sustainable living</span>
+      <span class="band-item"><span>Remembrance</span> &middot; Connection to Creator</span>
+      <span class="band-item"><span>Hospitality</span> &middot; Halal &amp; values-aligned</span>
+      <span class="band-item"><span>Family</span> &middot; Safe &amp; welcoming</span>
+      <span class="band-item"><span>Prayer</span> &middot; Built into the rhythm</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── OUR PURPOSE ─── -->
+<section id="purpose" aria-labelledby="purpose-heading">
+  <div class="section-label">Our Purpose</div>
+  <h2 id="purpose-heading">We exist to restore your <em>relationship with the Creator</em></h2>
+  <div class="why-grid">
+    <div class="why-prose fade-up">
+      <p>Moontrance Collective is a <strong>values-rooted agritourism destination</strong> being developed around a simple belief: that time spent on the land &mdash; learning, resting, and reflecting &mdash; can restore something essential in us.</p>
+      <p>We are designing a place that brings together hospitality, education, and Islamic values in one living, breathing property. Every experience will help guests <strong>connect with the land, learn sustainable ways of living, and encounter the beauty of Allah&rsquo;s creation.</strong></p>
+      <p>From guided visits to overnight stays, each offering is being shaped by the same conviction: that beauty and values are meant to work together &mdash; not compete.</p>
+      <p><strong>We have not yet acquired land. What you see here is the vision we are building toward &mdash; honestly and intentionally.</strong></p>
+    </div>
+    <div class="why-aside fade-up">
+      <div class="distinction-card">
+        <div class="distinction-label">Stewardship</div>
+        <div class="distinction-text">Caring for the land as a trust, not a resource to exploit. Every system on the future property will reflect this principle.</div>
+      </div>
+      <div class="distinction-card">
+        <div class="distinction-label">Learning</div>
+        <div class="distinction-text">Practical education rooted in sustainable living and Islamic principles. Leave with insight you can carry home.</div>
+      </div>
+      <div class="distinction-card">
+        <div class="distinction-label">Remembrance</div>
+        <div class="distinction-text">Creating space for reflection, gratitude, and connection to what matters most. Some of the best dhikr happens in between.</div>
+      </div>
+      <div class="distinction-card">
+        <div class="distinction-label">Hospitality</div>
+        <div class="distinction-text">Welcoming guests with dignity, care, and a commitment to halal values. No one will ever need to check or compromise.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EXPERIENCES ─── -->
+<section class="experiences-section" id="experiences" aria-labelledby="experiences-heading">
+  <div class="experiences-inner">
+    <div class="section-label">What We Are Building</div>
+    <h2 id="experiences-heading">Planned experiences for <em>rest, learning &amp; reconnection</em></h2>
+    <p class="exp-intro">These are the experiences we are designing. Each one will help future guests connect with the land, learn sustainable ways of living, and experience hospitality rooted in Islamic values. None are live yet &mdash; this is the vision.</p>
+
+    <p class="exp-category-label" id="visit-label">Visit &mdash; Day Experiences</p>
+    <div class="exp-cards fade-up" role="list" aria-labelledby="visit-label">
+      <div class="exp-card" role="listitem">
+        <div class="exp-card-icon" aria-hidden="true">&#128506;</div>
+        <h3>Guided Farm &amp; Land Tour</h3>
+        <div class="exp-card-desc">Guests will step onto the land and discover the living systems, values, and vision behind the destination. A guided introduction to gardens, animal systems, learning spaces, and the deeper principles shaping how everything will be cared for.</div>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Guided land walk through key zones</div>
+          <div class="exp-card-include">Sustainable living systems overview</div>
+          <div class="exp-card-include">Values-rooted educational framing</div>
+          <div class="exp-card-include">Optional tea and light hospitality</div>
+        </div>
+      </div>
+      <div class="exp-card" role="listitem">
+        <div class="exp-card-icon" aria-hidden="true">&#129505;</div>
+        <h3>Family Land Day</h3>
+        <div class="exp-card-desc">A half-day experience designed for parents and children who want to spend meaningful time together in nature &mdash; learning about stewardship, food, and creation in a way that feels peaceful and grounded.</div>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Guided family-friendly land experience</div>
+          <div class="exp-card-include">Hands-on stewardship activity</div>
+          <div class="exp-card-include">Child-friendly learning segment</div>
+          <div class="exp-card-include">Light refreshments &amp; family takeaway</div>
+        </div>
+      </div>
+      <div class="exp-card" role="listitem">
+        <div class="exp-card-icon" aria-hidden="true">&#127793;</div>
+        <h3>Seasonal Workshops</h3>
+        <div class="exp-card-desc">Practical, values-rooted sessions planned around soil health, food systems, composting, and stewardship. Guests will engage with living systems, observe how they work, and leave with insights to apply at home.</div>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Guided workshop with live demonstration</div>
+          <div class="exp-card-include">Handout, guide &amp; practical takeaways</div>
+          <div class="exp-card-include">Tea and refreshments included</div>
+          <div class="exp-card-include">Invitation into deeper experiences</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="exp-category-label" id="stay-label">Stay &mdash; Overnight Experiences</p>
+    <div class="exp-cards two-col fade-up" role="list" aria-labelledby="stay-label">
+      <div class="exp-card" role="listitem">
+        <div class="exp-card-icon" aria-hidden="true">&#127769;</div>
+        <h3>Rest &amp; Reconnect Stay</h3>
+        <div class="exp-card-desc">An overnight stay designed to invite guests to step away from overstimulation and settle into a space where reflection, simplicity, and hospitality are woven into every detail. Prayer-friendly, halal, values-aligned.</div>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Overnight accommodation in nature</div>
+          <div class="exp-card-include">Access to reflection and walking spaces</div>
+          <div class="exp-card-include">Prayer-friendly environment</div>
+          <div class="exp-card-include">Optional guided experiences &amp; meals</div>
+        </div>
+      </div>
+      <div class="exp-card" role="listitem">
+        <div class="exp-card-icon" aria-hidden="true">&#128106;</div>
+        <h3>Family Stewardship Stay</h3>
+        <div class="exp-card-desc">A deeper kind of family getaway being designed around peaceful accommodation, land-based learning, hands-on participation, and moments of reflection to help families reconnect with one another and with the signs of Allah in creation.</div>
+        <div class="exp-card-includes">
+          <div class="exp-card-include">Family accommodation on-site</div>
+          <div class="exp-card-include">Guided family farm experience</div>
+          <div class="exp-card-include">Hands-on stewardship activity</div>
+          <div class="exp-card-include">Family reflection materials &amp; spaces</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ATMOSPHERE ─── -->
+<section class="atmosphere-section" id="atmosphere" aria-labelledby="atmosphere-heading">
+  <div class="atmosphere-inner">
+    <div class="section-label">What a Visit Will Feel Like</div>
+    <h2 id="atmosphere-heading">Calm, beauty, and <em>intentional living</em></h2>
+    <div class="atmosphere-grid fade-up" role="list" aria-label="Six stages of a future visit">
+      <div class="atm-cell" role="listitem"><div class="atm-num">01</div><div class="atm-label">Arrive</div><div class="atm-body">Guests will arrive to a setting shaped by calm and intention. Quiet spaces, living systems, and an atmosphere that invites you to breathe.</div></div>
+      <div class="atm-cell" role="listitem"><div class="atm-num">02</div><div class="atm-label">Engage</div><div class="atm-body">Move through gardens, animal systems, reflection areas, and hands-on experiences that blend learning with beauty.</div></div>
+      <div class="atm-cell" role="listitem"><div class="atm-num">03</div><div class="atm-label">Reflect</div><div class="atm-body">Share a halal meal, sit in stillness, walk the land at dusk, or join your children in a moment of learning.</div></div>
+      <div class="atm-cell" role="listitem"><div class="atm-num">04</div><div class="atm-label">Learn</div><div class="atm-body">Leave with practical insight about food systems, stewardship, seasonal rhythms, and what sustainable living looks like.</div></div>
+      <div class="atm-cell" role="listitem"><div class="atm-num">05</div><div class="atm-label">Rest</div><div class="atm-body">For overnight guests, thoughtfully prepared accommodations will offer a place to simply rest, pray, and reconnect.</div></div>
+      <div class="atm-cell" role="listitem"><div class="atm-num">06</div><div class="atm-label">Return</div><div class="atm-body">We are building a place guests will want to return to. Not for novelty &mdash; but because this kind of experience restores something essential.</div></div>
+    </div>
+    <div class="atm-quote-panel fade-up" role="region" aria-label="Guiding quote">
+      <p class="atm-quote-text">&ldquo;From every path, the goal is the same: to offer something restorative, rooted, and real.&rdquo;</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VALUES ─── -->
+<section id="values" aria-labelledby="values-heading">
+  <div class="values-header">
+    <div>
+      <div class="section-label">Our Hospitality Standard</div>
+      <h2 id="values-heading">Rooted in <em>Islamic values</em>,<br>shaped by care</h2>
+    </div>
+    <div style="font-size:0.95rem;color:var(--soft);line-height:1.8;">
+      We believe the best hospitality does not ask you to compromise who you are.
+      Our destination will be designed so that Muslim families, couples, and individuals
+      can experience something genuinely beautiful and genuinely aligned with their faith.
+    </div>
+  </div>
+  <div class="values-grid fade-up" role="list" aria-label="Four hospitality values">
+    <div class="value-card" role="listitem"><div class="value-num">I</div><h3 class="value-title">Halal, always</h3><div class="value-desc">From food to atmosphere, every hospitality choice will be made with halal standards at the centre. Guests will never need to check or compromise.</div></div>
+    <div class="value-card" role="listitem"><div class="value-num">II</div><h3 class="value-title">Privacy-conscious design</h3><div class="value-desc">Accommodations and shared spaces will be designed with privacy, dignity, and family comfort in mind. Safety will be built into the structure.</div></div>
+    <div class="value-card" role="listitem"><div class="value-num">III</div><h3 class="value-title">Prayer-friendly rhythms</h3><div class="value-desc">Every experience will be paced with salah in mind. Prayer spaces, direction, and quiet time will be built naturally into the schedule.</div></div>
+    <div class="value-card" role="listitem"><div class="value-num">IV</div><h3 class="value-title">Values-safe for the family</h3><div class="value-desc">Parents will be able to relax knowing this is an environment built around the same values they bring to their homes. No filtering needed.</div></div>
+  </div>
+  <div class="value-banner fade-up" role="region" aria-label="Values commitment">
+    <div class="value-banner-label">&#9789; &nbsp; Our Commitment</div>
+    <p class="value-banner-text">A place where beauty and values are meant to work together &mdash; not compete. Every detail will be shaped so that the experience feels genuinely restful, genuinely beautiful, and genuinely aligned with faith.</p>
+    <div class="value-tags">
+      <span class="value-tag">Halal Hospitality</span>
+      <span class="value-tag">Family Safe</span>
+      <span class="value-tag">Prayer Spaces</span>
+      <span class="value-tag">Values Aligned</span>
+      <span class="value-tag">Privacy First</span>
+      <span class="value-tag">Faith Rooted</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PATHS / AUDIENCE ─── -->
+<section class="paths-section" id="paths" aria-labelledby="paths-heading">
+  <div class="paths-inner">
+    <div class="section-label">For Families, Learners &amp; Seekers</div>
+    <h2 id="paths-heading">Your path <em>through the land</em></h2>
+    <div class="paths-grid fade-up" role="list" aria-label="Three guest paths">
+      <div class="path-card" role="listitem">
+        <div class="path-icon" aria-hidden="true">&#128106;</div>
+        <h3 class="path-name">The Family Path</h3>
+        <div class="path-desc">For Muslim and values-conscious families seeking meaningful outings, nature-based learning, and memories that last beyond the weekend.</div>
+        <div class="path-steps">
+          <p class="path-step">Guided Farm &amp; Land Tour</p>
+          <p class="path-step">Family Land Day</p>
+          <p class="path-step">Family Stewardship Stay</p>
+          <p class="path-step">Family Retreat (future)</p>
+        </div>
+      </div>
+      <div class="path-card" role="listitem">
+        <div class="path-icon" aria-hidden="true">&#127769;</div>
+        <h3 class="path-name">The Adult Path</h3>
+        <div class="path-desc">For couples, solo guests, and young professionals who want calm, beauty, and a values-aligned escape from the noise of daily life.</div>
+        <div class="path-steps">
+          <p class="path-step">Seasonal Workshop</p>
+          <p class="path-step">Rest &amp; Reconnect Stay</p>
+          <p class="path-step">Seasonal Retreat (future)</p>
+          <p class="path-step">Membership (future)</p>
+        </div>
+      </div>
+      <div class="path-card" role="listitem">
+        <div class="path-icon" aria-hidden="true">&#128214;</div>
+        <h3 class="path-name">The Learning Path</h3>
+        <div class="path-desc">For serious learners, homeschool families, and groups seeking practical, grounded education in sustainable living and Islamic stewardship.</div>
+        <div class="path-steps">
+          <p class="path-step">Seasonal Workshop</p>
+          <p class="path-step">Learn &amp; Stay Weekend (future)</p>
+          <p class="path-step">Intensive (future)</p>
+          <p class="path-step">Membership (future)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="faq-section" id="faq" aria-labelledby="faq-heading">
+  <div class="faq-inner">
+    <div class="section-label">Common Questions</div>
+    <h2 id="faq-heading">We&rsquo;re happy to <em>answer anything</em></h2>
+    <div class="faq-list fade-up">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" data-faq-trigger>What kind of experiences are you planning?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region">We are designing guided farm and land tours, family half-day experiences, seasonal educational workshops, and overnight stays. Each experience will be rooted in sustainable living, stewardship, and hospitality shaped by Islamic values.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" data-faq-trigger>Will the environment be family-friendly?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region">Yes &mdash; deeply so. Several experiences are being specifically designed with families in mind, including child-friendly activities, values-conscious hospitality, and a setting built for parents who want to relax without compromising what they care about.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" data-faq-trigger>Will food be halal?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region">Our hospitality approach is rooted in Islamic values, which includes halal food standards wherever meals will be offered. Guests will never need to ask or negotiate this. It will be built in from the start.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" data-faq-trigger>Will I need any farming experience?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region">Not at all. All experiences will be designed for guests at every level of familiarity &mdash; from people who have never set foot on a farm to those with a deep interest in sustainable systems. Everyone will be guided, welcomed, and never made to feel unprepared.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" data-faq-trigger>Will stays be private and modesty-friendly?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region">Yes. Accommodations and shared spaces will be designed with privacy, dignity, and guest comfort in mind from the ground up. Prayer spaces, direction, and quiet time will be integrated naturally into the stay experience.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" data-faq-trigger>Do you have land yet?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region">Not yet. We are currently in the land acquisition and design phase. Everything on this page represents the vision we are actively building toward &mdash; honestly and intentionally. When there is land to visit, you will be among the first to know.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section" id="begin" aria-labelledby="cta-heading">
+  <div class="cta-inner">
+    <p class="cta-arabic" lang="ar" dir="rtl">&#1608;&#1614;&#1576;&#1616;&#1575;&#1604;&#1604;&#1617;&#1614;&#1607;&#1616; &#1575;&#1604;&#1578;&#1617;&#1614;&#1608;&#1618;&#1601;&#1616;&#1610;&#1602;&#1615;</p>
+    <p class="cta-transliteration">Wa billahi t-tawfiq &mdash; And with Allah is all success.</p>
+    <h2 id="cta-heading">A different kind of<br><em>time together</em> is being built</h2>
+    <p class="cta-desc">We are designing a destination to help families, learners, and seekers reconnect with creation, learn sustainable ways of living, and experience hospitality rooted in Islamic values. Follow our journey as we bring this vision to life.</p>
+    <div class="cta-actions">
+      <a href="#experiences" class="btn-gold">&#9789; &nbsp; See the Full Vision</a>
+      <a href="#purpose" class="btn-ghost">Read our story &rarr;</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-mark"><span aria-hidden="true">&#9789;</span> &nbsp; Moontrance Collective &middot; Ontario, Canada</div>
+  <div class="footer-line">Land, Learning &amp; Remembrance</div>
+  <div class="footer-mark">Powered by <span>Claude</span></div>
+</footer>
+
+<script>
+  const sectionIds = ['purpose','experiences','atmosphere','values','paths','faq','begin'];
+  const visibilityMap = {};
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { visibilityMap[entry.target.id] = entry.intersectionRatio; });
+    let topSection = null, topRatio = 0;
+    for (const id of sectionIds) { const r = visibilityMap[id]||0; if(r>topRatio){topRatio=r;topSection=id;} }
+    document.querySelectorAll('.nav-links a[data-section], .nav-drawer-links a[data-section]').forEach(link => {
+      link.setAttribute('aria-current', link.dataset.section===topSection&&topRatio>0?'true':'false');
+    });
+  }, { threshold:[0,0.1,0.25,0.5,0.75,1.0], rootMargin:'-10% 0px -10% 0px' });
+  sectionIds.forEach(id => { const el=document.getElementById(id); if(el){navObserver.observe(el);visibilityMap[id]=0;} });
+
+  // Mobile menu
+  const navToggle = document.querySelector('.nav-toggle');
+  const navDrawer = document.getElementById('nav-drawer');
+  const drawerLinks = navDrawer.querySelectorAll('a');
+  function openDrawer(){navDrawer.classList.add('open');navToggle.setAttribute('aria-expanded','true');navToggle.setAttribute('aria-label','Close navigation menu');document.body.style.overflow='hidden';drawerLinks[0].focus();}
+  function closeDrawer(){navDrawer.classList.remove('open');navToggle.setAttribute('aria-expanded','false');navToggle.setAttribute('aria-label','Open navigation menu');document.body.style.overflow='';navToggle.focus();}
+  navToggle.addEventListener('click',()=>{navDrawer.classList.contains('open')?closeDrawer():openDrawer();});
+  drawerLinks.forEach(link=>{link.addEventListener('click',closeDrawer);});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&navDrawer.classList.contains('open'))closeDrawer();});
+  navDrawer.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=Array.from(navDrawer.querySelectorAll('a, button'));if(!f.length)return;if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}});
+
+  // Scroll reveal
+  const fadeObserver = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>fadeObserver.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('[data-faq-trigger]').forEach(function(trigger){
+    const item=trigger.closest('.faq-item');
+    const answer=item?item.querySelector('.faq-answer'):null;
+    if(answer){const id='faq-ans-'+Math.random().toString(36).slice(2,7);answer.id=id;trigger.setAttribute('aria-controls',id);}
+    function openItem(){
+      if(answer){answer.style.visibility='hidden';answer.style.maxHeight='none';const h=answer.scrollHeight+32;answer.style.maxHeight=null;answer.style.visibility=null;item.style.setProperty('--faq-h',h+'px');}
+      item.classList.add('open');trigger.setAttribute('aria-expanded','true');
+    }
+    function closeItem(){item.classList.remove('open');trigger.setAttribute('aria-expanded','false');}
+    function toggleItem(){
+      const isOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o){o.classList.remove('open');const t=o.querySelector('[data-faq-trigger]');if(t)t.setAttribute('aria-expanded','false');});
+      if(!isOpen)openItem();
+    }
+    trigger.addEventListener('click',toggleItem);
+  });
+
+  // Stagger grids
+  document.querySelectorAll('.values-grid, .atmosphere-grid, .exp-cards').forEach(grid=>{
+    grid.querySelectorAll(':scope > *').forEach((child,i)=>{child.style.animationDelay=`${i*0.06}s`;});
+  });
+</script>
+</body>
+</html>
