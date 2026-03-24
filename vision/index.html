@@ -133,7 +133,7 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 
 footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(240,235,224,0.05);}
 .footer-mark{font-family:var(--mono);font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(240,235,224,0.3);}
-.footer-line{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:rgba(240,235,224,0.25);}
+.footer-line{font-family:var(--serif);font-style:italic;font-size:1rem;color:rgba(240,235,224,0.45);}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
@@ -142,7 +142,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;opacity:1!important;transform:none!important;}.nav-drawer{transition:none;}.nav-toggle span{transition:none;}}
 @media(max-width:900px){.products-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto;}}
-@media(max-width:680px){.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}}
+@media(max-width:680px){.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}}
 </style>
 </head>
 <body>
@@ -189,7 +189,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
   <p class="hero-eyebrow">Structured Service &nbsp;&middot;&nbsp; Rooted Intention</p>
 
   <h1 class="hero-headline" id="hero-h1">
-    Many of us adopted ways of building, owning,<br>and belonging that don&rsquo;t fit who we actually are.
+    Many of us built lives that don&rsquo;t fit<br>who we actually are.
   </h1>
 
   <div class="hero-body">
