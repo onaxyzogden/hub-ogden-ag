@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBOS — Barakah Business Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0d0b;
+    --parchment: #f5f0e8;
+    --bone: #ede7d9;
+    --dust: #d4c9b5;
+    --gold: #b8924a;
+    --gold-light: #d4aa66;
+    --gold-muted: #8a6b35;
+    --ember: #7a3b1e;
+    --moss: #3a4a35;
+    --deep: #1a1714;
+    --mid: #3d3830;
+    --soft: #6b6158;
+    --faint: #6e6358; /* lifted for WCAG AA 4.5:1 on --parchment */
+    --line: rgba(184,146,74,0.2);
+    --line-soft: rgba(14,13,11,0.08);
+
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Instrument Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+  }
+
+  /* ─── SKIP NAV ─── */
+  .skip-nav {
+    position: absolute;
+    top: -999px;
+    left: 1rem;
+    z-index: 9999;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0.6rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .skip-nav:focus { top: 1rem; }
+
+  /* ─── FOCUS VISIBLE ─── */
+  :focus-visible {
+    outline: 2.5px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .nav-mark {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .nav-symbol {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--mid);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--soft);
+    text-decoration: none;
+    padding-bottom: 0.2rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); border-bottom-color: var(--gold-light); }
+
+  /* Active section state — set via JS */
+  .nav-links a[aria-current="true"] {
+    color: var(--ink);
+    border-bottom-color: var(--gold);
+    font-weight: 500;
+  }
+
+  .nav-cta {
+    background: var(--ink) !important;
+    color: var(--parchment) !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2px;
+    border-bottom: none !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold-muted) !important; color: var(--parchment) !important; }
+  .nav-cta[aria-current="true"] { background: var(--gold-muted) !important; border-bottom: none !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 40%, rgba(184,146,74,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, rgba(122,59,30,0.05) 0%, transparent 50%);
+  }
+
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 6rem 3rem 4rem;
+  }
+
+  .hero-left { max-width: 580px; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 2rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+
+  .hero-eyebrow span { color: var(--gold); }
+
+  .hero-dua {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--soft);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--line);
+  }
+
+  .hero-dua-arabic {
+    display: block;
+    font-size: 1.35rem;
+    font-style: normal;
+    color: var(--gold-muted);
+    line-height: 2;
+    text-align: right;
+    margin-bottom: 0.4rem;
+    direction: rtl;
+  }
+
+  .hero-dua-transliteration {
+    display: block;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--faint);
+    margin-bottom: 0.4rem;
+    font-family: var(--serif);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-muted);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--mid);
+    line-height: 1.75;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+  .hero-distinction {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--soft);
+    margin-bottom: 2.5rem;
+    padding: 1rem 1.25rem;
+    background: rgba(184,146,74,0.06);
+    border-left: 3px solid var(--gold);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0.9rem 2rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.25s;
+    border: 1.5px solid var(--ink);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-muted);
+    border-color: var(--gold-muted);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--mid);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--dust);
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* ─── HERO RIGHT: STAGE DISPLAY ─── */
+  .hero-right {
+    position: relative;
+  }
+
+  .stage-panel {
+    background: var(--bone);
+    border: 1px solid var(--dust);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(14,13,11,0.12), 0 4px 16px rgba(14,13,11,0.06);
+  }
+
+  .stage-panel-header {
+    padding: 1rem 1.5rem;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .stage-panel-title {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dust);
+  }
+
+  .stage-panel-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .stage-list {
+    padding: 0.5rem 0;
+  }
+
+  .stage-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid var(--line-soft);
+    transition: background 0.15s;
+    gap: 1rem;
+  }
+
+  .stage-item:last-child { border-bottom: none; }
+  .stage-item:hover { background: rgba(184,146,74,0.05); }
+  .stage-item.active { background: rgba(184,146,74,0.08); }
+
+  .stage-code {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--gold-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .stage-info {}
+
+  .stage-name {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+
+  .stage-attr {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--faint);
+  }
+
+  .stage-marker {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dust);
+  }
+
+  .stage-marker.done { background: var(--gold); }
+  .stage-marker.active { background: var(--gold-light); box-shadow: 0 0 6px var(--gold-light); animation: pulse 2s ease-in-out infinite; }
+  .stage-marker.gate { background: var(--ember); }
+
+  .amanah-notice {
+    margin: 0;
+    padding: 0.85rem 1.5rem;
+    background: rgba(122,59,30,0.07);
+    border-top: 1px solid rgba(122,59,30,0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .amanah-notice-icon {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    color: var(--ember);
+    margin-top: 0.05rem;
+    flex-shrink: 0;
+  }
+
+  .amanah-notice-text {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ember);
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── HERO SCROLL BAND ─── */
+  .hero-band {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--line-soft);
+    overflow: hidden;
+    background: var(--bone);
+  }
+
+  .hero-band-track {
+    display: flex;
+    gap: 4rem;
+    padding: 1rem 3rem;
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .band-item {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--faint);
+    flex-shrink: 0;
+  }
+
+  .band-item span { color: var(--gold-muted); }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 6rem 3rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-full {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em { font-style: italic; color: var(--gold-muted); }
+
+  /* ─── WHAT THIS IS ─── */
+  .what-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .what-prose {
+    font-size: 1.05rem;
+    color: var(--mid);
+    line-height: 1.85;
+  }
+
+  .what-prose p { margin-bottom: 1.25rem; }
+
+  .what-prose strong { color: var(--ink); font-weight: 600; }
+
+  .what-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .distinction-card {
+    padding: 1.5rem;
+    border: 1px solid var(--dust);
+    border-radius: 3px;
+    background: var(--bone);
+    position: relative;
+  }
+
+  .distinction-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .distinction-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .distinction-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  /* ─── SPIRITUAL ARCHITECTURE ─── */
+  .arch-section {
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 6rem 0;
+  }
+
+  .arch-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .arch-section .section-label { color: var(--gold-light); }
+  .arch-section .section-label::after { background: rgba(184,146,74,0.2); }
+  .arch-section h2 { color: var(--parchment); }
+  .arch-section h2 em { color: var(--gold-light); }
+
+  .arch-intro {
+    max-width: 680px;
+    font-size: 1.05rem;
+    color: rgba(245,240,232,0.7);
+    line-height: 1.8;
+    margin-bottom: 3.5rem;
+  }
+
+  .arch-intro strong { color: var(--parchment); font-weight: 500; }
+
+  .arch-principle {
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(184,146,74,0.2);
+    border-radius: 3px;
+    background: rgba(184,146,74,0.05);
+    margin-bottom: 3rem;
+    max-width: 700px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--gold-light);
+    line-height: 1.75;
+  }
+
+  .stage-attributes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .attr-cell {
+    padding: 1.5rem;
+    background: rgba(14,13,11,0.6);
+    transition: background 0.2s;
+  }
+
+  .attr-cell:hover { background: rgba(184,146,74,0.08); }
+
+  .attr-stage {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .attr-name {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--parchment);
+    margin-bottom: 0.25rem;
+  }
+
+  .attr-arabic {
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+    direction: rtl;
+    font-family: var(--serif);
+  }
+
+  .attr-meaning {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.75); /* raised from 0.5 for WCAG AA on dark background */
+    line-height: 1.5;
+  }
+
+  /* ─── INTERIOR CONDITION ─── */
+  .interior-section {
+    background: #f9f5ee;
+    border-top: 1px solid var(--dust);
+    border-bottom: 1px solid var(--dust);
+  }
+
+  .interior-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .interior-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    margin-top: 3rem;
+    align-items: start;
+  }
+
+  .interior-prose {
+    font-size: 1rem;
+    color: var(--mid);
+    line-height: 1.85;
+  }
+
+  .interior-prose p { margin-bottom: 1.25rem; }
+  .interior-prose strong { color: var(--ink); font-weight: 600; }
+
+  .distortions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--dust);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .distortion {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--line-soft);
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    align-items: center;
+    background: var(--parchment);
+    transition: background 0.15s;
+  }
+
+  .distortion:last-child { border-bottom: none; }
+  .distortion:hover { background: var(--bone); }
+
+  .distortion-name {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    font-weight: 500;
+  }
+
+  .distortion-voice {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--soft);
+  }
+
+  /* ─── G-LABEL ─── */
+  .glabel-section {}
+
+  .glabel-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: end;
+    margin-bottom: 3rem;
+  }
+
+  .glabel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--dust);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .glabel-card {
+    padding: 1.75rem 1.5rem;
+    border-right: 1px solid var(--dust);
+    background: var(--bone);
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .glabel-card:last-child { border-right: none; }
+  .glabel-card:hover { background: #ede8da; }
+
+  .glabel-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    padding: 0.3rem 0.6rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .g1 .glabel-badge { background: rgba(58,74,53,0.15); color: var(--moss); }
+  .g2 .glabel-badge { background: rgba(184,146,74,0.15); color: var(--gold-muted); }
+  .g3 .glabel-badge { background: rgba(122,59,30,0.12); color: var(--ember); }
+  .g4 .glabel-badge { background: rgba(107,97,88,0.12); color: var(--soft); }
+
+  .glabel-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .glabel-desc {
+    font-size: 0.8rem;
+    color: var(--soft);
+    line-height: 1.6;
+  }
+
+  .reckoning-panel {
+    margin-top: 2.5rem;
+    padding: 2rem;
+    background: var(--ink);
+    border-radius: 3px;
+    color: var(--parchment);
+  }
+
+  .reckoning-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+  }
+
+  .reckoning-rule {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(245,240,232,0.8);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .reckoning-sub {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.7); /* raised from 0.45 for WCAG AA */
+    line-height: 1.6;
+  }
+
+  /* ─── AMANAH GATE ─── */
+  .gate-section {
+    background: var(--bone);
+    padding: 6rem 0;
+    border-top: 1px solid var(--dust);
+    border-bottom: 1px solid var(--dust);
+  }
+
+  .gate-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .gate-prose {
+    font-size: 1rem;
+    color: var(--mid);
+    line-height: 1.85;
+  }
+
+  .gate-prose p { margin-bottom: 1.25rem; }
+  .gate-prose strong { color: var(--ink); font-weight: 600; }
+
+  .gate-quote {
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--ember);
+    background: rgba(122,59,30,0.05);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ember);
+    line-height: 1.7;
+    margin: 1.5rem 0;
+  }
+
+  .gate-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--dust);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .gate-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .gate-row:last-child { border-bottom: none; }
+
+  .gate-label-cell {
+    padding: 1.1rem 1.25rem;
+    background: rgba(14,13,11,0.04);
+    border-right: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soft);
+    display: flex;
+    align-items: center;
+  }
+
+  .gate-value-cell {
+    padding: 1.1rem 1.25rem;
+    font-size: 0.82rem;
+    color: var(--mid);
+    line-height: 1.55;
+    display: flex;
+    align-items: center;
+  }
+
+  .gate-pass { color: var(--moss); font-weight: 500; }
+  .gate-stop { color: var(--ember); font-weight: 500; }
+
+  /* ─── WORKFLOW ─── */
+  .workflow-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 3rem;
+    border: 1px solid var(--dust);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .step {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--dust);
+    position: relative;
+    background: var(--parchment);
+    transition: background 0.2s;
+  }
+
+  .step:last-child { border-right: none; }
+  .step:hover { background: var(--bone); }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .step-name {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .step-desc {
+    font-size: 0.85rem;
+    color: var(--soft);
+    line-height: 1.7;
+  }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    background: var(--ink);
+    padding: 6rem 0;
+  }
+
+  .cta-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    text-align: center;
+  }
+
+  .cta-arabic {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--gold-light);
+    direction: rtl;
+    margin-bottom: 0.5rem;
+    line-height: 2;
+  }
+
+  .cta-transliteration {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.65); /* raised from 0.45 for WCAG AA */
+    margin-bottom: 3rem;
+  }
+
+  .cta-section h2 {
+    color: var(--parchment);
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-section h2 em { color: var(--gold-light); }
+
+  .cta-desc {
+    font-size: 1.05rem;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 1rem 2.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    font-weight: 500;
+    transition: all 0.25s;
+    border: 1.5px solid var(--gold);
+  }
+
+  .btn-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: rgba(245,240,232,0.85); /* raised from 0.6 for WCAG AA on dark bg */
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(245,240,232,0.35);
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .footer-mark {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.5); /* raised from 0.3 for WCAG AA on --deep bg */
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .footer-mark span { color: var(--gold-muted); }
+
+  .footer-line {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.8rem;
+    color: rgba(245,240,232,0.55); /* raised from 0.25 for WCAG AA */
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── REDUCED MOTION ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .fade-up {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .hero-band-track { animation: none; }
+    .status-dot { animation: none; }
+    .nav-drawer { transition: none; }
+    .nav-toggle-bar { transition: none; }
+  }
+
+  /* ─── MOBILE MENU BUTTON ─── */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1.5px solid var(--dust);
+    border-radius: 2px;
+    padding: 0.45rem 0.6rem;
+    cursor: pointer;
+    gap: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .nav-toggle-bar {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: var(--ink);
+    border-radius: 1px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+    transform-origin: center;
+  }
+
+  /* Animate to X when open */
+  .nav-toggle[aria-expanded="true"] .bar-top    { transform: translateY(5px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .bar-mid    { opacity: 0; transform: scaleX(0); }
+  .nav-toggle[aria-expanded="true"] .bar-bottom { transform: translateY(-5px) rotate(-45deg); }
+
+  /* ─── MOBILE DRAWER ─── */
+  .nav-drawer {
+    display: none; /* shown only at mobile breakpoint */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: rgba(245,240,232,0.97);
+    backdrop-filter: blur(16px);
+    padding: 5rem 2rem 2rem;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .nav-drawer.open {
+    transform: translateY(0);
+  }
+
+  .nav-drawer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--dust);
+  }
+
+  .nav-drawer-links li {
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .nav-drawer-links a {
+    display: block;
+    padding: 1.1rem 0;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-drawer-links a:hover,
+  .nav-drawer-links a:focus-visible { color: var(--gold); }
+
+  .nav-drawer-links a[aria-current="true"] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .nav-drawer-cta {
+    display: block;
+    margin-top: 2rem;
+    text-align: center;
+    background: var(--ink);
+    color: var(--parchment) !important;
+    padding: 1rem;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-drawer-cta:hover { background: var(--gold-muted); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; } /* hide inline links */
+    .nav-toggle { display: flex; } /* show hamburger */
+    .nav-drawer { display: flex; } /* drawer available */
+    section { padding: 4rem 1.5rem; }
+    .hero-content { grid-template-columns: 1fr; padding: 4rem 1.5rem 3rem; }
+    .hero-right { display: none; }
+    .what-grid, .interior-grid, .gate-inner, .glabel-header { grid-template-columns: 1fr; gap: 2.5rem; }
+    .glabel-grid { grid-template-columns: 1fr 1fr; }
+    .workflow-steps { grid-template-columns: 1fr; }
+    .step { border-right: none; border-bottom: 1px solid var(--dust); }
+    .stage-attributes { grid-template-columns: 1fr 1fr; }
+    .cta-inner { padding: 0 1.5rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+    .arch-inner, .interior-inner { padding: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── SKIP NAV ─── -->
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<!-- ─── NAV ─── -->
+<nav aria-label="Main navigation">
+  <a href="#main-content" class="nav-mark" aria-label="BBOS — Barakah Business Operating System, return to top">
+    <span class="nav-symbol" aria-hidden="true">⧁</span>
+    <span class="nav-name">BBOS</span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#architecture" data-section="architecture">What BBOS Is</a></li>
+    <li><a href="#spiritual-architecture" data-section="spiritual-architecture">Spiritual Architecture</a></li>
+    <li><a href="#interior" data-section="interior">Interior Condition</a></li>
+    <li><a href="#integrity" data-section="integrity">G-Label System</a></li>
+    <li><a href="#gate" data-section="gate">Amanah Gate</a></li>
+    <li><a href="#pipeline" data-section="pipeline">The Workflow</a></li>
+    <li><a href="#begin" class="nav-cta" data-section="begin">Begin Pipeline</a></li>
+  </ul>
+  <!-- Mobile hamburger -->
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open navigation menu">
+    <span class="nav-toggle-bar bar-top"></span>
+    <span class="nav-toggle-bar bar-mid"></span>
+    <span class="nav-toggle-bar bar-bottom"></span>
+  </button>
+</nav>
+
+<!-- ─── MOBILE DRAWER ─── -->
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <ul class="nav-drawer-links" role="list">
+    <li><a href="#architecture" data-section="architecture">What BBOS Is</a></li>
+    <li><a href="#spiritual-architecture" data-section="spiritual-architecture">Spiritual Architecture</a></li>
+    <li><a href="#interior" data-section="interior">Interior Condition</a></li>
+    <li><a href="#integrity" data-section="integrity">G-Label System</a></li>
+    <li><a href="#gate" data-section="gate">Amanah Gate</a></li>
+    <li><a href="#pipeline" data-section="pipeline">The Workflow</a></li>
+  </ul>
+  <a href="#begin" class="nav-drawer-cta">⧁ &nbsp; Begin Pipeline</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<main id="main-content">
+<div class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-left fade-up visible">
+      <div class="hero-eyebrow" aria-hidden="true">⧁ &nbsp;<span>Barakah Business Operating System</span></div>
+
+      <div class="hero-dua">
+        <span class="hero-dua-arabic" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span>
+        <span class="hero-dua-transliteration">Bismillāhi r-raḥmāni r-raḥīm</span>
+        In the name of Allah, the Most Gracious, the Most Merciful.
+      </div>
+
+      <h1>Build your business<br>on <em>documented</em> truth.</h1>
+
+      <p class="hero-sub">
+        BBOS is a <strong>nine-stage operating system</strong> for operators who believe
+        honesty is not a constraint — it is the only viable foundation.
+      </p>
+
+      <div class="hero-distinction">
+        This is not a workflow tool. It is a covenant system. Each stage asks something
+        of your capacity, your honesty, and your intention — before asking anything of your strategy.
+      </div>
+
+      <div class="hero-actions">
+        <a href="#begin" class="btn-primary">⧁ &nbsp; Begin My Pipeline</a>
+        <a href="#architecture" class="btn-secondary">Understand the architecture →</a>
+      </div>
+    </div>
+
+    <div class="hero-right fade-up visible">
+      <div class="stage-panel">
+        <div class="stage-panel-header">
+          <span class="stage-panel-title">BBOS Pipeline — Nine Stages</span>
+          <span class="stage-panel-status"><span class="status-dot" aria-hidden="true"></span> Live System</span>
+        </div>
+        <div class="stage-list">
+          <div class="stage-item">
+            <span class="stage-code">00 · INT</span>
+            <div class="stage-info">
+              <div class="stage-name">Intake</div>
+              <div class="stage-attr">Al-Awwal · Ash-Shahīd</div>
+            </div>
+            <div class="stage-marker done"></div>
+          </div>
+          <div class="stage-item active">
+            <span class="stage-code">01 · QAL</span>
+            <div class="stage-info">
+              <div class="stage-name">Qualification &amp; Alignment</div>
+              <div class="stage-attr">Al-Ḥaqq · Al-Khabīr</div>
+            </div>
+            <div class="stage-marker active"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">02 · STR</span>
+            <div class="stage-info">
+              <div class="stage-name">Strategy</div>
+              <div class="stage-attr">Al-Baṣīr</div>
+            </div>
+            <div class="stage-marker gate"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">03 · OFR</span>
+            <div class="stage-info">
+              <div class="stage-name">Offer</div>
+              <div class="stage-attr">Al-ʿAdl · Al-Muqsiṭ</div>
+            </div>
+            <div class="stage-marker"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">04 · OUT</span>
+            <div class="stage-info">
+              <div class="stage-name">Outreach</div>
+              <div class="stage-attr">Ar-Razzāq · As-Sittīr</div>
+            </div>
+            <div class="stage-marker"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">05 · SAL</span>
+            <div class="stage-info">
+              <div class="stage-name">Sales</div>
+              <div class="stage-attr">Al-Laṭīf · As-Sittīr</div>
+            </div>
+            <div class="stage-marker"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">06 · FUL</span>
+            <div class="stage-info">
+              <div class="stage-name">Fulfillment</div>
+              <div class="stage-attr">Al-Muḥsin · Al-Walī</div>
+            </div>
+            <div class="stage-marker"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">07 · RET</span>
+            <div class="stage-info">
+              <div class="stage-name">Retention</div>
+              <div class="stage-attr">Ash-Shakūr · Al-Wadūd</div>
+            </div>
+            <div class="stage-marker"></div>
+          </div>
+          <div class="stage-item">
+            <span class="stage-code">08 · OPT</span>
+            <div class="stage-info">
+              <div class="stage-name">Optimization</div>
+              <div class="stage-attr">Al-Ḥasīb · Al-Quddūs</div>
+            </div>
+            <div class="stage-marker"></div>
+          </div>
+        </div>
+        <div class="amanah-notice" role="note">
+          <span class="amanah-notice-icon" aria-hidden="true">⧁</span>
+          <span class="amanah-notice-text">Amanah Gate active at Stage 01. A No-Go here is not a failure — it is the system protecting the Barakah of everything that follows.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-band">
+    <div class="hero-band-track">
+      <span class="band-item"><span>Al-Awwal</span> · Integrity of beginnings</span>
+      <span class="band-item"><span>Al-Ḥaqq</span> · The unchanging real</span>
+      <span class="band-item"><span>Al-Baṣīr</span> · Genuine seeing</span>
+      <span class="band-item"><span>Al-ʿAdl</span> · The just covenant</span>
+      <span class="band-item"><span>Ar-Razzāq</span> · Outreach from tawakkul</span>
+      <span class="band-item"><span>Al-Muḥsin</span> · Ihsān in delivery</span>
+      <span class="band-item"><span>Ash-Shakūr</span> · Gratitude for retention</span>
+      <span class="band-item"><span>Al-Quddūs</span> · Renewal through reckoning</span>
+      <!-- duplicate for loop -->
+      <span class="band-item"><span>Al-Awwal</span> · Integrity of beginnings</span>
+      <span class="band-item"><span>Al-Ḥaqq</span> · The unchanging real</span>
+      <span class="band-item"><span>Al-Baṣīr</span> · Genuine seeing</span>
+      <span class="band-item"><span>Al-ʿAdl</span> · The just covenant</span>
+      <span class="band-item"><span>Ar-Razzāq</span> · Outreach from tawakkul</span>
+      <span class="band-item"><span>Al-Muḥsin</span> · Ihsān in delivery</span>
+      <span class="band-item"><span>Ash-Shakūr</span> · Gratitude for retention</span>
+      <span class="band-item"><span>Al-Quddūs</span> · Renewal through reckoning</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── WHAT THIS IS ─── -->
+<section id="architecture">
+  <div class="section-label">What BBOS is</div>
+  <h2>A system that holds the <em>operator accountable</em><br>before it holds the business accountable.</h2>
+
+  <div class="what-grid">
+    <div class="what-prose fade-up">
+      <p>
+        Most business systems govern <strong>what you do.</strong> BBOS governs something prior to that:
+        what is sitting at the centre of your heart when you begin.
+      </p>
+      <p>
+        Before any strategy is produced, before any offer is designed, the system asks you to
+        run a diagnostic on your own interior condition. The <strong>Five Distortions</strong>
+        — Control, Outcome, Validation, Identity, Comfort — are not character flaws.
+        They are attachments that belong in the hands but have moved into the heart.
+        The system is designed to surface them.
+      </p>
+      <p>
+        Then, and only then, does the AI generation engine engage. Claude uses your honest
+        inputs — together with every prior stage's outputs — to produce production-grade
+        strategic assets. The compounding is structural: by Strategy, Claude has your
+        complete operator context. By Offer, it is working with your real constraints,
+        your audited proof, and your qualified niche. Nothing is generic. Everything is earned.
+      </p>
+      <p>
+        The system does not penalise pace. It penalises dishonesty.
+        <strong>Take the time the honest work requires.</strong>
+      </p>
+    </div>
+
+    <div class="what-aside fade-up">
+      <div class="distinction-card">
+        <div class="distinction-label">The governing principle</div>
+        <div class="distinction-text">
+          Takhallaq bi akhlāq Allāh — adorning your conduct with the qualities of Allah.
+          Not claiming to embody them. Aspiring, in the work, to reflect them.
+          Business conducted with this intention is an act of worship.
+        </div>
+      </div>
+      <div class="distinction-card">
+        <div class="distinction-label">What BBOS asks</div>
+        <div class="distinction-text">
+          Engage with the spiritual elements honestly, at whatever depth you are currently able.
+          If the readiness check surfaces something uncomfortable, that is it functioning correctly.
+        </div>
+      </div>
+      <div class="distinction-card">
+        <div class="distinction-label">What BBOS does not ask</div>
+        <div class="distinction-text">
+          That you arrive with a specific level of spiritual maturity.
+          The attributes are standards to aspire toward in the work — not prerequisites for beginning it.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPIRITUAL ARCHITECTURE ─── -->
+<div class="arch-section" id="spiritual-architecture">
+  <div class="arch-inner">
+    <div class="section-label">Spiritual Architecture</div>
+    <h2>Seventeen divine attributes.<br><em>Each placed precisely</em> where it is most likely to be absent.</h2>
+
+    <p class="arch-intro">
+      The attributes governing each stage were not chosen for their inspirational quality.
+      <strong>Each was chosen because it names something specific that is required at that operational moment —
+      and that is most likely to be absent or distorted there.</strong>
+      This is not decoration. It is architecture.
+    </p>
+
+    <div class="arch-principle">
+      <span lang="ar" dir="rtl" aria-hidden="true"></span>"A business whose foundation contradicts Al-Ḥaqq will be spiritually suffocating from its first day,
+      regardless of its early commercial success."
+    </div>
+
+    <div class="stage-attributes" role="list">
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 00 · INT</div>
+        <div class="attr-name">Al-Awwal · Ash-Shahīd</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">الأوّل · الشهيد</div>
+        <div class="attr-meaning">Integrity of beginnings. Honest declaration before the One who already knows.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 01 · QAL</div>
+        <div class="attr-name">Al-Ḥaqq · Al-Khabīr</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">الحقّ · الخبير</div>
+        <div class="attr-meaning">The Go/No-Go on what is verifiably true now, including what lies beneath stated capacity.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 02 · STR</div>
+        <div class="attr-name">Al-Baṣīr</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">البصير</div>
+        <div class="attr-meaning">Genuine seeing as the basis for strategy. VoC as an act of looking clearly.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 03 · OFR</div>
+        <div class="attr-name">Al-ʿAdl · Al-Muqsiṭ</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">العدل · المقسط</div>
+        <div class="attr-meaning">The offer as a just and equitable covenant. Bilateral balance of risk and obligation.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 04 · OUT</div>
+        <div class="attr-name">Ar-Razzāq · As-Sittīr</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">الرزّاق · الستّير</div>
+        <div class="attr-meaning">Outreach from tawakkul. Disqualification with dignity.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 05 · SAL</div>
+        <div class="attr-name">Al-Laṭīf · As-Sittīr</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">اللطيف · الستّير</div>
+        <div class="attr-meaning">The Fit Call as discernment, not closing. Gentle precision in the sales conversation.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 06 · FUL</div>
+        <div class="attr-name">Al-Muḥsin · Al-Walī</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">المحسن · الولي</div>
+        <div class="attr-meaning">Iḥsān in delivery — doing more than the contract requires, because Allah sees.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 07 · RET</div>
+        <div class="attr-name">Ash-Shakūr · Al-Wadūd</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">الشكور · الودود</div>
+        <div class="attr-meaning">Retention built on genuine gratitude and affection — not mechanism.</div>
+      </div>
+      <div class="attr-cell" role="listitem">
+        <div class="attr-stage">Stage 08 · OPT</div>
+        <div class="attr-name">Al-Ḥasīb · Al-Quddūs</div>
+        <div class="attr-arabic" lang="ar" dir="rtl">الحسيب · القدّوس</div>
+        <div class="attr-meaning">Renewal through honest reckoning. Version log as act of alignment.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── INTERIOR CONDITION ─── -->
+<div class="interior-section">
+  <div class="interior-inner" id="interior">
+    <div class="section-label">The Interior Condition</div>
+    <h2>The diagnostic that runs<br><em>before</em> the pipeline begins.</h2>
+
+    <div class="interior-grid">
+      <div class="interior-prose fade-up">
+        <p>
+          Before you enter Stage 00, the system asks you to run a diagnostic on your own
+          interior condition. Not a reflection exercise. A diagnostic — run once at the
+          start of a new engagement cycle, and revisited whenever something in the work
+          begins to feel heavier than it should.
+        </p>
+        <p>
+          The system is designed to surface distortion. But not every distortion lives
+          in the process. Some live in the operator. <strong>When the heart is carrying weight
+          that belongs to Allah — a need for control, a fear of irrelevance, a requirement
+          that a particular outcome arrive — that weight shapes how the intake is completed,
+          how the qualification is assessed, how the offer is framed.</strong>
+        </p>
+        <p>
+          The five recurring distortions are named below. None of them are wrong to want.
+          They become distortions when the operator begins to need them — when their
+          presence or absence changes the quality of the work.
+        </p>
+        <p>
+          Between stages and between cycles, one question is sufficient:<br>
+          <em style="color: var(--gold-muted);">"Where did my heart lean too hard today?"</em><br>
+          Name it without judgment. Then return. That is the full practice.
+        </p>
+      </div>
+
+      <div class="fade-up">
+        <div class="distortions-list">
+          <div class="distortion">
+            <span class="distortion-name">Control</span>
+            <span class="distortion-voice">"This has to go a specific way."</span>
+          </div>
+          <div class="distortion">
+            <span class="distortion-name">Outcome</span>
+            <span class="distortion-voice">"This has to work."</span>
+          </div>
+          <div class="distortion">
+            <span class="distortion-name">Validation</span>
+            <span class="distortion-voice">"They have to understand me / approve of me."</span>
+          </div>
+          <div class="distortion">
+            <span class="distortion-name">Identity</span>
+            <span class="distortion-voice">"If this fails, it says something about who I am."</span>
+          </div>
+          <div class="distortion">
+            <span class="distortion-name">Comfort</span>
+            <span class="distortion-voice">"I need this resolved before I can move forward."</span>
+          </div>
+        </div>
+
+        <div style="margin-top:1.25rem; padding:1.25rem 1.5rem; border:1px solid var(--dust); border-radius:3px; background:var(--parchment);">
+          <div class="section-label" style="margin-bottom:0.75rem;">Four-Question Diagnostic</div>
+          <div style="font-size:0.82rem;color:var(--soft);line-height:1.75;">
+            Run before Stage 00. Return whenever the work feels driven by something other than service.
+            <br><br>
+            <span style="color:var(--mid);">1. What am I afraid of losing right now?</span><br>
+            <span style="color:var(--mid);">2. What am I trying to prove, and to whom?</span><br>
+            <span style="color:var(--mid);">3. What outcome am I attached to that I need to release?</span><br>
+            <span style="color:var(--mid);">4. If this stage goes exactly as it should — not as I want — am I willing to accept that?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── G-LABEL SYSTEM ─── -->
+<section id="integrity">
+  <div class="glabel-header">
+    <div>
+      <div class="section-label">The G-Label System</div>
+      <h2>Every claim carries a declared<br><em>evidential weight.</em></h2>
+    </div>
+    <div style="font-size:0.95rem;color:var(--soft);line-height:1.8;">
+      No aspirations presented as facts. No facts buried in aspirational language.
+      The G-label system makes the distinction architectural — not dependent on the
+      operator's willingness to self-audit in the moment.
+    </div>
+  </div>
+
+  <div class="glabel-grid fade-up">
+    <div class="glabel-card g1">
+      <div class="glabel-badge">G1</div>
+      <div class="glabel-title">Concrete Deliverable</div>
+      <div class="glabel-desc">Externally verifiable. You will deliver this. The actual thing.</div>
+    </div>
+    <div class="glabel-card g2">
+      <div class="glabel-badge">G2</div>
+      <div class="glabel-title">Expected Outcome</div>
+      <div class="glabel-desc">Evidence-supported. Normally expected under typical conditions. External factors contribute.</div>
+    </div>
+    <div class="glabel-card g3">
+      <div class="glabel-badge">G3</div>
+      <div class="glabel-title">Conditional Outcome</div>
+      <div class="glabel-desc">Dependency-honest. Outside factors are acknowledged. Not a promise.</div>
+    </div>
+    <div class="glabel-card g4">
+      <div class="glabel-badge">G4</div>
+      <div class="glabel-title">Aspirational Direction</div>
+      <div class="glabel-desc">Vision, not promise. No evidentiary weight. The aspiration is real — it is just labelled honestly.</div>
+    </div>
+  </div>
+
+  <div class="reckoning-panel fade-up">
+    <div class="reckoning-label">⧁ &nbsp; The G-Label Reckoning</div>
+    <div class="reckoning-rule">
+      No "Accept All" button. Ever. Every Asset Card requires individual G-label confirmation.
+      This is not a checkbox — it is a declaration.
+    </div>
+    <div class="reckoning-sub">
+      The Reckoning then requires you to type your name to affirm all claims.
+      Not because the system doubts you. Because the act of declaration, done with your name attached,
+      holds the integrity of the work accountable to a human moment — not an automated pass.
+    </div>
+  </div>
+</section>
+
+<!-- ─── AMANAH GATE ─── -->
+<div class="gate-section" id="gate">
+  <div class="gate-inner">
+    <div>
+      <div class="section-label" style="margin-bottom:1rem;">The Amanah Gate</div>
+      <h2 style="margin-bottom:1.5rem;">The pipeline has a fork.<br><em>Not every operator proceeds.</em></h2>
+
+      <div class="gate-prose fade-up">
+        <p>
+          At Stage 01 Qualification, the system presents the <strong>Amanah Gate</strong> —
+          a single, non-negotiable question: can this engagement be built on the foundation
+          that was actually declared?
+        </p>
+
+        <div class="gate-quote">
+          "Al-Ḥaqq does not bend to pipeline anxiety or sunk cost.
+          A candidate that cannot clear the gate honestly has not been disqualified —
+          it has been protected from a foundation that cannot hold."
+        </div>
+
+        <p>
+          If the gate is not passed, the operator routes to <strong>Stage 01.1 — Responsible Removal</strong>.
+          The system does this with dignity. A No-Go honoured here protects the Barakah of
+          everything that follows. A No-Go softened by optimism is a deferred failure.
+        </p>
+
+        <p>
+          The gate is made delegable through the <strong>Amanah Intake Screening Rubric</strong> —
+          10 questions, binary scoring, with three automatic disqualifiers that trigger
+          immediate rejection regardless of all other answers.
+        </p>
+      </div>
+    </div>
+
+    <div class="fade-up">
+      <div class="gate-visual">
+        <div class="gate-row">
+          <div class="gate-label-cell">Gate Question</div>
+          <div class="gate-value-cell">Can this engagement proceed on the foundation that was actually declared?</div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-label-cell">Governing Quality</div>
+          <div class="gate-value-cell" style="font-family:var(--serif);font-style:italic;">Al-Ḥaqq · The Truth / The Real</div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-label-cell">Auto-Disqualifiers</div>
+          <div class="gate-value-cell">3 binary conditions. Any triggered → immediate rejection. No exceptions.</div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-label-cell">Pass Route</div>
+          <div class="gate-value-cell"><span class="gate-pass">→ Stage 02 · Strategy</span></div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-label-cell">No-Go Route</div>
+          <div class="gate-value-cell"><span class="gate-stop">→ Stage 01.1 · Responsible Removal</span></div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-label-cell">What a No-Go means</div>
+          <div class="gate-value-cell" style="font-family:var(--serif);font-style:italic;color:var(--soft);">
+            Not failure. An act of stewardship. The system protecting the operator from a foundation that cannot hold.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── WORKFLOW ─── -->
+<section id="pipeline">
+  <div class="section-label">The Workflow</div>
+  <h2>Declare. Generate. Affirm.<br><em>Then — and only then — proceed.</em></h2>
+
+  <div class="workflow-steps fade-up">
+    <div class="step">
+      <div class="step-num">Step 1 · Declare</div>
+      <div class="step-name">Honest Inputs</div>
+      <div class="step-desc">
+        Each stage requires 2–8 focused declarations. Not essays.
+        The operator feeds the engine with honesty — after running the
+        interior readiness check and sitting with the governing attribute for that stage.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 2 · Generate</div>
+      <div class="step-name">AI-Built Assets</div>
+      <div class="step-desc">
+        Click Generate. Claude uses your current inputs plus every prior stage's outputs
+        to produce production-grade strategic assets in real time.
+        Compounding context. Nothing generic. Everything earned.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 3 · Affirm</div>
+      <div class="step-name">Reckoning &amp; Declaration</div>
+      <div class="step-desc">
+        Individually G-label every Asset Card. Complete the Reckoning.
+        Sign the declaration with your name. Then — and only then — proceed.
+        The integrity is architectural, not aspirational.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<div class="cta-section" id="begin">
+  <div class="cta-inner">
+    <div class="cta-arabic" lang="ar" dir="rtl">وَبِاللَّهِ التَّوْفِيقُ</div>
+    <div class="cta-transliteration">Wa billāhi t-tawfīq — And with Allah is all success.</div>
+
+    <h2>Ready to operate<br>with <em>genuine integrity</em>?</h2>
+
+    <p class="cta-desc">
+      BBOS is built for operators who understand that a business built on honest foundations
+      carries a different quality than one decorated with aspiration.
+      The system does not make the work easier. It makes it honest.
+    </p>
+
+    <div class="cta-actions">
+      <a href="#" class="btn-gold">⧁ &nbsp; Begin My Pipeline</a>
+      <a href="#" class="btn-ghost">Sign in to continue →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+</main>
+<footer>
+  <div class="footer-mark"><span aria-hidden="true">⧁</span> &nbsp; BBOS — Barakah Business Operating System · v1.0</div>
+  <div class="footer-line">Operate with integrity. Build with clarity.</div>
+  <div class="footer-mark">Powered by <span>Claude</span></div>
+</footer>
+
+<script>
+  // ─── ACTIVE NAV HIGHLIGHTING ───
+  // Map each nav link's data-section to its target element id
+  const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+  const sectionIds = ['architecture', 'spiritual-architecture', 'interior', 'integrity', 'gate', 'pipeline', 'begin'];
+
+  // We track which section is "most visible" using a map of ratios
+  const visibilityMap = {};
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      visibilityMap[entry.target.id] = entry.intersectionRatio;
+    });
+
+    // Find the section with the highest visibility ratio
+    let topSection = null;
+    let topRatio = 0;
+    for (const id of sectionIds) {
+      const ratio = visibilityMap[id] || 0;
+      if (ratio > topRatio) {
+        topRatio = ratio;
+        topSection = id;
+      }
+    }
+
+    // Update aria-current on both nav bar links and drawer links
+    const allNavLinks = document.querySelectorAll('.nav-links a[data-section], .nav-drawer-links a[data-section]');
+    allNavLinks.forEach(link => {
+      const isActive = link.dataset.section === topSection && topRatio > 0;
+      link.setAttribute('aria-current', isActive ? 'true' : 'false');
+    });
+  }, {
+    threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
+    rootMargin: '-10% 0px -10% 0px'
+  });
+
+  // Observe each section (some are divs with id on a child, some are sections)
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      navObserver.observe(el);
+      visibilityMap[id] = 0;
+    }
+  });
+
+  // ─── MOBILE MENU ───
+  const navToggle = document.querySelector('.nav-toggle');
+  const navDrawer = document.getElementById('nav-drawer');
+  const drawerLinks = navDrawer.querySelectorAll('a');
+
+  function openDrawer() {
+    navDrawer.classList.add('open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    navToggle.setAttribute('aria-label', 'Close navigation menu');
+    document.body.style.overflow = 'hidden';
+    // Move focus to first drawer link
+    drawerLinks[0].focus();
+  }
+
+  function closeDrawer() {
+    navDrawer.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Open navigation menu');
+    document.body.style.overflow = '';
+    navToggle.focus();
+  }
+
+  navToggle.addEventListener('click', () => {
+    navDrawer.classList.contains('open') ? closeDrawer() : openDrawer();
+  });
+
+  // Close on any drawer link click
+  drawerLinks.forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && navDrawer.classList.contains('open')) closeDrawer();
+  });
+
+  // Trap focus within drawer when open
+  navDrawer.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusable = Array.from(navDrawer.querySelectorAll('a, button'));
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  });
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up:not(.visible)').forEach(el => fadeObserver.observe(el));
+
+  // ─── STAGGER GRID CHILDREN ───
+  document.querySelectorAll('.glabel-grid, .stage-attributes, .distortions-list').forEach(grid => {
+    grid.querySelectorAll(':scope > *').forEach((child, i) => {
+      child.style.animationDelay = `${i * 0.06}s`;
+    });
+  });
+</script>
+</body>
+</html>
