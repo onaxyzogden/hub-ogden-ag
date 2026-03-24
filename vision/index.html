@@ -13,7 +13,6 @@
   --accent-muted: #9d7a40;
   --ink:        #0a0906;
   --char:       #111009;
-  --char-mid:   #161410;
   --parchment:  #f0ebe0;
   --bone:       #d8d0bf;
   --dust:       #8a8070;
@@ -32,19 +31,13 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .skip-nav:focus{top:0.75rem;}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
 
-/* ── BACKGROUND ── */
 .bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .topo-layer{position:absolute;inset:0;opacity:0.048;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cdefs%3E%3CradialGradient id='rg' cx='45%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23b89050' stop-opacity='1'/%3E%3Cstop offset='100%25' stop-color='%23b89050' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cellipse cx='360' cy='320' rx='280' ry='220' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='165' ry='125' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='70' ry='50' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='200' cy='500' rx='130' ry='100' fill='none' stroke='url(%23rg)' stroke-width='0.8' opacity='0.4'/%3E%3Cellipse cx='600' cy='180' rx='100' ry='75' fill='none' stroke='url(%23rg)' stroke-width='0.7' opacity='0.35'/%3E%3C/svg%3E");background-size:75vw 75vw;background-position:55% 35%;background-repeat:no-repeat;}
 .grain-layer{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.55;}
 
-/* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;padding:0 2.5rem;height:48px;background:rgba(10,9,6,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft);}
 .nav-brand{font-family:var(--mono);font-size:0.75rem;font-weight:500;letter-spacing:0.2em;color:var(--parchment);text-decoration:none;text-transform:uppercase;flex-shrink:0;}
 .nav-div{width:1px;height:18px;background:rgba(240,235,224,0.12);margin:0 1.5rem;flex-shrink:0;}
-.nav-products{display:flex;align-items:center;gap:1.4rem;list-style:none;flex-shrink:0;}
-.nav-products a{font-family:var(--mono);font-size:0.67rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color 0.2s;}
-.nav-products a:hover{color:var(--bone);}
-.nav-products a.nav-active{color:var(--parchment);font-weight:500;}
 .nav-sections{display:flex;align-items:center;gap:1.4rem;list-style:none;margin-left:auto;}
 .nav-sections a{font-family:var(--mono);font-size:0.67rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--dust);text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent;transition:color 0.2s,border-color 0.2s;}
 .nav-sections a:hover{color:var(--bone);}
@@ -63,7 +56,6 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .nav-drawer-cta{display:block;margin-top:2rem;padding:1rem;text-align:center;background:transparent;border:1px solid rgba(184,144,80,0.35);border-radius:3px;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-light);text-decoration:none;transition:background 0.2s,border-color 0.2s;}
 .nav-drawer-cta:hover{background:rgba(184,144,80,0.1);border-color:rgba(184,144,80,0.6);}
 
-/* ── HERO ── */
 .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem 5rem;text-align:center;}
 .hero-eyebrow{font-family:var(--mono);font-size:0.67rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--dust);margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.8s ease 0.15s forwards;}
 .hero-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,6vw,5rem);line-height:1.1;letter-spacing:-0.01em;color:var(--parchment);max-width:820px;margin-bottom:2.25rem;opacity:0;animation:fadeUp 0.9s ease 0.3s forwards;}
@@ -73,7 +65,6 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .hero-body .hero-turn{font-family:var(--serif);font-size:clamp(1rem,1.8vw,1.12rem);font-weight:300;font-style:italic;color:rgba(216,208,191,0.7);line-height:1.8;padding-top:0.5rem;}
 .hero-rule{width:1px;height:36px;background:linear-gradient(to bottom,transparent,rgba(184,144,80,0.3),transparent);margin:0 auto 2.75rem;opacity:0;animation:fadeIn 0.8s ease 0.75s forwards;}
 
-/* ── PATHWAYS ── */
 .pathways{display:flex;flex-direction:column;gap:0.8rem;width:100%;max-width:560px;opacity:0;animation:fadeUp 0.9s ease 0.88s forwards;}
 .pathway{position:relative;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.6rem 1.75rem;background:rgba(10,9,6,0.58);backdrop-filter:blur(10px);border:1px solid rgba(184,144,80,0.14);border-radius:3px;text-decoration:none;transition:background 0.3s,border-color 0.3s;overflow:hidden;}
 .pathway::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 140% 120% at 50% 120%,rgba(184,144,80,0.07) 0%,transparent 60%);opacity:0;transition:opacity 0.35s;}
@@ -94,7 +85,6 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .pathway.arrow-right:hover .pathway-arrow{color:var(--accent-light);transform:translateX(4px);}
 .pathway.arrow-down:hover .pathway-arrow{color:var(--accent-light);transform:translateY(4px);}
 
-/* ── SHARED SECTION ── */
 .section{position:relative;z-index:1;padding:8rem 2rem;}
 .section-inner{max-width:820px;margin:0 auto;}
 .section-inner--wide{max-width:900px;margin:0 auto;}
@@ -104,7 +94,6 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .sec-headline em{font-style:italic;color:var(--accent-light);}
 .sec-body{font-family:var(--sans);font-size:1rem;font-weight:300;color:rgba(216,208,191,0.65);line-height:1.85;text-align:center;max-width:620px;margin:0 auto;}
 
-/* ── NUMBERED LIST ── */
 .num-list{list-style:none;margin-top:4.5rem;}
 .num-item{display:grid;grid-template-columns:72px 1fr;gap:0;padding:2.5rem 0;position:relative;opacity:0;transform:translateY(14px);transition:opacity 0.55s ease,transform 0.55s ease;}
 .num-item::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:1px;background:rgba(240,235,224,0.14);}
@@ -114,7 +103,6 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .num-text{font-family:var(--sans);font-size:0.9rem;font-weight:300;color:rgba(216,208,191,0.72);line-height:1.82;}
 .num-item.no-title .num-text{color:rgba(216,208,191,0.78);}
 
-/* ── PRODUCT CARDS ── */
 .products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:4rem;}
 .product-card{position:relative;display:flex;flex-direction:column;padding:2rem 1.75rem 1.75rem;background:rgba(10,9,6,0.5);border:1px solid rgba(184,144,80,0.14);border-radius:3px;text-decoration:none;transition:background 0.3s,border-color 0.3s;overflow:hidden;}
 .product-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);transform:scaleY(0);transition:transform 0.4s;transform-origin:center;}
@@ -123,6 +111,7 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .product-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 .product-status{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.25rem;}
 .product-status-badge{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-muted);border:1px solid rgba(184,144,80,0.2);padding:0.18rem 0.5rem;border-radius:2px;white-space:nowrap;}
+.product-status-badge.live{color:rgba(120,180,120,0.85);border-color:rgba(120,180,120,0.25);}
 .product-name{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--parchment);margin-bottom:0.6rem;line-height:1.2;transition:color 0.2s;}
 .product-card:hover .product-name{color:#fff;}
 .product-desc{font-family:var(--sans);font-size:0.85rem;font-weight:300;color:rgba(216,208,191,0.58);line-height:1.75;flex:1;margin-bottom:1.5rem;transition:color 0.2s;}
@@ -130,10 +119,8 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .product-link{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-muted);display:flex;align-items:center;gap:0.4rem;transition:color 0.2s,gap 0.2s;}
 .product-card:hover .product-link{color:var(--accent-light);gap:0.7rem;}
 
-/* ── SEPARATOR ── */
 .sep{position:relative;z-index:1;height:1px;background:rgba(240,235,224,0.05);max-width:820px;margin:0 auto;}
 
-/* ── CLOSING CTA ── */
 .cta-section{position:relative;z-index:1;padding:9rem 2rem 10rem;text-align:center;}
 .cta-inner{max-width:580px;margin:0 auto;}
 .cta-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3.2rem);line-height:1.15;color:var(--parchment);margin-bottom:1.5rem;}
@@ -144,12 +131,10 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .cta-btn-arrow{transition:transform 0.25s;}
 .cta-btn:hover .cta-btn-arrow{transform:translateX(4px);}
 
-/* ── FOOTER ── */
 footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(240,235,224,0.05);}
 .footer-mark{font-family:var(--mono);font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(240,235,224,0.3);}
 .footer-line{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:rgba(240,235,224,0.25);}
 
-/* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease;}
@@ -301,7 +286,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
     <p class="sec-eyebrow reveal">What OGDEN is</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
     <h2 class="sec-headline reveal" id="what-h">
-      Three domains. One intention.<br><em>All of it in progress.</em>
+      Three domains. One intention.<br><em>All of it fully alive.</em>
     </h2>
     <p class="sec-body reveal">
       OGDEN is a name that came from a place &mdash; an oak valley.
@@ -310,7 +295,8 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
       grounded in a particular person&rsquo;s God-given inclinations,
       expressed through structured service,
       offered to communities that need it.
-      None of it is finished. All of it is real.
+      Three products. Each one complete. Each one a different
+      expression of the same underlying intention.
     </p>
   </div>
 </section>
@@ -319,7 +305,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 <div class="sep" aria-hidden="true"></div>
 <section class="section" id="products" aria-labelledby="products-h">
   <div class="section-inner--wide">
-    <p class="sec-eyebrow reveal">The work, as it stands</p>
+    <p class="sec-eyebrow reveal">The work, fully realised</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
     <h2 class="sec-headline reveal" id="products-h">
       Three expressions<br>of <em>one intention.</em>
@@ -334,34 +320,34 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
       <!-- ATLAS -->
       <a href="https://hub.ogden.ag/atlas/" class="product-card reveal">
         <div class="product-status">
-          <span class="product-status-badge">Functional Prototype</span>
-          <span class="product-status-badge">Pre-Market Validation</span>
+          <span class="product-status-badge live">Live</span>
+          <span class="product-status-badge">Land Intelligence</span>
         </div>
         <p class="product-name">Atlas</p>
-        <p class="product-desc">A land intelligence and design system for those who want to know the land before they ask anything of it. Soil, water, zoning, ecology, design potential &mdash; mapped before the decision is made.</p>
-        <span class="product-link">Explore Atlas <span aria-hidden="true">→</span></span>
+        <p class="product-desc">A fully operational land intelligence and design system. Know the land before you ask anything of it &mdash; soil, water, zoning, ecology, and design potential all mapped before the decision is made.</p>
+        <span class="product-link">Enter Atlas <span aria-hidden="true">→</span></span>
       </a>
 
       <!-- MOONTRANCE -->
       <a href="https://hub.ogden.ag/moontrance/" class="product-card reveal">
         <div class="product-status">
-          <span class="product-status-badge">Complete Frameworks</span>
-          <span class="product-status-badge">Welcoming Founding Members</span>
+          <span class="product-status-badge live">Live</span>
+          <span class="product-status-badge">Faith-Rooted Destination</span>
         </div>
         <p class="product-name">Moontrance</p>
-        <p class="product-desc">A faith-rooted land destination in Ontario &mdash; fully designed, actively searching for founding members and the right land. A place to stand in nature and remember why it matters.</p>
-        <span class="product-link">Explore Moontrance <span aria-hidden="true">→</span></span>
+        <p class="product-desc">A faith-rooted land destination in Halton Hills, Ontario &mdash; open for guided visits, workshops, and overnight stays. A place to stand in nature and remember why it matters.</p>
+        <span class="product-link">Visit Moontrance <span aria-hidden="true">→</span></span>
       </a>
 
       <!-- BBOS -->
       <a href="https://hub.ogden.ag/bbos/" class="product-card reveal">
         <div class="product-status">
-          <span class="product-status-badge">LLM Instruction Set</span>
-          <span class="product-status-badge">Market Validation</span>
+          <span class="product-status-badge live">Live</span>
+          <span class="product-status-badge">Business Operating System</span>
         </div>
         <p class="product-name">BBOS</p>
-        <p class="product-desc">The Barakah Business Operating System &mdash; a structured framework for running a business as an act of worship. Currently operating as a custom LLM instruction set while the market is validated.</p>
-        <span class="product-link">Explore BBOS <span aria-hidden="true">→</span></span>
+        <p class="product-desc">The Barakah Business Operating System &mdash; a complete, productised framework for running a business as an act of worship. From intake through optimisation, every stage structured and guided.</p>
+        <span class="product-link">Enter BBOS <span aria-hidden="true">→</span></span>
       </a>
 
     </div>
@@ -376,10 +362,9 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
       If this resonates,<br><em>you are who this is for.</em>
     </h2>
     <p class="cta-sub reveal">
-      OGDEN is being built in the open &mdash; not finished, not hiding anything,
-      not performing readiness it hasn&rsquo;t earned.
-      If you see yourself in any of these three domains,
-      there is a place for you here.
+      OGDEN exists for those who want their land, their business, and their community
+      to reflect what they actually believe.
+      Three products. One ecosystem. Built for a different set of priorities.
     </p>
     <a href="https://hub.ogden.ag/moontrance/connect/" class="cta-btn reveal">
       Get in Touch
