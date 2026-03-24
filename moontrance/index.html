@@ -186,7 +186,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
   <div class="nav-div2" aria-hidden="true"></div>
   <ul class="nav-sections">
     <li><a href="#problem"  data-sec="problem">Problem</a></li>
-    <li><a href="#turning"  data-sec="turning">Turning</a></li>
+    <li><a href="#threshold"  data-sec="threshold">Threshold</a></li>
     <li><a href="#solution" data-sec="solution">Solution</a></li>
     <li><a href="#explore"  data-sec="explore">Explore</a></li>
     <li><a href="#connect"  data-sec="connect">Connect</a></li>
@@ -200,7 +200,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <ul class="nav-drawer-links">
     <li><a href="#problem">Problem</a></li>
-    <li><a href="#turning">Turning</a></li>
+    <li><a href="#threshold">Threshold</a></li>
     <li><a href="#solution">Solution</a></li>
     <li><a href="#explore">Explore</a></li>
     <li><a href="#connect">Connect</a></li>
@@ -289,13 +289,13 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
   </div>
 </section>
 
-<!-- ══ TURNING ══ -->
+<!-- ══ THRESHOLD ══ -->
 <div class="sep" aria-hidden="true"></div>
-<section class="section" id="turning" aria-labelledby="turn-h">
+<section class="section" id="threshold" aria-labelledby="thresh-h">
   <div class="section-inner">
     <p class="sec-eyebrow reveal">The question that built this</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
-    <h2 class="sec-headline reveal" id="turn-h">
+    <h2 class="sec-headline reveal" id="thresh-h">
       What if someone built the framework<br>before they found <em>the land</em>?
     </h2>
     <p class="sec-body reveal">
@@ -472,7 +472,7 @@ const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return
 document.querySelectorAll('.reveal,.num-item').forEach(el=>obs.observe(el));
 
 const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySelector(`.nav-sections a[data-sec="${e.target.id}"]`);if(l)l.classList.toggle('sec-active',e.isIntersecting);});},{threshold:0.3});
-['problem','turning','solution','explore','connect'].forEach(id=>{const el=document.getElementById(id);if(el)secObs.observe(el);});
+['problem','threshold','solution','explore','connect'].forEach(id=>{const el=document.getElementById(id);if(el)secObs.observe(el);});
 </script>
 </body>
 </html>
