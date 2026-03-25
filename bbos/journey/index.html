@@ -418,8 +418,9 @@ body {
 }
 
 /* ── PAGE TRANSITION VEIL ── */
-#page-veil{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:1;animation:veil-out 0.55s ease 0.05s forwards;}
-@keyframes veil-out{to{opacity:0;}}
+}
+@keyframes body-fade-in{from{opacity:0}to{opacity:1}}
+body{animation:body-fade-in 0.5s ease 0.05s both;}
 </style>
 </head>
 <body>
@@ -688,61 +689,32 @@ document.addEventListener('keydown', e => {
 });
 </script>
 
-<div id="page-veil" aria-hidden="true"></div>
+
 <script>
-/* ── PAGE VEIL ── */
-(function(){
-  var veil = document.getElementById('page-veil');
-  if (!veil) return;
 
-  // Match veil to the page's own background
-  veil.style.background = getComputedStyle(document.documentElement)
-    .getPropertyValue('--char') || getComputedStyle(document.body).backgroundColor || '#0a0906';
-  // Trim and normalise — CSS var returns value with possible leading space
-  var bg = getComputedStyle(document.documentElement).getPropertyValue('--char').trim();
-  // Light pages use --parchment as body bg, dark use --char
-  var bodyBg = getComputedStyle(document.body).backgroundColor;
-  veil.style.background = bodyBg;
+</script>
 
-  // CSS handles entrance fade — JS only handles exit and bfcache restore
-
-  // Hard-clear pointer-events after animation completes — iOS Safari safety
-  veil.addEventListener('animationend', function(){
-    veil.style.pointerEvents = 'none';
-    veil.style.opacity = '0';
-  });
-
-  // bfcache restore — restart the CSS animation
-  window.addEventListener('pageshow', function(e){
-    if (e.persisted){
-      veil.style.background = getComputedStyle(document.body).backgroundColor;
-      veil.style.animation = 'none';
-      veil.style.opacity = '1';
-      veil.style.pointerEvents = 'none';
-      // Force reflow then restart animation
-      void veil.offsetHeight;
-      veil.style.animation = 'veil-out 0.55s ease 0.05s forwards';
-    }
-  });
-
-  // Fade out on exit — internal links only
-  document.addEventListener('click', function(e){
-    var a = e.target.closest('a');
-    if (!a) return;
-    var href = a.getAttribute('href');
-    if (!href) return;
-    // Skip: external, hash-only, javascript:, target _blank, data: URLs
-    if (href.startsWith('http') || href.startsWith('//') ||
-        href.startsWith('#')    || href.startsWith('javascript') ||
-        href.startsWith('mailto') || a.target === '_blank') return;
-    e.preventDefault();
-    veil.style.background = getComputedStyle(document.body).backgroundColor;
-    veil.style.transition = 'opacity 0.3s ease';
-    veil.style.opacity = '1';
-    veil.style.pointerEvents = 'all';
-    setTimeout(function(){ window.location.href = href; }, 320);
-  });
-})();
+<script>
+/* Page exit fade — body opacity only, cannot block interaction */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a');
+  if (!a) return;
+  var href = a.getAttribute('href');
+  if (!href) return;
+  if (href.startsWith('http') || href.startsWith('//') ||
+      href.startsWith('#') || href.startsWith('mailto') ||
+      a.target === '_blank') return;
+  e.preventDefault();
+  document.body.style.transition = 'opacity 0.25s ease';
+  document.body.style.opacity = '0';
+  setTimeout(function(){ window.location.href = href; }, 260);
+});
+window.addEventListener('pageshow', function(e){
+  if (e.persisted){
+    document.body.style.transition = 'none';
+    document.body.style.opacity = '1';
+  }
+});
 </script>
 </body>
 </html>
