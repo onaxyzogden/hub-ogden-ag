@@ -264,6 +264,9 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
   .exp-drawer{transition:none;}
   .drawer-overlay{transition:none;}
 }
+
+/* ── PAGE TRANSITION VEIL ── */
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
 </style>
 </head>
 <body>
@@ -837,6 +840,69 @@ const fadeObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); fadeObs.unobserve(e.target); }});
 },{ threshold:0.1, rootMargin:'0px 0px -40px 0px' });
 document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>fadeObs.observe(el));
+</script>
+<div id="page-veil" aria-hidden="true"></div>
+<script>
+/* ── PAGE VEIL ── */
+(function(){
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+
+  // Match veil to the page's own background
+  veil.style.background = getComputedStyle(document.documentElement)
+    .getPropertyValue('--char') || getComputedStyle(document.body).backgroundColor || '#0a0906';
+  // Trim and normalise — CSS var returns value with possible leading space
+  var bg = getComputedStyle(document.documentElement).getPropertyValue('--char').trim();
+  // Light pages use --parchment as body bg, dark use --char
+  var bodyBg = getComputedStyle(document.body).backgroundColor;
+  veil.style.background = bodyBg;
+
+  // Fade in on load
+  function fadeIn(){
+    requestAnimationFrame(function(){
+      veil.style.transition = 'opacity 0.4s ease';
+      veil.style.opacity = '0';
+    });
+  }
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', fadeIn);
+  } else {
+    fadeIn();
+  }
+
+  // Re-run on bfcache restore
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted){
+      veil.style.transition = 'none';
+      veil.style.opacity = '1';
+      veil.style.background = getComputedStyle(document.body).backgroundColor;
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          veil.style.transition = 'opacity 0.4s ease';
+          veil.style.opacity = '0';
+        });
+      });
+    }
+  });
+
+  // Fade out on exit — internal links only
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href) return;
+    // Skip: external, hash-only, javascript:, target _blank, data: URLs
+    if (href.startsWith('http') || href.startsWith('//') ||
+        href.startsWith('#')    || href.startsWith('javascript') ||
+        href.startsWith('mailto') || a.target === '_blank') return;
+    e.preventDefault();
+    veil.style.background = getComputedStyle(document.body).backgroundColor;
+    veil.style.transition = 'opacity 0.3s ease';
+    veil.style.opacity = '1';
+    veil.style.pointerEvents = 'all';
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
 </script>
 </body>
 </html>

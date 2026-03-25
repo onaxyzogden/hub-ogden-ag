@@ -145,6 +145,9 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;opacity:1!important;transform:none!important;}.nav-drawer{transition:none;}.nav-toggle span{transition:none;}}
 @media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.5rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}.cta-buttons{width:100%;}.cta-btn,.cta-btn-secondary{width:100%;justify-content:center;}}
+
+/* ── PAGE TRANSITION VEIL ── */
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
 </style>
 </head>
 <body>
@@ -474,6 +477,69 @@ document.querySelectorAll('.reveal,.num-item').forEach(el=>obs.observe(el));
 
 const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySelector(`.nav-sections a[data-sec="${e.target.id}"]`);if(l)l.classList.toggle('sec-active',e.isIntersecting);});},{threshold:0.3});
 ['problem','threshold','solution','explore','connect'].forEach(id=>{const el=document.getElementById(id);if(el)secObs.observe(el);});
+</script>
+<div id="page-veil" aria-hidden="true"></div>
+<script>
+/* ── PAGE VEIL ── */
+(function(){
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+
+  // Match veil to the page's own background
+  veil.style.background = getComputedStyle(document.documentElement)
+    .getPropertyValue('--char') || getComputedStyle(document.body).backgroundColor || '#0a0906';
+  // Trim and normalise — CSS var returns value with possible leading space
+  var bg = getComputedStyle(document.documentElement).getPropertyValue('--char').trim();
+  // Light pages use --parchment as body bg, dark use --char
+  var bodyBg = getComputedStyle(document.body).backgroundColor;
+  veil.style.background = bodyBg;
+
+  // Fade in on load
+  function fadeIn(){
+    requestAnimationFrame(function(){
+      veil.style.transition = 'opacity 0.4s ease';
+      veil.style.opacity = '0';
+    });
+  }
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', fadeIn);
+  } else {
+    fadeIn();
+  }
+
+  // Re-run on bfcache restore
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted){
+      veil.style.transition = 'none';
+      veil.style.opacity = '1';
+      veil.style.background = getComputedStyle(document.body).backgroundColor;
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          veil.style.transition = 'opacity 0.4s ease';
+          veil.style.opacity = '0';
+        });
+      });
+    }
+  });
+
+  // Fade out on exit — internal links only
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href) return;
+    // Skip: external, hash-only, javascript:, target _blank, data: URLs
+    if (href.startsWith('http') || href.startsWith('//') ||
+        href.startsWith('#')    || href.startsWith('javascript') ||
+        href.startsWith('mailto') || a.target === '_blank') return;
+    e.preventDefault();
+    veil.style.background = getComputedStyle(document.body).backgroundColor;
+    veil.style.transition = 'opacity 0.3s ease';
+    veil.style.opacity = '1';
+    veil.style.pointerEvents = 'all';
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
 </script>
 </body>
 </html>

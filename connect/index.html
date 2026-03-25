@@ -164,6 +164,9 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
   *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}
   .thread-state-dot{animation:none;}
 }
+
+/* ── PAGE TRANSITION VEIL ── */
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
 </style>
 </head>
 <body>
@@ -244,6 +247,7 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
         <input type="text" class="thread-input" placeholder="Your land or project (optional)" aria-label="Land or project description" id="atlas-context">
         <button type="button" class="thread-btn" onclick="handleSubmit('atlas')">◎ &nbsp; Request Atlas Access</button>
         <p class="thread-note">We'll be in touch within a few days.</p>
+        <a href="/atlas/journey/" style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;text-align:center;display:block;margin-top:0.25rem;transition:color 0.2s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--dust)'">View the Atlas journey →</a>
       </div>
       <div class="thread-success" id="atlas-success">
         <p class="thread-success-text">Received. We'll be in touch about Atlas access shortly — thank you for your patience while we're in this early stage.</p>
@@ -272,6 +276,7 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
         <input type="text" class="thread-input" placeholder="What you're building (optional)" aria-label="What you are building" id="bbos-context">
         <button type="button" class="thread-btn" onclick="handleSubmit('bbos')">⧁ &nbsp; Express Interest in BBOS</button>
         <p class="thread-note">The system does not make the work easier. It makes it honest.</p>
+        <a href="/bbos/journey/" style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;text-align:center;display:block;margin-top:0.25rem;transition:color 0.2s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--dust)'">View the BBOS journey →</a>
       </div>
       <div class="thread-success" id="bbos-success">
         <p class="thread-success-text">Received. We'll be in touch with access to the instruction set and what to expect from your first cycle.</p>
@@ -306,6 +311,7 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
         </select>
         <button type="button" class="thread-btn" onclick="handleSubmit('moontrance')">◐ &nbsp; Follow the Moontrance Journey</button>
         <p class="thread-note">The land is the next step. You'll hear from us as it unfolds.</p>
+        <a href="/moontrance/journey/" style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;text-align:center;display:block;margin-top:0.25rem;transition:color 0.2s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--dust)'">View the Moontrance journey →</a>
       </div>
       <div class="thread-success" id="moontrance-success">
         <p class="thread-success-text">Received. You'll hear from us as the journey unfolds — thank you for wanting to be close to this.</p>
@@ -411,6 +417,69 @@ if (toggle) {
     toggle.setAttribute('aria-label', expanded ? 'Open navigation menu' : 'Close navigation menu');
   });
 }
+</script>
+<div id="page-veil" aria-hidden="true"></div>
+<script>
+/* ── PAGE VEIL ── */
+(function(){
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+
+  // Match veil to the page's own background
+  veil.style.background = getComputedStyle(document.documentElement)
+    .getPropertyValue('--char') || getComputedStyle(document.body).backgroundColor || '#0a0906';
+  // Trim and normalise — CSS var returns value with possible leading space
+  var bg = getComputedStyle(document.documentElement).getPropertyValue('--char').trim();
+  // Light pages use --parchment as body bg, dark use --char
+  var bodyBg = getComputedStyle(document.body).backgroundColor;
+  veil.style.background = bodyBg;
+
+  // Fade in on load
+  function fadeIn(){
+    requestAnimationFrame(function(){
+      veil.style.transition = 'opacity 0.4s ease';
+      veil.style.opacity = '0';
+    });
+  }
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', fadeIn);
+  } else {
+    fadeIn();
+  }
+
+  // Re-run on bfcache restore
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted){
+      veil.style.transition = 'none';
+      veil.style.opacity = '1';
+      veil.style.background = getComputedStyle(document.body).backgroundColor;
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          veil.style.transition = 'opacity 0.4s ease';
+          veil.style.opacity = '0';
+        });
+      });
+    }
+  });
+
+  // Fade out on exit — internal links only
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href) return;
+    // Skip: external, hash-only, javascript:, target _blank, data: URLs
+    if (href.startsWith('http') || href.startsWith('//') ||
+        href.startsWith('#')    || href.startsWith('javascript') ||
+        href.startsWith('mailto') || a.target === '_blank') return;
+    e.preventDefault();
+    veil.style.background = getComputedStyle(document.body).backgroundColor;
+    veil.style.transition = 'opacity 0.3s ease';
+    veil.style.opacity = '1';
+    veil.style.pointerEvents = 'all';
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
 </script>
 </body>
 </html>

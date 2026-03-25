@@ -135,6 +135,9 @@ body{background: var(--bg);color:var(--parchment);font-family:var(--sans);min-he
   .header-right{text-align:left;}
 }
 @media(prefers-reduced-motion:reduce){.now-dot{animation:none!important;opacity:1;}}
+
+/* ── PAGE TRANSITION VEIL ── */
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
 </style>
 </head>
 <body>
@@ -168,6 +171,7 @@ body{background: var(--bg);color:var(--parchment);font-family:var(--sans);min-he
           <div class="product-progress-fill bbos-fill" style="width:88%"></div>
         </div>
         <p class="product-pct">88% complete</p>
+        <a href="/bbos/journey/" style="font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(184,144,80,0.5);text-decoration:none;margin-top:0.5rem;display:block;transition:color 0.2s;" onmouseover="this.style.color='rgba(184,144,80,0.9)'" onmouseout="this.style.color='rgba(184,144,80,0.5)'">Full journey →</a>
       </div>
     </div>
     <div class="product-phases">
@@ -233,6 +237,7 @@ body{background: var(--bg);color:var(--parchment);font-family:var(--sans);min-he
           <div class="product-progress-fill mt-fill" style="width:75%"></div>
         </div>
         <p class="product-pct">75% complete</p>
+        <a href="/moontrance/journey/" style="font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(184,144,80,0.5);text-decoration:none;margin-top:0.5rem;display:block;transition:color 0.2s;" onmouseover="this.style.color='rgba(184,144,80,0.9)'" onmouseout="this.style.color='rgba(184,144,80,0.5)'">Full journey →</a>
       </div>
     </div>
     <div class="product-phases">
@@ -295,7 +300,8 @@ body{background: var(--bg);color:var(--parchment);font-family:var(--sans);min-he
         <div class="product-progress-bar">
           <div class="product-progress-fill at-fill" style="width:85%"></div>
         </div>
-        <p class="product-pct">85% complete</p>
+        <p class="product-pct">86% complete</p>
+        <a href="/atlas/journey/" style="font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(184,144,80,0.5);text-decoration:none;margin-top:0.5rem;display:block;transition:color 0.2s;" onmouseover="this.style.color='rgba(184,144,80,0.9)'" onmouseout="this.style.color='rgba(184,144,80,0.5)'">Full journey →</a>
       </div>
     </div>
     <div class="product-phases">
@@ -380,5 +386,68 @@ document.addEventListener('fullscreenchange',()=>{
 });
 </script>
 
+<div id="page-veil" aria-hidden="true"></div>
+<script>
+/* ── PAGE VEIL ── */
+(function(){
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+
+  // Match veil to the page's own background
+  veil.style.background = getComputedStyle(document.documentElement)
+    .getPropertyValue('--char') || getComputedStyle(document.body).backgroundColor || '#0a0906';
+  // Trim and normalise — CSS var returns value with possible leading space
+  var bg = getComputedStyle(document.documentElement).getPropertyValue('--char').trim();
+  // Light pages use --parchment as body bg, dark use --char
+  var bodyBg = getComputedStyle(document.body).backgroundColor;
+  veil.style.background = bodyBg;
+
+  // Fade in on load
+  function fadeIn(){
+    requestAnimationFrame(function(){
+      veil.style.transition = 'opacity 0.4s ease';
+      veil.style.opacity = '0';
+    });
+  }
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', fadeIn);
+  } else {
+    fadeIn();
+  }
+
+  // Re-run on bfcache restore
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted){
+      veil.style.transition = 'none';
+      veil.style.opacity = '1';
+      veil.style.background = getComputedStyle(document.body).backgroundColor;
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          veil.style.transition = 'opacity 0.4s ease';
+          veil.style.opacity = '0';
+        });
+      });
+    }
+  });
+
+  // Fade out on exit — internal links only
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href) return;
+    // Skip: external, hash-only, javascript:, target _blank, data: URLs
+    if (href.startsWith('http') || href.startsWith('//') ||
+        href.startsWith('#')    || href.startsWith('javascript') ||
+        href.startsWith('mailto') || a.target === '_blank') return;
+    e.preventDefault();
+    veil.style.background = getComputedStyle(document.body).backgroundColor;
+    veil.style.transition = 'opacity 0.3s ease';
+    veil.style.opacity = '1';
+    veil.style.pointerEvents = 'all';
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
 </body>
 </html>

@@ -99,6 +99,9 @@ body{background:var(--bg);color:var(--parchment);font-family:var(--sans);min-hei
 @media(max-width:900px){.phases{grid-template-columns:repeat(2,1fr);}.journey-title-block{text-align:left;}}
 @media(max-width:580px){.phases{grid-template-columns:1fr;}body{padding:2rem 1.25rem 3rem;}}
 @media(prefers-reduced-motion:reduce){.milestone,.now-marker{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;}}
+
+/* ── PAGE TRANSITION VEIL ── */
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
 </style>
 </head>
 <body>
@@ -118,6 +121,8 @@ body{background:var(--bg);color:var(--parchment);font-family:var(--sans);min-hei
   <div class="spine">
     <div class="now-marker" style="left:21.5%" aria-hidden="true">Now &nbsp;·&nbsp; 86%</div>
       <div class="spine-node active"></div>
+    <div class="spine-line"></div>
+    <div class="spine-node"></div>
     <div class="spine-line"></div>
     <div class="spine-node"></div>
     <div class="spine-line"></div>
@@ -219,6 +224,69 @@ const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!en
 document.querySelectorAll('.phase').forEach(p=>observer.observe(p));
 function togglePresent(){const el=document.documentElement;if(!document.fullscreenElement){el.requestFullscreen().catch(()=>{});document.querySelector('.present-btn').textContent='Exit';}else{document.exitFullscreen();document.querySelector('.present-btn').textContent='Present';}}
 document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.querySelector('.present-btn').textContent='Present';});
+</script>
+<div id="page-veil" aria-hidden="true"></div>
+<script>
+/* ── PAGE VEIL ── */
+(function(){
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+
+  // Match veil to the page's own background
+  veil.style.background = getComputedStyle(document.documentElement)
+    .getPropertyValue('--char') || getComputedStyle(document.body).backgroundColor || '#0a0906';
+  // Trim and normalise — CSS var returns value with possible leading space
+  var bg = getComputedStyle(document.documentElement).getPropertyValue('--char').trim();
+  // Light pages use --parchment as body bg, dark use --char
+  var bodyBg = getComputedStyle(document.body).backgroundColor;
+  veil.style.background = bodyBg;
+
+  // Fade in on load
+  function fadeIn(){
+    requestAnimationFrame(function(){
+      veil.style.transition = 'opacity 0.4s ease';
+      veil.style.opacity = '0';
+    });
+  }
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', fadeIn);
+  } else {
+    fadeIn();
+  }
+
+  // Re-run on bfcache restore
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted){
+      veil.style.transition = 'none';
+      veil.style.opacity = '1';
+      veil.style.background = getComputedStyle(document.body).backgroundColor;
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          veil.style.transition = 'opacity 0.4s ease';
+          veil.style.opacity = '0';
+        });
+      });
+    }
+  });
+
+  // Fade out on exit — internal links only
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href) return;
+    // Skip: external, hash-only, javascript:, target _blank, data: URLs
+    if (href.startsWith('http') || href.startsWith('//') ||
+        href.startsWith('#')    || href.startsWith('javascript') ||
+        href.startsWith('mailto') || a.target === '_blank') return;
+    e.preventDefault();
+    veil.style.background = getComputedStyle(document.body).backgroundColor;
+    veil.style.transition = 'opacity 0.3s ease';
+    veil.style.opacity = '1';
+    veil.style.pointerEvents = 'all';
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
 </script>
 </body>
 </html>
