@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN Atlas — Land Design Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:         #0e0d0b;
+  --parchment:   #f5f0e8;
+  --bone:        #ede7d9;
+  --dust:        #d4c9b5;
+  --mid:         #3d3830;
+  --soft:        #6b6158;
+  --faint:       #7a7068;
+  --gold:        #b8924a;
+  --gold-light:  #d4aa66;
+  --gold-muted:  #7a5d2a;
+  --moss:        #3a4a35;
+  --moss-light:  #4a5f42;
+  --moss-pale:   #7a9e6d;
+  --sage:        #8da87e;
+  --ember:       #8a3a1a;
+  --earth:       #a0745a;
+  --deep:        #1a1714;
+  --line:        rgba(58,74,53,0.2);
+  --line-soft:   rgba(14,13,11,0.08);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono:  'DM Mono', monospace;
+  --sans:  'Instrument Sans', system-ui, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--parchment);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.5;}
+
+.skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--ink);color:var(--parchment);padding:0.6rem 1.25rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-decoration:none;border-radius:2px;}
+.skip-nav:focus{top:0.75rem;}
+:focus-visible{outline:2.5px solid var(--moss);outline-offset:3px;border-radius:2px;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 3rem;height:52px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft);}
+.nav-brand{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
+.nav-symbol{font-size:1.1rem;color:var(--moss);}
+.nav-name{font-family:var(--mono);font-size:0.875rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);}
+.nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;}
+.nav-links a:hover{color:var(--moss);border-color:var(--moss);}
+.nav-links a.nav-cta{background:var(--ink);color:var(--parchment);padding:0.45rem 1.25rem;border:none;border-radius:2px;transition:background 0.2s;}
+.nav-links a.nav-cta:hover{background:var(--moss);}
+.nav-toggle{display:none;background:none;border:1.5px solid var(--dust);border-radius:2px;padding:0.45rem 0.6rem;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:2.5rem;height:2.5rem;}
+.nav-toggle span{display:block;width:18px;height:1.5px;background:var(--ink);border-radius:1px;transition:transform 0.25s,opacity 0.2s;transform-origin:center;}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.nav-drawer{display:none;position:fixed;inset:0;z-index:199;background:rgba(245,240,232,0.97);backdrop-filter:blur(16px);padding:5rem 2rem 2rem;flex-direction:column;transform:translateY(-100%);transition:transform 0.3s ease;}
+.nav-drawer.open{transform:translateY(0);}
+.nav-drawer-links{list-style:none;border-top:1px solid var(--dust);}
+.nav-drawer-links li{border-bottom:1px solid var(--line-soft);}
+.nav-drawer-links a{display:block;padding:1.1rem 0;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color 0.2s;}
+.nav-drawer-links a:hover{color:var(--moss);}
+.nav-drawer-cta{display:block;margin-top:2rem;padding:1rem;text-align:center;background:var(--ink);color:var(--parchment);border-radius:2px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;}
+.nav-drawer-cta:hover{background:var(--moss);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding-top:52px;position:relative;overflow:hidden;display:grid;grid-template-rows:1fr auto;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 40%,rgba(58,74,53,0.07) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(58,74,53,0.04) 0%,transparent 50%);}
+.hero-topo{position:absolute;top:0;right:0;width:55%;height:100%;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cellipse cx='300' cy='300' rx='260' ry='180' fill='none' stroke='%233a4a35' stroke-width='1'/%3E%3Cellipse cx='300' cy='300' rx='200' ry='130' fill='none' stroke='%233a4a35' stroke-width='1'/%3E%3Cellipse cx='300' cy='300' rx='140' ry='85' fill='none' stroke='%233a4a35' stroke-width='1'/%3E%3Cellipse cx='300' cy='300' rx='85' ry='48' fill='none' stroke='%233a4a35' stroke-width='1'/%3E%3Cellipse cx='300' cy='300' rx='40' ry='22' fill='none' stroke='%233a4a35' stroke-width='1'/%3E%3C/svg%3E");background-size:cover;background-position:center;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%);}
+.hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1280px;margin:0 auto;padding:5rem 3rem 4rem;}
+.hero-left{max-width:560px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--moss);margin-bottom:2rem;padding:0.4rem 0.85rem;border:1px solid var(--line);border-radius:2px;background:rgba(58,74,53,0.06);}
+.hero-eyebrow span{color:var(--moss-light);}
+.hero-dua{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--soft);line-height:1.8;margin-bottom:2.5rem;padding-left:1.25rem;border-left:2px solid var(--line);}
+.hero-dua-arabic{display:block;font-size:1.35rem;font-style:normal;color:var(--moss);line-height:2;text-align:right;margin-bottom:0.4rem;direction:rtl;}
+.hero-dua-trans{display:block;font-size:0.82rem;font-style:italic;color:var(--faint);margin-bottom:0.4rem;}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,5vw,4.5rem);line-height:1.1;color:var(--ink);margin-bottom:1.5rem;letter-spacing:-0.01em;}
+h1 em{font-style:italic;color:var(--moss);}
+.hero-sub{font-size:1.05rem;color:var(--mid);line-height:1.75;margin-bottom:0.75rem;}
+.hero-sub strong{color:var(--ink);font-weight:600;}
+.hero-distinction{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--soft);margin-bottom:2.5rem;padding:1rem 1.25rem;background:rgba(58,74,53,0.06);border-left:3px solid var(--moss);line-height:1.7;}
+.hero-state-box{margin-bottom:2rem;padding:0.9rem 1.25rem;border:1px solid var(--line);border-left:3px solid var(--moss);border-radius:2px;background:rgba(58,74,53,0.04);}
+.hero-state-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--moss);margin-bottom:0.4rem;}
+.hero-state-text{font-size:0.875rem;color:var(--soft);line-height:1.65;}
+.hero-actions{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:0.6rem;background:var(--ink);color:var(--parchment);padding:0.9rem 2rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border-radius:2px;border:1.5px solid var(--ink);transition:background 0.25s,border-color 0.25s;}
+.btn-primary:hover{background:var(--moss);border-color:var(--moss);}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.6rem;color:var(--mid);font-family:var(--mono);font-size:0.875rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding-bottom:2px;border-bottom:1px solid var(--dust);transition:color 0.2s,border-color 0.2s;}
+.btn-secondary:hover{color:var(--moss);border-color:var(--moss);}
+
+/* ── SCORING PANEL (hero right) ── */
+.hero-right{position:relative;}
+.score-panel{background:var(--bone);border:1px solid var(--dust);border-radius:4px;overflow:hidden;box-shadow:0 24px 64px rgba(14,13,11,0.1),0 4px 16px rgba(14,13,11,0.05);}
+.score-panel-header{padding:1rem 1.5rem;background:var(--ink);display:flex;align-items:center;justify-content:space-between;}
+.score-panel-title{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dust);}
+.score-panel-status{display:flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:0.75rem;color:var(--sage);letter-spacing:0.1em;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.score-list{padding:0.25rem 0;}
+.score-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:0.85rem 1.5rem;border-bottom:1px solid var(--line-soft);gap:1rem;}
+.score-row:last-child{border-bottom:none;}
+.score-row.featured{background:rgba(58,74,53,0.06);}
+.score-info{}
+.score-name{font-family:var(--sans);font-size:0.875rem;font-weight:500;color:var(--ink);margin-bottom:0.15rem;}
+.score-row.featured .score-name{color:var(--moss);}
+.score-source{font-family:var(--serif);font-style:italic;font-size:0.78rem;color:var(--faint);}
+.score-badge{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;white-space:nowrap;flex-shrink:0;}
+.badge-t1{background:rgba(58,74,53,0.15);color:var(--moss);}
+.badge-t2{background:rgba(184,146,74,0.15);color:var(--gold-muted);}
+.badge-spirit{background:rgba(58,74,53,0.2);color:var(--moss-light);border:1px solid rgba(58,74,53,0.3);}
+.data-notice{padding:0.85rem 1.5rem;background:rgba(58,74,53,0.07);border-top:1px solid rgba(58,74,53,0.15);display:flex;align-items:flex-start;gap:0.6rem;}
+.data-notice-icon{font-size:0.85rem;color:var(--moss);flex-shrink:0;margin-top:0.05rem;}
+.data-notice-text{font-family:var(--mono);font-size:0.75rem;color:var(--moss);line-height:1.6;letter-spacing:0.03em;}
+
+/* ── MARQUEE BAND ── */
+.hero-band{position:relative;z-index:2;border-top:1px solid var(--line-soft);overflow:hidden;background:var(--bone);}
+.hero-band-track{display:flex;gap:4rem;padding:0.85rem 3rem;white-space:nowrap;animation:marquee 40s linear infinite;}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.band-item{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);flex-shrink:0;}
+.band-item span{color:var(--moss);}
+
+/* ── SHARED SECTION ── */
+.section{padding:6rem 3rem;max-width:1280px;margin:0 auto;}
+.section-label{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--moss);margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(58,74,53,0.2);}
+h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,3.5vw,3rem);line-height:1.2;color:var(--ink);margin-bottom:1.5rem;}
+h2 em{font-style:italic;color:var(--moss);}
+.prose{font-size:1.05rem;color:var(--mid);line-height:1.85;}
+.prose p{margin-bottom:1.25rem;}
+.prose p:last-child{margin-bottom:0;}
+.prose strong{color:var(--ink);font-weight:600;}
+
+/* ── TWO-COL GRID ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:3rem;}
+.distinction-card{padding:1.5rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);position:relative;margin-bottom:1.25rem;}
+.distinction-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--moss);border-radius:3px 0 0 3px;}
+.dc-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--moss);margin-bottom:0.5rem;}
+.dc-text{font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.7;}
+
+/* ── SCORE ROW INTERACTIVE ── */
+.score-row{cursor:pointer;}
+.score-row:hover{background:rgba(58,74,53,0.08);}
+.score-row.featured:hover{background:rgba(58,74,53,0.12);}
+.score-row:focus-visible{outline:2px solid var(--moss);outline-offset:-2px;}
+.score-open-hint{font-family:var(--mono);font-size:0.65rem;color:rgba(58,74,53,0.4);letter-spacing:0.08em;flex-shrink:0;transition:color 0.2s;}
+.score-row:hover .score-open-hint{color:var(--moss);}
+.score-panel-hint{padding:0.55rem 1.5rem;background:rgba(58,74,53,0.04);border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:0.75rem;color:var(--faint);letter-spacing:0.08em;}
+
+/* ── DIMENSION DRAWER ── */
+.drawer-overlay{position:fixed;inset:0;z-index:300;background:rgba(14,13,11,0.3);opacity:0;pointer-events:none;transition:opacity 0.3s ease;backdrop-filter:blur(2px);}
+.drawer-overlay.active{opacity:1;pointer-events:all;}
+.dim-drawer{position:fixed;top:0;right:0;bottom:0;z-index:301;width:min(520px,95vw);background:var(--parchment);border-left:1px solid var(--dust);box-shadow:-24px 0 64px rgba(14,13,11,0.1);transform:translateX(100%);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;display:flex;flex-direction:column;}
+.dim-drawer.open{transform:translateX(0);}
+.dim-drawer-header{padding:1.5rem;border-bottom:1px solid var(--line-soft);display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;position:sticky;top:0;background:var(--parchment);z-index:10;}
+.dim-drawer-header-left{}
+.dim-code{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--moss);margin-bottom:0.3rem;}
+.dim-name{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:0.2rem;}
+.dim-source{font-family:var(--serif);font-style:italic;font-size:0.9rem;color:var(--soft);}
+.dim-header-controls{display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+.dim-nav{display:flex;align-items:center;gap:0.3rem;}
+.dim-nav-btn{background:none;border:1px solid var(--dust);border-radius:2px;padding:0.38rem 1.1rem;cursor:pointer;font-family:var(--mono);font-size:0.82rem;color:var(--soft);transition:background 0.2s,color 0.2s,border-color 0.2s;line-height:1;}
+.dim-nav-btn:hover{background:var(--bone);color:var(--ink);border-color:var(--moss);}
+.dim-close{background:none;border:1px solid var(--dust);border-radius:2px;padding:0.4rem 0.7rem;cursor:pointer;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;color:var(--soft);transition:all 0.2s;white-space:nowrap;}
+.dim-close:hover{background:var(--bone);color:var(--ink);}
+.dim-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;gap:1.75rem;}
+.dim-block{}
+.dim-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--moss);margin-bottom:0.85rem;display:flex;align-items:center;gap:0.6rem;}
+.dim-label::after{content:'';flex:1;height:1px;background:rgba(58,74,53,0.2);}
+.dim-prose{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:var(--mid);line-height:1.75;}
+.dim-signals{list-style:none;display:flex;flex-direction:column;gap:0.45rem;}
+.dim-signal{display:grid;grid-template-columns:12px 1fr;gap:0.5rem;align-items:baseline;}
+.dim-signal-dot{width:5px;height:5px;border-radius:50%;background:var(--moss);opacity:0.7;margin-top:5px;flex-shrink:0;}
+.dim-signal-text{font-size:0.875rem;color:var(--mid);line-height:1.5;}
+.dim-confidence{padding:1rem 1.25rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);}
+.dim-confidence-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft);margin-bottom:0.6rem;}
+.dim-confidence-row{display:flex;align-items:baseline;gap:0.5rem;font-size:0.875rem;margin-bottom:0.3rem;}
+.dim-confidence-row:last-child{margin-bottom:0;}
+.conf-high{color:var(--moss);font-weight:600;}
+.conf-med{color:var(--gold-muted);font-weight:600;}
+.conf-low{color:var(--ember);font-weight:600;}
+.conf-text{color:var(--soft);}
+.dim-special{padding:1rem 1.25rem;border:1px solid rgba(58,74,53,0.3);border-left:3px solid var(--moss);border-radius:3px;background:rgba(58,74,53,0.05);}
+.dim-special-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--moss);margin-bottom:0.5rem;}
+.dim-special-text{font-size:0.875rem;color:var(--mid);line-height:1.6;}
+
+/* ── DESIGN VALUES (dark) ── */
+.values-section{background:var(--ink);color:var(--parchment);padding:6rem 0;}
+.values-inner{max-width:1280px;margin:0 auto;padding:0 3rem;}
+.values-section .section-label{color:var(--sage);}
+.values-section .section-label::after{background:rgba(141,168,126,0.25);}
+.values-section h2{color:var(--parchment);}
+.values-section h2 em{color:var(--sage);}
+.values-intro{max-width:680px;font-size:1.05rem;color:rgba(245,240,232,0.75);line-height:1.8;margin-bottom:3.5rem;}
+.values-intro strong{color:var(--parchment);font-weight:500;}
+.values-principle{padding:1.5rem 2rem;border:1px solid rgba(141,168,126,0.25);border-radius:3px;background:rgba(141,168,126,0.06);margin-bottom:3rem;max-width:700px;font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--sage);line-height:1.75;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.value-cell{padding:1.5rem;background:rgba(14,13,11,0.6);transition:background 0.2s;}
+.value-cell:hover{background:rgba(58,74,53,0.1);}
+.value-tag{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--moss-pale);margin-bottom:0.5rem;}
+.value-name{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--parchment);margin-bottom:0.4rem;}
+.value-meaning{font-size:0.82rem;color:rgba(245,240,232,0.72);line-height:1.5;}
+
+/* ── DATA SECTION ── */
+.data-section{background:#f9f5ee;border-top:1px solid var(--dust);border-bottom:1px solid var(--dust);}
+.data-inner{max-width:1280px;margin:0 auto;padding:6rem 3rem;}
+.tier-list{list-style:none;display:flex;flex-direction:column;gap:0;border:1px solid var(--dust);border-radius:3px;overflow:hidden;}
+.tier-item{padding:1.1rem 1.5rem;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:72px 1fr;gap:1rem;align-items:start;background:var(--parchment);transition:background 0.15s;}
+.tier-item:last-child{border-bottom:none;}
+.tier-item:hover{background:var(--bone);}
+.tier-badge{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;padding:0.2rem 0.5rem;border-radius:2px;text-align:center;}
+.tier-1 .tier-badge{background:rgba(58,74,53,0.15);color:var(--moss);}
+.tier-2 .tier-badge{background:rgba(184,146,74,0.15);color:var(--gold-muted);}
+.tier-3 .tier-badge{background:rgba(160,116,90,0.15);color:var(--earth);}
+.tier-name{font-family:var(--sans);font-size:0.875rem;font-weight:500;color:var(--ink);margin-bottom:0.2rem;}
+.tier-desc{font-size:0.82rem;color:var(--soft);line-height:1.6;}
+.confidence-box{margin-top:1.25rem;padding:1.25rem 1.5rem;border:1px solid var(--dust);border-radius:3px;background:var(--parchment);}
+.confidence-list{font-size:0.875rem;color:var(--soft);line-height:1.85;margin-top:0.5rem;}
+
+/* ── AI GUARDRAILS ── */
+.guardrails-header{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:end;margin-bottom:3rem;}
+.guardrails-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--dust);border-radius:3px;overflow:hidden;margin-bottom:2rem;}
+.guardrail-card{padding:1.75rem 1.5rem;border-right:1px solid var(--dust);background:var(--bone);transition:background 0.15s;}
+.guardrail-card:last-child{border-right:none;}
+.guardrail-card:hover{background:#ede8da;}
+.guardrail-icon{display:inline-block;font-family:var(--mono);font-size:0.75rem;font-weight:500;letter-spacing:0.12em;padding:0.3rem 0.6rem;border-radius:2px;margin-bottom:1rem;}
+.gc-sourced .guardrail-icon{background:rgba(58,74,53,0.15);color:var(--moss);}
+.gc-confidence .guardrail-icon{background:rgba(184,146,74,0.15);color:var(--gold-muted);}
+.gc-editable .guardrail-icon{background:rgba(122,59,30,0.12);color:var(--ember);}
+.gc-honest .guardrail-icon{background:rgba(107,97,88,0.12);color:var(--soft);}
+.guardrail-title{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;}
+.guardrail-desc{font-size:0.82rem;color:var(--soft);line-height:1.6;}
+.ai-panel{padding:2rem;background:var(--ink);border-radius:3px;color:var(--parchment);}
+.ai-panel-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:1rem;}
+.ai-panel-rule{font-family:var(--serif);font-style:italic;font-size:1rem;color:rgba(245,240,232,0.88);line-height:1.7;margin-bottom:0.75rem;}
+.ai-panel-sub{font-size:0.875rem;color:rgba(245,240,232,0.72);line-height:1.65;}
+
+/* ── 30 DOMAINS ── */
+.domains-section{background:var(--bone);padding:6rem 0;border-top:1px solid var(--dust);border-bottom:1px solid var(--dust);}
+.domains-inner{max-width:1280px;margin:0 auto;padding:0 3rem;}
+.domains-intro{max-width:640px;font-size:1.05rem;color:var(--mid);line-height:1.8;margin-bottom:3rem;}
+.domains-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--dust);border:1px solid var(--dust);border-radius:4px;overflow:hidden;}
+.domain-cell{padding:1.1rem 1rem;background:var(--parchment);transition:background 0.2s;min-height:80px;display:flex;flex-direction:column;justify-content:space-between;}
+.domain-cell:hover{background:var(--bone);}
+.domain-num{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;color:var(--dust);margin-bottom:0.4rem;}
+.domain-name{font-family:var(--sans);font-size:0.82rem;font-weight:500;color:var(--ink);line-height:1.3;}
+
+/* ── OGDEN IDENTITY ── */
+.identity-section{background:#f9f5ee;border-top:1px solid var(--dust);border-bottom:1px solid var(--dust);}
+.identity-inner{max-width:1280px;margin:0 auto;padding:6rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.identity-quote{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--moss);padding:1rem 1.25rem;border-left:3px solid var(--moss);margin:1.25rem 0;line-height:1.7;}
+.identity-visual{border:1px solid var(--dust);border-radius:3px;overflow:hidden;}
+.identity-row{display:grid;grid-template-columns:120px 1fr;border-bottom:1px solid var(--line-soft);}
+.identity-row:last-child{border-bottom:none;}
+.identity-label-cell{padding:1rem 1.1rem;background:rgba(14,13,11,0.04);border-right:1px solid var(--line-soft);font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);display:flex;align-items:center;}
+.identity-value-cell{padding:1rem 1.1rem;font-size:0.875rem;color:var(--mid);line-height:1.55;display:flex;align-items:center;}
+
+/* ── WORKFLOW ── */
+.workflow-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3rem;border:1px solid var(--dust);border-radius:3px;overflow:hidden;}
+.step{padding:2.5rem 2rem;border-right:1px solid var(--dust);background:var(--parchment);transition:background 0.2s;}
+.step:last-child{border-right:none;}
+.step:hover{background:var(--bone);}
+.step-num{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--moss);margin-bottom:1.25rem;}
+.step-name{font-family:var(--serif);font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:0.75rem;}
+.step-desc{font-size:0.875rem;color:var(--soft);line-height:1.7;}
+
+/* ── CTA ── */
+.cta-section{background:var(--ink);padding:6rem 0;}
+.cta-inner{max-width:900px;margin:0 auto;padding:0 3rem;text-align:center;}
+.cta-arabic{font-family:var(--serif);font-size:1.5rem;color:var(--sage);direction:rtl;margin-bottom:0.5rem;line-height:2;}
+.cta-trans{font-family:var(--serif);font-style:italic;font-size:0.875rem;color:rgba(245,240,232,0.65);margin-bottom:3rem;}
+.cta-section h2{color:var(--parchment);margin-bottom:1.5rem;}
+.cta-section h2 em{color:var(--sage);}
+.cta-desc{font-size:1.05rem;color:rgba(245,240,232,0.7);line-height:1.8;margin-bottom:2.5rem;max-width:620px;margin-left:auto;margin-right:auto;}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;}
+.btn-gold{display:inline-flex;align-items:center;gap:0.6rem;background:var(--moss);color:var(--parchment);padding:1rem 2.5rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;border-radius:2px;font-weight:500;border:1.5px solid var(--moss);transition:background 0.25s,border-color 0.25s;}
+.btn-gold:hover{background:var(--moss-light);border-color:var(--moss-light);}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.6rem;color:rgba(245,240,232,0.85);font-family:var(--mono);font-size:0.875rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding-bottom:2px;border-bottom:1px solid rgba(245,240,232,0.35);transition:color 0.2s,border-color 0.2s;}
+.btn-ghost:hover{color:var(--sage);border-color:var(--sage);}
+
+/* ── FOOTER ── */
+footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(255,255,255,0.05);}
+.footer-mark{font-family:var(--mono);font-size:0.875rem;color:rgba(245,240,232,0.55);letter-spacing:0.12em;text-transform:uppercase;}
+.footer-mark span{color:var(--sage);}
+.footer-line{font-family:var(--serif);font-style:italic;font-size:0.875rem;color:rgba(245,240,232,0.55);}
+
+/* ── ANIMATIONS ── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .nav{padding:0 1.5rem;}
+  .nav-links{display:none;}
+  .nav-toggle{display:flex;}
+  .nav-drawer{display:flex;}
+  .hero-content{grid-template-columns:1fr;padding:4rem 1.5rem 3rem;}
+  .hero-right{display:none;}
+  .two-col,.identity-inner,.guardrails-header{grid-template-columns:1fr;gap:2.5rem;}
+  .guardrails-grid{grid-template-columns:1fr 1fr;}
+  .domains-grid{grid-template-columns:repeat(3,1fr);}
+  .values-grid{grid-template-columns:1fr 1fr;}
+  .workflow-steps{grid-template-columns:1fr;}
+  .step{border-right:none;border-bottom:1px solid var(--dust);}
+  .step:last-child{border-bottom:none;}
+  .section,.data-inner,.domains-inner{padding:4rem 1.5rem;}
+  .values-inner{padding:4rem 1.5rem;}
+  footer{padding:2rem 1.5rem;}
+}
+@media(max-width:640px){
+  .guardrails-grid{grid-template-columns:1fr;}
+  .guardrail-card{border-right:none;border-bottom:1px solid var(--dust);}
+  .guardrail-card:last-child{border-bottom:none;}
+  .values-grid{grid-template-columns:1fr;}
+  .domains-grid{grid-template-columns:repeat(2,1fr);}
+  .cta-inner{padding:0 1.5rem;}
+  .cta-actions{flex-direction:column;gap:1rem;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+  .fade-up{opacity:1;transform:none;transition:none;}
+  .hero-band-track{animation:none;}
+  .status-dot{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<header>
+<nav class="nav" aria-label="Main navigation">
+  <a href="/atlas/" class="nav-brand">
+    <span class="nav-symbol" aria-hidden="true">◎</span>
+    <span class="nav-name">Atlas</span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#design-values">Design Values</a></li>
+    <li><a href="#data-sourcing">Data Intelligence</a></li>
+    <li><a href="#guardrails">AI Guardrails</a></li>
+    <li><a href="#domains">30 Domains</a></li>
+    <li><a href="https://hub.ogden.ag/atlas/begin/" class="nav-cta">Begin Site Assessment</a></li>
+  </ul>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open navigation menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+</header>
+
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <ul class="nav-drawer-links" role="list">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#design-values">Design Values</a></li>
+    <li><a href="#data-sourcing">Data Intelligence</a></li>
+    <li><a href="#guardrails">AI Guardrails</a></li>
+    <li><a href="#domains">30 Domains</a></li>
+    <li><a href="#identity">OGDEN Identity</a></li>
+  </ul>
+  <a href="https://hub.ogden.ag/atlas/begin/" class="nav-drawer-cta">◎ &nbsp; Begin Site Assessment</a>
+</div>
+
+<div class="drawer-overlay" id="dimOverlay" role="presentation" aria-hidden="true"></div>
+<aside class="dim-drawer" id="dimDrawer" role="complementary" aria-label="Dimension detail" aria-hidden="true">
+  <div class="dim-drawer-header">
+    <div class="dim-drawer-header-left">
+      <p class="dim-code" id="dimCode"></p>
+      <h2 class="dim-name" id="dimName"></h2>
+      <p class="dim-source" id="dimSource"></p>
+    </div>
+    <div class="dim-header-controls">
+      <div class="dim-nav">
+        <button class="dim-nav-btn" id="dimPrev" aria-label="Previous dimension">←</button>
+        <button class="dim-nav-btn" id="dimNext" aria-label="Next dimension">→</button>
+      </div>
+      <button class="dim-close" id="dimClose" aria-label="Close dimension detail">Close ×</button>
+    </div>
+  </div>
+  <div class="dim-body" id="dimBody"></div>
+</aside>
+
+<main id="main-content">
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-topo" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-left fade-up visible">
+      <div class="hero-eyebrow">◎ &nbsp;<span>Land Design Atlas &nbsp;·&nbsp; v2.0</span></div>
+
+      <div class="hero-dua" role="note">
+        <span class="hero-dua-arabic" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span>
+        <span class="hero-dua-trans">Bismillāhi r-raḥmāni r-raḥīm</span>
+        In the name of Allah, the Most Gracious, the Most Merciful.
+      </div>
+
+      <h1>See land whole.<br>Build it <em>wisely.</em></h1>
+
+      <p class="hero-sub">
+        The OGDEN Atlas is a <strong>land intelligence system</strong> built around the belief
+        that land design is an act of stewardship, not control.
+        30 domains. Four phases. Every output grounded in its source.
+      </p>
+
+      <div class="hero-distinction">
+        This is not a drawing application. It is a design Atlas — asking
+        "what does this land need?" before "what can this land produce?"
+        Assessments lead with ecological opportunity, not yield potential.
+      </div>
+      <div class="hero-actions">
+        <a href="https://hub.ogden.ag/atlas/begin/" class="btn-primary">◎ &nbsp; Begin Site Assessment</a>
+        <a href="#philosophy" class="btn-secondary">Understand the philosophy →</a>
+      </div>
+    </div>
+
+    <div class="hero-right fade-up visible" aria-hidden="true">
+      <div class="score-panel">
+        <div class="score-panel-header">
+          <span class="score-panel-title">Site Assessment Engine &nbsp;·&nbsp; Six Dimensions</span>
+          <span class="score-panel-status">
+            <span class="status-dot"></span>
+            Live System
+          </span>
+        </div>
+        <p class="score-panel-hint">Select any dimension to explore what it measures →</p>
+        <div class="score-list">
+
+          <div class="score-row" role="button" tabindex="0" data-dim="terrain" aria-label="Terrain & Topography — view detail">
+            <div class="score-info">
+              <div class="score-name">Terrain &amp; Topography</div>
+              <div class="score-source">USGS 3DEP · Elevation, slope, aspect, viewshed</div>
+            </div>
+            <span class="score-badge badge-t1">Tier 1</span>
+          </div>
+
+          <div class="score-row" role="button" tabindex="0" data-dim="soil" aria-label="Soil Health — view detail">
+            <div class="score-info">
+              <div class="score-name">Soil Health</div>
+              <div class="score-source">USDA SSURGO · Classification, drainage, productivity</div>
+            </div>
+            <span class="score-badge badge-t1">Tier 1</span>
+          </div>
+
+          <div class="score-row" role="button" tabindex="0" data-dim="water" aria-label="Water & Hydrology — view detail">
+            <div class="score-info">
+              <div class="score-name">Water &amp; Hydrology</div>
+              <div class="score-source">USGS NHD · USFWS NWI · FEMA NFHL</div>
+            </div>
+            <span class="score-badge badge-t1">Tier 1</span>
+          </div>
+
+          <div class="score-row" role="button" tabindex="0" data-dim="climate" aria-label="Climate & Microclimate — view detail">
+            <div class="score-info">
+              <div class="score-name">Climate &amp; Microclimate</div>
+              <div class="score-source">NOAA Normals · Hardiness zones, solar, frost</div>
+            </div>
+            <span class="score-badge badge-t1">Tier 1</span>
+          </div>
+
+          <div class="score-row" role="button" tabindex="0" data-dim="ecology" aria-label="Ecological Potential — view detail">
+            <div class="score-info">
+              <div class="score-name">Ecological Potential</div>
+              <div class="score-source">USGS NLCD · Land cover, habitat, regeneration</div>
+            </div>
+            <span class="score-badge badge-t1">Tier 1</span>
+          </div>
+
+          <div class="score-row featured" role="button" tabindex="0" data-dim="spiritual" aria-label="Spiritual Intentionality — view detail">
+            <div class="score-info">
+              <div class="score-name">Spiritual Intentionality</div>
+              <div class="score-source">Prayer orientation, contemplative zones, signs in creation</div>
+            </div>
+            <span class="score-badge badge-spirit">◎ Native</span>
+          </div>
+
+        </div>
+        <div class="data-notice" role="note">
+          <span class="data-notice-icon" aria-hidden="true">◎</span>
+          <span class="data-notice-text">Every output carries a confidence indicator. Data gaps are surfaced, not hidden. The Atlas flags what it doesn't know.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-band" aria-hidden="true">
+    <div class="hero-band-track">
+      <span class="band-item"><span>Terrain</span> · Elevation &amp; slope</span>
+      <span class="band-item"><span>Soils</span> · SSURGO analysis</span>
+      <span class="band-item"><span>Hydrology</span> · Water systems</span>
+      <span class="band-item"><span>Climate</span> · Sun, wind &amp; frost</span>
+      <span class="band-item"><span>Ecology</span> · Regeneration</span>
+      <span class="band-item"><span>Prayer</span> · Contemplative zones</span>
+      <span class="band-item"><span>Zoning</span> · Functional allocation</span>
+      <span class="band-item"><span>Livestock</span> · Rotational grazing</span>
+      <span class="band-item"><span>Phasing</span> · Staged buildout</span>
+      <span class="band-item"><span>Stewardship</span> · Not extraction</span>
+      <span class="band-item"><span>Terrain</span> · Elevation &amp; slope</span>
+      <span class="band-item"><span>Soils</span> · SSURGO analysis</span>
+      <span class="band-item"><span>Hydrology</span> · Water systems</span>
+      <span class="band-item"><span>Climate</span> · Sun, wind &amp; frost</span>
+      <span class="band-item"><span>Ecology</span> · Regeneration</span>
+      <span class="band-item"><span>Prayer</span> · Contemplative zones</span>
+      <span class="band-item"><span>Zoning</span> · Functional allocation</span>
+      <span class="band-item"><span>Livestock</span> · Rotational grazing</span>
+      <span class="band-item"><span>Phasing</span> · Staged buildout</span>
+      <span class="band-item"><span>Stewardship</span> · Not extraction</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── PHILOSOPHY ── -->
+<section class="section" id="philosophy">
+  <div class="section-label">Product Philosophy</div>
+  <h2>A tool that asks <em>"what does this land need?"</em><br>before "what can this land produce?"</h2>
+  <div class="two-col">
+    <div class="prose fade-up">
+      <p>Most land tools govern <strong>what you draw.</strong> The OGDEN Atlas governs something prior to that: what you understand about the land before you touch it.</p>
+      <p>Before any zone is placed, before any structure is sited, the Atlas assembles a complete intelligence picture from seven federal data APIs — elevation, soils, hydrology, wetlands, floodplains, climate normals, and land cover. <strong>Every analysis displays confidence levels.</strong> Every AI suggestion cites its data sources. Data gaps are surfaced, not hidden.</p>
+      <p>Then, and only then, does the design layer engage. The Atlas uses your site intelligence — together with rule-based siting logic — to surface opportunities and constraints. The compounding is structural: by Phase 2, the system knows your terrain, your soils, your water. Nothing is generic. Everything is grounded in the land itself.</p>
+      <p>The system does not reward speed. It rewards understanding. <strong>Take the time the honest assessment requires.</strong></p>
+    </div>
+    <div class="fade-up">
+      <div class="distinction-card">
+        <p class="dc-label">The governing principle</p>
+        <p class="dc-text">Land design is an act of stewardship, not control. This Atlas exists in the context of a living property that integrates regenerative agriculture, Islamic-adab-conscious hospitality, and the experience of witnessing signs of the Creator in the natural world.</p>
+      </div>
+      <div class="distinction-card">
+        <p class="dc-label">What the Atlas asks</p>
+        <p class="dc-text">Engage with the land honestly, at whatever depth the data allows. If a site assessment surfaces something uncomfortable, that is it functioning correctly. Limitations are features, not obstacles.</p>
+      </div>
+      <div class="distinction-card">
+        <p class="dc-label">The Design Test</p>
+        <p class="dc-text">"Would this feature feel at home on the OGDEN property, or does it belong in a different product?" If it belongs elsewhere, it should be a template — not a core feature.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DESIGN VALUES ── -->
+<div class="values-section" id="design-values">
+  <div class="values-inner">
+    <div class="section-label">Core Design Values</div>
+    <h2>Six principles that ground<br><em>every design decision.</em></h2>
+    <p class="values-intro">These are not aspirational statements. <strong>Each principle has a direct, testable expression in the interface.</strong> If a feature contradicts any of these principles, it should not ship.</p>
+    <blockquote class="values-principle">"The OGDEN Land Design Atlas is an act of stewardship rendered in software. Every feature exists to help land serve its highest purpose — ecologically, spiritually, economically, and generationally."</blockquote>
+    <div class="values-grid" role="list">
+      <div class="value-cell" role="listitem"><div class="value-tag">Principle 01</div><div class="value-name">Stewardship over Extraction</div><div class="value-meaning">The tool asks "what does this land need?" before "what can this land produce?" Assessments lead with ecological opportunity.</div></div>
+      <div class="value-cell" role="listitem"><div class="value-tag">Principle 02</div><div class="value-name">Phased Humility</div><div class="value-meaning">Not everything is built at once. The Atlas rewards sequenced, realistic buildout. Cost and complexity warnings are features.</div></div>
+      <div class="value-cell" role="listitem"><div class="value-tag">Principle 03</div><div class="value-name">Explainability over Magic</div><div class="value-meaning">Every AI output, every score must be traceable. If the Atlas can't explain a recommendation, it should not make one.</div></div>
+      <div class="value-cell" role="listitem"><div class="value-tag">Principle 04</div><div class="value-name">Spiritual Intentionality</div><div class="value-meaning">Prayer spaces, quiet zones, dawn/dusk viewpoints, and contemplative circulation are first-class design elements.</div></div>
+      <div class="value-cell" role="listitem"><div class="value-tag">Principle 05</div><div class="value-name">Honesty about Uncertainty</div><div class="value-meaning">Data gaps are surfaced, not hidden. Confidence levels appear on all analyses. The Atlas flags what it doesn't know.</div></div>
+      <div class="value-cell" role="listitem"><div class="value-tag">Principle 06</div><div class="value-name">Accessibility of Wisdom</div><div class="value-meaning">Usable by a landowner with no GIS training, a community elder, and a developer reading specs — simultaneously.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DATA INTELLIGENCE ── -->
+<div class="data-section" id="data-sourcing">
+  <div class="data-inner">
+    <div class="section-label">Data Intelligence</div>
+    <h2>Every data type sourced.<br><em>Every gap</em> surfaced honestly.</h2>
+    <div class="two-col">
+      <div class="prose fade-up">
+        <p>One of the most common failure modes in land intelligence tools: features that look impressive but silently produce empty or wrong outputs because the underlying data doesn't exist.</p>
+        <p>The OGDEN Atlas connects to <strong>seven federal public APIs</strong> on project creation: USGS 3DEP elevation, USDA SSURGO soils, USGS NHD hydrology, USFWS NWI wetlands, FEMA NFHL floodplains, NOAA climate normals, and USGS NLCD land cover.</p>
+        <p>Every analysis displays a <strong>data source badge</strong> showing which tier it derives from. A Data Completeness Score appears on the project dashboard. AI outputs referencing data with confidence below Medium must include an explicit caveat and a <strong>'needs site visit' flag.</strong></p>
+        <p>When data is missing, the Atlas never silently produces outputs that appear authoritative. <em style="color:var(--moss);">Honest empty states with clear next steps — always.</em></p>
+      </div>
+      <div class="fade-up">
+        <ul class="tier-list" role="list">
+          <li class="tier-item tier-1"><span class="tier-badge">Tier 1</span><div><div class="tier-name">Auto-populated</div><div class="tier-desc">Fetched automatically from public APIs. Elevation, soils, hydrology, wetlands, floodplains, climate, land cover.</div></div></li>
+          <li class="tier-item tier-2"><span class="tier-badge">Tier 2</span><div><div class="tier-name">User-provided</div><div class="tier-desc">Upload or manual entry. Drone imagery, LiDAR, soil tests, water tests, survey, site photos, legal description.</div></div></li>
+          <li class="tier-item tier-3"><span class="tier-badge">Tier 3</span><div><div class="tier-name">Derived &amp; Estimated</div><div class="tier-desc">Calculated from Tier 1 + 2. Slope, watershed delineation, viewshed, microclimate, frost pockets, runoff.</div></div></li>
+        </ul>
+        <div class="confidence-box">
+          <div class="section-label" style="margin-bottom:0.5rem;">Confidence Framework</div>
+          <div class="confidence-list">
+            <span style="color:var(--moss);font-weight:500;">High</span> — Well-sourced data, clear signal. Full confidence.<br>
+            <span style="color:var(--gold-muted);font-weight:500;">Medium</span> — Some data gaps. Usable with awareness.<br>
+            <span style="color:var(--ember);font-weight:500;">Low</span> — Inference-heavy. Verify on site before acting.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── AI GUARDRAILS ── -->
+<section class="section" id="guardrails">
+  <div class="guardrails-header">
+    <div>
+      <div class="section-label">AI Guardrails</div>
+      <h2>A thoughtful collaborator,<br><em>not an oracle.</em></h2>
+    </div>
+    <div class="prose" style="font-size:0.95rem;">AI is a powerful co-designer — and a liability if it speaks with false confidence. Every AI output in the Atlas explains its reasoning, expresses its uncertainty, and defers to site visits and human judgment when data is insufficient.</div>
+  </div>
+  <div class="guardrails-grid fade-up" role="list">
+    <div class="guardrail-card gc-sourced" role="listitem"><div class="guardrail-icon">SRC</div><h3 class="guardrail-title">Sourced Reasoning</h3><div class="guardrail-desc">Every suggestion cites which data inputs it drew from. "Based on slope data (USGS), soil drainage class (SSURGO)…"</div></div>
+    <div class="guardrail-card gc-confidence" role="listitem"><div class="guardrail-icon">CNF</div><h3 class="guardrail-title">Confidence Display</h3><div class="guardrail-desc">Every output carries High, Medium, or Low confidence. Low-confidence outputs use hedged language: "may be" not "is."</div></div>
+    <div class="guardrail-card gc-editable" role="listitem"><div class="guardrail-icon">EDT</div><h3 class="guardrail-title">Editable Outputs</h3><div class="guardrail-desc">All AI-generated text is editable by the user. AI output is a draft, not a decree. Users rate every output for improvement.</div></div>
+    <div class="guardrail-card gc-honest" role="listitem"><div class="guardrail-icon">VFY</div><h3 class="guardrail-title">Site Visit Flags</h3><div class="guardrail-desc">Any output below Medium confidence that would influence a design decision triggers a "Verify on site" flag automatically.</div></div>
+  </div>
+  <div class="ai-panel fade-up">
+    <div class="ai-panel-label">◎ &nbsp; The Core AI Principle</div>
+    <p class="ai-panel-rule">The Atlas's AI is a thoughtful collaborator, not an oracle. It explains its reasoning, expresses its uncertainty, and defers to site visits and human judgment when data is insufficient.</p>
+    <p class="ai-panel-sub">AI must not generate specific cost figures, yield projections, or regulatory determinations unless drawn from real data sources cited in the output. No hallucinated specifics. Every output is design assistance — not professional engineering, legal, or regulatory determination.</p>
+  </div>
+</section>
+
+<!-- ── 30 DOMAINS ── -->
+<div class="domains-section" id="domains">
+  <div class="domains-inner">
+    <div class="section-label">30 Design Domains</div>
+    <h2>Every dimension of land design.<br><em>None an afterthought.</em></h2>
+    <p class="domains-intro">The Atlas covers 30 domains spanning ecological, spiritual, economic, and generational dimensions. Each is a first-class design concern — not a feature list, but a complete design intelligence layer.</p>
+    <div class="domains-grid fade-up" role="list">
+      <div class="domain-cell" role="listitem"><div class="domain-num">01</div><div class="domain-name">Product Philosophy</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">02</div><div class="domain-name">Phased Rollout</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">03</div><div class="domain-name">Data Sourcing</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">04</div><div class="domain-name">AI Guardrails</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">05</div><div class="domain-name">Regulatory &amp; Permitting</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">06</div><div class="domain-name">Economic Planning</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">07</div><div class="domain-name">Offline &amp; Low-Tech</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">08</div><div class="domain-name">UX Principles</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">09</div><div class="domain-name">Property Intake</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">10</div><div class="domain-name">Terrain Visualization</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">11</div><div class="domain-name">Environmental Data</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">12</div><div class="domain-name">Site Assessment</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">13</div><div class="domain-name">Hydrology &amp; Water</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">14</div><div class="domain-name">Solar, Wind &amp; Climate</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">15</div><div class="domain-name">Soil &amp; Ecology</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">16</div><div class="domain-name">Land Use Zoning</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">17</div><div class="domain-name">Structures &amp; Built</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">18</div><div class="domain-name">Circulation &amp; Movement</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">19</div><div class="domain-name">Livestock Systems</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">20</div><div class="domain-name">Crops &amp; Agroforestry</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">21</div><div class="domain-name">Utilities &amp; Energy</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">22</div><div class="domain-name">Vision Layer</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">23</div><div class="domain-name">Timeline &amp; Phasing</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">24</div><div class="domain-name">Simulation &amp; Scenarios</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">25</div><div class="domain-name">Design Intelligence</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">26</div><div class="domain-name">AI-Assisted Design</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">27</div><div class="domain-name">Educational Layer</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">28</div><div class="domain-name">Collaboration &amp; Review</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">29</div><div class="domain-name">Reporting &amp; Export</div></div>
+      <div class="domain-cell" role="listitem"><div class="domain-num">30</div><div class="domain-name">OGDEN Identity</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OGDEN IDENTITY ── -->
+<div class="identity-section" id="identity">
+  <div class="identity-inner">
+    <div>
+      <div class="section-label">The OGDEN Identity</div>
+      <h2>Not a generic farm tool.<br><em>Not a generic retreat tool.</em></h2>
+      <div class="prose fade-up">
+        <p>This Atlas exists in the context of a specific vision: a living property that integrates <strong>regenerative agriculture, Islamic-adab-conscious hospitality, men's cohort development, family life, education, and the experience of witnessing signs of the Creator in the natural world.</strong></p>
+        <blockquote class="identity-quote">"Prayer spaces, quiet zones, dawn/dusk viewpoints, and contemplative circulation are first-class design elements — not optional add-ons. The identity of this vision should be traceable in every section."</blockquote>
+        <p>The interface feels like standing on land, not operating software. Default views show less, not more. The visual language is calm, grounded, and authoritative. <strong>Quiet confidence.</strong></p>
+      </div>
+    </div>
+    <div class="fade-up">
+      <div class="identity-visual" role="list">
+        <div class="identity-row" role="listitem"><div class="identity-label-cell">Prayer Spaces</div><div class="identity-value-cell">Siting logic for prayer pavilions, quiet reflection zones, dawn/dusk viewpoints</div></div>
+        <div class="identity-row" role="listitem"><div class="identity-label-cell">Hospitality</div><div class="identity-value-cell">Arrival sequence design, guest experience path, retreat programming zones</div></div>
+        <div class="identity-row" role="listitem"><div class="identity-label-cell">Privacy Logic</div><div class="identity-value-cell">Islamic-adab-conscious privacy planning, family and women's zones where relevant</div></div>
+        <div class="identity-row" role="listitem"><div class="identity-label-cell">Cohort Zones</div><div class="identity-value-cell">Men's cohort training zones, educational immersion routes, seasonal retreat modes</div></div>
+        <div class="identity-row" role="listitem"><div class="identity-label-cell">Vision Layer</div><div class="identity-value-cell">"Signs in creation" interpretive mode, stewardship framing, purpose-driven explanations</div></div>
+        <div class="identity-row" role="listitem"><div class="identity-label-cell">UX Ethos</div><div class="identity-value-cell" style="font-family:var(--serif);font-style:italic;">Contemplative navigation. Presence over information density. Quiet confidence.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WORKFLOW ── -->
+<section class="section" id="workflow">
+  <div class="section-label">The Workflow</div>
+  <h2>Assess. Design. Phase.<br><em>Then — and only then — build.</em></h2>
+  <div class="workflow-steps fade-up">
+    <div class="step">
+      <div class="step-num">Step 1 · Assess</div>
+      <div class="step-name">Site Intelligence</div>
+      <div class="step-desc">The Atlas assembles a complete intelligence picture — terrain, soils, water, climate, ecology, and spiritual siting considerations. Every layer carries confidence indicators and data source attribution. The land speaks first.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 2 · Design</div>
+      <div class="step-name">Place with Purpose</div>
+      <div class="step-desc">Zones, structures, circulation, livestock systems, crop layouts, water systems — each placed with rule-based siting logic that explains its reasoning. AI suggestions are sourced, confidence-rated, and always editable.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 3 · Phase</div>
+      <div class="step-name">Sequence with Wisdom</div>
+      <div class="step-desc">Timeline from Year 0 to Full Vision. Cost and labour by phase. Permit dependency warnings. "Fastest feasible path," "lowest cost path," "most regenerative path" — the Atlas doesn't just plan. It sequences.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-section" id="connect">
+  <div class="cta-inner">
+    <div class="cta-arabic" lang="ar" dir="rtl">وَبِاللَّهِ التَّوْفِيقُ</div>
+    <div class="cta-trans">Wa billāhi t-tawfīq — And with Allah is all success.</div>
+    <h2>Ready to see land<br>with <em>genuine clarity</em>?</h2>
+    <p class="cta-desc">
+      The Atlas is open. Begin with your parcel — enter your coordinates,
+      and the assessment engine assembles your site intelligence within minutes.
+      The land speaks first. You design from what you hear.
+    </p>
+    <div class="cta-actions">
+      <a href="https://hub.ogden.ag/atlas/begin/" class="btn-gold">◎ &nbsp; Begin Site Assessment</a>
+      <a href="https://hub.ogden.ag/atlas/sign-in/" class="btn-ghost">Sign in to continue →</a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-mark"><span aria-hidden="true">◎</span> &nbsp; OGDEN — Land Design Atlas &nbsp;·&nbsp; v2.0</div>
+  <div class="footer-line">See land whole. Build it wisely.</div>
+  <div class="footer-mark">hub.ogden.ag</div>
+</footer>
+
+<script>
+// ── NAV DRAWER ──
+const navToggle = document.querySelector('.nav-toggle');
+const navDrawer = document.getElementById('nav-drawer');
+if (navToggle && navDrawer) {
+  const dLinks = Array.from(navDrawer.querySelectorAll('a'));
+  let _sy = 0;
+  function openNav(){ _sy=window.scrollY; document.body.style.position='fixed'; document.body.style.top='-'+_sy+'px'; document.body.style.width='100%'; navDrawer.classList.add('open'); navToggle.setAttribute('aria-expanded','true'); navToggle.setAttribute('aria-label','Close navigation menu'); if(dLinks[0]) setTimeout(()=>dLinks[0].focus(),50); }
+  function closeNav(){ navDrawer.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); navToggle.setAttribute('aria-label','Open navigation menu'); document.body.style.position=''; document.body.style.top=''; document.body.style.width=''; window.scrollTo(0,_sy); navToggle.focus(); }
+  function addTap(el,fn){ el.addEventListener('click',fn); el.addEventListener('touchend',e=>{e.preventDefault();fn();},{passive:false}); }
+  addTap(navToggle,()=>navDrawer.classList.contains('open')?closeNav():openNav());
+  dLinks.forEach(a=>addTap(a,closeNav));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&navDrawer.classList.contains('open')) closeNav(); });
+  navDrawer.addEventListener('keydown',e=>{
+    if(e.key!=='Tab')return;
+    const f=Array.from(navDrawer.querySelectorAll('a,button'));
+    if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus();}
+    else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}
+  });
+}
+
+// ── FADE REVEALS ──
+const fadeObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); fadeObs.unobserve(e.target); }});
+},{ threshold:0.12, rootMargin:'0px 0px -40px 0px' });
+document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>fadeObs.observe(el));
+
+// ── DIMENSION DATA ──
+const dimOrder = ['terrain','soil','water','climate','ecology','spiritual'];
+
+const dims = {
+  terrain: {
+    code: 'Dimension 01', name: 'Terrain & Topography', source: 'USGS 3DEP · 1/3 arc-second (~10m) resolution',
+    what: 'Terrain is the foundational layer — everything else is placed on it. The Atlas pulls high-resolution elevation data from the USGS 3D Elevation Program to compute slope gradients, aspect (the direction a slope faces), watershed boundaries, and viewsheds across the parcel.',
+    signals: [
+      'Slope gradient — identifies buildable areas, erosion risk, and access constraints',
+      'Aspect — determines sun-facing potential for solar siting and frost pockets',
+      'Viewshed analysis — maps what can be seen from any point on the land',
+      'Watershed delineation — where water collects and flows across the parcel',
+      'Cut and fill estimates — rough earthwork requirements for siting structures'
+    ],
+    confidence: { high: 'Most of the contiguous US — 3DEP coverage is comprehensive and recent', med: 'Some remote or recently disturbed sites where lidar has not been re-flown', low: 'Sites requiring micro-topographic detail below 10m resolution — Tier 2 drone data needed' },
+    note: null
+  },
+  soil: {
+    code: 'Dimension 02', name: 'Soil Health', source: 'USDA SSURGO · Soil Survey Geographic Database',
+    what: 'Soils determine what can grow, where structures can be sited, and where water will drain or pool. SSURGO is the most detailed national soil database available, produced through decades of field survey by the USDA Natural Resources Conservation Service.',
+    signals: [
+      'Soil classification — USDA series, order, and capability class',
+      'Drainage class — well drained to very poorly drained, including seasonal high water table',
+      'Agricultural productivity — cropland capability class and limitations',
+      'Septic and building suitability — permeability and depth-to-bedrock assessments',
+      'Soil organic matter and compaction risk — relevant to regenerative farming design'
+    ],
+    confidence: { high: 'Agricultural counties with complete SSURGO coverage — most of the eastern and midwest US', med: 'Areas with older surveys or less intensive mapping — some western states', low: 'Disturbed or filled sites where original soil profile has been altered — Tier 2 soil testing required' },
+    note: null
+  },
+  water: {
+    code: 'Dimension 03', name: 'Water & Hydrology', source: 'USGS NHD · USFWS NWI · FEMA NFHL — three federal sources',
+    what: 'Water is the most consequential system on any land parcel. The Atlas combines three federal datasets to build a complete hydrological picture: stream networks and watersheds from USGS, wetland and aquatic habitat mapping from USFWS, and flood risk mapping from FEMA.',
+    signals: [
+      'Stream and river networks — perennial, intermittent, and ephemeral channels',
+      'Wetland classification — type, permanence, and regulatory status',
+      'Flood zone designation — FEMA 100-year and 500-year floodplain extents',
+      'Water access potential — proximity to perennial water for livestock and irrigation',
+      'Regulatory setback triggers — buffer zones that restrict siting within mapped features'
+    ],
+    confidence: { high: 'Major streams, rivers, and mapped floodplains — federal datasets are comprehensive', med: 'Small headwater streams and seasonal wetlands — may be unmapped or outdated', low: 'Subsurface hydrology and seasonal drainage patterns — site visit required for accurate characterisation' },
+    note: { label: 'Regulatory Note', text: 'Wetlands and floodplains trigger federal and state regulatory requirements. The Atlas flags these as constraints but does not provide regulatory determinations. Consult a qualified wetland delineator or land use attorney before siting structures near mapped features.' }
+  },
+  climate: {
+    code: 'Dimension 04', name: 'Climate & Microclimate', source: 'NOAA 30-Year Climate Normals · USDA Plant Hardiness Zones',
+    what: 'Climate shapes what is possible on a parcel across every season and decade. The Atlas uses NOAA\'s 30-year climate normals to establish baseline conditions and USDA hardiness zones to frame agricultural and ecological potential. Microclimate — the conditions within the parcel boundary — is computed from terrain and aspect data.',
+    signals: [
+      'Annual and seasonal precipitation — total, timing, and drought probability',
+      'Temperature range and extremes — growing degree days, frost-free period length',
+      'USDA hardiness zone — the primary frame for perennial crop and plant selection',
+      'Solar irradiance — annual kWh/m² for renewable energy and seasonal passive solar siting',
+      'Frost pocket risk — cold air drainage mapped from terrain analysis'
+    ],
+    confidence: { high: 'Regional climate normals — 30-year averages are well-established for most of the US', med: 'Microclimate within the parcel — computed from terrain, validated with site observation', low: 'Future climate projections — the Atlas does not model climate change scenarios' },
+    note: null
+  },
+  ecology: {
+    code: 'Dimension 05', name: 'Ecological Potential', source: 'USGS NLCD · National Land Cover Database',
+    what: 'Ecological potential captures both what the land currently is and what it can become. NLCD classifies every 30m cell of the US land surface into cover types — from developed land to mature forest to cropland. The Atlas uses this to evaluate regeneration potential and existing ecosystem services on the parcel.',
+    signals: [
+      'Current land cover classification — developed, agricultural, forested, wetland, shrubland',
+      'Regeneration trajectory — from current cover type toward target ecological condition',
+      'Habitat connectivity — how the parcel connects to surrounding ecological networks',
+      'Impervious surface percentage — constrains water infiltration and affects microclimate',
+      'Forest age and successional stage — relevant to timber management and carbon sequestration'
+    ],
+    confidence: { high: 'Cover type classification for most of the contiguous US — NLCD is updated on a 2-5 year cycle', med: 'Fine-grained habitat quality and species presence — NLCD captures cover type, not ecological health', low: 'Recent land use change since the last NLCD update — verified on site or with recent imagery' },
+    note: null
+  },
+  spiritual: {
+    code: 'Dimension 06', name: 'Spiritual Intentionality', source: '◎ Atlas-native · Derived from terrain, solar geometry, and user intent',
+    what: 'No other land design tool has a scoring dimension for this. Spiritual Intentionality is the Atlas\'s answer to a question that conventional GIS has never been asked to hold: how well does this land support the life of faith, contemplation, and remembrance that its steward intends to cultivate here? This dimension does not score land against an abstract standard — it scores it against your stated vision.',
+    signals: [
+      'Qibla orientation — prayer direction mapped across every zone of the parcel',
+      'Prayer pavilion siting — quiet, sheltered locations with stable solar orientation',
+      'Contemplative zones — areas with natural privacy, acoustic shelter, and low disturbance',
+      'Dawn and dusk viewpoints — elevated or open areas that face the eastern and western horizon',
+      '"Signs in creation" mapping — ecologically rich or visually compelling features that invite reflection',
+      'Movement sequences — circulation paths that move between function and contemplation naturally'
+    ],
+    confidence: { high: 'Physical siting geometry — Qibla angle, solar position, and terrain-based privacy are computed', med: 'Qualitative suitability for contemplative use — informed by terrain but shaped by the steward\'s intention', low: 'Spiritual experience of place — the Atlas can surface conditions, not dictate what is felt there' },
+    note: { label: 'A note on this dimension', text: 'The Atlas does not claim to measure what is sacred. It surfaces the physical conditions that support intentional, faith-rooted use of the land. What you build from those conditions belongs to you and to the land itself.' }
+  }
+};
+
+function buildDimContent(key) {
+  const d = dims[key];
+  let html = '';
+
+  html += `<div class="dim-block">
+    <p class="dim-label">What It Measures</p>
+    <p class="dim-prose">${d.what}</p>
+  </div>`;
+
+  html += `<div class="dim-block">
+    <p class="dim-label">What the Atlas Surfaces</p>
+    <ul class="dim-signals">
+      ${d.signals.map(s=>`<li class="dim-signal"><span class="dim-signal-dot" aria-hidden="true"></span><span class="dim-signal-text">${s}</span></li>`).join('')}
+    </ul>
+  </div>`;
+
+  html += `<div class="dim-block">
+    <p class="dim-label">Confidence</p>
+    <div class="dim-confidence">
+      <p class="dim-confidence-label">By condition</p>
+      <p class="dim-confidence-row"><span class="conf-high">High</span><span class="conf-text"> — ${d.confidence.high}</span></p>
+      <p class="dim-confidence-row"><span class="conf-med">Medium</span><span class="conf-text"> — ${d.confidence.med}</span></p>
+      <p class="dim-confidence-row"><span class="conf-low">Low</span><span class="conf-text"> — ${d.confidence.low}</span></p>
+    </div>
+  </div>`;
+
+  if (d.note) {
+    html += `<div class="dim-block">
+      <div class="dim-special">
+        <p class="dim-special-label">${d.note.label}</p>
+        <p class="dim-special-text">${d.note.text}</p>
+      </div>
+    </div>`;
+  }
+
+  return html;
+}
+
+// ── DRAWER OPEN / CLOSE ──
+const overlay  = document.getElementById('dimOverlay');
+const drawer   = document.getElementById('dimDrawer');
+const closeBtn = document.getElementById('dimClose');
+let _dsy = 0, lastFocused = null, currentDim = null;
+
+function openDim(key) {
+  currentDim = key;
+  const d = dims[key];
+  document.getElementById('dimCode').textContent   = d.code;
+  document.getElementById('dimName').textContent   = d.name;
+  document.getElementById('dimSource').textContent = d.source;
+  document.getElementById('dimBody').innerHTML     = buildDimContent(key);
+  drawer.scrollTop = 0;
+
+  _dsy = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top      = '-' + _dsy + 'px';
+  document.body.style.width    = '100%';
+
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden','false');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+  closeBtn.focus();
+}
+
+function closeDim() {
+  drawer.classList.remove('open');
+  overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden','true');
+  drawer.setAttribute('aria-hidden','true');
+  document.body.style.position = '';
+  document.body.style.top      = '';
+  document.body.style.width    = '';
+  window.scrollTo(0, _dsy);
+  if (lastFocused) lastFocused.focus();
+}
+
+function navigateDim(dir) {
+  const idx  = dimOrder.indexOf(currentDim);
+  const next = dimOrder[(idx + dir + dimOrder.length) % dimOrder.length];
+  openDim(next);
+}
+
+document.querySelectorAll('.score-row[data-dim]').forEach(row => {
+  function activate() { lastFocused = row; openDim(row.dataset.dim); }
+  row.addEventListener('click', activate);
+  row.addEventListener('touchend', e => { e.preventDefault(); activate(); }, { passive: false });
+  row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }});
+});
+
+closeBtn.addEventListener('click', closeDim);
+closeBtn.addEventListener('touchend', e => { e.preventDefault(); closeDim(); }, { passive: false });
+overlay.addEventListener('click', closeDim);
+
+document.getElementById('dimPrev').addEventListener('click', () => navigateDim(-1));
+document.getElementById('dimNext').addEventListener('click', () => navigateDim(1));
+
+document.addEventListener('keydown', e => {
+  if (!drawer.classList.contains('open')) return;
+  if (e.key === 'Escape')      closeDim();
+  if (e.key === 'ArrowRight')  navigateDim(1);
+  if (e.key === 'ArrowLeft')   navigateDim(-1);
+});
+
+drawer.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const f = Array.from(drawer.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled);
+  if (!f.length) return;
+  if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length-1].focus(); }
+  else if (!e.shiftKey && document.activeElement === f[f.length-1]) { e.preventDefault(); f[0].focus(); }
+});
+</script>
+</body>
+</html>
