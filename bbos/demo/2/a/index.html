@@ -209,7 +209,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .avd{padding:24px 28px;max-width:740px}
 .avd-back{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
 .avd-back:hover{color:var(--text2)}
-.avd-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.avd-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px}
+/* tooltips — positioned via JS portal, no CSS hover */
+.tip{display:inline;cursor:help;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;text-decoration-thickness:1px;text-decoration-color:var(--text3)}
 .avd-hdr{padding:16px 20px 14px;border-bottom:1px solid var(--border)}
 .avd-stage-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.8}
 .avd-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text);margin-bottom:9px}
@@ -232,7 +234,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script type="text/babel">
-const {useState} = React;
+const {useState, useRef} = React;
 
 const ROLES = [
   {id:'all',    label:'All',        sub:'All roles',                   color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'',   scope:'Full pipeline view — all 31 tools across all 6 stages.'},
@@ -241,16 +243,16 @@ const ROLES = [
   {id:'media',  label:'Media Buyer',sub:'Paid & Distribution',         color:'var(--out)',     bg:'var(--out-bg)',     initials:'MB', scope:'Edits all paid and distribution infrastructure — ad platforms, pixel, launch, social channels, website deployment. Views creative and research as context. Does not write copy.'},
   {id:'setter', label:'Setter',     sub:'Appointment Setting',         color:'var(--qal)',     bg:'var(--qal-bg)',     initials:'SE', scope:'Edits the setting script and intake form. Views ICP and sales script for call context. Does not access research, offer design, or media infrastructure.'},
   {id:'closer', label:'Closer',     sub:'Sales',                       color:'var(--sal)',     bg:'var(--sal-bg)',     initials:'CL', scope:'Edits the sales script and presentation. Views the full offer, ICP, nurture sequences, and VSL. Does not access research outputs or launch infrastructure.'},
-  {id:'fulfil', label:'Fulfillment',sub:'Delivery & Client Success',   color:'var(--ful)',     bg:'var(--ful-bg)',     initials:'FU', scope:'Edits the GHL CRM setup. Views the ICP, Offer Covenant, and Pricing so client delivery matches what was sold. Does not access any marketing or sales assets.'},
+  {id:'fulfil', label:'Fulfillment',sub:'Delivery & Client Success',   color:'var(--ful)',     bg:'var(--ful-bg)',     initials:'FU', scope:'Edits all 8 FUL stage assets — Onboarding Checklist, Client Intake Form, Execution SOP, QC Checklist, Client Success Milestones, Proof Capture Protocol, Offboarding Sequence, and CRM setup. Views ICP, Offer Covenant, and Pricing so delivery matches exactly what was sold.'},
 ];
 
 const STAGES = {
-  QAL:{code:'01',key:'QAL',name:'Qualification',attr:'Al-Haqq · Al-Khabir',c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
-  STR:{code:'02',key:'STR',name:'Strategy',attr:'Al-Basir',c:'var(--str)',bg:'var(--str-bg)',b:'var(--str-b)'},
-  OFR:{code:'03',key:'OFR',name:'Offer',attr:'Al-Adl · Al-Muqsit',c:'var(--ofr)',bg:'var(--ofr-bg)',b:'var(--ofr-b)'},
-  OUT:{code:'04',key:'OUT',name:'Outreach',attr:'Ar-Razzaq · As-Sittir',c:'var(--out)',bg:'var(--out-bg)',b:'var(--out-b)'},
-  SAL:{code:'05',key:'SAL',name:'Sales',attr:'Ar-Razzaq · Al-Latif',c:'var(--sal)',bg:'var(--sal-bg)',b:'var(--sal-b)'},
-  FUL:{code:'06',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
+  QAL:{code:'02',key:'QAL',name:'Qualification',attr:'Al-Haqq · Al-Khabir',c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
+  STR:{code:'03',key:'STR',name:'Strategy',attr:'Al-Basir',c:'var(--str)',bg:'var(--str-bg)',b:'var(--str-b)'},
+  OFR:{code:'04',key:'OFR',name:'Offer',attr:'Al-Adl · Al-Muqsit',c:'var(--ofr)',bg:'var(--ofr-bg)',b:'var(--ofr-b)'},
+  OUT:{code:'05',key:'OUT',name:'Outreach',attr:'Ar-Razzaq · As-Sittir',c:'var(--out)',bg:'var(--out-bg)',b:'var(--out-b)'},
+  SAL:{code:'06',key:'SAL',name:'Sales',attr:'Ar-Razzaq · Al-Latif',c:'var(--sal)',bg:'var(--sal-bg)',b:'var(--sal-b)'},
+  FUL:{code:'07',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
 };
 
 // perms: [strat, copy, media, setter, closer, fulfil]  O=owns E=edit V=view -=none
@@ -375,13 +377,41 @@ const TOOLS = [
    desc:'Deploy the intake form as the first ICP filter in the Sales stage.',
    rat:'Questions must qualify against the ICP from OFR Asset 2. A form that doesn\'t qualify is a list.',
    perms:['O','-','V','E','-','-']},
-  {id:'ghl',        label:'Connect GHL',                sec:'Launch',        stage:'FUL', asset:'Fulfillment — CRM Integration',    bsec:'Stage Entry',      ws:'generic',
-   desc:'Carry the Scope Map and Guarantee covenant terms into the fulfillment layer via CRM.',
-   rat:'A Scope Map not accessible at FUL is a covenant waiting to be breached.',
+  {id:'onboarding',  label:'Onboarding Checklist',          sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix A — Onboarding Checklist',        bsec:'Asset Factory', ws:'generic',
+   desc:'Payment-to-work-start steps with communication triggers, timeline, and client success framed in the same language as the Promise.',
+   rat:'The onboarding checklist is where the covenant transitions from document to experience. Every step with an ambiguous "what," "when," or "to whom" is a gap the client will fill with their own assumption.',
+   perms:['O','E','-','V','V','E']},
+  {id:'clientintake', label:'Client Intake Form',             sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix B — Client Intake Form',            bsec:'Asset Factory', ws:'generic',
+   desc:'Capture client constraints, access requirements, communication preferences, and their own definition of success before delivery begins.',
+   rat:'Intake data that is collected but not used is a covenant violation in miniature. Every field must feed directly into the Execution SOP or it should not be asked.',
+   perms:['O','V','-','-','V','E']},
+  {id:'executionsop', label:'Execution SOP',                  sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix C — Execution SOP',                 bsec:'Asset Factory', ws:'generic',
+   desc:'Step-by-step delivery process mapped directly to the OFR Scope Map, with owner and timing for every step.',
+   rat:'The SOP is the Scope Map in operational form. Any step required for delivery that does not appear in the Scope Map is either a scope gap or an Ihsan addition — both must be named explicitly.',
+   perms:['O','-','-','-','V','E']},
+  {id:'qcchecklist',  label:'Quality Control Checklist',      sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix D — QC Checklist + IC-OFR/IC-FUL', bsec:'Asset Factory', ws:'qc',
+   desc:'QC checks aligned to OFR outcome and guarantee trigger conditions. Includes IC-OFR and IC-FUL Ihsan Baseline gates — mandatory pre-ship review before delivery begins.',
+   rat:'The QC checklist is an act of Al-Wali — standing between the client and a gap they do not yet know exists. It is not a compliance gate; it is proactive protection built before the client needs to ask.',
+   perms:['O','-','-','-','-','E']},
+  {id:'milestones',   label:'Client Success Milestones',      sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix E — Client Success Milestones',     bsec:'Asset Factory', ws:'milestones',
+   desc:'3–5 delivery checkpoints with message templates. Each milestone framed in the same language used in the Promise so the client has a continuous, unbroken understanding of what winning looks like.',
+   rat:'Al-Muhsin asks not only "Did we hit the checkpoint?" but "Did the client experience it as a moment of genuine progress?" The milestone message templates are where that distinction becomes operational.',
+   perms:['O','E','-','-','V','E']},
+  {id:'proofcapture', label:'Proof Capture Protocol',         sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix F — Proof Capture Protocol',        bsec:'Asset Factory', ws:'generic',
+   desc:'What to capture, at which milestone, in what format, and with what consent language — built into delivery from the start, not left to the end.',
+   rat:'Proof capture that happens after the engagement feels like extraction. Built into the milestones, with consent obtained before any collection begins, it is documentation of a shared outcome.',
+   perms:['O','V','-','-','-','E']},
+  {id:'offboarding',  label:'Offboarding Sequence',           sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix G — Offboarding Sequence',          bsec:'Asset Factory', ws:'generic',
+   desc:'Close, retention seed, and Stage 08 RET handoff. The retention seed must be written from genuine gratitude before any next-step framing.',
+   rat:'Ash-Shakur requires that the seed follow the gratitude — not precede it. A retention seed written before the gratitude is felt carries only strategy. The offboarding sequence is the beginning of the retention relationship, not the end of the delivery relationship.',
+   perms:['O','E','-','-','V','E']},
+  {id:'ghl',          label:'Connect GHL',                    sec:'Fulfillment', stage:'FUL', asset:'FUL — CRM Infrastructure',                       bsec:'Stage Entry',   ws:'generic',
+   desc:'Configure the CRM to carry Scope Map terms, Guarantee conditions, and milestone triggers into the live delivery layer.',
+   rat:'A Scope Map that is not accessible at the point of delivery is a covenant waiting to be breached. GHL is the infrastructure that makes the covenant present in every client interaction.',
    perms:['O','-','-','V','V','E']},
 ];
 
-const SECS = ['Research','Offer Builder','Launch'];
+const SECS = ['Research','Offer Builder','Launch','Fulfillment'];
 const ROLE_IDX = {strat:0,copy:1,media:2,setter:3,closer:4,fulfil:5};
 const PERM_LABELS = {O:'Owns',E:'Edit',V:'View','-':'No access'};
 const PERM_DESCS = {
@@ -427,7 +457,7 @@ function PermPill({p, size}){
 function Pill({k,size}){
   const s=STAGES[k];
   const sm=size==='sm';
-  return <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:sm?'2px 6px':'4px 11px',fontSize:sm?'9px':'11px',fontWeight:600,display:'inline-flex',alignItems:'center',whiteSpace:'nowrap'}}>{s.code} {k}</span>;
+  return <Tip term={k}><span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:sm?'2px 6px':'4px 11px',fontSize:sm?'9px':'11px',fontWeight:600,display:'inline-flex',alignItems:'center',whiteSpace:'nowrap'}}>{s.code} {k}</span></Tip>;
 }
 
 /* ── SAMPLE DATA ── */
@@ -482,7 +512,13 @@ const S = {
     salesscript:'48-min call. Discovery (6 ICP questions), Presentation (Promise → Mechanism → Scope → Guarantee → Price), Objection (4 responses that resolve not redirect), Close.',
     settingscript:'12-min qualification call. Filters: Muslim female, solo service, 3+ yrs, $60k+, no existing offer. No-fit script included.',
     form:'8 qualification questions. Disqualifier logic: product/e-commerce route to "not currently a fit" page. All paths tested.',
-    ghl:'GHL pipeline: 5 stages. Scope Map + Guarantee pinned on every contact record. Onboarding: Day 0 welcome + Scope Map PDF, Day 1 session link. All 6 session reminders automated.',
+    ghl:'GHL pipeline: 5 stages. Scope Map + Guarantee pinned on every contact record. Onboarding: Day 0 welcome + Scope Map PDF, Day 1 session link. All 6 session reminders automated. Milestone triggers set at Sessions 2, 3, 5, and 6. Proof Capture consent flag on contact record.',
+    onboarding:'Onboarding Checklist — The Clarity Practice:\n\nDay 0 (contract signed + invoice paid):\n· Welcome email sent: subject "Your Clarity Practice begins — here is everything you need"\n· Email includes: Scope Map PDF, Voxer access link, session booking link, pre-work for Session 1\n· GHL contact record updated: client name, offer, start date, session 1 date\n· Calendar invite sent for all 6 sessions\n\nDay 1 (client action):\n· Session 1 booked within 48 hours of welcome email\n· If not booked within 48 hours: follow-up message sent via Voxer\n\nDay 2 (operator action):\n· Confirm Session 1 in calendar with Zoom link\n· Pre-work reminder sent: "Session 1 pre-work is attached — 20 minutes, due 24 hours before our call"\n\nBefore Session 1 (operator check):\n· Pre-work received and reviewed\n· Client Intake Form completed\n· IC-FUL gate run on onboarding communication ✓\n\nClient success framed as: "By Session 6, you will have a written positioning statement, a price you can state without apologising, and a 90-day plan you can begin the day after our final session."',
+    clientintake:'Client Intake Form — The Clarity Practice:\n\nSection 1 — Business Overview:\n· Current services and delivery format (1:1, group, retainer, project)\n· Current pricing (exact figures, not ranges)\n· Current client load and weekly available hours for client-facing work\n· Revenue range over the past 12 months\n\nSection 2 — Constraints and Access:\n· Time zone and preferred session window (morning / afternoon / evening)\n· Communication preference (async Voxer vs sync check-ins)\n· Any scheduled absences during the 6-week container\n· Tech stack: does the client have Zoom? Voxer?\n\nSection 3 — Client Definition of Success:\n· "In your own words, what would it mean for this engagement to have worked?"\n· "What has already been tried to solve this positioning/pricing problem?"\n· "What would you need to see or have in your hands by Session 6 to consider this a success?"\n\nSection 4 — Constraints feeding directly into Execution SOP:\n· Session time → all Zoom links pre-built at client\'s stated window\n· Absence dates → container calendar adjusted before Session 1\n· Stated definition of success → becomes Milestone 4 language verbatim\n\nIC-FUL-2 confirmation: all intake data feeds directly into the Execution SOP. No field collected without downstream use.',
+    executionsop:'Execution SOP — The Clarity Practice (mapped to OFR Scope Map):\n\nSession 1 — Enemy Identification (Week 1)\nOwner: Operator | Duration: 90 min\nDeliverables: VoC audit of client\'s current language patterns; Credibility Gap System named in the client\'s specific context; 3 fears and 3 desires identified verbatim\nQC check: Can the client name the specific forces working against their pricing confidence — not "mindset" or "confidence," but the structural causes?\n\nSession 2 — Audience Crystallisation (Week 2)\nOwner: Operator | Duration: 90 min\nDeliverables: ICP narrowed from current description to specific, qualifiable profile\nMilestone 1 triggered: "I can name the forces working against my pricing confidence"\n\nSession 3 — Positioning Statement (Week 3)\nOwner: Operator | Duration: 90 min\nDeliverables: Written positioning statement — first draft → reviewed → finalised in session\nMilestone 2 triggered: "I have a written statement that describes exactly who I serve"\nQC check: Does the statement pass the IC-OFR-1 test from the client\'s perspective?\n\nSession 4 — Offer One-Pager (Week 4)\nOwner: Operator | Duration: 90 min\nDeliverables: Offer one-pager template completed; Promise and Scope Map in client\'s language\n\nSession 5 — Price Anchoring (Week 5)\nOwner: Operator | Duration: 90 min\nDeliverables: Pricing calculator completed; price stated aloud at end of session; proof of value anchor built\nMilestone 3 triggered: "I have a price I can state and justify"\n\nSession 6 — 90-Day Plan (Week 6)\nOwner: Operator | Duration: 90 min\nDeliverables: 90-day plan written with specific weekly actions\nMilestone 4 triggered: "I have a 90-day plan I can begin tomorrow"\nGuarantee check: Can the client produce a specific audience statement, defensible price point, and written 90-day plan?\n\nWeek 8 Check-in (Async via Voxer)\nOwner: Operator | Duration: Async\nMilestone 5 triggered: "I have used the plan and have a result to report"\nProof Capture initiated at this milestone.',
+    milestones:'Client Success Milestones — The Clarity Practice (5 checkpoints):\n\nMilestone 1 — Session 2 completion\nStatement: "I can name the forces working against my pricing confidence — not as a personal failing, but as a structural reality I can now see clearly."\nMessage template: "Something shifted in today\'s session — you named what\'s actually been happening. That\'s not a small thing. Before next week: [pre-work instruction]. Looking forward to Session 3."\n\nMilestone 2 — Session 3 completion (Positioning Statement finalised)\nStatement: "I have a written statement that describes exactly who I serve and what changes for them."\nMessage template: "You now have your positioning statement in writing. Read it aloud to yourself tonight — not to the mirror, just to yourself. [Statement attached as PDF.] See you for Session 4."\n\nMilestone 3 — Session 5 completion (Price confirmed)\nStatement: "I have a price I can state without apologising — and I can explain why it is right."\nMessage template: "You said the number out loud today and held it. That was the moment. [Pricing calculator attached.] One more session to build your plan."\n\nMilestone 4 — Session 6 completion (90-Day Plan complete)\nStatement: "I have a 90-day client acquisition plan with specific weekly actions I can begin tomorrow."\nMessage template: "Everything you came here for is now in writing. [Positioning statement, offer one-pager, pricing calculator, and 90-day plan attached.] The plan starts Monday. I will check in with you in Week 8."\n\nMilestone 5 — Week 8 check-in (Async)\nStatement: "I have used the plan and have a result to report."\nMessage template (sent by operator): "Week 8. How is the plan moving? Even a small action counts — I want to hear it. And if something stalled, that\'s worth talking about too. Voice note when you can."',
+    proofcapture:'Proof Capture Protocol — The Clarity Practice:\n\nCapture Point 1 — Session 3 (Positioning Statement finalised)\nWhat to capture: Written reflection from client on the positioning statement — in their own words, what changed when they saw it in writing.\nFormat: Voxer voice note (preferred) or written message\nConsent: covered in Client Intake Form Section 4, agreed before Session 1\nUse: internal record; may become testimonial with explicit written approval\n\nCapture Point 2 — Session 6 (90-Day Plan complete)\nWhat to capture: Client\'s verbal response at end of session — "What does it mean for you to have this in writing?"\nFormat: Zoom recording clip (already recorded per Scope Map)\nConsent: confirmed in Client Intake Form; Zoom recording consent given at intake\nUse: may become a VSL or case study clip with written approval\n\nCapture Point 3 — Week 8 check-in (Primary proof point)\nWhat to capture: Outcome data — what action was taken, what result occurred, what price was quoted and held\nFormat: written case study questionnaire (5 questions, sent via Voxer with written follow-up)\nConsent language: "I\'d love to document your progress as a case study. This would mean sharing your before/after pricing and a brief description of the process — no personal details unless you specifically approve them. Are you open to that?"\nUse: Proof Plan Asset 8 update; case study for next cycle\n\nConsent rule: consent language appears in Client Intake Form before Session 1, before any proof is collected. No proof is captured without prior written confirmation of consent.',
+    offboarding:'Offboarding Sequence — The Clarity Practice:\n\nSession 6 close (in-session, final 10 minutes):\n· Delivery summary: confirm all 4 deliverables are in the client\'s hands (positioning statement, offer one-pager, pricing calculator, 90-day plan)\n· Read the original Promise aloud: "Within 6 weeks you will have a written positioning statement, a price you can state without apologising, and a 90-day plan." Confirm it was delivered.\n· Guarantee check: ask the client to confirm they can produce all three. Document the answer.\n· Close: express genuine gratitude for the trust placed. Not scripted — this is the operator\'s actual words.\n\nDay 1 post (written message):\n· Subject: "Everything from our 6 weeks together"\n· Content: links to all 4 deliverables, summary of the work done, and one sentence of genuine appreciation for what the client brought to the process\n· No next-step ask in this message. Gratitude only.\n\nWeek 2 post (retention seed — Ash-Shakur governs this):\n· Begin with the actual result if Week 8 check-in has occurred: "Last I heard, [specific thing they did]. That matters."\n· The seed: "When you\'re ready to go deeper — whether that\'s positioning your next offer, building your acquisition system, or something you haven\'t named yet — I\'m here for it. No rush. The plan you have now is the right place to start."\n· The seed follows the gratitude. If the gratitude isn\'t genuine, do not send the seed yet.\n\nStage 08 RET handoff note (for operator reference):\n· Date of last contact\n· Milestone 5 outcome (documented or pending)\n· Whether proof capture was completed\n· Retention seed sent (yes/no)\n· Client temperature: engaged, quiet, uncertain\n· Recommended RET re-engagement timing: [Week 10–12 if quiet; earlier if engaged]',
   },
   gate:{
     validation:'Proceed. All 6 Amanah Gate screens cleared. Stage 02 STR is cleared to begin.',
@@ -515,16 +551,1852 @@ const S = {
     salesscript:'Proceed. Every objection response resolves — not redirects.',
     settingscript:'Proceed. Disqualifiers operational. No-fit script included.',
     form:'Proceed. All ICP qualifier questions mapped. Disqualifier logic tested.',
-    ghl:'Proceed. Scope Map and Guarantee on every contact record.',
+    ghl:'Proceed. Scope Map and Guarantee on every contact record. Milestone triggers configured. Proof Capture consent flag active. Onboarding automation tested end-to-end.',
+    onboarding:'Proceed. IC-FUL gate passed — all onboarding communications define success in the same language as the Promise. All next-step instructions include what, when, and how. Pre-work delivery triggered and confirmed received.',
+    clientintake:'Proceed. All intake fields feed directly into the Execution SOP — no data collected without downstream use. Client constraints reflected in session calendar. Client definition of success documented and used as Milestone 4 language.',
+    executionsop:'Proceed. Every delivery step traces directly to the OFR Scope Map. No step required for delivery that is not named in the Scope Map or explicitly designated as an Ihsan addition. Owner and timing confirmed for all 6 sessions.',
+    qcchecklist:'Proceed. IC-OFR gate: all 5 checks passed. IC-FUL gate: all 5 checks passed. No asset required revision before use. QC Checklist will be run before each session delivery — not only at the start and close.',
+    milestones:'Proceed. 5 milestones defined. Each uses the language of the Promise verbatim at the relevant checkpoint. Message templates written. Milestone 5 (Week 8 check-in) triggers primary proof capture. Al-Muhsin test applied: each milestone was designed for the client\'s experience of progress, not only for the operator\'s record.',
+    proofcapture:'Proceed. Consent obtained in Client Intake Form before Session 1 — before any proof is collected. Three capture points defined at Milestones 1, 4, and 5. Week 8 case study questionnaire prepared. PROOF PENDING restriction on outcome metrics now has a documented resolution pathway.',
+    offboarding:'Proceed. Offboarding sequence complete. Gratitude written before the retention seed — in that order. Stage 08 RET handoff note prepared. Delivery summary confirmed: all 4 deliverables in client\'s hands before Session 6 closes.',
   }
 };
 
-/* ── WORKSPACE COMPONENTS ── */
+/* ── FULL ASSET DOCUMENTS ── */
+/* Markup: ## heading  ### subheading  > callout  · list item  --- divider  blank line = paragraph break */
+const DOC = {
+validation:`## Amanah Gate — S1 through S6
+
+> This gate must be passed in full before Stage 03 STR begins. A partial pass does not permit proceeding with conditions — it routes to Stage 01.1 Rejection or a named hold. The gate exists because research and offer design built on an unqualified foundation carries a structural flaw no amount of messaging can fix.
+
+### S1 — Core Competency
+
+Is the operator's primary claimed skill real and verifiable by a neutral reviewer?
+
+· Skill claimed: Positioning and premium pricing strategy for Muslim female service business owners
+· Proof links: 4 client case studies with documented before/after pricing outcomes. Mariam A. (brand copywriter): $800 → $3,200 per project. Three additional clients on file with written outcome confirmations.
+· Reviewer test result: A neutral reviewer reading the proof links would assign G2. The pattern across 4 clients substantiates the claim. Does not yet reach G1 — sample size too small for verified, repeatable claim.
+
+**S1 result: PASS (G2)**
+
+### S2 — Market Viability
+
+Does a genuine, unmet need exist that can be served with integrity?
+
+· Gap identified: Zero operators in English-speaking Muslim female business coaching are addressing the Credibility Gap System explicitly. All use generic pricing confidence frameworks that assume a secular context.
+· Evidence: 22 verbatim VoC phrases collected from forums, interviews, and direct messages. Convergence pattern across all sources: pricing confidence collapse tied to structural forces, not personal failing.
+· Integrity test: The offer does not manufacture the problem it claims to solve. The gap existed before the offer was designed.
+
+**S2 result: PASS (G2)**
+
+### S3 — Halal Business Model
+
+Is the revenue model, client relationship, and delivery method permissible in structure and practice?
+
+· Revenue model: 1:1 coaching and consulting. No deceptive elements. Transparent pricing stated upfront.
+· Client relationship: No dependency engineering. The offer is designed to produce independence — a positioned offer and a plan the client executes without the operator.
+· Delivery method: Zoom sessions, async Voxer access, written deliverables. No element requires the operator to act against their values.
+
+**S3 result: PASS (G1)**
+
+### S4 — Delivery Capacity
+
+Does the operator have the time, skills, and energy to honour the Scope Map without degradation?
+
+· Available hours: 20 hours per week for client-facing and prep work.
+· Maximum client load at 6-week cadence: 4 clients simultaneously without Ihsan degradation.
+· Skills audit: Positioning strategy — G2 (4 documented cases). VoC analysis — G2. 90-day plan architecture — G2. No skill gaps that would prevent Promise delivery.
+
+**S4 result: PASS (G2)**
+
+### S5 — Financial Runway
+
+Can the operator sustain operations until revenue arrives without desperate decision-making?
+
+· Financial runway confirmed: 6 months operating reserve.
+· Break-even timeline: 2 clients at $3,500 = $7,000. Covers 3 months at current overhead.
+· Runway test: No pipeline pressure forcing premature client acceptance. Gate integrity is not under financial threat.
+
+**S5 result: PASS (G1)**
+
+### S6 — Work Aversions
+
+Does the offer design require the operator to do work they cannot do with integrity?
+
+· Declared work aversions: No done-for-you marketing, no high-volume outreach, no urgency-based closing.
+· Offer audit: All three exclusions are explicit in the Scope Map. No session format requires urgency framing. Outreach strategy relies on warm DMs and referrals — consistent with stated aversions.
+
+**S6 result: PASS (G1)**
+
+---
+
+### Gate Decision
+
+All 6 screens passed. Stage 03 STR is cleared to begin. Pipeline Integrity Ledger updated. Financial Stewardship Horizon recorded: 6-month runway.`,
+
+market:`## S1 — Market Definition
+### The Clarity Practice · Stage 03 STR Research Factory Output
+
+---
+
+### Buyer Context
+
+Muslim women in English-speaking markets (United States, United Kingdom, Canada, Australia) operating solo service businesses — coaching, consulting, brand design, copywriting, photography, and adjacent fields.
+
+Annual revenue: $60,000–$200,000. Years operating: 3–8. Business model: primarily 1:1 client work, often priced by hour or project rather than by outcome. No structured offer and no defensible positioning statement.
+
+They are technically excellent. Their clients get results. They are chronically underpriced relative to the outcomes they produce, and they know it — but they cannot hold the number when they say it aloud.
+
+### Immediate Goal
+
+Establish a positioned offer with a specific audience, a price point they can state without apologising, and a 90-day client acquisition plan they can execute immediately — without rebuilding their business from scratch or burning existing client relationships.
+
+### Journey Stage
+
+Post-first-success, pre-scale. The model works. The results are real. The ceiling is not a competence problem — it is a positioning and pricing problem that has compounded over years of undercharging.
+
+### What Has Already Been Tried
+
+Generic business coaching programs that did not account for the cultural dynamics shaping their pricing behaviour. Online pricing courses that produced a number but not the confidence to hold it. Group masterminds where they were the only Muslim woman in the room and the advice did not land in their context.
+
+### Market Maturity Assessment
+
+**Level 3 — Solution aware, product unaware.**
+
+The prospect knows that positioning and pricing work exist. She may have taken a course, read a book, or heard another coach talk about it. She does not know that a solution exists that is specifically designed for the structural forces operating in her context.
+
+Implication: messaging does not need to educate her on the concept of positioning. It needs to explain why what she has tried did not work — and why this is different.
+
+### Secondary Audience
+
+Muslim female creatives (brand designers, copywriters, photographers) in the $30,000–$80,000 range approaching their first pricing ceiling. Not yet the primary buyer — they are 12–18 months behind the primary segment. The pipeline cohort for Cycle 2 and beyond.
+
+### Market Size Estimate
+
+Approximately 180,000 Muslim female business owners active in English-speaking markets. Sub-segment with $60,000+ revenue and 3+ years operating: estimated 22,000–35,000 qualified prospects.
+
+**G-label: G3** — estimate derived from broader Muslim female entrepreneur population statistics and service business revenue distribution data. Not directly verifiable from a single primary source. Treat as directional, not definitive.`,
+
+pains:`## S3 — Emotional Triggers & Enemy Narrative
+### The Clarity Practice · Stage 03 STR Research Factory Output
+
+---
+
+### Top 3 Verbatim Fears
+
+These are exact phrases from source material — forums, direct message conversations, intake form submissions, and direct interviews. They are not paraphrased.
+
+**F1:** "I'm terrified that if I raise my prices, every client I have will leave and I'll have to start over"
+
+**F2:** "I don't know how to explain what I do without adding five disclaimers about why it's worth it"
+
+**F3:** "I look at what I charge and I feel embarrassed — not because it's wrong, but because I can't defend it out loud"
+
+---
+
+### Top 3 Verbatim Desires
+
+**D1:** "I want to be able to say my price without my voice going quiet at the end"
+
+**D2:** "I just want someone to hand me a number and tell me it's right so I can stop second-guessing myself"
+
+**D3:** "I want my clients to feel like they got a deal at the price I charged — not like I gave them a discount because I was scared"
+
+---
+
+### The Enemy Narrative
+
+> The Enemy is never the client's character, choices, or mindset. The Enemy is the convergent set of forces that has produced their situation despite their efforts.
+
+**The Enemy: The Credibility Gap System**
+
+The Credibility Gap System is the convergent set of forces — chronic underrepresentation in mainstream business frameworks, first-generation immigrant scarcity conditioning, community social pressure to discount for "sisters," and the complete absence of visible Muslim female operators charging premium rates publicly — that has systematically trained capable, results-producing women to distrust their own market value despite documented client outcomes.
+
+The Enemy is not a mindset problem. It is a structural absence that was never corrected, now presenting as an internal confidence failure.
+
+**What the Enemy looks like in practice:**
+
+· She researches what to charge and finds no one who looks like her at the price point she deserves.
+· She quotes a price and immediately offers a discount before the client responds.
+· She explains her services with qualifications and disclaimers that undermine the quote before it lands.
+· Her community of peers operates in the same price range she does — normalising underpricing as standard.
+· When she considers raising prices, she imagines the client's reaction, not the value she delivers.
+
+**What the Enemy is not:**
+
+· Laziness, lack of ambition, or unwillingness to do the work.
+· Imposter syndrome (the generic framing that locates the problem in her psychology).
+· An individual failure that a mindset shift will resolve.
+
+The Enemy is a system. It can be named, dismantled, and replaced with a structure that holds.`,
+
+avatar:`## S2 — VoC Buying Language Bank
+### The Clarity Practice · Stage 03 STR Research Factory Output
+
+---
+
+> Every phrase below is verbatim from source material. No paraphrasing. The exact words someone used when the performance dropped are a window into a reality they did not consciously choose to share. Paraphrasing closes that window.
+
+**Sources:** 3 forum threads (Muslim female entrepreneur communities), 4 direct interviews, 8 DM conversations, 7 anonymous intake form submissions.
+
+**Total phrases collected:** 22 · **Selected for Language Bank:** 15
+
+---
+
+### Pricing Language
+
+· "I don't know what I'm worth in the market — I just look at what everyone else charges and go slightly below"
+· "Every time I raise my prices I spend three days dreading the conversation"
+· "I charged less because I thought she might not be able to afford it — she never asked me to"
+· "I said the number and then immediately said 'but we can discuss it' — I don't know why I did that"
+· "I want to charge what I actually need to charge. I just don't know how to say it without apologising"
+
+### Positioning Language
+
+· "I can't explain what I do in one sentence without it sounding either too small or too grandiose"
+· "I keep trying to niche down and then getting scared and broadening it again"
+· "Every time I write my bio I feel like I'm either underselling or overpromising"
+· "I don't know who my ideal client is — I work with anyone who pays me"
+
+### Confidence and Visibility Language
+
+· "I'm scared that if I'm specific about who I work with, I'll turn people away"
+· "I see other coaches charging five figures and I genuinely don't understand what they know that I don't"
+· "I feel embarrassed calling myself an expert when I still doubt my own prices"
+
+### Community and Cultural Context
+
+· "The sisters in my network all charge similar rates — it would feel weird to charge significantly more"
+· "I feel guilty charging full price when the client is also Muslim and I know money is tight"
+· "There's no one who looks like me charging what I actually want to charge. I don't know if it's possible for me"
+
+### What They Want to Feel
+
+· "I just want to feel solid when someone asks what I charge. Not defensive. Just solid."
+
+---
+
+### Highest-Frequency Convergence Cluster
+
+Three phrases appeared — in different words — across more than 6 independent sources: the voice going quiet when saying the price, the compulsion to add disclaimers before a client has said anything, and the absence of visible role models at premium rates. These three are the emotional core of the Credibility Gap System as the prospect experiences it.`,
+
+competitor:`## S4 — Competitive Landscape & Advantage Register
+### The Clarity Practice · Stage 03 STR Research Factory Output
+
+---
+
+### Competitive Scan
+
+6 operators reviewed in the adjacent space (generic business coaching, offer design, pricing strategy for service businesses). All operate in English-speaking markets. None are specifically positioned for Muslim female operators.
+
+**Operator 1 — Generic offer design course ($997)**
+Messaging: "Build an offer that sells." Audience: undefined. Enemy: not named. Mechanism: generic offer framework. Weakness: no cultural context, no VoC evidence, promises conversion without addressing the confidence gap.
+
+**Operator 2 — Pricing for coaches group programme ($2,000)**
+Messaging: "Stop undercharging." Audience: coaches generally. Enemy: imposter syndrome (internal framing). Weakness: locates the problem in the client's psychology. Does not name the structural forces.
+
+**Operator 3 — Niche clarity intensive ($3,500)**
+Messaging: "Get clear on your niche." Audience: online service providers. Enemy: confusion (framed as a personal clarity problem). Weakness: positioning statement output only — no pricing anchor, no 90-day plan.
+
+**Operator 4 — Muslim businesswomen community membership ($97/month)**
+Messaging: "Community for Muslim female entrepreneurs." Audience: Muslim female entrepreneurs broadly. Weakness: community format, no structured outcome, no positioning or pricing methodology.
+
+**Operator 5 — Done-for-you branding and positioning ($8,000+)**
+Messaging: "We'll build your brand identity." Audience: established businesses. Weakness: done-for-you removes the client's ownership of the positioning. Expensive. Does not address pricing confidence.
+
+**Operator 6 — 1:1 business coaching retainer ($1,000/month)**
+Messaging: "Scale your business." Audience: general. Weakness: no specific outcome promised, no time-bound delivery, indefinite engagement.
+
+---
+
+### Gap Analysis
+
+Zero operators in the English-speaking Muslim female business space are: (1) naming the Credibility Gap System explicitly, (2) delivering a time-bound positioning and pricing outcome, and (3) offering a guarantee on the deliverables.
+
+The market is not unsaturated — generic positioning and pricing programmes are everywhere. The specific intersection of cultural context, structural Enemy framing, and outcome-guaranteed delivery is unoccupied.
+
+---
+
+### Advantage Register
+
+**Advantage 1 — The Enemy is named specifically, not generically.**
+Competitors frame the problem as imposter syndrome, lack of clarity, or undercharging. The Clarity Practice names the Credibility Gap System — a structural, external set of forces. This distinction is the difference between messaging that wounds and messaging that heals.
+
+**Advantage 2 — The mechanism is culturally grounded.**
+The 3-phase process was designed specifically for the forces operating in the Muslim female operator's context. It is not a generic framework translated into this audience — it is built from and for it.
+
+**Advantage 3 — The operator is a visible proof point.**
+The operator is herself a Muslim female service business owner who has charged premium rates. She is the evidence that the system works before a case study is presented. No competitor in this space can make that claim.`,
+
+attention:`## Outreach — Hook Library
+### The Clarity Practice · Stage 05 OUT Asset Factory Output
+
+---
+
+> Only the 3 phrases below have been cleared for headline use by the Truth-Gate Advisory. Every other phrase from the VoC Buying Language Bank requires a Proof Anchor before appearing in a client-facing headline. The clearance is earned from what was actually in the data — not from the offer.
+
+### Cleared Hook 1 — G2
+
+**"The price you can say out loud without apologising."**
+
+Source: Verbatim distillation of D1 ("I want to be able to say my price without my voice going quiet at the end"). Cleared G2 via 4 independent VoC sources using the same pattern. This phrase names the desire without overstating the outcome. It does not promise confidence — it names the experience the prospect wants.
+
+Platform use: Instagram static, Facebook ad headline, email subject line, landing page headline (primary).
+
+---
+
+### Cleared Hook 2 — G1
+
+**"Positioning for Muslim women who've outgrown their rates."**
+
+Source: Constructed from ICP data (Muslim female operators 3–8 years in, $60k–$200k revenue). Audience-specific without making an outcome claim. Cleared G1 — it describes the ICP, not the result.
+
+Platform use: Instagram carousel cover, LinkedIn post opening, ad targeting copy.
+
+---
+
+### Cleared Hook 3 — G2
+
+**"You're not undercharging because you're not good enough."**
+
+Source: Enemy reframe of F3 ("I feel embarrassed — not because it's wrong, but because I can't defend it out loud"). Names the Enemy (structural) against the default framing (personal failing). Cleared G2 via verbatim F3 pattern appearing across 6 independent sources.
+
+Platform use: Instagram carousel slide 1, Facebook ad secondary headline, email opening line.
+
+---
+
+### Not Cleared for Headline Use
+
+The following phrases from the VoC Bank were reviewed and not cleared for unsupported headline use. Each requires a Proof Anchor (a specific documented outcome from a named client) before it may appear at G1 or G2 level in a headline.
+
+· "From $800 to $3,200" — requires named case study with documented proof. Cleared for use only with Mariam A. case study explicitly attached.
+· "67% average price increase" — requires the full 4-client outcome data documented in Asset 8. Not cleared for standalone headline use.
+· "6 weeks to a positioned offer" — cleared for use in body copy with Scope Map reference. Not cleared as a standalone transformation headline without case study anchor.`,
+
+salesscript:`## Sales Script — The Clarity Practice
+### Stage 06 SAL Asset Factory Output · 48-Minute Call Structure
+
+---
+
+> This script is the covenant read aloud. Nothing new is introduced here that is not already in the Offer Covenant. An objection response that redirects without resolving is not a response — it is evasion. Every door that closes, closes with the prospect's dignity intact.
+
+---
+
+### Pre-Call Preparation (operator, before dialing)
+
+Review the prospect's intake form. Know their service type, current pricing, what they've tried, and what they said success looks like. The Discovery section is not for gathering information you could have read — it is for going deeper than the form went.
+
+---
+
+### Opening (5 minutes)
+
+"Before we start — there's nothing to buy today. This conversation is for you to figure out whether the Clarity Practice is the right next step for where you are. My job is to ask the right questions. Your job is to be honest. Sound fair?"
+
+[Wait for confirmation.]
+
+"Good. Tell me a little about where you are right now."
+
+---
+
+### Discovery (18 minutes — 6 questions)
+
+Ask these in order. Do not skip. The sequence matters — each question opens the next.
+
+**Question 1 — Current state**
+"Tell me about your business. What do you do, who do you work with, and what does revenue look like right now?"
+
+[Listen for: service type, client type, revenue range, pricing model. Do not move on until you have these.]
+
+**Question 2 — Pricing history**
+"When did you last raise your prices, and what happened?"
+
+[Listen for: whether they raised at all, how the conversation went, whether clients pushed back or accepted. A prospect who has never raised prices is different from one who raised and lost clients.]
+
+**Question 3 — Articulation test**
+"If I asked you to describe what you do in one sentence right now — what would you say?"
+
+[Listen for: disclaimers, qualifications, hesitation, the word "basically," any sentence that requires a follow-up to understand. Note the exact words. These will matter later.]
+
+**Question 4 — Previous attempts**
+"What have you tried so far to fix this? What happened?"
+
+[Listen for: specific programmes, coaches, courses. What they tried tells you what hasn't worked. The answer also tells you how solution-aware they are.]
+
+**Question 5 — Success definition**
+"What would need to be true in 6 weeks for you to look back and say this was the right decision?"
+
+[Listen for: specificity. A vague answer ("I'd feel more confident") is worth probing. A specific answer ("I'd have a price I could state and a plan to get clients at that price") confirms alignment with the Promise.]
+
+**Question 6 — Timing**
+"What's making you consider this now? Why not 6 months ago, or 6 months from now?"
+
+[Listen for: urgency, a recent trigger (lost client, awkward pricing conversation, seeing a competitor charge more). The timing question reveals what's actually motivating the call.]
+
+---
+
+### Transition
+
+"Thank you for sharing that. Let me tell you exactly what we do — and then you can tell me whether it fits."
+
+---
+
+### Presentation (12 minutes)
+
+**The Promise**
+"Within 6 weeks, you will have three things in writing: a positioning statement that names your specific audience and the exact transformation you produce, a price you can state without apologising, and a 90-day client acquisition plan you can begin the day after our final session."
+
+**The Mechanism**
+"We work through this in 6 weekly 90-minute sessions. The first two sessions are about naming the forces that have been working against your pricing confidence — not as a mindset problem, but as a structural reality. Sessions 3 and 4 build your positioning statement and offer one-pager together. Session 5 anchors the price using a valuation framework, not a market comparison. Session 6 builds the 90-day plan."
+
+**The Scope Map**
+"Here's what's included: the 6 sessions, a written positioning statement, an offer one-pager, a pricing calculator, the 90-day plan, and async Voxer access Monday through Thursday between sessions for questions and micro-reviews.
+
+Here's what's not included: website copy, marketing asset production, ongoing coaching beyond the 6 weeks, and anything not on that list. I want to be clear about that so there are no surprises."
+
+**The Guarantee**
+"If you complete all 6 sessions, submit your pre-work within 48 hours before each session, and at the end of Session 6 still cannot produce a specific audience statement, a defensible price point, and a written 90-day plan — I give you 3 additional sessions at no charge, focused specifically on what's unresolved. The only condition is that you've done the pre-work."
+
+**The Price**
+"The investment is $3,500 paid in full, or $1,850 split across two payments — one at the start and one at the beginning of Week 4."
+
+---
+
+### Pause
+
+"Does that match what you were looking for? And is there anything in what I described that doesn't fit your situation?"
+
+[Listen fully before responding. Do not fill silence.]
+
+---
+
+### Objection Responses (8 minutes — 4 prepared)
+
+> Each response resolves the concern. It does not redirect, reframe away from the objection, or use urgency to override it.
+
+**Objection 1 — "I need to think about it."**
+"That's completely fair. What specifically do you need to think about — is it the price, the timing, or whether this is the right fit for where you are?" [Wait.] Address exactly what they name. Do not assume.
+
+**Objection 2 — "I can't afford it right now."**
+"I hear that. Can I ask — what does your pricing look like now, and what would it look like if the positioning problem was solved in 6 weeks? I'm not asking you to justify the investment. I'm asking you to see whether the gap between where you are and where you'd be is large enough that this conversation is worth having."
+
+If the gap is not large enough — let them go. A client who cannot afford it and will not benefit enough to recover the cost is not a fit.
+
+**Objection 3 — "I'm not sure this will work for my situation."**
+"That's a fair concern. What specifically about your situation feels different?" [Listen.] "Here's what I know from the clients I've worked with: the Credibility Gap System was affecting their pricing regardless of niche or service type. What I don't know is whether that's what's happening for you — but based on what you've shared today, [reference something specific from Discovery], I think it is. You know your situation better than I do."
+
+**Objection 4 — "I need to check with my partner / husband / accountant."**
+"Of course. What would help them feel informed? I can send a one-page summary of exactly what's included, what it costs, and what the guarantee says. Would that help?"
+
+[Send the summary. Set a specific follow-up time — not "whenever you're ready." A specific day and time.]
+
+---
+
+### Close (5 minutes)
+
+"Based on what you've shared — [reference the specific thing from Discovery that confirms the fit] — I think this is the right fit. The next step is a payment link and a Session 1 booking. We'd start [specific date]. Does that feel right?"
+
+[If yes:] "Perfect. I'll send the contract and invoice within the hour. Once it's signed and paid, you'll get the onboarding pack — everything you need before Session 1."
+
+[If not yet:] "What's the specific question standing between you and a yes? Let's see if I can answer it now." If it cannot be answered, set a concrete follow-up time. Do not leave it open-ended.
+
+---
+
+### No-Fit Close
+
+"Based on what you've told me today, I don't think this is the right fit — and I want to be straight with you about that. [Specific reason — not vague.] That doesn't mean the problem isn't real. It means this particular offer isn't the right tool for where you are right now. [If a more appropriate resource exists, name it.] I appreciate you taking the time today."
+
+[End the call. Do not follow up with a second pitch.]`,
+
+settingscript:`## Setting Script — The Clarity Practice
+### Stage 06 SAL Asset Factory Output · 12-Minute Qualification Call
+
+---
+
+> This call protects both the prospect and the operator. Disqualifying someone before the sales call is As-Sittir in practice — protecting them from entering an offer that was not designed for their situation. A setter who overlooks a disqualifier to fill the pipeline is not being helpful.
+
+---
+
+### Pre-Call Check
+
+Before dialing: review the intake form. If any hard disqualifier is already visible, do not proceed to the call — send the No-Fit message instead. The call is for cases where the intake form is ambiguous or a qualifier needs to be confirmed verbally.
+
+**Hard disqualifiers (do not proceed to call):**
+· Product business, e-commerce, or any business that is not a service business
+· Business with employees or contractors (this is a solo operator programme)
+· Operator seeking done-for-you services
+· Less than 3 years in business or revenue below $30,000
+
+**Soft qualifiers (confirm on the call):**
+· Revenue in the $60,000–$200,000 range (intake may say "around $80k" — confirm)
+· No existing positioned offer (intake may be unclear — confirm)
+· Muslim female (intake confirms, verbal call confirms tone and context fit)
+
+---
+
+### Opening (2 minutes)
+
+"Hi [name], thanks for taking the time. This is [operator name] from the Clarity Practice. This call is short — about 10 minutes. I want to ask you a few questions to make sure our 1:1 programme is actually the right fit for where you are. Some people who apply aren't in the right place for it yet, and I'd rather tell you that now than have you on a longer call that isn't useful. Sound okay?"
+
+[Wait for yes.]
+
+---
+
+### Qualification Questions (8 minutes — 5 questions)
+
+**Q1 — Business type**
+"Tell me briefly what you do and who you work with."
+
+[Listening for: service business, solo operation, identifiable audience. If product business, e-commerce, or team-based — No-Fit.]
+
+**Q2 — Revenue and stage**
+"Roughly, where does your annual revenue sit? Ballpark is fine."
+
+[Listening for: $60,000–$200,000 range. Below $30,000 is a No-Fit for this programme specifically — not enough market proof yet. Above $200,000 may be a different programme fit — note it, do not disqualify automatically.]
+
+**Q3 — Current positioning**
+"If I asked you to describe what you do and who you help in one sentence, what would you say?"
+
+[Listening for: vagueness, disclaimers, hedging, the inability to produce a clean sentence. That pattern confirms the problem the offer solves. A prospect who can produce a clean, confident sentence is potentially already past the point where this programme is needed.]
+
+**Q4 — What's been tried**
+"Have you done anything before to try to sort out your positioning or pricing — a course, a coach, anything like that?"
+
+[Listening for: solution-awareness. This is not a disqualifier — it helps the setter understand where the prospect is in the buying journey.]
+
+**Q5 — Capacity and readiness**
+"The programme is 6 weekly sessions with pre-work before each one. Do you have that kind of time and bandwidth in the next 6 weeks?"
+
+[Listening for: capacity. A prospect who cannot commit to 6 sessions is not a fit right now — timing, not disqualification.]
+
+---
+
+### Booking or No-Fit (2 minutes)
+
+**If qualified:**
+"Based on what you've shared, I think this is worth a proper conversation with [operator name]. I'm going to send you a booking link for a 45-minute call — that's where you'll get the full picture of how the programme works and what it costs. The link will give you a few times in the next week. Does that work?"
+
+[Send link immediately after the call ends.]
+
+**If not a fit:**
+"Based on what you've shared, I don't think this programme is the right fit for where you are right now — and I want to be honest with you about that. [Specific reason.] That's not a reflection on your business or what you're building. This particular programme was designed for [specific ICP description], and the fit isn't right here. [If appropriate, name a more suitable resource.] Thank you for taking the time."
+
+[End the call. Do not soften the no-fit into an ambiguous maybe. The prospect must know clearly what the decision is.]`,
+
+nurture:`## Nurture Sequences — The Clarity Practice
+### Stage 06 SAL Asset Factory Output · 5-Email Sequence
+
+---
+
+> All emails stay within the G2 boundary. No outcome metrics appear in any email — the PROOF PENDING restriction on percentage increases is honoured. Each email addresses one specific Fear or Desire from S3. Nurture is an extension of the covenant conversation, not a second funnel.
+
+---
+
+### Email 1 — Day 1 after opt-in
+**Subject: It's not imposter syndrome**
+
+You know that feeling when someone asks what you charge and your voice does a thing — goes a little quieter, a little faster, adds a disclaimer you didn't plan to add?
+
+That's not imposter syndrome.
+
+Imposter syndrome is about doubting whether you're capable. What most Muslim female service business owners I speak to are dealing with is different. They know they're capable. They have the client results to prove it. The problem is not belief in the work — it's the absence of a structure that tells them what the work is worth.
+
+When you've never seen someone who looks like you charging what you actually want to charge, your nervous system doesn't have a reference point. So it defaults to whatever the people around you charge. And those people are in the same boat.
+
+That's not a personal failing. It's a structural gap. And it can be closed.
+
+More on how in the next email.
+
+— [Operator name]
+
+---
+
+### Email 2 — Day 3
+**Subject: The price you don't say out loud**
+
+There's a number in your head.
+
+Not the number on your invoice. The number you'd charge if you weren't worried about what the client would think. The number that would actually reflect what you deliver.
+
+Most of the women I work with have been carrying that number for a year or more. They know it. They just won't say it.
+
+The reason isn't confidence. The reason is that they don't have the structural language to defend it — so when the moment comes, the voice goes quiet.
+
+What I help you build is exactly that: a positioning statement that names who you serve and what changes for them, and a pricing framework that makes the number defensible — to yourself first, and then to clients.
+
+Not by convincing yourself you're worth it. By building the evidence that you already are.
+
+If you want to see what that looks like in practice, reply to this email with the word "details" and I'll send you the full breakdown of how the programme works.
+
+---
+
+### Email 3 — Day 6
+**Subject: The 3 decisions that produce a position**
+
+A position is not a tagline. It's not a niche statement. It's not the answer to "who do you help?"
+
+A position is the result of three specific decisions:
+
+**Decision 1 — Who, specifically.** Not "coaches and consultants." A specific type of person in a specific situation. Specific enough that when she reads your positioning statement, she feels seen — not targeted.
+
+**Decision 2 — What changes for them, specifically.** Not "grow their business" or "get clarity." The exact transformation that happens when the work is done. Stated in language she would use, not in language that sounds impressive.
+
+**Decision 3 — What you will and will not do.** This is the one most people skip. A positioning statement without a clear scope boundary is aspirational. A position with a clear boundary is a covenant.
+
+These 3 decisions are what we produce together in 6 weeks. Not in theory — in writing, reviewed, and finalised.
+
+The result is a document you can read aloud and feel solid.
+
+---
+
+### Email 4 — Day 10
+**Subject: What Mariam did**
+
+Mariam is a brand copywriter. When she came to the Clarity Practice, she was charging $800 per project. She knew the number was wrong. She'd known it for two years. But every time she tried to raise it, she found a reason not to.
+
+In our first two sessions, we named what was actually happening — not imposter syndrome, but a specific set of forces that had been training her to distrust her own pricing for years.
+
+By Session 3, she had a positioning statement. By Session 5, she had a new price: $3,200 per project.
+
+The price didn't come from confidence. It came from a valuation framework that she could explain to a client. When she could explain it, she could hold it.
+
+In the 8 weeks after our final session, she repriced every new project inquiry at $3,200. Every one.
+
+If you want to understand how the process works — not the outcome, the process — reply to this email and I'll send you the full programme details.
+
+---
+
+### Email 5 — Day 14
+**Subject: What it feels like to quote your price and wait**
+
+There's a moment in every sales conversation where you say the number and then stop talking.
+
+Most of the women I work with have never let that moment sit. They fill it — with a disclaimer, a payment option they didn't plan to offer, a question about whether it "works for the client's budget."
+
+The number lands. And then they talk over it.
+
+What we build in the Clarity Practice is the internal architecture that lets you say the number and wait.
+
+Not because you've convinced yourself to be confident. Because you have a valuation framework that makes the number true — and when the number is true, the silence after it is just silence.
+
+The programme is 6 weeks, 6 sessions, and 4 deliverables. If you want to know the details — pricing, what's included, the guarantee — click below and I'll send them over.
+
+[LINK: Book a discovery call]`,
+
+salesletter:`## Sales Letter — The Clarity Practice
+### Stage 05 OUT Asset Factory Output · 1,840 Words
+
+---
+
+### Before you read this, one thing:
+
+Everything in this letter is grounded in documented client outcomes, verbatim language from real conversations, and a specific offer with a written guarantee. No manufactured urgency. No aspirational claims dressed up as results. If something sounds too good to be true in here, tell me — and I'll show you the evidence behind it.
+
+---
+
+### You're not undercharging because you're not good enough.
+
+You already know this.
+
+You have clients who get results. You have testimonials, if you've bothered to ask for them. You have years of work in a field you understand deeply.
+
+And you're still charging a price that doesn't match any of that.
+
+The reason isn't imposter syndrome. Imposter syndrome is about doubting your capability. You don't doubt your capability — you doubt your right to be paid what you're worth. Those are different problems.
+
+The reason is this: you've never seen someone who looks like you charging what you actually want to charge. And when you can't see it, your nervous system doesn't have a reference point. So it defaults to the price your peers charge. And your peers are in the same position.
+
+That's not a mindset problem. That's a structural gap. And it has a name.
+
+---
+
+### The Credibility Gap System
+
+The Credibility Gap System is the convergent set of forces — chronic underrepresentation in mainstream business frameworks, first-generation immigrant scarcity conditioning, community social pressure to discount for sisters, and the complete absence of visible Muslim female operators charging premium rates publicly — that has trained capable, results-producing women to distrust their own market value.
+
+It is not your fault. It was not created by anything you did. But it is operating in your business right now, in every pricing conversation you have.
+
+The way out is not a mindset shift. The way out is a structure that gives you something to stand on when you say the number.
+
+That structure is what the Clarity Practice produces.
+
+---
+
+### What we build together
+
+The Clarity Practice is a 6-week 1:1 programme for Muslim female service business owners who are technically excellent and chronically underpriced.
+
+In 6 weeks, you will have three things in writing:
+
+· A positioning statement that names your specific audience and the exact transformation you produce — written in language you can say out loud without qualifying it.
+· A price you can state without apologising — grounded in a valuation framework, not a market comparison.
+· A 90-day client acquisition plan with specific weekly actions you can begin the day after our final session.
+
+These are not aspirational goals. They are the specific deliverables we produce together in the programme. They are in writing before you leave.
+
+---
+
+### How it works
+
+We meet weekly for 6 sessions of 90 minutes each via Zoom. Every session is recorded and sent to you within 24 hours.
+
+**Sessions 1 and 2** are about naming the forces working against your pricing confidence — not as a personal failing, but as a structural reality. We go through your specific situation, your VoC data, and the Credibility Gap System as it's operating in your business. By the end of Session 2, you will be able to name exactly what has been happening — and why it is not a reflection of your capability.
+
+**Sessions 3 and 4** produce the positioning statement and the offer one-pager. We work through these together in the sessions and finalise them before you leave. These are written documents, not frameworks for you to interpret later.
+
+**Session 5** anchors the price. We use a valuation framework — not "what the market charges" but "what this outcome is worth to the person receiving it." At the end of Session 5, you say the number out loud. In the session. That moment is what the whole programme has been building toward.
+
+**Session 6** produces the 90-day plan. Specific. Weekly. Executable the day after we finish.
+
+Between sessions, you have async Voxer access Monday through Thursday for questions, micro-reviews, and anything that comes up as you implement.
+
+---
+
+### What is not included
+
+I want to be clear about this because ambiguity in scope is where covenants break.
+
+Not included: website copy or any marketing asset production. Not included: ongoing coaching beyond the 6-week container. Not included: paid advertising setup, management, or ad spend. Not included: legal, financial, or compliance advice. Not included: anything not named in the list above.
+
+If you need something that is not on that list, we will have a conversation about it before any work begins. There will be no surprises.
+
+---
+
+### The guarantee
+
+If you complete all 6 sessions, submit your pre-work within 48 hours before each session, and at the end of Session 6 still cannot produce a specific audience statement, a defensible price point, and a written 90-day plan — I give you 3 additional sessions at no charge, focused specifically on what's unresolved.
+
+The only condition: the pre-work must have been submitted for all 6 sessions. The guarantee does not apply if pre-work was skipped for 2 or more sessions regardless of reason.
+
+---
+
+### The investment
+
+$3,500 paid in full.
+
+Or $1,850 now and $1,850 at the start of Week 4.
+
+To see how this compares to what the 6 weeks produces: a positioning statement on its own from a positioning consultant runs $800–$1,200. The offer one-pager, $600. The 90-day plan, $900. The 6 sessions at a market hourly rate for this level of 1:1 work, $2,700. Total stack value: $5,400.
+
+The programme is priced below that stack for one reason: I have 4 documented client outcomes, not 40. When I have 40, the price will reflect it. At this stage, the discount is honest.
+
+---
+
+### Who this is for
+
+Muslim female service business owners, 28–45, operating solo businesses in English-speaking markets. At least 3 years in business. Annual revenue of $60,000–$200,000.
+
+You have clients. You get results. You do not have a positioning statement you can state clearly, and you do not have a price you can hold without apologising.
+
+---
+
+### Who this is not for
+
+· Product businesses, e-commerce businesses, or businesses with a team.
+· Operators looking for done-for-you services — this programme produces the work together, not for you.
+· Operators below 3 years in business or below $30,000 in annual revenue — the foundation isn't there yet for this specific approach.
+· Anyone who needs this to work immediately — the programme takes 6 weeks and the results compound over the 90 days after.
+
+---
+
+### One more thing
+
+Mariam came to the Clarity Practice as a brand copywriter charging $800 per project. Eight weeks after our final session, she was charging $3,200. She gave written permission to share this.
+
+That's not a before-and-after designed to make you feel behind. It's documentation of what happens when the Credibility Gap System is named and dismantled, and a structure is built in its place.
+
+If you want to see whether the programme is the right fit for where you are, book a discovery call. The call is 45 minutes. There's no pressure. The purpose is for you to get enough information to make a real decision.
+
+[Book a discovery call → LINK]`,
+
+vsl:`## Pre-Call VSL Script — The Clarity Practice
+### Stage 06 SAL Asset Factory Output · 7 Minutes 42 Seconds
+
+---
+
+> This VSL is delivered before the discovery call via Loom. It frames the problem in VoC language, introduces the Mechanism, and states the Promise at G2. No outcome metrics appear — PROOF PENDING restriction honoured. The VSL is not a pitch. It is preparation for an honest conversation.
+
+---
+
+### [0:00 — 0:45] Opening
+
+"Before our call, I want to share something with you — because I think it will make the conversation more useful.
+
+You booked this call because something isn't working with your pricing or your positioning. You've probably tried to fix it before. It might not have worked the way you hoped.
+
+What I want to do in the next 7 minutes is tell you what I think is actually happening — not as a sales pitch, but as an honest framing. That way, when we talk, we're starting from the same place."
+
+---
+
+### [0:45 — 2:15] Name the Enemy
+
+"Here's what I see consistently in the Muslim female service business owners I work with:
+
+They're not undercharging because they're not good enough. They're undercharging because of a specific set of forces that have been operating in their business for years — and nobody has named them.
+
+Chronic underrepresentation in mainstream business frameworks. First-generation immigrant conditioning around scarcity and not asking for too much. Community social pressure to give other Muslim women a discount. And the complete absence of visible role models who look like them charging what they actually want to charge.
+
+That convergence of forces is what I call the Credibility Gap System. And it produces one very specific symptom: a gap between what you know you're worth and what you can say out loud when someone asks what you charge.
+
+This is not a mindset problem. It is a structural gap. And it has a specific solution."
+
+---
+
+### [2:15 — 4:00] The Mechanism
+
+"The Clarity Practice works in three phases.
+
+Phase 1 is Enemy Identification. In the first two sessions, we name the specific forces operating in your business — not generically, but in your specific situation. By the end of Session 2, you can name exactly what has been happening and why it is not a reflection of your capability. That naming is not just therapeutic — it is the foundation for everything that follows.
+
+Phase 2 is Anchor Work. Sessions 3 and 4 produce your positioning statement and offer one-pager. These are written documents we finalise together in the sessions. Not a framework for you to interpret later — actual written deliverables.
+
+Phase 3 is Acquisition Architecture. Session 5 anchors your price using a valuation framework, not a market comparison. Session 6 produces a 90-day client acquisition plan — specific, weekly, executable the day after we finish.
+
+The whole programme takes 6 weeks."
+
+---
+
+### [4:00 — 5:15] The Promise
+
+"Here is what I commit to specifically:
+
+Within 6 weeks, you will have a written positioning statement naming your specific audience and the exact transformation you produce. A price you can state without apologising. And a 90-day client acquisition plan with specific weekly actions you can begin the day after our final session.
+
+These are in writing before you leave the programme. Not goals — deliverables.
+
+If you complete all 6 sessions, submit your pre-work, and at the end of Session 6 still cannot produce all three — I give you 3 additional sessions at no charge. That is the guarantee."
+
+---
+
+### [5:15 — 6:30] What to expect on the call
+
+"On our call, I'm going to ask you about your business, your current pricing, what you've already tried, and what success would look like for you in 6 weeks.
+
+I'm not going to tell you that you have to decide today. I'm not going to manufacture urgency. If the programme is the right fit, you'll know by the end of the call — and I'll tell you honestly if I don't think it is.
+
+The call is 45 minutes. Come prepared to be specific. The more honestly you answer the questions, the more useful the conversation will be — whether you end up working with me or not."
+
+---
+
+### [6:30 — 7:42] Close
+
+"One more thing before we talk.
+
+There is a Muslim female brand copywriter who came through this programme charging $800 per project. Eight weeks after our final session, she was charging $3,200.
+
+I'm not sharing that to make you feel behind. I'm sharing it because she gave permission — because she wanted other Muslim female operators to know that the gap between where you are and where you want to be is not a character problem.
+
+It is a structure problem. And structure can be built.
+
+I'll see you on the call."`,
+
+salespreso:`## Sales Presentation Deck — The Clarity Practice
+### Stage 06 SAL Asset Factory Output · 11 Slides
+
+---
+
+> The presentation carries the Offer Covenant verbatim. No new claims are introduced here that are not already in the Offer. The presentation is the covenant read in structure — Promise, Mechanism, Scope, Guarantee, Price. Nothing more.
+
+---
+
+### Slide 1 — Opening
+
+**Headline:** The price you can say out loud.
+
+**Subheadline:** A 6-week 1:1 positioning intensive for Muslim women who've outgrown their rates.
+
+[No bullet points. Clean. Let it sit.]
+
+---
+
+### Slide 2 — The Problem
+
+**Headline:** You're not undercharging because you're not good enough.
+
+**Body:** You know this. What you don't have yet is a structure that lets you say the number and hold it.
+
+[No solution language yet. Name the problem only.]
+
+---
+
+### Slide 3 — The Enemy
+
+**Headline:** The Credibility Gap System
+
+**Body (verbatim):** The convergent set of forces — chronic underrepresentation in mainstream business frameworks, first-generation immigrant scarcity conditioning, community social pressure to discount for sisters, and the complete absence of visible Muslim female operators charging premium rates — that has trained capable women to distrust their own market value.
+
+**Footer:** This is not a mindset problem. It is a structural gap.
+
+---
+
+### Slide 4 — The Promise
+
+**Headline:** Within 6 weeks, you will have three things in writing:
+
+· A positioning statement naming your specific audience and the exact transformation you produce.
+· A price you can state without apologising.
+· A 90-day client acquisition plan you can begin the day after our final session.
+
+**Footer:** These are deliverables, not goals.
+
+---
+
+### Slide 5 — The Mechanism
+
+**Headline:** How it works
+
+**Phase 1 (Sessions 1–2):** Enemy Identification — name the specific forces operating in your business.
+**Phase 2 (Sessions 3–4):** Anchor Work — positioning statement and offer one-pager, finalised in writing.
+**Phase 3 (Sessions 5–6):** Acquisition Architecture — price anchored by valuation framework, 90-day plan built.
+
+---
+
+### Slide 6 — The Scope Map
+
+**Included:**
+· 6 weekly 90-min 1:1 sessions via Zoom (recorded, delivered within 24 hours)
+· Written positioning statement (finalised Session 3)
+· Offer one-pager (completed Session 4)
+· Pricing calculator with honest valuation framework
+· 90-day client acquisition plan
+· Async Voxer access Mon–Thu between sessions
+
+**Not included:**
+· Website copy or marketing asset production
+· Ongoing coaching beyond 6 weeks
+· Paid advertising, ad management, or ad spend
+· Legal, financial, or compliance advice
+
+---
+
+### Slide 7 — Proof
+
+**Headline:** One client, documented.
+
+**Body:** Mariam A., brand copywriter. Pricing before: $800 per project. Pricing after: $3,200 per project. Timeline: 8 weeks after our final session.
+
+**Footer:** Written permission to share this on file.
+
+---
+
+### Slide 8 — The Guarantee
+
+**Trigger:** You complete all 6 sessions and submit pre-work within 48 hours of each prior session.
+
+**If at the end of Session 6 you cannot produce all three deliverables:**
+
+**Remedy:** 3 additional sessions at no charge, focused on what's unresolved, scheduled within 6 weeks of Session 6.
+
+**Operator-side boundary:** Guarantee does not apply if pre-work was not submitted for 2 or more sessions.
+
+---
+
+### Slide 9 — Investment
+
+**Price:** $3,500 paid in full · or · $1,850 × 2
+
+**Value stack:**
+· 6 sessions @ $450/hr rate: $2,700
+· Positioning statement: $800
+· Offer one-pager: $600
+· 90-day plan: $900
+· Async Voxer access: $400
+· **Total PMV: $5,400**
+
+---
+
+### Slide 10 — Who This Is For
+
+Muslim female service business owners · 28–45 · English-speaking markets · $60k–$200k annually · 3+ years in business · No existing positioned offer
+
+---
+
+### Slide 11 — Next Step
+
+**Headline:** Two options.
+
+· Book a discovery call — 45 minutes. No obligation. Honest conversation about fit.
+· Reply with a question if there's something you want to understand before we talk.
+
+[Clean close. No artificial urgency. No countdown timer.]`,
+
+landing:`## Landing Page Copy — The Clarity Practice
+### Stage 05 OUT Asset Factory Output
+
+---
+
+> Every claim on this page has a corresponding Proof Plan entry in OFR Asset 8. Zero PROOF PENDING claims appear on the live page. Aspirational language (G4) is visually separated from Promise language (G2) in all sections.
+
+---
+
+### Hero Section
+
+**Headline:** The price you can say out loud.
+
+**Subheadline:** A 6-week 1:1 positioning intensive for Muslim women who've outgrown their rates.
+
+**CTA:** Book a discovery call →
+
+---
+
+### Problem Section
+
+**Section headline:** You're not undercharging because you're not good enough.
+
+You have clients who get results. You have years of work in a field you understand. And you're still charging a price that doesn't match any of that.
+
+The reason isn't imposter syndrome. The reason is the Credibility Gap System — the convergent set of forces that has trained capable Muslim female service business owners to distrust their own market value. Chronic underrepresentation in mainstream business frameworks. Scarcity conditioning. Community social pressure to discount for sisters. The absence of visible role models at premium rates.
+
+This is not a mindset problem. It has a specific solution.
+
+---
+
+### Promise Section
+
+**Section headline:** In 6 weeks, you will have three things in writing.
+
+· A positioning statement that names your specific audience and the exact transformation you produce.
+· A price you can state without apologising.
+· A 90-day client acquisition plan you can begin the day after our final session.
+
+These are deliverables — in writing before you leave the programme — not goals.
+
+---
+
+### How It Works Section
+
+**Section headline:** Six sessions. Three phases. Four deliverables.
+
+**Phase 1 — Sessions 1 & 2: Enemy Identification**
+We name the specific forces working against your pricing confidence — not as a personal failing, but as a structural reality. By Session 2, you can name exactly what has been happening.
+
+**Phase 2 — Sessions 3 & 4: Anchor Work**
+Your positioning statement and offer one-pager are produced and finalised in writing during these sessions. Not a template you fill in alone — documents we build together.
+
+**Phase 3 — Sessions 5 & 6: Acquisition Architecture**
+Session 5 anchors your price using a valuation framework. At the end of Session 5, you say the number out loud. Session 6 builds the 90-day plan — specific, weekly, executable.
+
+---
+
+### Scope Section
+
+**What is included:**
+6 weekly 90-min sessions · Written positioning statement · Offer one-pager · Pricing calculator · 90-day plan · Async Voxer access Mon–Thu
+
+**What is not included:**
+Website copy · Marketing asset production · Ongoing coaching beyond 6 weeks · Advertising setup or management · Legal or financial advice
+
+---
+
+### Proof Section
+
+**Section headline:** One client, documented.
+
+Mariam A. is a brand copywriter. Before the Clarity Practice, she charged $800 per project. Eight weeks after our final session, she was charging $3,200.
+
+*"I said the number and I waited. That had never happened before."* — Mariam A.
+
+Written permission to share this on file.
+
+---
+
+### Guarantee Section
+
+**Section headline:** The guarantee
+
+If you complete all 6 sessions, submit your pre-work within 48 hours before each session, and at the end of Session 6 still cannot produce a specific audience statement, a defensible price, and a written 90-day plan — you receive 3 additional sessions at no charge.
+
+One condition: pre-work must have been submitted for all 6 sessions.
+
+---
+
+### Investment Section
+
+**$3,500 paid in full · or · $1,850 now + $1,850 at Week 4**
+
+---
+
+### CTA Section
+
+**Headline:** Is this the right fit?
+
+Book a 45-minute discovery call. I'll ask you about your business and your situation. You'll ask me anything you want to know. By the end, you'll have enough to decide — and I'll tell you honestly if I don't think the programme is right for where you are.
+
+**[Book a discovery call →]**`,
+
+social:`## Social Content Calendar — The Clarity Practice
+### Stage 05 OUT Asset Factory Output · 18 Posts · 6 Angles
+
+---
+
+> All posts stay within the G2 boundary. Outcome metrics only appear in case study posts with confirmed proof anchor (Mariam A., written permission on file). Content addresses one specific Fear or Desire per angle — not general value content.
+
+---
+
+### Angle 1 — Fear: "The price you don't say out loud"
+*Addresses F3 directly. 3 posts.*
+
+**Post 1 (Static):** "There's a number in your head. Not the one on your invoice. The one you'd charge if you weren't worried about what the client would think. This one. [CTA: If that number sounds familiar, read this →]"
+
+**Post 2 (Carousel, 5 slides):**
+· Slide 1: The price you don't say out loud.
+· Slide 2: It's not that you don't know what you're worth.
+· Slide 3: It's that you don't have language to defend the number.
+· Slide 4: So when the moment comes, your voice does something.
+· Slide 5: That's not imposter syndrome. That's a structural gap. And it can be closed.
+
+**Post 3 (Carousel, 4 slides):**
+· Slide 1: Signs you're in the gap.
+· Slide 2: You add a discount before the client asks.
+· Slide 3: You say the number and then immediately say "but we can discuss it."
+· Slide 4: You're embarrassed by your own rate — not because it's wrong, but because you can't defend it.
+
+---
+
+### Angle 2 — Fear: "Why disclaimers are a positioning problem"
+*Addresses F2. 3 posts.*
+
+**Post 1 (Text):** "The disclaimer isn't a confidence problem. It's a positioning problem. You add disclaimers because your positioning statement isn't specific enough to stand on its own. When the statement is clear — audience, transformation, evidence — the disclaimer has nowhere to live."
+
+**Post 2 (Carousel, 4 slides):**
+· Slide 1: Every disclaimer is a symptom.
+· Slide 2: "Basically I help..." — you don't know your audience specifically enough.
+· Slide 3: "It depends on what you need..." — you don't have a clear scope.
+· Slide 4: "I mean, results vary..." — you don't have language for the transformation you actually produce.
+
+**Post 3 (Static):** "The reason you add five disclaimers when someone asks what you do: your positioning statement is trying to include everyone. A specific statement doesn't need disclaimers. It speaks directly to one person and everyone else self-selects out."
+
+---
+
+### Angle 3 — Desire: "What it feels like to quote your price and wait"
+*Addresses D1. 3 posts.*
+
+**Post 1 (Text):** "There is a moment in every sales conversation where you say the number and then stop talking. Most of the women I work with have never let that moment sit. They fill it. What we build in the Clarity Practice is the internal architecture that lets you say the number and wait. Not confidence — structure."
+
+**Post 2 (Carousel, 5 slides):**
+· Slide 1: What it feels like to quote your price and wait.
+· Slide 2: You say the number.
+· Slide 3: The client pauses.
+· Slide 4: You say nothing.
+· Slide 5: That pause is not awkward. That pause is the price landing.
+
+**Post 3 (Static):** "The goal isn't to feel confident when you say the price. The goal is to have a price that's true — grounded in what the outcome is actually worth. When the number is true, the silence after it is just silence."
+
+---
+
+### Angle 4 — Enemy: "It's not imposter syndrome"
+*Names the Credibility Gap System. 3 posts.*
+
+**Post 1 (Text):** "Imposter syndrome is about doubting your capability. What I see in Muslim female service business owners is different. They don't doubt the work. They doubt their right to be paid what it's worth. Those are different problems with different solutions."
+
+**Post 2 (Carousel, 5 slides):**
+· Slide 1: It's not imposter syndrome.
+· Slide 2: Here's what it actually is.
+· Slide 3: You've never seen someone who looks like you charging what you want to charge.
+· Slide 4: So your nervous system defaults to whatever the people around you charge.
+· Slide 5: That's not a personal failing. That's the Credibility Gap System. And it has a solution.
+
+**Post 3 (Static):** "The community you're in charges what you charge. That's not a coincidence. Pricing norms are social. The way out is not to be more confident — it's to build a structure that gives you something to stand on when you say the number."
+
+---
+
+### Angle 5 — Mechanism: "The 3 decisions that produce a position"
+*Process education. 3 posts.*
+
+**Post 1 (Text):** "A positioning statement is the result of 3 decisions: who specifically, what changes for them specifically, and what you will and will not do. Most people produce a tagline. We produce a covenant."
+
+**Post 2 (Carousel, 4 slides):**
+· Slide 1: The 3 decisions that produce a position.
+· Slide 2: Decision 1: Who, specifically. Not 'coaches and consultants.' One person in one situation.
+· Slide 3: Decision 2: What changes for them, specifically. In their language, not yours.
+· Slide 4: Decision 3: What you will and will not do. A position without scope is aspiration.
+
+**Post 3 (Static):** "Most positioning exercises produce a tagline. The Clarity Practice produces 3 documents: a positioning statement, an offer one-pager, and a 90-day acquisition plan. All in writing. All reviewed together. All in your hands before you leave."
+
+---
+
+### Angle 6 — Proof: "Mariam repriced from $800 to $3,200"
+*Case study posts — proof anchor confirmed, written permission on file. 3 posts.*
+
+**Post 1 (Static — G2, case study anchor required):** "Mariam came to the Clarity Practice charging $800 per project. 8 weeks after our final session, she was charging $3,200. What changed wasn't her capability — that was always there. What changed was the structure that let her say the number and hold it."
+
+**Post 2 (Carousel, 5 slides):**
+· Slide 1: Mariam's story.
+· Slide 2: She knew $800 was wrong. She'd known it for 2 years.
+· Slide 3: But every time she tried to raise it, she found a reason not to.
+· Slide 4: In 6 weeks, we named what was actually happening and built the structure to hold a different number.
+· Slide 5: She didn't become more confident. She became more grounded. Those are different things.
+
+**Post 3 (Text):** "The most common thing I hear after the programme: 'I said the number. And I waited. That had never happened before.' That's not a personality shift. That's a positioning statement doing its job."`,
+
+onboarding:`## Onboarding Checklist — The Clarity Practice
+### Stage 07 FUL Appendix A
+
+---
+
+> IC-FUL-1 confirmed: all onboarding communications define success in the same language as the Promise. IC-FUL-4 confirmed: all next-step instructions name what to do, when, and how.
+
+---
+
+### Trigger: Contract signed and invoice paid
+
+**Day 0 — Operator actions (within 2 hours of payment confirmation)**
+
+· Send welcome email (subject: "Your Clarity Practice begins — here is everything you need")
+· Email contents: Scope Map PDF attached, Voxer access link, Session 1 booking link, Session 1 pre-work attached, client success statement ("By Session 6, you will have a written positioning statement, a price you can state without apologising, and a 90-day plan you can begin the day after our final session"), direct Voxer handle for async support Mon–Thu
+· Create GHL contact record: client name, email, programme, start date
+· Set GHL milestone triggers: Sessions 2, 3, 5, 6, and Week 8
+· Add Scope Map and Guarantee to GHL contact record as pinned note
+· Send calendar invites for all 6 sessions with Zoom links pre-built
+
+**Day 0 — Client actions expected**
+· Receive and open welcome email
+· Install Voxer if not already installed
+· Book Session 1 via link in welcome email
+
+---
+
+### Day 1 — Operator check
+
+· Confirm Session 1 is booked
+· If not booked within 24 hours: send Voxer voice note — "Hey [name], just checking in — did the booking link work? Want to make sure you have your Session 1 date locked in."
+· If no response by end of Day 2: follow up by email
+
+---
+
+### Day 2 — Pre-work reminder
+
+· Send pre-work reminder via Voxer: "Session 1 is on [date]. Your pre-work is in the welcome email — it takes about 20 minutes and is due 24 hours before we meet. Let me know if you have any questions."
+· Confirm Zoom link is in the calendar invite
+
+---
+
+### Before Session 1 — Operator checks
+
+· Pre-work received and reviewed
+· Client Intake Form completed (if not completed: send reminder 48 hours before session)
+· IC-FUL gate run on all onboarding communications — confirm all checks passed
+· GHL contact record up to date
+
+---
+
+### Session 1 day — Operator checks
+
+· Zoom link confirmed and tested
+· Pre-work notes reviewed and integrated into session preparation
+· Any constraints or access requirements from Client Intake Form noted
+
+---
+
+### Onboarding complete when
+
+· Session 1 has occurred
+· Client has received and acknowledged all 4 deliverable commitments in writing
+· GHL record is current
+· Async Voxer channel is active and client has used it at least once`,
+
+clientintake:`## Client Intake Form — The Clarity Practice
+### Stage 07 FUL Appendix B
+
+---
+
+> IC-FUL-2 confirmed: all intake data feeds directly into the Execution SOP. No field is collected without a downstream use.
+
+---
+
+### Section 1 — Business Overview
+
+**Q1:** What type of service business do you run? (coaching, consulting, copywriting, brand design, photography, other — please specify)
+
+**Q2:** How long have you been in business?
+
+**Q3:** What does your annual revenue look like approximately? (This helps calibrate the programme — it does not affect anything else.)
+· Under $30,000
+· $30,000–$60,000
+· $60,000–$100,000
+· $100,000–$200,000
+· Above $200,000
+
+**Q4:** How do you currently charge? (hourly, per project, retainer, package — specify the format you use most)
+
+**Q5:** What is your current primary rate? (exact figure or range — not a vague description)
+
+---
+
+### Section 2 — Constraints and Access
+
+**Q6:** What is your time zone and preferred session time? (morning / afternoon / evening — please specify local time)
+
+**Q7:** Do you have any scheduled absences, travel, or commitments in the next 6 weeks that would affect session scheduling?
+
+**Q8:** How do you prefer to communicate between sessions? (Voxer voice notes preferred / written messages / either)
+
+**Q9:** Do you have Zoom installed and a reliable internet connection for 90-minute video calls?
+
+**Q10:** Do you have Voxer installed? (This is how async access Mon–Thu works — installation instructions are in the welcome email if needed.)
+
+---
+
+### Section 3 — The Problem
+
+**Q11:** In your own words, what is the problem you're coming to the Clarity Practice to solve? (No right answer — be specific.)
+
+**Q12:** What have you already tried to solve this? What happened?
+
+**Q13:** Describe what you do and who you help in one sentence right now — not as you want to describe it, as you currently would.
+
+---
+
+### Section 4 — Client Definition of Success
+
+**Q14:** What would need to be true in 6 weeks for you to look back on this engagement and say it was worth it? (Be as specific as you can — vague answers like "I'd feel more confident" are worth pushing past.)
+
+**Q15:** Is there anything that would make it difficult for you to engage fully with the pre-work and the sessions? (Capacity constraints, family commitments, other projects — naming them now protects both of us.)
+
+---
+
+### Section 5 — Consent and Proof Capture
+
+**Q16:** I document outcomes from the programme as case studies and testimonials, which I use to describe what the programme produces for future clients. This may include your pricing before and after, a brief description of your process, and a written or audio testimonial. I will never share identifying information without your explicit written approval. Do you give permission for me to capture this during the programme and request approval before any use?
+· Yes, I consent to proof capture
+· No, I do not consent to proof capture at this time
+
+*Note: Declining proof capture does not affect your access to the programme in any way.*
+
+---
+
+### Intake Complete When
+
+· All 15 questions answered
+· Q16 consent decision recorded in GHL contact record
+· Q14 (client definition of success) transferred verbatim to Milestone 4 language in GHL
+· Q7 absences reflected in session calendar before Session 1`,
+
+executionsop:`## Execution SOP — The Clarity Practice
+### Stage 07 FUL Appendix C
+
+---
+
+> Every delivery step traces directly to the OFR Scope Map. No step in this SOP exists outside the Scope Map. Steps designated as Ihsan additions are marked with ⧁.
+
+---
+
+### Pre-Delivery Baseline
+
+Before Session 1, confirm:
+· OFR Scope Map reviewed
+· Promise confirmed: positioning statement, defensible price, 90-day plan — all three in writing by Session 6
+· Guarantee conditions reviewed: 6 sessions, pre-work submitted within 48 hours, all three deliverables produced
+· Client Intake Form complete
+· IC-OFR and IC-FUL gates passed
+
+---
+
+### Session 1 — Enemy Identification, Part 1
+
+**Owner:** Operator · **Duration:** 90 minutes · **Week:** 1
+
+**Pre-work operator reviews:** Client's one-sentence business description (Q13), what they've tried (Q12), client definition of success (Q14)
+
+**Session structure:**
+· Opening (5 min): confirm the Promise in the client's own words — what does success look like by Session 6?
+· Core work (70 min): work through the 5 Credibility Gap System forces in the client's specific context. For each force: does it apply? How is it showing up? What specific behaviour does it produce?
+· Close (15 min): summarise what was named. Client states in their own words: "The forces working against my pricing confidence are [...]"
+
+**Deliverable:** Named force map — the specific Credibility Gap System components operating in this client's situation
+
+**⧁ Ihsan addition:** Send a voice note after the session — not a summary, just an acknowledgment of what was named. "You named something today that a lot of people spend years avoiding. That matters." This is not in the Scope Map. It is Al-Wali in practice.
+
+---
+
+### Session 2 — Enemy Identification, Part 2 + ICP Crystallisation
+
+**Owner:** Operator · **Duration:** 90 minutes · **Week:** 2
+
+**Pre-work:** Client brings 5 examples of how the forces named in Session 1 showed up in actual client conversations or pricing decisions
+
+**Session structure:**
+· Review (20 min): walk through the 5 examples. Confirm the pattern. Build the named narrative.
+· ICP work (55 min): narrow the audience from current description to specific, qualifiable profile. Who specifically — not "coaches and consultants" but one type of person in one type of situation
+· Close (15 min): client states ICP in one sentence. Operator confirms: could we qualify or disqualify someone against this?
+
+**Deliverable:** Crystallised ICP — specific enough to qualify or disqualify in 2 minutes
+
+**Milestone 1 triggered:** "I can name the forces working against my pricing confidence."
+Send Milestone 1 message within 2 hours of session end.
+
+---
+
+### Session 3 — Positioning Statement
+
+**Owner:** Operator · **Duration:** 90 minutes · **Week:** 3
+
+**Pre-work:** Client drafts their current positioning statement (one attempt, honest, not polished)
+
+**Session structure:**
+· Review draft (15 min): what is specific, what is vague, what is aspirational vs deliverable-grounded
+· Build (60 min): work through the 3 positioning decisions — who specifically, what changes for them specifically, what you will and will not do — producing the statement together in the session
+· Finalise (15 min): statement is reviewed until both operator and client can read it aloud without qualifying it
+
+**Deliverable:** Written positioning statement — finalised, reviewed, in the client's hands
+
+**QC check (IC-OFR-1 applied to client's positioning):** Can the client read this statement to a prospect and have the prospect self-select in or out? If not, the session is not complete.
+
+**Milestone 2 triggered:** "I have a written statement that describes exactly who I serve."
+Send Milestone 2 message with positioning statement PDF within 24 hours.
+
+---
+
+### Session 4 — Offer One-Pager
+
+**Owner:** Operator · **Duration:** 90 minutes · **Week:** 4
+
+**Pre-work:** Client writes a first draft of their offer one-pager using the positioning statement as the foundation
+
+**Session structure:**
+· Review draft (20 min): apply Scope Map structure — Promise, Included, Excluded, Guarantee, Price
+· Refine (55 min): fill gaps, tighten language, ensure every Included item is specific
+· Finalise (15 min): offer one-pager complete and reviewed
+
+**Deliverable:** Offer one-pager — specific enough that a client could accept or decline based on it alone
+
+---
+
+### Session 5 — Price Anchoring
+
+**Owner:** Operator · **Duration:** 90 minutes · **Week:** 5
+
+**Pre-work:** Client completes pricing calculator template (provided by operator after Session 4) — lists each deliverable, assigns a monetary value to each, totals the stack
+
+**Session structure:**
+· Review stack (20 min): is every deliverable present? Is the PMV honest?
+· Anchor (45 min): work through the valuation framework — what is this outcome worth to the person receiving it? Not market comparison — outcome value
+· Moment (25 min): client states the price out loud, in the session. Operator does not fill the silence. The price must be spoken. If the client cannot say it, this work is not complete.
+
+**Deliverable:** Pricing calculator with honest valuation framework + price stated aloud
+
+**Milestone 3 triggered:** "I have a price I can state and justify."
+Send Milestone 3 message within 2 hours.
+
+**Guarantee check:** Can the client state the price and explain why it is right? If not, this is flagged before Session 6.
+
+---
+
+### Session 6 — 90-Day Plan + Delivery Close
+
+**Owner:** Operator · **Duration:** 90 minutes · **Week:** 6
+
+**Pre-work:** Client drafts the first 4 weeks of their 90-day plan — specific actions, not intentions
+
+**Session structure:**
+· Review draft (20 min): are the actions specific? Do they lead toward qualified client conversations?
+· Complete (50 min): build Weeks 5–12 of the plan together. Each week has a named action category and at least one specific task.
+· Guarantee check (10 min): can the client produce all three deliverables — positioning statement, defensible price, 90-day plan? All three in writing, in their hands, before the session ends.
+· Close (10 min): delivery summary, genuine gratitude, what happens next
+
+**Deliverable:** Written 90-day client acquisition plan — specific, weekly, executable
+
+**Milestone 4 triggered:** "I have a 90-day plan I can begin tomorrow."
+Send Milestone 4 message with all 4 deliverables attached within 24 hours.
+
+---
+
+### Week 8 — Check-In (Async)
+
+**Owner:** Operator · **Format:** Voxer voice note
+
+**Operator sends:** "Week 8. How is the plan moving? Even a small action counts — I want to hear it. And if something stalled, that's worth talking about too. Voice note when you can."
+
+**Milestone 5 triggered upon client response.**
+Initiate primary proof capture conversation at this point.`,
+
+proofcapture:`## Proof Capture Protocol — The Clarity Practice
+### Stage 07 FUL Appendix F
+
+---
+
+> Consent obtained in Client Intake Form (Q16) before Session 1 — before any proof is collected. No proof is captured without prior written consent on file. Proof belongs to the client who provided it before it belongs to the business.
+
+---
+
+### Consent Documentation
+
+Consent captured at: Client Intake Form, Q16
+Consent type: written opt-in, with explicit disclosure of how proof may be used
+Location in GHL: consent flag on client contact record, tagged at intake
+If consent declined: no proof capture occurs at any stage. Client receives full programme without difference.
+
+---
+
+### Capture Point 1 — Session 3 (Positioning Statement finalised)
+
+**What to capture:** Written reflection from the client on the positioning statement — in their own words, what changed when they saw it in writing.
+
+**Trigger:** Send request within 2 hours of Session 3 close via Voxer.
+
+**Request language:** "Before you close your laptop — I'd love to hear in your own words what it felt like to see the positioning statement finalised. Even a short voice note. This is just for my records, not shared anywhere without your specific approval."
+
+**Format:** Voxer voice note (preferred) or written message in follow-up
+**Storage:** GHL notes, labelled "Proof Capture Point 1 — [client name] — [date]"
+**Use:** Internal record. May become testimonial with explicit written approval for that specific use.
+
+---
+
+### Capture Point 2 — Session 6 (Delivery complete)
+
+**What to capture:** Client's verbal response at the close of Session 6 when the delivery summary is made.
+
+**Trigger:** At the close of Session 6, operator says: "We've produced everything we set out to produce. Positioning statement, offer one-pager, pricing calculator, and 90-day plan — all in your hands. What does it mean for you to have this in writing?"
+
+**Format:** Zoom recording (already recorded per Scope Map). Note timestamp for the relevant moment.
+**Storage:** Zoom cloud recording, timestamp noted in GHL
+**Use:** May become a VSL or case study clip with specific written approval for that use.
+
+---
+
+### Capture Point 3 — Week 8 Check-In (Primary proof point)
+
+**What to capture:** Outcome data — what action was taken, what price was quoted and held, what the client experienced.
+
+**Trigger:** Sent 2–3 days after Milestone 5 response has confirmed the client has used the plan.
+
+**Request language:** "I'd love to document your progress — not for anything public, just to understand what's working and what the programme is actually producing. Would you be open to answering 5 questions? Takes about 10 minutes. I'll send them over if yes."
+
+**Case study questions (sent if client agrees):**
+1. What were you charging before the programme? What are you charging now?
+2. Describe the moment you said the new price to a client for the first time. What happened?
+3. What specifically changed — not in your mindset, but in the structure of how you talk about what you do?
+4. What would you say to someone who is in the position you were in before?
+5. Is there anything you'd be comfortable with me sharing, and in what form?
+
+**Format:** Written answers via email
+**Storage:** GHL notes + separate case study file
+**Use:** Asset 8 (Proof Plan) update. Case study for Cycle 2 outreach. Only used in the specific form the client approves.
+
+---
+
+### Proof Plan Update
+
+Upon receiving Week 8 case study:
+· Update OFR Asset 8 (Proof Plan) with new documented outcome
+· Update G-label on outcome metrics from PROOF PENDING to G1 (if documented directly by client)
+· Confirm update in GHL and Pipeline Integrity Ledger`,
+
+offboarding:`## Offboarding Sequence — The Clarity Practice
+### Stage 07 FUL Appendix G
+
+---
+
+> Ash-Shakur governs this sequence. The retention seed follows the gratitude — in that order. A retention seed written before the gratitude is felt carries only strategy. The offboarding sequence is the beginning of the Stage 08 retention relationship, not the end of the delivery relationship.
+
+---
+
+### Session 6 Close (in-session, final 10 minutes)
+
+**Delivery summary (operator reads aloud):**
+
+"Let's confirm what you're leaving with today:
+· A written positioning statement — reviewed, finalised, yours.
+· An offer one-pager — scope is clear, what's included and excluded is named.
+· A pricing calculator with the valuation framework behind your number.
+· A 90-day client acquisition plan — specific, weekly, starting Monday.
+
+That's the Promise delivered.
+
+[Guarantee check] Can you produce all three: a specific audience statement, a price you can defend, and a written 90-day plan?"
+
+[Client confirms. Document the confirmation.]
+
+"Then we're done — in the best possible way."
+
+**Gratitude (operator's own words — not scripted):**
+
+This is not a template. The operator expresses genuine appreciation for what the client brought to the sessions — something specific, not generic. If the gratitude is not genuine, do not perform it. Ash-Shakur is present in the real thing, not the ritual.
+
+---
+
+### Day 1 Post-Programme (written message — no calls)
+
+**Subject:** Everything from our 6 weeks together
+
+"[Name],
+
+Everything we produced together is attached to this email: positioning statement, offer one-pager, pricing calculator, 90-day plan.
+
+The work you brought to each session made the programme what it was. Specifically — [one specific thing the operator genuinely appreciated, from memory, not a template placeholder].
+
+The plan starts Monday. I'll check in with you in Week 8.
+
+— [Operator name]"
+
+**What is not in this message:** No next-step ask. No product mention. No invitation to refer. Gratitude only.
+
+---
+
+### Week 8 Check-In (Async via Voxer)
+
+**Message:** "Week 8. How is the plan moving? Even a small action counts — I want to hear it. And if something stalled, that's worth talking about too. Voice note when you can."
+
+**Purpose:** Genuine interest in the outcome. Milestone 5 trigger. Primary proof capture initiation.
+
+**What this is not:** A disguised pitch. If the client is not moving, the operator's response is curiosity and support — not an upsell.
+
+---
+
+### Week 10–12 — Retention Seed (only after Week 8 has occurred)
+
+The retention seed is sent only after:
+· Week 8 check-in has happened
+· The operator knows the client's current status (moving, stuck, or somewhere in between)
+· The gratitude from the offboarding is still genuinely felt
+
+**Seed template (adapt, do not send verbatim):**
+
+"[Name] — last I heard, [specific thing they told you in Week 8]. That matters.
+
+When you're ready to go deeper — whether that's positioning your next offer, building your acquisition system, or something you haven't named yet — I'm here for it. No rush. The plan you have now is the right place to start.
+
+I hope the work is continuing to move."
+
+**What this is not:** A countdown timer. A limited-time offer. A manufactured scarcity trigger. An ask designed to produce a conversion. It is a genuine expression of continued availability.
+
+---
+
+### Stage 08 RET Handoff Note (operator records in GHL)
+
+· Date of last contact
+· Milestone 5 outcome: documented / pending / client not responsive
+· Proof capture: complete / partial / declined
+· Retention seed: sent on [date] / not yet sent
+· Client temperature: engaged, quiet, uncertain, or actively working the plan
+· Recommended RET re-engagement window: Week 10 if engaged, Week 12 if quiet, follow up in 30 days if unresponsive
+· Any open items from the programme that warrant follow-up`,
+
+ghl:`## CRM Configuration — The Clarity Practice
+### Stage 07 FUL — GHL Infrastructure
+
+---
+
+### Pipeline Setup
+
+**5-stage pipeline:**
+· Stage 1: Lead (intake form submitted)
+· Stage 2: Qualified (setter call passed, sales call booked)
+· Stage 3: Call completed (discovery call held, decision pending)
+· Stage 4: Active client (contract signed, payment received)
+· Stage 5: Programme complete (Session 6 done, offboarding initiated)
+
+---
+
+### Contact Record Requirements
+
+Every active client contact record must contain (pinned note):
+· Programme name: The Clarity Practice — 6-Week Positioning Intensive
+· Promise (verbatim from OFR Asset 1)
+· Scope Map: Included items and Excluded items
+· Guarantee trigger condition, remedy, and operator-side boundary
+· Session dates (all 6)
+· Proof capture consent status (Q16 result from intake)
+
+This note must be updated before Session 1. It must remain accessible throughout the programme.
+
+---
+
+### Automation Sequences
+
+**Sequence 1 — Onboarding (trigger: payment confirmed)**
+· Day 0: Welcome email with Scope Map PDF, Voxer link, Session 1 booking link, Session 1 pre-work
+· Day 2: Pre-work reminder via email
+· Day before Session 1: Zoom link reminder
+
+**Sequence 2 — Session reminders (trigger: calendar booking confirmed)**
+· 24 hours before each session: reminder with Zoom link and pre-work confirmation prompt
+· 30 minutes before each session: final reminder
+
+**Sequence 3 — Milestone triggers**
+· After Session 2: Milestone 1 prompt (manual send by operator via Voxer)
+· After Session 3: Milestone 2 prompt + positioning statement PDF
+· After Session 5: Milestone 3 prompt + pricing calculator
+· After Session 6: Milestone 4 prompt + all 4 deliverables
+· Week 8: Milestone 5 check-in (manual send by operator via Voxer)
+
+---
+
+### Proof Capture Flag
+
+· Field: Proof Capture Consent (Yes / No)
+· Source: Client Intake Form Q16
+· If Yes: tag contact as "Proof eligible" — enables proof capture workflow at Milestones 1, 4, and 5
+· If No: no proof capture at any stage — tag contact as "Proof declined"
+
+---
+
+### Stage 08 RET Handoff
+
+At programme completion (Stage 5):
+· Record Stage 08 handoff note: last contact date, Milestone 5 status, proof capture status, retention seed sent/not sent, client temperature
+· Move contact to RET pipeline
+· Set follow-up task: Week 10–12 depending on client temperature`,
+};
+
+/* ── GLOSSARY ── */
+const GLOSSARY = {
+  'BBOS':   ['Barakah Business Operating System','A 9-stage ethical business pipeline built on covenant principles. Each stage has a governing theological quality that shapes how the work is done, not just what is produced.'],
+  'VoC':    ['Voice of Customer','Verbatim language extracted directly from real people — in forums, interviews, DMs, and intake forms. Never paraphrased. The raw linguistic foundation of all messaging.'],
+  'ICP':    ['Ideal Customer Profile','A description of the target buyer specific enough to qualify or disqualify a prospect in 2 minutes. Built from VoC data, not from operator preference.'],
+  'GTM':    ['Go-To-Market','The channel strategy and distribution plan built downstream of the STR Positioning Statement and Truth-Gate Advisory. Cannot be built before the Truth-Gate is cleared.'],
+  'SOP':    ['Standard Operating Procedure','Step-by-step delivery process mapped directly to the OFR Scope Map. Every step traces back to an included item. Steps not in the Scope Map are either a scope gap or a named Ihsan addition.'],
+  'PMV':    ['Perceived Monetary Value','The honest monetary value assigned to each component of the Value Stack. Used to justify the final price relative to the total stack — not to inflate it.'],
+  'VSL':    ['Video Sales Letter','A pre-call video that frames the problem in VoC language, introduces the Mechanism, and states the Promise at G2. Delivered before the sales call, not as a replacement for it.'],
+  'CRM':    ['Customer Relationship Management','The system that carries Scope Map terms, Guarantee conditions, and milestone triggers into the live delivery layer. A Scope Map not in the CRM is a covenant waiting to be breached.'],
+  'GHL':    ['GoHighLevel','The CRM platform used to configure pipeline stages, onboarding automations, and milestone triggers for FUL stage delivery.'],
+  'QC':     ['Quality Control','Checks aligned to the OFR outcome and guarantee trigger conditions. The QC checklist is an act of Al-Wali — standing between the client and a gap they do not yet know exists.'],
+  'G1':     ['G-Label: Verified','Proven, documented, independently verifiable. The highest confidence level. Used only when specific evidence exists and a neutral reviewer would assign the same label.'],
+  'G2':     ['G-Label: Substantiated','Strong evidence available but not independently verified at G1 level. Most offer Promises and case study outcomes operate at G2.'],
+  'G3':     ['G-Label: Informed Inference','Limited data, reasonable assumption, lower confidence. Must never be presented as G1 or G2 in client-facing materials or advertising.'],
+  'G4':     ['G-Label: Aspirational','Desired outcome with no current evidence. Dream state language. Never used as a Promise or in any claim that could be taken as a commitment.'],
+  'F1':     ['Verbatim Fear 1','The first verbatim fear extracted from VoC source data. Preserved word-for-word. Not a paraphrase or the operator\'s interpretation of what the client feels.'],
+  'F2':     ['Verbatim Fear 2','The second verbatim fear extracted from VoC source data. Must come from a real source — forum thread, DM, interview, or intake form.'],
+  'F3':     ['Verbatim Fear 3','The third verbatim fear extracted from VoC source data. Forms part of the Enemy Narrative foundation.'],
+  'D1':     ['Verbatim Desire 1','The first verbatim desire extracted from VoC source data. Preserved word-for-word. Used to build the Amanah Content Engine angles.'],
+  'D2':     ['Verbatim Desire 2','The second verbatim desire from VoC extraction. The gap between stated desires (D-labels) and actual behaviour is often where the most powerful messaging lives.'],
+  'D3':     ['Verbatim Desire 3','The third verbatim desire from VoC extraction.'],
+  'IC-OFR': ['Ihsan Checklist — Offer Document','5 checks that must pass before delivery begins. Ensures the Promise is G1/G2, the Scope Map exclusions are explicit, and the Guarantee has all 4 required elements.'],
+  'IC-FUL': ['Ihsan Checklist — Onboarding','5 checks that must pass before the client is onboarded. Ensures success is defined in the language of the Promise, and all next-step instructions are actionable without a follow-up question.'],
+  'QAL':    ['Stage 02 — Qualification','The Amanah Gate stage. Tests whether the operator\'s core competency is real, their market is viable, and they can build with integrity. Must be cleared before Strategy begins.'],
+  'STR':    ['Stage 03 — Strategy','Research Factory stage. Produces Market Definition, VoC Buying Language Bank, Emotional Triggers, Enemy Narrative, and Truth-Gate Advisory. Governing quality: Al-Basir.'],
+  'OFR':    ['Stage 04 — Offer','The offer-as-covenant stage. Produces Promise, ICP, Mechanism, Scope Map, Value Stack, Guarantee, and Pricing. Governing quality: Al-Adl · Al-Muqsit.'],
+  'OUT':    ['Stage 05 — Outreach','Where the GTM strategy and all outreach assets are built and deployed. Governing quality: Ar-Razzaq · As-Sittir.'],
+  'SAL':    ['Stage 06 — Sales','Where qualification infrastructure, call scripts, nurture sequences, and conversion assets operate. Governing quality: Ar-Razzaq · Al-Latif.'],
+  'FUL':    ['Stage 07 — Fulfillment','Where the Promise is delivered. Produces Onboarding, Execution SOP, QC Checklist, Milestones, Proof Capture, and Offboarding. Governing quality: Al-Muhsin · Al-Wali · Ash-Shakur.'],
+  'RET':    ['Stage 08 — Retention','The ongoing relationship after delivery. Where the retention seed planted in the Offboarding Sequence is cultivated. Governing quality: Ash-Shakur · Al-Wadud.'],
+  'OPT':    ['Stage 09 — Optimization','The honest reckoning of the full cycle. Produces the G-Label Accuracy Report, Covenant Integrity Audit, and Cycle Memory Card for the next cycle. Governing quality: Al-Hasib.'],
+  'INT':    ['Stage 01 — Intake','The foundational self-assessment at the start of the pipeline. Establishes the operator\'s capabilities, constraints, and Financial Stewardship Horizon before any qualification work begins.'],
+  'Ihsan':  ['Ihsan — Excellence','Doing more than the bare minimum; perfecting what you give as an act of worship. The Prophet ﷺ said: "Allah has prescribed Ihsan in all things." In BBOS, Ihsan is the standard against which FUL delivery is measured.'],
+  'Amanah': ['Amanah — Trustworthiness','The ethical foundation of the BBOS system. A business conducted with Amanah treats every promise as a covenant — something that carries weight before God, not merely a commercial transaction.'],
+  'Tawakkul':['Tawakkul — Trust in God','Genuine reliance on Allah for outcomes while doing the honest work. In BBOS, the operator who holds qualification criteria honestly — even when the pipeline is thin — is practising Tawakkul.'],
+  'Barakah':['Barakah — Divine Blessing','Increase that comes from God. In BBOS, strategy built on verbatim human reality carries Barakah; strategy built on assumption does not. Barakah is not manufactured — it is the natural result of honest, covenant-based work.'],
+};
+
+const TIP_W = 284;
+const TIP_PAD = 10;
+const SIDEBAR_W = 276;
+
+function Tip({term, def, children}){
+  const entry = def || GLOSSARY[term];
+  if(!entry) return <span>{children}</span>;
+  const [label, desc] = Array.isArray(entry) ? entry : [term, entry];
+  const [tip, setTip] = useState(null);
+  const ref = useRef(null);
+
+  const show = () => {
+    if(!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Horizontal: center on term, clamped away from sidebar and right edge
+    let left = r.left + r.width / 2;
+    left = Math.max(SIDEBAR_W + TIP_W / 2 + TIP_PAD, left);  // never behind sidebar
+    left = Math.min(vw - TIP_W / 2 - TIP_PAD, left);          // never off right edge
+
+    // Vertical: prefer above; flip below if insufficient space
+    const spaceAbove = r.top;
+    const spaceBelow = vh - r.bottom;
+    const above = spaceAbove >= 110 || spaceAbove >= spaceBelow;
+    const top = above ? r.top - 6 : r.bottom + 6;
+
+    setTip({left, top, above});
+  };
+
+  const hide = () => setTip(null);
+
+  const portal = tip ? ReactDOM.createPortal(
+    <div style={{
+      position:'fixed',
+      left: tip.left,
+      top: tip.top,
+      transform: tip.above ? 'translate(-50%, -100%)' : 'translateX(-50%)',
+      width: TIP_W,
+      background:'var(--bg4)',
+      border:'1px solid var(--border2)',
+      borderRadius: 8,
+      padding: '10px 14px',
+      zIndex: 99999,
+      pointerEvents: 'none',
+      boxShadow: '0 6px 24px #00000055',
+      fontSize: 11,
+      color: 'var(--text2)',
+      lineHeight: 1.6,
+      fontFamily: 'var(--font-sans, sans-serif)',
+      fontStyle: 'normal',
+      fontWeight: 400,
+    }}>
+      <span style={{display:'block',fontSize:10,fontWeight:600,color:'var(--text)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:5}}>{label}</span>
+      {desc}
+    </div>,
+    document.body
+  ) : null;
+
+  return <>
+    <span ref={ref} className="tip" onMouseEnter={show} onMouseLeave={hide}>{children}</span>
+    {portal}
+  </>;
+}
+
+function tipify(text, prefix=''){
+  if(!text) return text;
+  const keys = Object.keys(GLOSSARY).sort((a,b)=>b.length-a.length);
+  const escaped = keys.map(k=>k.replace(/[-.*+?^${}()|[\]\\]/g,'\\$&'));
+  const re = new RegExp(`(${escaped.join('|')})`, 'g');
+  const parts = text.split(re);
+  if(parts.length===1) return text;
+  return parts.map((seg,i)=>
+    GLOSSARY[seg]
+      ? <Tip key={`${prefix}${i}`} term={seg}>{seg}</Tip>
+      : seg
+  );
+}
+function DocRenderer({content,stageColor}){
+  if(!content) return null;
+  const ac = stageColor||'var(--accent)';
+  const blocks=[];
+  let buf=[];
+  const flush=()=>{if(buf.length){blocks.push({type:'p',text:buf.join(' ')});buf=[];}};
+  content.split('\n').forEach(raw=>{
+    const line=raw;
+    if(line.startsWith('## ')){flush();blocks.push({type:'h2',text:line.slice(3)});}
+    else if(line.startsWith('### ')){flush();blocks.push({type:'h3',text:line.slice(4)});}
+    else if(line.startsWith('> ')){flush();blocks.push({type:'callout',text:line.slice(2)});}
+    else if(line.startsWith('· ')){flush();blocks.push({type:'li',text:line.slice(2)});}
+    else if(line.startsWith('**') && line.endsWith('**') && line.length>4){flush();blocks.push({type:'bold',text:line.slice(2,-2)});}
+    else if(line==='---'){flush();blocks.push({type:'hr'});}
+    else if(line.trim()===''){flush();}
+    else{buf.push(line);}
+  });
+  flush();
+  const elems=[];
+  let liGroup=[];
+  const flushLi=()=>{
+    if(liGroup.length){elems.push(<ul key={elems.length} style={{paddingLeft:18,marginBottom:12}}>{liGroup.map((t,i)=><li key={i} style={{fontSize:13,color:'var(--text2)',lineHeight:1.75,marginBottom:3}}>{tipify(t,`li${i}`)}</li>)}</ul>);liGroup=[];}
+  };
+  blocks.forEach((b,i)=>{
+    if(b.type==='li'){liGroup.push(b.text);return;}
+    flushLi();
+    if(b.type==='h2') elems.push(<div key={i} style={{fontSize:16,fontWeight:500,color:'var(--text)',marginTop:20,marginBottom:8,paddingBottom:8,borderBottom:`1px solid ${ac}40`}}>{b.text}</div>);
+    else if(b.type==='h3') elems.push(<div key={i} style={{fontSize:13,fontWeight:500,color:ac,marginTop:16,marginBottom:6,textTransform:'uppercase',letterSpacing:'.6px'}}>{tipify(b.text,`h3${i}`)}</div>);
+    else if(b.type==='callout') elems.push(<div key={i} style={{background:'var(--bg3)',borderLeft:`2px solid ${ac}`,borderRadius:'0 5px 5px 0',padding:'9px 13px',marginBottom:12,fontSize:12,color:'var(--text3)',lineHeight:1.7,fontStyle:'italic'}}>{tipify(b.text,`co${i}`)}</div>);
+    else if(b.type==='bold') elems.push(<div key={i} style={{fontSize:13,fontWeight:500,color:'var(--text)',marginBottom:4,marginTop:8}}>{tipify(b.text,`bo${i}`)}</div>);
+    else if(b.type==='hr') elems.push(<div key={i} style={{height:1,background:'var(--border)',margin:'16px 0'}}/>);
+    else if(b.type==='p') elems.push(<p key={i} style={{fontSize:13,color:'var(--text2)',lineHeight:1.8,marginBottom:12}}>{tipify(b.text,`p${i}`)}</p>);
+  });
+  flushLi();
+  return <div style={{paddingTop:4}}>{elems}</div>;
+}
 function CF({label,value,accent,mono,gl,glc}){
   return <div className="cf-wrap">
     <div className="cf-lbl">{label}</div>
     <div className="cf-val" style={{borderLeftColor:accent||'var(--border2)',fontFamily:mono?'monospace':'inherit'}}>{value}</div>
-    {gl && <span className="cf-gl" style={{background:glc+'22',color:glc,border:`1px solid ${glc}44`}}>{gl}</span>}
+    {gl && <Tip term={gl}><span className="cf-gl" style={{background:glc+'22',color:glc,border:`1px solid ${glc}44`}}>{gl}</span></Tip>}
   </div>;
 }
 function DoneBadge(){
@@ -604,11 +2476,11 @@ function WsPains({sample}){
   if(sample) return <>
     <DoneBadge/>
     <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim fears</div>
-      {[S.fear1,S.fear2,S.fear3].map((f,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><span className="gbl g3b">F{i+1}</span><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--sal)',fontStyle:'italic'}}>{f}</div></div>)}
+      {[S.fear1,S.fear2,S.fear3].map((f,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><Tip term={`F${i+1}`}><span className="gbl g3b">F{i+1}</span></Tip><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--sal)',fontStyle:'italic'}}>{f}</div></div>)}
     </div>
     <div className="wdiv"/>
     <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim desires</div>
-      {[S.desire1,S.desire2,S.desire3].map((d,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><span className="gbl g4b">D{i+1}</span><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--ofr)',fontStyle:'italic'}}>{d}</div></div>)}
+      {[S.desire1,S.desire2,S.desire3].map((d,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><Tip term={`D${i+1}`}><span className="gbl g4b">D{i+1}</span></Tip><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--ofr)',fontStyle:'italic'}}>{d}</div></div>)}
     </div>
     <div className="wdiv"/>
     <CF label="Enemy Narrative" value={S.enemy} accent="var(--str)"/>
@@ -616,9 +2488,9 @@ function WsPains({sample}){
   </>;
   return <>
     <div className="notice nw"><span>&#9673;</span><span>The Enemy is a convergent system — not the client's character, choices, or mindset.</span></div>
-    <div className="fg"><div className="fl">Top 3 verbatim fears</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><span className="gbl g3b">F{i}</span><input className="fi" type="text" placeholder={`Fear ${i} — exact quote...`}/></div>)}</div>
+    <div className="fg"><div className="fl">Top 3 verbatim fears</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><Tip term={`F${i}`}><span className="gbl g3b">F{i}</span></Tip><input className="fi" type="text" placeholder={`Fear ${i} — exact quote...`}/></div>)}</div>
     <div className="wdiv"/>
-    <div className="fg"><div className="fl">Top 3 verbatim desires</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><span className="gbl g4b">D{i}</span><input className="fi" type="text" placeholder={`Desire ${i} — exact quote...`}/></div>)}</div>
+    <div className="fg"><div className="fl">Top 3 verbatim desires</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><Tip term={`D${i}`}><span className="gbl g4b">D{i}</span></Tip><input className="fi" type="text" placeholder={`Desire ${i} — exact quote...`}/></div>)}</div>
     <div className="wdiv"/>
     <div className="fg"><div className="fl">Enemy Narrative</div><textarea className="fi" rows={4} placeholder="The Enemy is not [client's character]. The Enemy is the convergent set of [forces]..."/></div>
     <button className="wbtn">Save Emotional Triggers</button>
@@ -664,7 +2536,7 @@ function WsOffer({sample}){
 }
 function WsGeneric({tool,sample}){
   const s=STAGES[tool.stage];
-  const glMap={competitor:'G1',avatar:'G1',adspy:'G2',contentspy:'G2',attention:'G2',creative:'G2',generateads:'G2',logo:'G1',landing:'G2',salesletter:'G2',social:'G2',meta:'G1',pixel:'G1',launchads:'G2',socials:'G1',website:'G2',salespreso:'G2',nurture:'G2',vsl:'G2',salesscript:'G1',settingscript:'G1',form:'G1',ghl:'G1',solution:'G2',icp:'G2',pricing:'G2',gtm:'G2'};
+  const glMap={competitor:'G1',avatar:'G1',adspy:'G2',contentspy:'G2',attention:'G2',creative:'G2',generateads:'G2',logo:'G1',landing:'G2',salesletter:'G2',social:'G2',meta:'G1',pixel:'G1',launchads:'G2',socials:'G1',website:'G2',salespreso:'G2',nurture:'G2',vsl:'G2',salesscript:'G1',settingscript:'G1',form:'G1',ghl:'G1',solution:'G2',icp:'G2',pricing:'G2',gtm:'G2',onboarding:'G1',clientintake:'G1',executionsop:'G1',qcchecklist:'G1',milestones:'G2',proofcapture:'G1',offboarding:'G2'};
   const glcMap={G1:'var(--out)',G2:'var(--str)',G3:'var(--sal)',G4:'var(--ofr)'};
   const gl=glMap[tool.ws]||'G2';const glc=glcMap[gl];
   const notesTxt=S.notes[tool.id]||'';const gateTxt=S.gate[tool.id]||'';
@@ -677,7 +2549,7 @@ function WsGeneric({tool,sample}){
     <CF label="Working notes" value={notesTxt} accent={s.c}/>
     <div style={{marginBottom:12}}>
       <div className="fl" style={{marginBottom:7}}>G-label for primary output</div>
-      <span style={{display:'inline-flex',background:glc+'22',color:glc,border:`1px solid ${glc}44`,borderRadius:4,padding:'3px 12px',fontSize:11,fontWeight:600}}>{gl}</span>
+      <Tip term={gl}><span style={{display:'inline-flex',background:glc+'22',color:glc,border:`1px solid ${glc}44`,borderRadius:4,padding:'3px 12px',fontSize:11,fontWeight:600}}>{gl}</span></Tip>
     </div>
     <CF label="Stage gate decision" value={gateTxt} accent="var(--out)"/>
   </>;
@@ -687,16 +2559,103 @@ function WsGeneric({tool,sample}){
       <div className="gb-sub">{s.attr} · {tool.bsec} · {tool.asset}</div>
     </div>
     <div className="fg"><div className="fl">Working notes</div><textarea className="fi" rows={4} placeholder="Begin your work here..."/></div>
-    <div className="fg"><div className="fl">G-label for primary output</div><div style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=><button key={g} className="wbtn wbtn-o" style={{padding:'3px 11px'}}>{g}</button>)}</div></div>
+    <div className="fg"><div className="fl">G-label for primary output</div><div style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=><Tip key={g} term={g}><button className="wbtn wbtn-o" style={{padding:'3px 11px'}}>{g}</button></Tip>)}</div></div>
     <div className="fg"><div className="fl">Stage gate check</div><textarea className="fi" rows={2} placeholder="Document any ASSUMPTION items, PROOF PENDING items, or conditions..."/></div>
     <button className="wbtn">Save Work</button>
   </>;
 }
+function WsQC({sample}){
+  const icofr=[
+    {k:'o1',label:'Does the Promise state a specific, deliverable-grounded outcome at G1 or G2 — written so a client could use it as a binary acceptance test?'},
+    {k:'o2',label:'Is every EXCLUDED item in the Scope Map explicit enough that no client could reasonably claim they expected it?'},
+    {k:'o3',label:'Does the Guarantee contain all four required elements: Trigger Condition, Scope, Remedy, and Operator-Side Boundaries?'},
+    {k:'o4',label:'Is the Mechanism specific enough that a client understands what they are buying — not so generic it could describe any operator in the same field?'},
+    {k:'o5',label:'Has the offer document been reviewed by someone other than the writer, using only the document itself with no verbal explanation?'},
+  ];
+  const icful=[
+    {k:'f1',label:'Does the onboarding communication define client success in the same language used in the offer?'},
+    {k:'f2',label:'Does the Client Intake Form capture constraints and access requirements — and do those constraints feed directly into the Execution SOP?'},
+    {k:'f3',label:'Is the communication free of aspirational language (G4) in any context where the client could interpret it as a commitment?'},
+    {k:'f4',label:'Are all next-step instructions actionable without a follow-up question — naming what to do, when, and to whom?'},
+    {k:'f5',label:'Is the Proof Capture consent language present before the first milestone at which proof is collected?'},
+  ];
+  const allKeys = [...icofr.map(i=>i.k),...icful.map(i=>i.k)];
+  const initPassed = sample ? Object.fromEntries(allKeys.map(k=>[k,true])) : {};
+  const [passed,setPassed]=useState(initPassed);
+  const toggle=k=>{if(!sample)setPassed(p=>({...p,[k]:!p[k]}));};
+  const oScore=icofr.filter(i=>passed[i.k]).length;
+  const fScore=icful.filter(i=>passed[i.k]).length;
+  const allPass=oScore===5&&fScore===5;
+  function Gate({label,items,score,color}){
+    return <div style={{marginBottom:18}}>
+      <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+        <div style={{fontSize:10,fontWeight:600,textTransform:'uppercase',letterSpacing:'.8px',color:color}}>{label}</div>
+        <span style={{fontSize:11,fontWeight:600,color:score===5?'var(--out)':'var(--sal)',background:score===5?'var(--out-bg)':'var(--sal-bg)',border:`1px solid ${score===5?'var(--out-b)':'var(--sal-b)'}`,borderRadius:4,padding:'1px 8px'}}>{score}/5 {score===5?'passed':'pending'}</span>
+      </div>
+      <div className="chk-list">
+        {items.map(item=><div key={item.k} className="chk" onClick={()=>toggle(item.k)}>
+          <div className={`chk-box${passed[item.k]?' ck':''}`}/>
+          <div className="chk-txt" style={{fontSize:11,color:passed[item.k]?'var(--text3)':'var(--text2)',textDecoration:passed[item.k]?'line-through':'none'}}>{item.label}</div>
+        </div>)}
+      </div>
+    </div>;
+  }
+  return <>
+    {sample&&<DoneBadge/>}
+    <div style={{display:'flex',gap:8,marginBottom:16}}>
+      <div style={{flex:1,background:'var(--bg3)',border:`1px solid ${allPass?'var(--out-b)':'var(--border)'}`,borderRadius:8,padding:'10px 14px',textAlign:'center'}}>
+        <div style={{fontSize:20,fontWeight:500,color:allPass?'var(--out)':'var(--text3)',marginBottom:2}}>{oScore+fScore}/10</div>
+        <div style={{fontSize:10,color:'var(--text3)'}}>Total checks passed</div>
+      </div>
+      <div style={{flex:1,background:allPass?'var(--out-bg)':'var(--bg3)',border:`1px solid ${allPass?'var(--out-b)':'var(--border)'}`,borderRadius:8,padding:'10px 14px',textAlign:'center'}}>
+        <div style={{fontSize:13,fontWeight:500,color:allPass?'var(--out)':'var(--text2)',marginBottom:2}}>{allPass?'Gates cleared':'Gates pending'}</div>
+        <div style={{fontSize:10,color:'var(--text3)'}}>Delivery may not begin until cleared</div>
+      </div>
+    </div>
+    <Gate label="IC-OFR — Offer document" items={icofr} score={oScore} color="var(--ofr)"/>
+    <Gate label="IC-FUL — Onboarding communication" items={icful} score={fScore} color="var(--ful)"/>
+    {sample&&<CF label="Stage gate decision" value="Proceed. IC-OFR gate: all 5 checks passed. IC-FUL gate: all 5 checks passed. No asset required revision before use." accent="var(--out)"/>}
+    {!sample&&<button className="wbtn">Record Gate Result</button>}
+  </>;
+}
+
+function WsMilestones({sample}){
+  const ms=[
+    {n:1,session:'Session 2',statement:'I can name the forces working against my pricing confidence — not as a personal failing, but as a structural reality I can now see clearly.',msg:'Something shifted in today\'s session — you named what\'s actually been happening. That\'s not a small thing. Before next week: [pre-work instruction]. Looking forward to Session 3.',proof:false},
+    {n:2,session:'Session 3',statement:'I have a written statement that describes exactly who I serve and what changes for them.',msg:'You now have your positioning statement in writing. Read it aloud to yourself tonight — not to the mirror, just to yourself. [Statement attached as PDF.] See you for Session 4.',proof:false},
+    {n:3,session:'Session 5',statement:'I have a price I can state without apologising — and I can explain why it is right.',msg:'You said the number out loud today and held it. That was the moment. [Pricing calculator attached.] One more session to build your plan.',proof:false},
+    {n:4,session:'Session 6',statement:'I have a 90-day client acquisition plan with specific weekly actions I can begin tomorrow.',msg:'Everything you came here for is now in writing. [All 4 deliverables attached.] The plan starts Monday. I will check in with you in Week 8.',proof:false},
+    {n:5,session:'Week 8 (async)',statement:'I have used the plan and have a result to report.',msg:'Week 8. How is the plan moving? Even a small action counts — I want to hear it. And if something stalled, that\'s worth talking about too. Voice note when you can.',proof:true},
+  ];
+  const [active,setActive]=useState(1);
+  const m=ms[active-1];
+  return <>
+    {sample&&<DoneBadge/>}
+    <div style={{display:'flex',gap:3,marginBottom:16}}>
+      {ms.map(x=><button key={x.n} onClick={()=>setActive(x.n)} style={{flex:1,padding:'6px 4px',border:`1px solid ${active===x.n?'var(--ful-b)':'var(--border)'}`,borderRadius:5,background:active===x.n?'var(--ful-bg)':'var(--bg3)',color:active===x.n?'var(--ful)':'var(--text3)',fontSize:10,fontWeight:600,cursor:'pointer'}}>M{x.n}</button>)}
+    </div>
+    <div style={{background:'var(--bg3)',borderRadius:8,padding:'14px 16px',marginBottom:12,borderLeft:'2px solid var(--ful)'}}>
+      <div style={{fontSize:10,color:'var(--ful)',fontWeight:500,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:6}}>Milestone {m.n} · {m.session}</div>
+      <div style={{fontSize:13,color:'var(--text)',lineHeight:1.65,fontStyle:'italic',marginBottom:10}}>"{m.statement}"</div>
+      <div style={{fontSize:10,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:5}}>Message template</div>
+      <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg4)',borderRadius:5,padding:'9px 12px'}}>{m.msg}</div>
+      {m.proof&&<div style={{marginTop:9,display:'inline-flex',alignItems:'center',gap:5,fontSize:10,color:'var(--out)',background:'var(--out-bg)',border:'1px solid var(--out-b)',borderRadius:4,padding:'2px 9px'}}>Proof Capture initiated at this milestone</div>}
+    </div>
+    {!sample&&<>
+      <div className="fg"><div className="fl">Milestone statement</div><textarea className="fi" rows={2} placeholder="In the client's own language — what do they now have or know?"/></div>
+      <div className="fg"><div className="fl">Message template</div><textarea className="fi" rows={3} placeholder="Written in the tone of genuine progress — not celebration, not pressure..."/></div>
+      <button className="wbtn">Save Milestone {active}</button>
+    </>}
+  </>;
+}
+
 function Workspace({tool,sample}){
   if(tool.ws==='validation') return <WsValidation sample={sample}/>;
   if(tool.ws==='market')     return <WsMarket sample={sample}/>;
   if(tool.ws==='pains')      return <WsPains sample={sample}/>;
   if(tool.ws==='offer')      return <WsOffer sample={sample}/>;
+  if(tool.ws==='qc')         return <WsQC sample={sample}/>;
+  if(tool.ws==='milestones') return <WsMilestones sample={sample}/>;
   return <WsGeneric tool={tool} sample={sample}/>;
 }
 
@@ -809,15 +2768,11 @@ function ToolDetail({tool,onBack,sample,role}){
     </div>
     <div className="ws-card">
       <div className="ws-lbl">{sample?`Completed workspace — The Clarity Practice`:'Workspace'}</div>
-      {canEdit
+      {(canEdit || sample)
         ? <Workspace tool={tool} sample={sample}/>
-        : <div className="view-only">
-            <div className="view-only-msg">
-              This asset is outside your edit scope as {role.label}. You have View access — use the completed data above for context when building your own assets.
-              {p==='-'&&` This tool is not part of the ${role.label} workflow.`}
-            </div>
-          </div>
+        : <div className="view-only"><div className="view-only-msg">This asset is outside your edit scope as {role.label}. You have View access — use the completed data above for context when building your own assets.{p==='-'&&` This tool is not part of the ${role.label} workflow.`}</div></div>
       }
+      {(!canEdit && sample) && <div style={{marginTop:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:6,border:'1px solid var(--border)',fontSize:11,color:'var(--text3)'}}>Read-only in {role.label} role — completed data shown for reference.</div>}
     </div>
   </div>;
 }
@@ -826,6 +2781,8 @@ function ToolDetail({tool,onBack,sample,role}){
 function AssetDetail({tool,onBack,role}){
   const s=STAGES[tool.stage];
   const p=role.id==='all'?'O':rolePerm(tool,role.id);
+  const doc = DOC[tool.id] || (S.notes[tool.id] ? `## ${tool.label}\n\n${S.notes[tool.id]}` : null);
+  const [tab,setTab]=useState(doc?'asset':'meta');
   return <div className="avd">
     <button className="avd-back" onClick={onBack}>&#8592; All assets</button>
     {role.id!=='all'&&<div className="perm-banner" style={{background:permBg(p),borderColor:permBorder(p),marginBottom:14}}>
@@ -836,19 +2793,26 @@ function AssetDetail({tool,onBack,role}){
       <div className="avd-hdr" style={{borderTop:`3px solid ${s.c}`}}>
         <div className="avd-stage-lbl" style={{color:s.c}}>Stage {s.code} {s.key} · {s.name}</div>
         <div className="avd-title">{tool.label}</div>
-        <div className="avd-meta">
+        <div className="avd-meta" style={{marginBottom:doc?12:0}}>
           <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'2px 8px',fontSize:9,fontWeight:600}}>{tool.asset}</span>
           <span style={{fontSize:9,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,padding:'2px 8px'}}>{tool.sec}</span>
         </div>
+        {doc&&<div style={{display:'flex',gap:2,borderTop:'1px solid var(--border)',marginTop:4,paddingTop:2}}>
+          <button onClick={()=>setTab('asset')} style={{padding:'6px 14px',border:'none',borderBottom:`2px solid ${tab==='asset'?s.c:'transparent'}`,background:'transparent',color:tab==='asset'?s.c:'var(--text3)',fontSize:11,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}>Full asset</button>
+          <button onClick={()=>setTab('meta')} style={{padding:'6px 14px',border:'none',borderBottom:`2px solid ${tab==='meta'?s.c:'transparent'}`,background:'transparent',color:tab==='meta'?s.c:'var(--text3)',fontSize:11,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}>Reference</button>
+        </div>}
       </div>
       <div className="avd-body">
-        <p className="avd-desc">{tool.desc}</p>
-        <div className="avd-div"/>
-        <div className="avd-row"><span className="avd-key">BBOS section</span><span className="avd-val">{tool.bsec}</span></div>
-        <div className="avd-row"><span className="avd-key">Asset</span><span className="avd-val">{tool.asset}</span></div>
-        <div className="avd-row"><span className="avd-key">Governs</span><span className="avd-val" style={{color:s.c}}>{s.attr}</span></div>
-        <div className="avd-div"/>
-        <p className="avd-rat">{tool.rat}</p>
+        {(!doc||tab==='meta')&&<>
+          <p className="avd-desc">{tool.desc}</p>
+          <div className="avd-div"/>
+          <div className="avd-row"><span className="avd-key">BBOS section</span><span className="avd-val">{tool.bsec}</span></div>
+          <div className="avd-row"><span className="avd-key">Asset</span><span className="avd-val">{tool.asset}</span></div>
+          <div className="avd-row"><span className="avd-key">Governs</span><span className="avd-val" style={{color:s.c}}>{s.attr}</span></div>
+          <div className="avd-div"/>
+          <p className="avd-rat">{tool.rat}</p>
+        </>}
+        {doc&&tab==='asset'&&<DocRenderer content={doc} stageColor={s.c}/>}
       </div>
     </div>
   </div>;
@@ -1023,7 +2987,7 @@ function App(){
         return <div key={s.key} className="sb-sec">
           <div className="sb-sec-hdr" onClick={()=>toggleCol(s.key)} style={{borderLeft:`2px solid ${s.c}40`}}>
             <div>
-              <div className="sb-sec-code" style={{color:s.c}}>{s.code} — {s.name}</div>
+              <div className="sb-sec-code" style={{color:s.c}}><Tip term={s.key}>{s.code} — {s.name}</Tip></div>
               <div className="sb-sec-attr">{s.attr}</div>
             </div>
             <div className="sb-sec-right">
