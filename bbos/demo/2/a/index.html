@@ -3,216 +3,227 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TruthMarket × BBOS — hub.ogden.ag</title>
-<meta name="description" content="TruthMarket platform mapped to the Barakah Business Operating System pipeline."/>
-<meta property="og:title" content="TruthMarket × BBOS"/>
-<meta property="og:description" content="31 tools. 6 stages. One pipeline built on integrity."/>
-<meta property="og:url" content="https://hub.ogden.ag"/>
-<meta name="canonical" content="https://hub.ogden.ag"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<title>TruthMarket × BBOS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0d0f11;
-  --bg2:#13161a;
-  --bg3:#1c2026;
-  --bg4:#232830;
-  --border:#ffffff12;
-  --border2:#ffffff1f;
-  --text:#e8e3dc;
-  --text2:#9e9690;
-  --text3:#5c5852;
-  --accent:#c9a05a;
-  --accent2:#a07a38;
-  --accent-bg:#c9a05a15;
-  --radius:10px;
-  --radius-sm:6px;
-
-  --qal:#d4974a;--qal-bg:#d4974a18;--qal-border:#d4974a40;
-  --str:#5b9bd5;--str-bg:#5b9bd518;--str-border:#5b9bd540;
-  --ofr:#9b7dd4;--ofr-bg:#9b7dd418;--ofr-border:#9b7dd440;
-  --out:#5ab87a;--out-bg:#5ab87a18;--out-border:#5ab87a40;
-  --sal:#d47560;--sal-bg:#d4756018;--sal-border:#d4756040;
-  --ful:#4ab8a8;--ful-bg:#4ab8a818;--ful-border:#4ab8a840;
+  --bg:#0d0f11;--bg2:#13161a;--bg3:#1c2026;--bg4:#232830;
+  --border:#ffffff12;--border2:#ffffff1f;
+  --text:#e8e3dc;--text2:#9e9690;--text3:#5c5852;
+  --accent:#c9a05a;--accent2:#a07a38;--accent-bg:#c9a05a15;
+  --qal:#d4974a;--qal-bg:#d4974a15;--qal-b:#d4974a40;
+  --str:#5b9bd5;--str-bg:#5b9bd515;--str-b:#5b9bd540;
+  --ofr:#9b7dd4;--ofr-bg:#9b7dd415;--ofr-b:#9b7dd440;
+  --out:#5ab87a;--out-bg:#5ab87a15;--out-b:#5ab87a40;
+  --sal:#d47560;--sal-bg:#d4756015;--sal-b:#d4756040;
+  --ful:#4ab8a8;--ful-bg:#4ab8a815;--ful-b:#4ab8a840;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6}
-.app{display:grid;grid-template-columns:280px 1fr;grid-template-rows:52px 1fr;height:100vh;overflow:hidden}
-
-/* TOPBAR */
-.topbar{grid-column:1/-1;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--border);background:var(--bg2);gap:16px;z-index:10}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-mark{width:26px;height:26px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center}
-.logo-mark svg{width:14px;height:14px;fill:var(--bg)}
-.logo-text{font-family:'DM Serif Display',serif;font-size:15px;letter-spacing:.3px;color:var(--text)}
-.logo-sep{color:var(--text3);font-size:13px;margin:0 4px}
-.logo-sub{font-size:12px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.tb-badge{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent2)40;font-weight:500}
-.progress-bar{display:flex;align-items:center;gap:4px}
-.pb-dot{width:7px;height:7px;border-radius:50%}
-.pb-dot.done{background:var(--out)}
-.pb-dot.active{background:var(--accent)}
-.pb-dot.pending{background:var(--bg4)}
-
-/* SIDEBAR */
-.sidebar{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
-.sidebar::-webkit-scrollbar{width:3px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--bg4)}
-.nav-section{border-bottom:1px solid var(--border)}
-.nav-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 8px;cursor:pointer;user-select:none}
-.nav-section-hdr:hover{background:var(--bg3)}
-.nav-section-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
-.nav-section-count{font-size:10px;color:var(--text3);background:var(--bg4);padding:1px 6px;border-radius:10px}
-.nav-chevron{font-size:8px;color:var(--text3);transition:transform .2s}
-.nav-chevron.open{transform:rotate(0)}
-.nav-chevron.closed{transform:rotate(-90deg)}
-.nav-item{display:flex;align-items:center;padding:7px 18px 7px 16px;cursor:pointer;gap:10px;border-left:2px solid transparent;transition:all .12s}
-.nav-item:hover{background:var(--bg3)}
-.nav-item.active{background:var(--accent-bg);border-left-color:var(--accent)}
-.nav-item-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.nav-item-label{font-size:13px;color:var(--text2);flex:1;line-height:1.3}
-.nav-item.active .nav-item-label{color:var(--text)}
-.nav-item-stage{font-size:9px;font-weight:500;padding:2px 6px;border-radius:4px;flex-shrink:0;letter-spacing:.3px}
-
-/* PIPELINE NAV */
-.pipeline-nav{padding:14px 18px;border-bottom:1px solid var(--border)}
-.pipeline-nav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:13px;font-family:inherit;transition:all .12s}
-.pipeline-nav-btn:hover{background:var(--bg3)}
-.pipeline-nav-btn.active{background:var(--accent-bg);color:var(--accent)}
-.pipeline-nav-btn svg{width:14px;height:14px;flex-shrink:0}
-
-/* MAIN */
-.main{overflow-y:auto;overflow-x:hidden;background:var(--bg)}
-.main::-webkit-scrollbar{width:4px}
-.main::-webkit-scrollbar-thumb{background:var(--bg4)}
-
-/* OVERVIEW */
-.overview{padding:28px 32px}
-.overview-hero{margin-bottom:28px}
-.overview-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);font-weight:500;margin-bottom:8px}
-.overview-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text);line-height:1.25;margin-bottom:10px}
-.overview-sub{font-size:14px;color:var(--text2);line-height:1.7;max-width:560px}
-.stage-pipeline{display:flex;gap:2px;margin-bottom:32px;flex-wrap:wrap}
-.stage-pip-item{flex:1;min-width:90px;padding:14px 14px 12px;border-radius:var(--radius-sm);border:1px solid;cursor:pointer;transition:all .15s}
-.stage-pip-item:hover{transform:translateY(-1px)}
-.stage-pip-code{font-size:10px;font-weight:500;letter-spacing:.8px;opacity:.7;margin-bottom:5px}
-.stage-pip-name{font-size:12px;font-weight:500;margin-bottom:3px}
-.stage-pip-count{font-size:10px;opacity:.6}
-.stage-pip-attr{font-size:9px;opacity:.5;margin-top:4px;line-height:1.4}
-.section-divider{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.section-divider-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:500;white-space:nowrap}
-.section-divider-line{flex:1;height:1px;background:var(--border)}
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:28px}
-.tool-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all .15s}
-.tool-card:hover{border-color:var(--border2);background:var(--bg3);transform:translateY(-1px)}
-.tool-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
-.tool-card-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.35}
-.tool-card-stage{font-size:9px;font-weight:500;padding:2px 7px;border-radius:4px;flex-shrink:0;letter-spacing:.3px;margin-top:2px}
-.tool-card-asset{font-size:11px;color:var(--text3);line-height:1.4}
-
-/* DETAIL */
-.detail{padding:28px 32px;max-width:780px}
-.breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:20px;font-size:12px;color:var(--text3)}
-.breadcrumb-sep{color:var(--text3)}
-.breadcrumb-link{color:var(--text3);background:none;border:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0}
-.breadcrumb-link:hover{color:var(--text2)}
-.detail-header{margin-bottom:24px}
-.detail-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:8px}
-.detail-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.25;color:var(--text);margin-bottom:14px}
-.detail-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.badge{font-size:11px;font-weight:500;padding:4px 12px;border-radius:5px;letter-spacing:.3px}
-.badge-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
-.detail-block{border-radius:var(--radius);padding:16px 18px}
-.detail-block-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:500;margin-bottom:6px;opacity:.7}
-.detail-block-value{font-size:13px;line-height:1.5}
-.detail-rationale{border-top:1px solid var(--border);padding-top:20px;margin-bottom:28px}
-.detail-rationale-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px}
-.detail-rationale-text{font-size:14px;color:var(--text2);line-height:1.8}
-.detail-workspace{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
-.workspace-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:14px}
-.field-group{margin-bottom:16px}
-.field-label{font-size:12px;color:var(--text3);margin-bottom:5px;font-weight:500}
-.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border .15s;resize:vertical}
-.field-input:focus{border-color:var(--accent2)}
-.field-input::placeholder{color:var(--text3)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ws-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:var(--radius-sm);background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .15s;margin-top:4px}
-.ws-btn:hover{background:#d4a84e}
-.ws-btn-outline{background:transparent;color:var(--text2);border:1px solid var(--border2)}
-.ws-btn-outline:hover{background:var(--bg3);color:var(--text)}
-.ws-divider{height:1px;background:var(--border);margin:16px 0}
-.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:4px;background:var(--bg4);color:var(--text2);border:1px solid var(--border)}
-.gate-block{background:var(--bg3);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;border-left:3px solid}
-.gate-block-title{font-size:12px;font-weight:500;margin-bottom:4px}
-.gate-block-text{font-size:12px;color:var(--text2);line-height:1.6}
-.checklist{display:flex;flex-direction:column;gap:8px}
-.check-item{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
-.check-box{width:16px;height:16px;border-radius:4px;border:1px solid var(--border2);background:var(--bg3);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .12s}
-.check-box.checked{background:var(--out);border-color:var(--out)}
-.check-box.checked::after{content:'✓';font-size:9px;color:#fff;line-height:1}
-.check-text{font-size:13px;color:var(--text2);line-height:1.4}
-.check-text.checked{color:var(--text3);text-decoration:line-through}
-.notice{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-sm);margin-bottom:16px}
-.notice-icon{font-size:14px;flex-shrink:0;margin-top:1px}
-.notice-text{font-size:12px;line-height:1.6}
-.notice.info{background:var(--str-bg);border:1px solid var(--str-border);color:var(--str)}
-.notice.warning{background:var(--qal-bg);border:1px solid var(--qal-border);color:var(--qal)}
-.glabel{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:4px;font-size:10px;font-weight:600;flex-shrink:0}
-.g1{background:#5ab87a22;color:var(--out);border:1px solid var(--out-border)}
-.g2{background:#5b9bd522;color:var(--str);border:1px solid var(--str-border)}
-.g3{background:#d4756022;color:var(--sal);border:1px solid var(--sal-border)}
-.g4{background:#9b7dd422;color:var(--ofr);border:1px solid var(--ofr-border)}
-.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.tab-btn{padding:8px 16px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:all .12s;margin-bottom:-1px;letter-spacing:.3px}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
-.tab-btn:hover:not(.active){color:var(--text2)}
-
-/* VIEW TOGGLE */
-.view-toggle{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px;gap:2px}
-.vt-btn{padding:4px 12px;border-radius:4px;border:none;background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;letter-spacing:.3px}
-.vt-btn.active{background:var(--bg4);color:var(--text);box-shadow:0 1px 3px #00000030}
-.vt-btn:hover:not(.active){color:var(--text2)}
-
-/* ASSET VIEW */
-.asset-view{padding:28px 32px;max-width:820px}
-.av-stage-block{margin-bottom:36px}
-.av-stage-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.av-stage-pill{padding:4px 12px;border-radius:5px;font-size:11px;font-weight:600;letter-spacing:.5px}
-.av-stage-name{font-size:14px;font-weight:500;color:var(--text)}
-.av-stage-attr{font-size:11px;color:var(--text3);font-style:italic;margin-left:auto}
-.av-asset-list{display:flex;flex-direction:column;gap:1px}
-.av-asset-row{display:flex;align-items:flex-start;gap:0;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .12s}
-.av-asset-row:first-child{border-radius:var(--radius) var(--radius) 0 0}
-.av-asset-row:last-child{border-radius:0 0 var(--radius) var(--radius)}
-.av-asset-row:only-child{border-radius:var(--radius)}
-.av-asset-row:not(:last-child){border-bottom-color:transparent}
-.av-asset-row:hover{background:var(--bg3);z-index:1;border-color:var(--border2)}
-.av-asset-row.selected{background:var(--accent-bg);border-color:var(--accent2)40;z-index:2}
-.av-asset-marker{width:3px;border-radius:2px 0 0 2px;align-self:stretch;flex-shrink:0}
-.av-asset-body{flex:1;padding:13px 16px;min-width:0}
-.av-asset-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;line-height:1.35}
-.av-asset-row.selected .av-asset-name{color:var(--accent)}
-.av-asset-ref{font-size:11px;color:var(--text3);line-height:1.4}
-.av-asset-section{font-size:10px;color:var(--text3);background:var(--bg4);border-radius:3px;padding:1px 6px;white-space:nowrap;align-self:center;margin-right:14px;margin-top:13px;flex-shrink:0}
-
-/* ASSET DETAIL PANEL */
-.av-detail{padding:28px 32px;max-width:780px}
-.av-detail-back{display:flex;align-items:center;gap:6px;margin-bottom:20px;font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
-.av-detail-back:hover{color:var(--text2)}
-.av-asset-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg,12px);overflow:hidden;margin-bottom:16px}
-.av-card-header{padding:20px 24px 18px;border-bottom:1px solid var(--border)}
-.av-card-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:6px}
-.av-card-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1.3;margin-bottom:10px}
-.av-card-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.av-card-body{padding:20px 24px}
-.av-desc{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:0}
-.av-divider{height:1px;background:var(--border);margin:20px 0}
-.av-field-row{display:flex;gap:6px;margin-bottom:10px;align-items:flex-start}
-.av-field-key{font-size:11px;color:var(--text3);min-width:110px;flex-shrink:0;padding-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
-.av-field-val{font-size:13px;color:var(--text2);line-height:1.5}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;overflow:hidden}
+.app{display:grid;grid-template-columns:272px 1fr;grid-template-rows:52px 1fr;height:100vh}
+/* topbar */
+.tb{grid-column:1/-1;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--border);background:var(--bg2);gap:10px;z-index:10;flex-wrap:nowrap;overflow:hidden}
+.tb-logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tb-mark{width:24px;height:24px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-mark svg{width:12px;height:12px;fill:var(--bg)}
+.tb-name{font-family:'DM Serif Display',serif;font-size:14px;color:var(--text)}
+.tb-sep{color:var(--text3);font-size:12px;margin:0 1px}
+.tb-sub{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.tb-divider{width:1px;height:20px;background:var(--border2);flex-shrink:0;margin:0 2px}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:7px;flex-shrink:0}
+/* role selector */
+.role-sel-wrap{display:flex;align-items:center;gap:5px}
+.role-sel-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;flex-shrink:0}
+.role-sel{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px;gap:1px}
+.rs-btn{padding:3px 10px;border-radius:4px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;white-space:nowrap;letter-spacing:.2px}
+.rs-btn.on{color:var(--text)}
+.rs-btn:not(.on){color:var(--text3)}
+.rs-btn:hover:not(.on){color:var(--text2)}
+/* view seg */
+.seg{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px;gap:1px}
+.sg-btn{padding:3px 10px;border-radius:4px;border:none;background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;letter-spacing:.2px}
+.sg-btn.on{background:var(--bg4);color:var(--text)}
+.sg-btn:hover:not(.on){color:var(--text2)}
+.tb-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;flex-shrink:0}
+/* sidebar */
+.sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+.sb::-webkit-scrollbar{width:3px}.sb::-webkit-scrollbar-thumb{background:var(--bg4)}
+.role-banner{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.role-avatar{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.role-banner-info{flex:1;min-width:0}
+.role-banner-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.2}
+.role-banner-sub{font-size:10px;color:var(--text3)}
+.sb-top{padding:8px 14px;border-bottom:1px solid var(--border)}
+.sb-overview{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:5px;border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:12px;font-family:'DM Sans',sans-serif;width:100%;transition:all .12s}
+.sb-overview:hover,.sb-overview.on{background:var(--accent-bg);color:var(--accent)}
+.sb-overview svg{width:12px;height:12px;flex-shrink:0}
+.sb-sec{border-bottom:1px solid var(--border)}
+.sb-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 6px;cursor:pointer;user-select:none}
+.sb-sec-hdr:hover{background:var(--bg3)}
+.sb-sec-code{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.sb-sec-attr{font-size:9px;color:var(--text3);font-style:italic;margin-top:1px}
+.sb-sec-right{display:flex;align-items:center;gap:5px}
+.sb-cnt{font-size:9px;padding:1px 6px;border-radius:10px;font-weight:500}
+.sb-chev{font-size:8px;color:var(--text3);transition:transform .15s}
+.sb-chev.open{transform:rotate(0)}.sb-chev.closed{transform:rotate(-90deg)}
+.sb-item{display:flex;align-items:center;padding:5px 14px 5px 12px;cursor:pointer;gap:8px;border-left:2px solid transparent;transition:all .12s}
+.sb-item:hover{background:var(--bg3)}
+.sb-item.on{background:var(--accent-bg);border-left-color:var(--accent)}
+.sb-item-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sb-item-body{flex:1;min-width:0}
+.sb-item-label{font-size:11px;color:var(--text2);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item.on .sb-item-label{color:var(--text)}
+.sb-item-sub{font-size:9px;color:var(--text3)}
+.perm-pill{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0}
+/* main */
+.main{overflow-y:auto;background:var(--bg)}
+.main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--bg4)}
+/* role dashboard */
+.dash{padding:24px 28px}
+.dash-hdr{margin-bottom:22px}
+.dash-role-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.dash-avatar{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;flex-shrink:0}
+.dash-role-name{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);line-height:1.2}
+.dash-role-scope{font-size:13px;color:var(--text2);line-height:1.6;max-width:520px}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px}
+.stat-num{font-size:22px;font-weight:500;margin-bottom:2px}
+.stat-lbl{font-size:11px;color:var(--text3)}
+.dash-section{margin-bottom:22px}
+.dash-sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.dash-sec-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--text3)}
+.dash-sec-line{flex:1;height:1px;background:var(--border)}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 14px;cursor:pointer;transition:all .14s}
+.dash-card:hover{background:var(--bg3);border-color:var(--border2);transform:translateY(-1px)}
+.dash-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:6px}
+.dash-card-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
+.dash-card-asset{font-size:10px;color:var(--text3);line-height:1.3}
+.dash-card-stage{font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600;flex-shrink:0;letter-spacing:.3px}
+.ref-card{opacity:.7}
+.ref-card:hover{opacity:1}
+/* overview */
+.ov{padding:24px 28px}
+.ov-ey{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);font-weight:500;margin-bottom:6px}
+.ov-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);line-height:1.2;margin-bottom:8px}
+.ov-sub{font-size:13px;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:24px}
+.pip{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:26px}
+.pip-item{flex:1;min-width:84px;padding:11px 12px;border-radius:5px;border:1px solid}
+.pip-code{font-size:9px;font-weight:600;letter-spacing:.8px;margin-bottom:3px;opacity:.7}
+.pip-name{font-size:11px;font-weight:500;margin-bottom:2px}
+.pip-cnt{font-size:10px;opacity:.5;margin-bottom:2px}
+.pip-attr{font-size:9px;opacity:.4;line-height:1.3}
+.sec-div{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.sec-div-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:500;white-space:nowrap}
+.sec-div-line{flex:1;height:1px;background:var(--border)}
+.sec-div-cnt{font-size:10px;color:var(--text3);white-space:nowrap}
+.tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:8px;margin-bottom:22px}
+.tc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;cursor:pointer;transition:all .14s}
+.tc:hover{background:var(--bg3);border-color:var(--border2);transform:translateY(-1px)}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:6px}
+.tc-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
+.tc-asset{font-size:10px;color:var(--text3)}
+/* detail */
+.det{padding:24px 28px;max-width:740px}
+.bc{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:11px;color:var(--text3)}
+.bc-btn{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);padding:0}
+.bc-btn:hover{color:var(--text2)}
+.perm-banner{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:6px;margin-bottom:16px;border:1px solid}
+.perm-banner-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px}
+.perm-banner-desc{font-size:12px;line-height:1.5}
+.det-ey{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:6px}
+.det-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);line-height:1.25;margin-bottom:12px}
+.det-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.bgo{font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid var(--border2);color:var(--text2);background:transparent}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px}
+.det-blk{border-radius:9px;padding:13px 15px}
+.det-blk-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:500;margin-bottom:4px;opacity:.7}
+.det-blk-val{font-size:12px;line-height:1.5}
+.det-rat{border-top:1px solid var(--border);padding-top:16px;margin-bottom:22px}
+.det-rat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:8px}
+.det-rat-txt{font-size:13px;color:var(--text2);line-height:1.8}
+.ws-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px}
+.ws-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:12px}
+/* workspace */
+.tabs{display:flex;gap:1px;border-bottom:1px solid var(--border);margin-bottom:13px}
+.tab{padding:6px 13px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;transition:all .12s;margin-bottom:-1px}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:hover:not(.on){color:var(--text2)}
+.fg{margin-bottom:12px}
+.fl{font-size:10px;color:var(--text3);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border .15s;resize:vertical}
+.fi:focus{border-color:var(--accent2)}
+.fi::placeholder{color:var(--text3)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.wbtn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:5px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:all .14s;margin-top:2px}
+.wbtn:hover{background:#d4a84e}
+.wbtn-o{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.wbtn-o:hover{background:var(--bg3);color:var(--text)}
+.wdiv{height:1px;background:var(--border);margin:11px 0}
+.notice{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:5px;margin-bottom:12px;font-size:11px;line-height:1.6}
+.ni{background:var(--str-bg);border:1px solid var(--str-b);color:var(--str)}
+.nw{background:var(--qal-bg);border:1px solid var(--qal-b);color:var(--qal)}
+.gbl{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;font-size:9px;font-weight:700;flex-shrink:0}
+.g1b{background:var(--out-bg);color:var(--out);border:1px solid var(--out-b)}
+.g2b{background:var(--str-bg);color:var(--str);border:1px solid var(--str-b)}
+.g3b{background:var(--sal-bg);color:var(--sal);border:1px solid var(--sal-b)}
+.g4b{background:var(--ofr-bg);color:var(--ofr);border:1px solid var(--ofr-b)}
+.gb-block{background:var(--bg3);border-radius:9px;padding:10px 13px;margin-bottom:12px;border-left:3px solid}
+.gb-title{font-size:11px;font-weight:500;margin-bottom:2px}
+.gb-sub{font-size:10px;color:var(--text2);line-height:1.5}
+.chk-list{display:flex;flex-direction:column;gap:6px}
+.chk{display:flex;align-items:flex-start;gap:8px;cursor:pointer}
+.chk-box{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);background:var(--bg3);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.chk-box.ck{background:var(--out);border-color:var(--out)}
+.chk-box.ck::after{content:'✓';font-size:8px;color:#fff}
+.chk-txt{font-size:12px;color:var(--text2);line-height:1.3}
+.chk-desc{font-size:10px;color:var(--text3);margin-top:1px}
+.chk-txt.ck{color:var(--text3);text-decoration:line-through}
+.cf-wrap{margin-bottom:12px}
+.cf-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:4px}
+.cf-val{font-size:12px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:4px;padding:8px 12px;border-left:2px solid;white-space:pre-wrap}
+.cf-gl{display:inline-flex;margin-top:4px;border-radius:3px;padding:2px 7px;font-size:9px;font-weight:600}
+.done-badge{display:flex;align-items:center;gap:6px;padding:6px 11px;background:var(--out-bg);border:1px solid var(--out-b);border-radius:4px;margin-bottom:13px}
+/* asset view */
+.av{padding:24px 28px}
+.av-stage{margin-bottom:26px}
+.av-stage-hdr{display:flex;align-items:center;gap:9px;margin-bottom:11px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.av-stage-name{font-size:13px;font-weight:500;color:var(--text)}
+.av-stage-attr{font-size:10px;color:var(--text3);font-style:italic;margin-left:auto}
+.av-list{display:flex;flex-direction:column;gap:1px}
+.av-row{display:flex;align-items:stretch;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .12s}
+.av-row:first-child{border-radius:9px 9px 0 0}
+.av-row:last-child{border-radius:0 0 9px 9px}
+.av-row:only-child{border-radius:9px}
+.av-row:not(:last-child){border-bottom-color:transparent}
+.av-row:hover{background:var(--bg3);border-color:var(--border2);z-index:1}
+.av-row.on{background:var(--accent-bg);border-color:var(--accent2)50}
+.av-bar{width:3px;border-radius:2px 0 0 2px;flex-shrink:0}
+.av-body{flex:1;padding:10px 13px;min-width:0}
+.av-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.av-row.on .av-name{color:var(--accent)}
+.av-ref{font-size:10px;color:var(--text3)}
+.av-right{display:flex;align-items:center;gap:6px;margin-right:13px;flex-shrink:0}
+.av-sec{font-size:9px;color:var(--text3);background:var(--bg4);border-radius:3px;padding:1px 5px;white-space:nowrap}
+/* asset detail */
+.avd{padding:24px 28px;max-width:740px}
+.avd-back{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
+.avd-back:hover{color:var(--text2)}
+.avd-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.avd-hdr{padding:16px 20px 14px;border-bottom:1px solid var(--border)}
+.avd-stage-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.8}
+.avd-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text);margin-bottom:9px}
+.avd-meta{display:flex;gap:6px;flex-wrap:wrap}
+.avd-body{padding:16px 20px}
+.avd-desc{font-size:13px;color:var(--text2);line-height:1.8}
+.avd-div{height:1px;background:var(--border);margin:14px 0}
+.avd-row{display:flex;gap:6px;margin-bottom:7px}
+.avd-key{font-size:10px;color:var(--text3);min-width:95px;flex-shrink:0;padding-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.avd-val{font-size:12px;color:var(--text2);line-height:1.5}
+.avd-rat{font-size:12px;color:var(--text3);line-height:1.7;font-style:italic}
+/* view-only overlay */
+.view-only{background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:14px 18px;margin-top:4px}
+.view-only-msg{font-size:12px;color:var(--text3);line-height:1.7}
 </style>
 </head>
 <body>
@@ -221,742 +232,823 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script type="text/babel">
-const { useState, useCallback } = React;
+const {useState} = React;
 
-const STAGES = {
-  QAL:{code:'01',key:'QAL',name:'Qualification',attr:'Al-Haqq · Al-Khabir',color:'var(--qal)',bg:'var(--qal-bg)',border:'var(--qal-border)'},
-  STR:{code:'02',key:'STR',name:'Strategy',attr:'Al-Basir',color:'var(--str)',bg:'var(--str-bg)',border:'var(--str-border)'},
-  OFR:{code:'03',key:'OFR',name:'Offer',attr:'Al-Adl · Al-Muqsit',color:'var(--ofr)',bg:'var(--ofr-bg)',border:'var(--ofr-border)'},
-  OUT:{code:'04',key:'OUT',name:'Outreach',attr:'Ar-Razzaq · As-Sittir',color:'var(--out)',bg:'var(--out-bg)',border:'var(--out-border)'},
-  SAL:{code:'05',key:'SAL',name:'Sales',attr:'Ar-Razzaq · Al-Latif',color:'var(--sal)',bg:'var(--sal-bg)',border:'var(--sal-border)'},
-  FUL:{code:'06',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',color:'var(--ful)',bg:'var(--ful-bg)',border:'var(--ful-border)'},
-};
-
-const TOOLS = [
-  // RESEARCH
-  {id:'market',label:"Find Your Market",section:'Research',stage:'STR',asset:'S1 — Market Definition',bbosSection:'Research Factory',
-   desc:'Define the target buyer\'s current situation and operating context before any strategy is built.',
-   rationale:'This is the first output of the STR Research Factory. No Enemy Narrative, VoC Bank, or Amanah Content Engine can begin without a grounded Market Definition. A definition built from assumption rather than data will distort every downstream asset.',
-   workspace:'market'},
-  {id:'pains',label:'Find Bleeding-Neck Pains',section:'Research',stage:'STR',asset:'S3 — Emotional Triggers & Enemy Narrative',bbosSection:'Research Factory',
-   desc:'Extract verbatim fears and desires from VoC data. Name the Enemy as a convergent system of forces.',
-   rationale:'The Enemy is named as a convergent set of cultural, economic, or systemic forces — not the prospect\'s character or choices. This is what separates messaging that heals from messaging that wounds.',
-   workspace:'pains'},
-  {id:'solution',label:'Build Your Solution',section:'Research',stage:'OFR',asset:'Asset 3 — Mechanism',bbosSection:'Asset Factory',
-   desc:'Define the specific ethical process that reliably produces the promised result.',
-   rationale:'The Mechanism must be verifiable at G1 or G2 before the offer is designed. A Mechanism labelled G3 cannot anchor a G1 Promise. The Mechanism is what makes the offer honest rather than aspirational.',
-   workspace:'solution'},
-  {id:'icp',label:'ICP Segmentation',section:'Research',stage:'OFR',asset:'Asset 2 — Ideal Customer Profile',bbosSection:'Asset Factory',
-   desc:'Build the ICP specific enough to qualify or disqualify a prospect at the Sales stage.',
-   rationale:'An ICP built from assumption rather than VoC data produces SAL stage failures. The ICP is not a description of who the operator wants to serve — it is a portrait constructed from what the data revealed.',
-   workspace:'icp'},
-  {id:'competitor',label:'Competitor Search',section:'Research',stage:'STR',asset:'S4 — Competitive Enemy & Advantage Register',bbosSection:'Research Factory',
-   desc:'Identify the specific gap no existing offer is filling. Build the Advantage Register.',
-   rationale:'Competitors are not defeated by imitation — they are defeated by naming what they cannot honestly name. The Advantage Register is built here and carries forward into the Positioning Statement.',
-   workspace:'competitor'},
-  {id:'offer',label:'Offer Creation',section:'Research',stage:'OFR',asset:'Assets 1–7 — Full Offer Covenant',bbosSection:'Asset Factory',
-   desc:'Design the offer as a covenant: Promise, Mechanism, Scope Map, Value Stack, Guarantee, and Pricing.',
-   rationale:'The offer is a public covenant — not a product. Al-Muqsit is most often absent at the edges of an agreement. A covenant missing any one of its elements leaves the client carrying risk that belongs to the operator.',
-   workspace:'offer'},
-  {id:'gtm',label:'Proven GTM',section:'Research',stage:'OUT',asset:'Stage 04 — Outreach Strategy',bbosSection:'Stage Entry',
-   desc:'Build the Go-To-Market strategy downstream of the STR Positioning Statement and Truth-Gate Advisory.',
-   rationale:'Distribution is constructed on what was earned from data — not on what the operator wants to say. A GTM built before the Truth-Gate is cleared produces outreach that cannot be substantiated.',
-   workspace:'gtm'},
-  {id:'pricing',label:'Pricing',section:'Research',stage:'OFR',asset:'Asset 7 — Pricing Structure',bbosSection:'Asset Factory',
-   desc:'Reflect honest valuation against the Value Stack — not what the market might bear.',
-   rationale:'Al-Muqsit is present at pricing when the number reflects what is genuinely being exchanged. The question is not "what will they pay" but "what is this honestly worth against what I am delivering."',
-   workspace:'pricing'},
-  {id:'validation',label:'Expert Validation Score',section:'Research',stage:'QAL',asset:'Amanah Gate — S1–S6 Screening',bbosSection:'Research Factory',
-   desc:'Screen the operator\'s core competency, market viability, and capacity to build with integrity.',
-   rationale:'The Amanah Gate must be passed before STR research begins. A failed Amanah Gate routes to Stage 01.1 Rejection. Proceeding without clearing this gate is not a shortcut — it is a structural integrity failure.',
-   workspace:'validation'},
-  // OFFER BUILDER
-  {id:'attention',label:'Attention',section:'Offer Builder',stage:'OUT',asset:'Outreach — Attention Hook Library',bbosSection:'Asset Factory',
-   desc:'Build attention hooks from the 3 Truth-Gate Advisory phrases cleared for headline use.',
-   rationale:'These must be earned from verbatim VoC data — not invented from operator intuition. Phrases not in the Truth-Gate Advisory require a Proof Anchor before use in any client-facing asset.',
-   workspace:'attention'},
-  {id:'creative',label:'Creative & Ads',section:'Offer Builder',stage:'OUT',asset:'Outreach — Ad Creative',bbosSection:'Asset Factory',
-   desc:'Produce ad creative within G-label boundaries from the Hook Library.',
-   rationale:'No G3 or G4 claim may be presented at G1 or G2 level in any creative asset. Every claim in an ad must appear in the Proof Plan (OFR Asset 8). A PROOF PENDING item cannot run at G1 or G2.',
-   workspace:'creative'},
-  {id:'avatar',label:'Avatar Intake',section:'Offer Builder',stage:'STR',asset:'S2 — VoC Buying Language Bank',bbosSection:'Research Factory',
-   desc:'Build the avatar from 15+ verbatim phrases extracted from source material.',
-   rationale:'Paraphrasing closes the window. The exact phrase someone used when the performance dropped is a window into a reality they did not consciously choose to share. The avatar built from exact language carries what the summarised version cannot.',
-   workspace:'avatar'},
-  {id:'adspy',label:'Ad Spy',section:'Offer Builder',stage:'STR',asset:'S4 — Competitive Landscape',bbosSection:'Research Factory',
-   desc:'Gather competitive ad intelligence to feed the Advantage Register.',
-   rationale:'What gaps competitors leave in their messaging is where positioning is built — not by copying their language, but by naming what they cannot honestly name. Ad intelligence is a research output, not a creative input.',
-   workspace:'adspy'},
-  {id:'contentspy',label:'Content Spy',section:'Offer Builder',stage:'STR',asset:'S4 — Amanah Content Engine',bbosSection:'Research Factory',
-   desc:'Map competitive content to identify the 6 Amanah Content Engine angles.',
-   rationale:'Each of the 6 content angles must address a specific Fear or Desire from S3 — not a general topic the operator finds interesting. Content Spy surfaces where competitors are leaving Fears unaddressed and Desires unnamed.',
-   workspace:'contentspy'},
-  {id:'generateads',label:'Generate Ads',section:'Offer Builder',stage:'OUT',asset:'Outreach — Ad Production',bbosSection:'Asset Factory',
-   desc:'Produce live ad copy with G-label confirmation on every claim.',
-   rationale:'Ad claims are downstream of the Truth-Gate Advisory. Every claim used in production must have its G-label confirmed. A PROOF PENDING item cannot appear in a live ad at G1 or G2 level.',
-   workspace:'generateads'},
-  {id:'logo',label:'Generate Logo',section:'Offer Builder',stage:'OUT',asset:'Outreach — Brand Identity',bbosSection:'Asset Factory',
-   desc:'Produce brand identity assets grounded in the offer covenant.',
-   rationale:'Brand assets represent the offer as a covenant. Aspiration that has not been substantiated is not brand identity — it is misrepresentation. The brand must be able to carry the weight of what was promised.',
-   workspace:'logo'},
-  {id:'landing',label:'Landing Page',section:'Offer Builder',stage:'OUT',asset:'Outreach — Landing Page',bbosSection:'Asset Factory',
-   desc:'Build the landing page with every claim mapped to the Proof Plan.',
-   rationale:'Every claim on the landing page must appear in the Proof Plan (OFR Asset 8). PROOF PENDING items carry a restriction that prevents them appearing at G1 or G2 level until proof is captured and documented.',
-   workspace:'landing'},
-  {id:'salespreso',label:'Sales Presentation',section:'Offer Builder',stage:'SAL',asset:'Sales — Presentation Deck',bbosSection:'Asset Factory',
-   desc:'Carry the Offer Promise, Mechanism, and Scope Map forward verbatim into the presentation.',
-   rationale:'No new unsubstantiated claims are introduced at the presentation stage. The presentation is delivery of the covenant — not an extension of it. Expanding the Promise at SAL is a structural integrity failure.',
-   workspace:'salespreso'},
-  {id:'nurture',label:'Nurture Sequences',section:'Offer Builder',stage:'SAL',asset:'Sales — Nurture Engine',bbosSection:'Asset Factory',
-   desc:'Build sequences from the 6 Amanah Content Engine angles, each staying within its G-label boundary.',
-   rationale:'Nurture is not a second funnel — it is an extension of the same covenant conversation. Each email addresses a specific Fear or Desire from S3 and stays within the G-label ceiling established at STR.',
-   workspace:'nurture'},
-  {id:'salesletter',label:'Sales Letter',section:'Offer Builder',stage:'OUT',asset:'Outreach — Sales Letter',bbosSection:'Asset Factory',
-   desc:'Build long-form persuasion anchored in verbatim VoC language and the Enemy Narrative.',
-   rationale:'The Enemy Narrative provides the structural arc: Before state, Enemy named, Mechanism introduced, Promise made. VoC language must be preserved verbatim — paraphrasing loses the signal that makes the letter resonate.',
-   workspace:'salesletter'},
-  {id:'vsl',label:'Pre-Call VSL',section:'Offer Builder',stage:'SAL',asset:'Sales — Pre-Call VSL',bbosSection:'Asset Factory',
-   desc:'Frame the problem in VoC language and introduce the Mechanism before the call.',
-   rationale:'The VSL does not make claims beyond what the Truth-Gate Advisory and Proof Plan support. Its purpose is to pre-qualify belief — ensuring the prospect arrives at the call already understanding the Enemy and the approach.',
-   workspace:'vsl'},
-  {id:'social',label:'Social Assets',section:'Offer Builder',stage:'OUT',asset:'Outreach — Social Content',bbosSection:'Asset Factory',
-   desc:'Produce social content from the 6 Amanah Content Engine angles addressing specific Fears and Desires.',
-   rationale:'Social content that drifts from VoC language loses the quality that verbatim research carries. Each piece should address a named Fear or Desire from S3 — not generate generic value content.',
-   workspace:'social'},
-  {id:'salesscript',label:'Sales Script',section:'Offer Builder',stage:'SAL',asset:'Sales — Call Script',bbosSection:'Asset Factory',
-   desc:'Walk the prospect through the Offer Promise, Scope Map, and Guarantee on the call.',
-   rationale:'The script is the covenant read aloud — nothing more, nothing less. No unsubstantiated claims are introduced on the call. An objection response that redirects without resolving is not a response — it is evasion.',
-   workspace:'salesscript'},
-  {id:'settingscript',label:'Setting Script',section:'Offer Builder',stage:'SAL',asset:'Sales — Setter Script',bbosSection:'Asset Factory',
-   desc:'Qualify the prospect against the ICP before the sales call.',
-   rationale:'Disqualifying a prospect before the call is As-Sittir in practice — protecting them from entering an offer that was not designed for their situation. A setter who overlooks a disqualifier to fill the pipeline is not being helpful.',
-   workspace:'settingscript'},
-  // LAUNCH
-  {id:'ghl',label:'Connect GHL',section:'Launch',stage:'FUL',asset:'Fulfillment — CRM Integration',bbosSection:'Stage Entry',
-   desc:'Carry the Scope Map and Guarantee covenant terms into the fulfillment layer via CRM.',
-   rationale:'Every client record must reflect the covenant terms agreed at SAL. A Scope Map that is not accessible at FUL is a covenant waiting to be breached. The CRM is not a sales tool at this stage — it is a stewardship infrastructure.',
-   workspace:'ghl'},
-  {id:'meta',label:'Connect Meta',section:'Launch',stage:'OUT',asset:'Outreach — Ad Platform',bbosSection:'Stage Entry',
-   desc:'Configure Meta as the distribution infrastructure for Outreach stage assets.',
-   rationale:'Pixel data collected here feeds into the OPT stage G-Label Accuracy Report — verifying whether G1 and G2 outcome claims held true across the full cycle. Platform connection is a traceability infrastructure decision.',
-   workspace:'meta'},
-  {id:'pixel',label:'Install Pixel',section:'Launch',stage:'OUT',asset:'Outreach — Tracking Infrastructure',bbosSection:'Stage Entry',
-   desc:'Install tracking to capture the evidence base for the next cycle\'s G-label claims.',
-   rationale:'Pixel data feeds the OPT G-Label Accuracy Report. Tracking is not optional — it is the evidence base for the next cycle\'s claims. Operators who do not track cannot reckon honestly at Stage 08.',
-   workspace:'pixel'},
-  {id:'launchads',label:'Launch Ads',section:'Launch',stage:'OUT',asset:'Outreach — Live Campaign',bbosSection:'Stage Entry',
-   desc:'Deploy the final Outreach campaign with all G-label checks complete.',
-   rationale:'All prior G-label checks must be complete before ads go live. No PROOF PENDING item may appear in a live ad at G1 or G2 level. This is the final Outreach action — everything prior to this point is preparation.',
-   workspace:'launchads'},
-  {id:'socials',label:'Connect Socials',section:'Launch',stage:'OUT',asset:'Outreach — Channel Distribution',bbosSection:'Stage Entry',
-   desc:'Connect social channels as distribution infrastructure for Outreach stage content.',
-   rationale:'All content deployed through social channels must have passed the Truth-Gate Advisory from STR and had its G-label confirmed. Connecting the channel without confirming the claims is not readiness — it is exposure.',
-   workspace:'socials'},
-  {id:'website',label:'Deploy Website',section:'Launch',stage:'OUT',asset:'Outreach — Live Asset',bbosSection:'Stage Entry',
-   desc:'Deploy the live website with all claims mapped to the Proof Plan.',
-   rationale:'The website is an outreach asset in live operation. Every claim on the site must have a corresponding Proof Plan entry from OFR Asset 8. A live site with a PROOF PENDING claim violates the covenant.',
-   workspace:'website'},
-  {id:'form',label:'Add Form & Test',section:'Launch',stage:'SAL',asset:'Sales — Lead Qualification Gate',bbosSection:'Stage Entry',
-   desc:'Deploy the intake form as the first ICP filter in the Sales stage.',
-   rationale:'Questions must qualify the prospect against the ICP profile from OFR Asset 2. A form that does not qualify is not a form — it is just a list. Test every conditional logic path before the form goes live.',
-   workspace:'form'},
+const ROLES = [
+  {id:'all',    label:'All',        sub:'All roles',                   color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'',   scope:'Full pipeline view — all 31 tools across all 6 stages.'},
+  {id:'strat',  label:'Strategist', sub:'Operator',                    color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'ST', scope:'Owns the full pipeline. Approves every stage gate, holds every critical decision, and is the only role with write access to the research and offer foundations.'},
+  {id:'copy',   label:'Copywriter', sub:'Content & Copy',              color:'var(--str)',     bg:'var(--str-bg)',     initials:'CW', scope:'Edits all messaging and creative assets — ads, pages, sequences, scripts, letters. Views research outputs as source material. Does not touch platform infrastructure or strategy.'},
+  {id:'media',  label:'Media Buyer',sub:'Paid & Distribution',         color:'var(--out)',     bg:'var(--out-bg)',     initials:'MB', scope:'Edits all paid and distribution infrastructure — ad platforms, pixel, launch, social channels, website deployment. Views creative and research as context. Does not write copy.'},
+  {id:'setter', label:'Setter',     sub:'Appointment Setting',         color:'var(--qal)',     bg:'var(--qal-bg)',     initials:'SE', scope:'Edits the setting script and intake form. Views ICP and sales script for call context. Does not access research, offer design, or media infrastructure.'},
+  {id:'closer', label:'Closer',     sub:'Sales',                       color:'var(--sal)',     bg:'var(--sal-bg)',     initials:'CL', scope:'Edits the sales script and presentation. Views the full offer, ICP, nurture sequences, and VSL. Does not access research outputs or launch infrastructure.'},
+  {id:'fulfil', label:'Fulfillment',sub:'Delivery & Client Success',   color:'var(--ful)',     bg:'var(--ful-bg)',     initials:'FU', scope:'Edits the GHL CRM setup. Views the ICP, Offer Covenant, and Pricing so client delivery matches what was sold. Does not access any marketing or sales assets.'},
 ];
 
-const SECTIONS = ['Research','Offer Builder','Launch'];
+const STAGES = {
+  QAL:{code:'01',key:'QAL',name:'Qualification',attr:'Al-Haqq · Al-Khabir',c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
+  STR:{code:'02',key:'STR',name:'Strategy',attr:'Al-Basir',c:'var(--str)',bg:'var(--str-bg)',b:'var(--str-b)'},
+  OFR:{code:'03',key:'OFR',name:'Offer',attr:'Al-Adl · Al-Muqsit',c:'var(--ofr)',bg:'var(--ofr-bg)',b:'var(--ofr-b)'},
+  OUT:{code:'04',key:'OUT',name:'Outreach',attr:'Ar-Razzaq · As-Sittir',c:'var(--out)',bg:'var(--out-bg)',b:'var(--out-b)'},
+  SAL:{code:'05',key:'SAL',name:'Sales',attr:'Ar-Razzaq · Al-Latif',c:'var(--sal)',bg:'var(--sal-bg)',b:'var(--sal-b)'},
+  FUL:{code:'06',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
+};
 
-function stagePill(stageKey, size='sm') {
-  const s = STAGES[stageKey];
-  if (!s) return null;
-  const pad = size === 'lg' ? '5px 14px' : '2px 7px';
-  const fs = size === 'lg' ? '12px' : '9px';
-  return (
-    <span style={{
-      background: s.bg,
-      color: s.color,
-      border: `1px solid ${s.border}`,
-      borderRadius: '4px',
-      padding: pad,
-      fontSize: fs,
-      fontWeight: 600,
-      letterSpacing: '.4px',
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '4px',
-      whiteSpace: 'nowrap',
-    }}>
-      {s.code} {stageKey}
-    </span>
-  );
+// perms: [strat, copy, media, setter, closer, fulfil]  O=owns E=edit V=view -=none
+const TOOLS = [
+  {id:'validation', label:'Expert Validation Score',   sec:'Research',      stage:'QAL', asset:'Amanah Gate — S1–S6',              bsec:'Research Factory', ws:'validation',
+   desc:'Screen the operator\'s core competency, market viability, and capacity to build with integrity.',
+   rat:'The Amanah Gate must be passed before STR research begins. A failed gate routes to Stage 01.1 Rejection.',
+   perms:['O','-','-','-','-','-']},
+  {id:'market',     label:'Find Your Market',           sec:'Research',      stage:'STR', asset:'S1 — Market Definition',           bsec:'Research Factory', ws:'market',
+   desc:'Define the target buyer\'s current situation and operating context.',
+   rat:'No Enemy Narrative, VoC Bank, or Amanah Content Engine can begin without a grounded Market Definition.',
+   perms:['O','V','-','-','-','-']},
+  {id:'pains',      label:'Find Bleeding-Neck Pains',   sec:'Research',      stage:'STR', asset:'S3 — Emotional Triggers',          bsec:'Research Factory', ws:'pains',
+   desc:'Extract verbatim fears and desires. Name the Enemy as a convergent system of forces.',
+   rat:'The Enemy is named as convergent cultural, economic, or systemic forces — not the prospect\'s character.',
+   perms:['O','V','V','-','V','-']},
+  {id:'avatar',     label:'Avatar Intake',              sec:'Offer Builder', stage:'STR', asset:'S2 — VoC Buying Language Bank',    bsec:'Research Factory', ws:'generic',
+   desc:'Build the avatar from 15+ verbatim phrases extracted from source material.',
+   rat:'Strategy built on actual human language carries what strategy built on summary cannot.',
+   perms:['O','V','V','-','V','-']},
+  {id:'competitor', label:'Competitor Search',          sec:'Research',      stage:'STR', asset:'S4 — Advantage Register',          bsec:'Research Factory', ws:'generic',
+   desc:'Identify the specific gap no existing offer is filling. Build the Advantage Register.',
+   rat:'Competitors are defeated by naming what they cannot honestly name.',
+   perms:['O','V','V','-','-','-']},
+  {id:'adspy',      label:'Ad Spy',                     sec:'Offer Builder', stage:'STR', asset:'S4 — Competitive Landscape',       bsec:'Research Factory', ws:'generic',
+   desc:'Gather competitive ad intelligence to feed the Advantage Register.',
+   rat:'What gaps competitors leave in their messaging is where positioning is built.',
+   perms:['O','V','E','-','-','-']},
+  {id:'contentspy', label:'Content Spy',                sec:'Offer Builder', stage:'STR', asset:'S4 — Amanah Content Engine',       bsec:'Research Factory', ws:'generic',
+   desc:'Map competitive content to identify the 6 Amanah Content Engine angles.',
+   rat:'Each angle must address a specific Fear or Desire from S3 — not a general topic.',
+   perms:['O','V','V','-','-','-']},
+  {id:'solution',   label:'Build Your Solution',        sec:'Research',      stage:'OFR', asset:'Asset 3 — Mechanism',              bsec:'Asset Factory',    ws:'generic',
+   desc:'Define the specific ethical process that reliably produces the promised result.',
+   rat:'A G3 Mechanism cannot anchor a G1 Promise. The Mechanism is what makes the offer honest.',
+   perms:['O','-','-','-','-','-']},
+  {id:'icp',        label:'ICP Segmentation',           sec:'Research',      stage:'OFR', asset:'Asset 2 — Ideal Customer Profile', bsec:'Asset Factory',    ws:'generic',
+   desc:'Build the ICP specific enough to qualify or disqualify a prospect at the Sales stage.',
+   rat:'An ICP built from assumption rather than VoC data produces SAL stage failures.',
+   perms:['O','V','-','V','V','V']},
+  {id:'offer',      label:'Offer Creation',             sec:'Research',      stage:'OFR', asset:'Assets 1–7 — Offer Covenant',      bsec:'Asset Factory',    ws:'offer',
+   desc:'Design the offer as a covenant: Promise, Mechanism, Scope Map, Value Stack, Guarantee, Pricing.',
+   rat:'The offer is a public covenant. A covenant missing any element leaves the client carrying risk.',
+   perms:['O','V','-','-','V','V']},
+  {id:'pricing',    label:'Pricing',                    sec:'Research',      stage:'OFR', asset:'Asset 7 — Pricing Structure',      bsec:'Asset Factory',    ws:'generic',
+   desc:'Reflect honest valuation against the Value Stack — not what the market might bear.',
+   rat:'Al-Muqsit is present at pricing when the number reflects what is genuinely being exchanged.',
+   perms:['O','-','-','-','-','V']},
+  {id:'gtm',        label:'Proven GTM',                 sec:'Research',      stage:'OUT', asset:'Stage 04 — Outreach Strategy',     bsec:'Stage Entry',      ws:'generic',
+   desc:'Build the GTM downstream of the STR Positioning Statement and Truth-Gate Advisory.',
+   rat:'A GTM built before the Truth-Gate is cleared produces outreach that cannot be substantiated.',
+   perms:['O','V','E','-','-','-']},
+  {id:'attention',  label:'Attention',                  sec:'Offer Builder', stage:'OUT', asset:'Outreach — Hook Library',          bsec:'Asset Factory',    ws:'generic',
+   desc:'Build attention hooks from the 3 Truth-Gate Advisory phrases cleared for headline use.',
+   rat:'These must be earned from verbatim VoC data. Uncleared phrases need a Proof Anchor.',
+   perms:['O','E','V','-','-','-']},
+  {id:'creative',   label:'Creative & Ads',             sec:'Offer Builder', stage:'OUT', asset:'Outreach — Ad Creative',           bsec:'Asset Factory',    ws:'generic',
+   desc:'Produce ad creative within G-label boundaries from the Hook Library.',
+   rat:'No G3 or G4 claim may be presented at G1 or G2 level. Every claim must appear in the Proof Plan.',
+   perms:['O','E','V','-','-','-']},
+  {id:'generateads',label:'Generate Ads',               sec:'Offer Builder', stage:'OUT', asset:'Outreach — Ad Production',         bsec:'Asset Factory',    ws:'generic',
+   desc:'Produce live ad copy with G-label confirmation on every claim.',
+   rat:'A PROOF PENDING item cannot appear in a live ad at G1 or G2 level.',
+   perms:['O','E','V','-','-','-']},
+  {id:'logo',       label:'Generate Logo',              sec:'Offer Builder', stage:'OUT', asset:'Outreach — Brand Identity',        bsec:'Asset Factory',    ws:'generic',
+   desc:'Produce brand identity assets grounded in the offer covenant.',
+   rat:'Aspiration that has not been substantiated is not brand identity — it is misrepresentation.',
+   perms:['O','E','V','-','-','-']},
+  {id:'landing',    label:'Landing Page',               sec:'Offer Builder', stage:'OUT', asset:'Outreach — Landing Page',          bsec:'Asset Factory',    ws:'generic',
+   desc:'Build the landing page with every claim mapped to the Proof Plan.',
+   rat:'Every claim must appear in the Proof Plan. PROOF PENDING items cannot appear at G1 or G2.',
+   perms:['O','E','V','-','-','-']},
+  {id:'salesletter',label:'Sales Letter',               sec:'Offer Builder', stage:'OUT', asset:'Outreach — Sales Letter',          bsec:'Asset Factory',    ws:'generic',
+   desc:'Build long-form persuasion anchored in verbatim VoC language and the Enemy Narrative.',
+   rat:'The Enemy Narrative provides the structural arc. VoC language must be preserved verbatim.',
+   perms:['O','E','-','-','V','-']},
+  {id:'social',     label:'Social Assets',              sec:'Offer Builder', stage:'OUT', asset:'Outreach — Social Content',        bsec:'Asset Factory',    ws:'generic',
+   desc:'Produce social content from the 6 Amanah Content Engine angles.',
+   rat:'Content that drifts from VoC language loses the quality that verbatim research carries.',
+   perms:['O','E','V','-','-','-']},
+  {id:'meta',       label:'Connect Meta',               sec:'Launch',        stage:'OUT', asset:'Outreach — Ad Platform',           bsec:'Stage Entry',      ws:'generic',
+   desc:'Configure Meta as the distribution infrastructure for Outreach stage assets.',
+   rat:'Pixel data feeds the OPT G-Label Accuracy Report. Connection is a traceability decision.',
+   perms:['O','-','E','-','-','-']},
+  {id:'pixel',      label:'Install Pixel',              sec:'Launch',        stage:'OUT', asset:'Outreach — Tracking Infrastructure',bsec:'Stage Entry',     ws:'generic',
+   desc:'Install tracking to capture the evidence base for the next cycle\'s G-label claims.',
+   rat:'Tracking is not optional — it is the evidence base for future claims.',
+   perms:['O','-','E','-','-','-']},
+  {id:'launchads',  label:'Launch Ads',                 sec:'Launch',        stage:'OUT', asset:'Outreach — Live Campaign',         bsec:'Stage Entry',      ws:'generic',
+   desc:'Deploy the final Outreach campaign with all G-label checks complete.',
+   rat:'All G-label checks must be complete before ads go live. No PROOF PENDING item may appear.',
+   perms:['O','-','E','-','-','-']},
+  {id:'socials',    label:'Connect Socials',            sec:'Launch',        stage:'OUT', asset:'Outreach — Channel Distribution',  bsec:'Stage Entry',      ws:'generic',
+   desc:'Connect social channels as distribution infrastructure.',
+   rat:'All deployed content must have passed the Truth-Gate Advisory and had its G-label confirmed.',
+   perms:['O','-','E','-','-','-']},
+  {id:'website',    label:'Deploy Website',             sec:'Launch',        stage:'OUT', asset:'Outreach — Live Asset',            bsec:'Stage Entry',      ws:'generic',
+   desc:'Deploy the live website with all claims mapped to the Proof Plan.',
+   rat:'A live site with a PROOF PENDING claim violates the covenant.',
+   perms:['O','V','E','-','-','-']},
+  {id:'salespreso', label:'Sales Presentation',         sec:'Offer Builder', stage:'SAL', asset:'Sales — Presentation Deck',        bsec:'Asset Factory',    ws:'generic',
+   desc:'Carry the Offer Promise, Mechanism, and Scope Map forward verbatim into the presentation.',
+   rat:'No new unsubstantiated claims are introduced. The presentation is delivery of the covenant.',
+   perms:['O','E','-','-','V','-']},
+  {id:'nurture',    label:'Nurture Sequences',          sec:'Offer Builder', stage:'SAL', asset:'Sales — Nurture Engine',           bsec:'Asset Factory',    ws:'generic',
+   desc:'Build sequences from the 6 Amanah Content Engine angles within G-label boundaries.',
+   rat:'Nurture is not a second funnel — it is an extension of the same covenant conversation.',
+   perms:['O','E','-','-','V','-']},
+  {id:'vsl',        label:'Pre-Call VSL',               sec:'Offer Builder', stage:'SAL', asset:'Sales — Pre-Call VSL',             bsec:'Asset Factory',    ws:'generic',
+   desc:'Frame the problem in VoC language and introduce the Mechanism before the call.',
+   rat:'The VSL does not make claims beyond what the Truth-Gate Advisory and Proof Plan support.',
+   perms:['O','E','-','-','V','-']},
+  {id:'salesscript',label:'Sales Script',               sec:'Offer Builder', stage:'SAL', asset:'Sales — Call Script',              bsec:'Asset Factory',    ws:'generic',
+   desc:'Walk the prospect through the Offer Promise, Scope Map, and Guarantee on the call.',
+   rat:'The script is the covenant read aloud. Objection responses must resolve, not redirect.',
+   perms:['O','E','-','V','E','-']},
+  {id:'settingscript',label:'Setting Script',           sec:'Offer Builder', stage:'SAL', asset:'Sales — Setter Script',            bsec:'Asset Factory',    ws:'generic',
+   desc:'Qualify the prospect against the ICP before the sales call.',
+   rat:'Disqualifying a prospect before the call is As-Sittir — protecting them from a bad fit.',
+   perms:['O','E','-','E','V','-']},
+  {id:'form',       label:'Add Form & Test',            sec:'Launch',        stage:'SAL', asset:'Sales — Lead Qualification Gate',  bsec:'Stage Entry',      ws:'generic',
+   desc:'Deploy the intake form as the first ICP filter in the Sales stage.',
+   rat:'Questions must qualify against the ICP from OFR Asset 2. A form that doesn\'t qualify is a list.',
+   perms:['O','-','V','E','-','-']},
+  {id:'ghl',        label:'Connect GHL',                sec:'Launch',        stage:'FUL', asset:'Fulfillment — CRM Integration',    bsec:'Stage Entry',      ws:'generic',
+   desc:'Carry the Scope Map and Guarantee covenant terms into the fulfillment layer via CRM.',
+   rat:'A Scope Map not accessible at FUL is a covenant waiting to be breached.',
+   perms:['O','-','-','V','V','E']},
+];
+
+const SECS = ['Research','Offer Builder','Launch'];
+const ROLE_IDX = {strat:0,copy:1,media:2,setter:3,closer:4,fulfil:5};
+const PERM_LABELS = {O:'Owns',E:'Edit',V:'View','-':'No access'};
+const PERM_DESCS = {
+  O:'You own this asset — you approve outputs and control the stage gate.',
+  E:'You can work on and submit this asset. The Strategist approves.',
+  V:'You have read-only access. Use this for context only.',
+  '-':'This asset is outside your role scope.',
+};
+
+function rolePerm(tool, roleId){
+  if(roleId==='all') return 'O';
+  const ri = ROLE_IDX[roleId];
+  return ri !== undefined ? tool.perms[ri] : '-';
 }
 
-// Workspace components
-function WorkspaceMarket(){
-  const [tab,setTab]=useState('definition');
-  return <>
-    <div className="tabs">
-      {['definition','audience','context'].map(t=>(
-        <button key={t} className={`tab-btn${tab===t?' active':''}`} onClick={()=>setTab(t)}>
-          {t.charAt(0).toUpperCase()+t.slice(1)}
-        </button>
-      ))}
-    </div>
-    {tab==='definition' && <>
-      <div className="notice info"><span className="notice-icon">◈</span><span className="notice-text">Al-Basir — Market Definition is an act of genuine seeing, not confirmation of what you already believe. The output must be grounded in data, not intuition.</span></div>
-      <div className="field-group">
-        <div className="field-label">What specific context is the buyer operating in?</div>
-        <textarea className="field-input" rows={3} placeholder="e.g. Muslim men aged 35–55 running solo service businesses generating $150k–$500k, operating without a structured team..."/>
-      </div>
-      <div className="field-group">
-        <div className="field-label">What specific goal are they trying to accomplish right now?</div>
-        <textarea className="field-input" rows={2} placeholder="e.g. Scale past the revenue ceiling they've hit without adding hours or hiring prematurely..."/>
-      </div>
-      <div className="field-group">
-        <div className="field-label">What stage of the journey are they at?</div>
-        <input className="field-input" type="text" placeholder="e.g. Post-first-success, pre-scale — proven the model, now stuck at the growth threshold..."/>
-      </div>
-      <button className="ws-btn">Save Market Definition</button>
-    </>}
-    {tab==='audience' && <>
-      <div className="field-row">
-        <div className="field-group">
-          <div className="field-label">Primary audience segment</div>
-          <input className="field-input" type="text" placeholder="Label this segment..."/>
-        </div>
-        <div className="field-group">
-          <div className="field-label">Age range</div>
-          <input className="field-input" type="text" placeholder="e.g. 35–55"/>
-        </div>
-      </div>
-      <div className="field-group">
-        <div className="field-label">What have they already tried?</div>
-        <textarea className="field-input" rows={2} placeholder="Courses, coaches, software, hiring — what has already failed them..."/>
-      </div>
-      <div className="field-group">
-        <div className="field-label">Secondary audience (if any)</div>
-        <input className="field-input" type="text" placeholder="Describe the secondary audience if relevant..."/>
-      </div>
-      <button className="ws-btn">Save Audience Profile</button>
-    </>}
-    {tab==='context' && <>
-      <div className="field-group">
-        <div className="field-label">Market maturity level</div>
-        <select className="field-input">
-          <option value="">Select maturity...</option>
-          <option>Level 1 — Problem unaware</option>
-          <option>Level 2 — Problem aware, solution unaware</option>
-          <option>Level 3 — Solution aware, product unaware</option>
-          <option>Level 4 — Product aware, not yet convinced</option>
-          <option>Level 5 — Most aware</option>
-        </select>
-      </div>
-      <div className="field-group">
-        <div className="field-label">Market size estimate (G-label required)</div>
-        <div style={{display:'flex',gap:8,alignItems:'center'}}>
-          <input className="field-input" type="text" placeholder="e.g. ~50,000 qualified businesses in English-speaking markets" />
-          <select className="field-input" style={{width:80,flex:'none'}}>
-            <option>G3</option><option>G2</option><option>G1</option><option>G4</option>
-          </select>
-        </div>
-      </div>
-      <button className="ws-btn">Save Context</button>
-    </>}
-  </>;
+function permColor(p){
+  if(p==='O') return 'var(--accent)';
+  if(p==='E') return 'var(--str)';
+  if(p==='V') return 'var(--text3)';
+  return 'var(--text3)';
+}
+function permBg(p){
+  if(p==='O') return 'var(--accent-bg)';
+  if(p==='E') return 'var(--str-bg)';
+  return 'var(--bg3)';
+}
+function permBorder(p){
+  if(p==='O') return 'var(--accent2)40';
+  if(p==='E') return 'var(--str-b)';
+  return 'var(--border)';
 }
 
-function WorkspacePains(){
-  const [checks,setChecks]=useState({f1:false,f2:false,f3:false,d1:false,d2:false,d3:false});
-  const toggle=k=>setChecks(c=>({...c,[k]:!c[k]}));
-  return <>
-    <div className="notice warning"><span className="notice-icon">◉</span><span className="notice-text">The Enemy is a convergent system — not the client's character, choices, or mindset. Name the forces that have trapped them, not what is wrong with them.</span></div>
-    <div className="field-group">
-      <div className="field-label">Top 3 verbatim fears (exact words from source data)</div>
-      {[1,2,3].map(i=>(
-        <div key={i} style={{display:'flex',gap:8,alignItems:'center',marginBottom:8}}>
-          <span className="glabel g3">F{i}</span>
-          <input className="field-input" type="text" placeholder={`Fear ${i} — exact quote, not paraphrase...`}/>
-        </div>
-      ))}
-    </div>
-    <div className="ws-divider"/>
-    <div className="field-group">
-      <div className="field-label">Top 3 verbatim desires (exact words from source data)</div>
-      {[1,2,3].map(i=>(
-        <div key={i} style={{display:'flex',gap:8,alignItems:'center',marginBottom:8}}>
-          <span className="glabel g4">D{i}</span>
-          <input className="field-input" type="text" placeholder={`Desire ${i} — exact quote, not paraphrase...`}/>
-        </div>
-      ))}
-    </div>
-    <div className="ws-divider"/>
-    <div className="field-group">
-      <div className="field-label">Enemy Narrative — name the convergent system of forces</div>
-      <textarea className="field-input" rows={4} placeholder="The Enemy is not [client's character]. The Enemy is the convergent set of [cultural/economic/systemic forces] that has produced their situation despite their efforts..."/>
-    </div>
-    <button className="ws-btn">Save Emotional Triggers</button>
-  </>;
+function PermPill({p, size}){
+  const sm = size==='sm';
+  return <span className="perm-pill" style={{
+    background:permBg(p),color:permColor(p),
+    border:`1px solid ${permBorder(p)}`,
+    fontSize: sm?'8px':'10px',
+    padding: sm?'1px 5px':'3px 9px',
+  }}>{p==='O'?'OWNS':p==='E'?'EDIT':p==='V'?'VIEW':'—'}</span>;
 }
 
-function WorkspaceValidation(){
+function Pill({k,size}){
+  const s=STAGES[k];
+  const sm=size==='sm';
+  return <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:sm?'2px 6px':'4px 11px',fontSize:sm?'9px':'11px',fontWeight:600,display:'inline-flex',alignItems:'center',whiteSpace:'nowrap'}}>{s.code} {k}</span>;
+}
+
+/* ── SAMPLE DATA ── */
+const S = {
+  market_context:'Muslim women in English-speaking markets operating solo service businesses — coaching, consulting, brand design, copywriting — generating $60k–$200k annually. 3–8 years in. Technically excellent, results-producing, chronically underpriced.',
+  market_goal:'Establish a positioned offer with a specific audience, a price point they can state without apologising, and a 90-day acquisition plan executable immediately.',
+  market_tried:'Generic business coaching that did not account for the cultural dynamics shaping their pricing. Online pricing courses that produced a number but not the confidence to hold it.',
+  fear1:'"I\'m terrified that if I raise my prices, every client I have will leave and I\'ll have to start over"',
+  fear2:'"I don\'t know how to explain what I do without adding five disclaimers about why it\'s worth it"',
+  fear3:'"I look at what I charge and I feel embarrassed — not because it\'s wrong, but because I can\'t defend it out loud"',
+  desire1:'"I want to be able to say my price without my voice going quiet at the end"',
+  desire2:'"I just want someone to hand me a number and tell me it\'s right so I can stop second-guessing"',
+  desire3:'"I want my clients to feel like they got a deal — not like I gave them a discount because I was scared"',
+  enemy:'The Credibility Gap System — chronic underrepresentation in mainstream business frameworks, first-generation immigrant scarcity conditioning, community social pressure to discount for "sisters," and the complete absence of visible Muslim female operators charging premium rates — that has trained capable women to distrust their own market value.',
+  promise:'Within 6 weeks you will have: a written positioning statement naming your specific audience and the exact transformation you produce; a price point you can state without apologising; and a 90-day client acquisition plan with specific weekly actions you can begin the day after our final session.',
+  proof:'4 prior clients, documented outcomes. Average price increase of 67% within 8 weeks of completion. Case study: Mariam A. repriced from $800/project to $3,200/project. Client approval on file.',
+  scope_in:'6 weekly 90-minute 1:1 sessions via Zoom\nWritten positioning statement (finalised in Session 3)\nOffer one-pager (completed in Session 4)\nPricing calculator\n90-day client acquisition plan — written, weekly breakdown\nAsync Voxer access Mon–Thu between sessions',
+  scope_ex:'Done-for-you website copy or marketing asset production\nOngoing coaching beyond the 6-week container\nPaid advertising setup, management, or ad spend\nLegal, financial, or compliance advice',
+  guar_t:'Client completes all 6 sessions, submits pre-work within 48 hours of each prior session, and at end of Session 6 cannot produce a specific audience statement, defensible price point, and written 90-day plan',
+  guar_r:'3 additional sessions at no charge, focused on the unresolved deliverable(s), scheduled within 6 weeks of Session 6',
+  guar_b:'Pre-work must be submitted for all 6 sessions. Guarantee does not apply if pre-work was not submitted for 2 or more sessions.',
+  price:'$3,500 paid in full · OR · $1,850 × 2',
+  value_stack:'6 × 90-min sessions @ $450/hr: $2,700\nPositioning Statement: $800\nOffer One-Pager: $600\n90-Day Plan: $900\nAsync access, 6 weeks: $400\n──────────────\nTotal PMV: $5,400 → Price: $3,500',
+  notes:{
+    validation:'All 6 Amanah Gate screens cleared. Core competency verified: 4 documented client case studies. Market viable — positioning gap confirmed from VoC data. Business model Halal in structure. Capacity confirmed: 4 clients/month max. Financial runway: 6 months confirmed.',
+    market:'Market Definition complete. Buyer context: Muslim women, English-speaking markets, solo service businesses, $60k–$200k annually, 3–8 years operating. Primary goal: positioned offer with defensible price. Market maturity Level 3 — Solution aware, product unaware.',
+    pains:'VoC extraction complete. 22 verbatim phrases collected from 3 forum threads, 4 direct interviews, 8 DM conversations, 7 anonymous submissions. Enemy named: The Credibility Gap System — not a mindset issue, a structural absence. Truth-Gate Advisory cleared 3 phrases.',
+    avatar:'VoC Buying Language Bank complete. 15 verbatim phrases selected from 22 collected. All preserved verbatim — no paraphrasing. Language Bank available for all downstream Asset Factory outputs.',
+    competitor:'Competitive scan complete. 6 operators reviewed. Zero competitors addressing the Credibility Gap System explicitly. Advantage Register: (1) Enemy named specifically; (2) mechanism culturally grounded; (3) operator is a visible proof point herself.',
+    adspy:'11 competitor ads reviewed. No ad uses VoC language from Muslim female audience. No competitor names the Enemy. Gap confirmed: first operator to name the Credibility Gap System in ad creative occupies unchallenged positioning.',
+    contentspy:'6 Amanah Content Engine angles mapped:\n1. "The price you don\'t say out loud" — F3\n2. "Why disclaimers are a positioning problem" — F2\n3. "What it feels like to quote your price and wait" — D1\n4. "It\'s not imposter syndrome" — Enemy\n5. "The 3 decisions that produce a position" — Mechanism\n6. "Mariam repriced from $800 to $3,200" — Proof',
+    solution:'Mechanism defined: The Clarity Practice Method — 3 phases: (1) Enemy Identification; (2) Anchor Work (audience, transformation, price); (3) Acquisition Architecture (90-day plan). Verifiable at G2 via 4 documented client outcomes.',
+    icp:'ICP complete. Primary: Muslim female, solo service, 28–45, English-speaking, $60k–$200k, 3+ years, no existing positioned offer. Disqualifiers: product businesses, e-commerce, businesses with employees, done-for-you seekers.',
+    offer:'Offer Covenant complete. Promise G2 with proof anchor. Scope Map: 6 sessions + 5 deliverables IN; no done-for-you work OUT. Guarantee: all 4 required elements present. Value Stack PMV $5,400. Price $3,500.',
+    pricing:'Pricing confirmed at $3,500. Honest valuation basis: Value Stack total. 35% below PMV — justified at 4 case studies. Split: $1,850 × 2. Price increase to $4,200 at Cycle 2 when proof base reaches 8 clients.',
+    gtm:'Instagram DMs (primary), LinkedIn (secondary), warm referrals (tertiary). No urgency claims — no real scarcity constraint yet. Outreach assets cleared for production.',
+    attention:'3 hooks cleared from Truth-Gate Advisory:\n1. "The price you can say out loud without apologising" — D1 verbatim, G2\n2. "Positioning for Muslim women who\'ve outgrown their rates" — G1\n3. "You\'re not undercharging because you\'re not good enough" — Enemy reframe, G2',
+    creative:'3 carousel ads and 1 static image produced. Primary: "From $800 to $3,200 per project." Proof anchor: Mariam A. case study, approval on file. All claims G2.',
+    generateads:'Ad copy produced for all 3 hook variants. All reviewed — no G3/G4 claim in any live creative.',
+    logo:'Wordmark "The Clarity Practice." Warm stone on deep charcoal. Logo mark: geometric aperture. Exported SVG + PNG light/dark.',
+    landing:'Live. Headline: "The price you can say out loud." Proof: Mariam case study. Scope Map summarised. Guarantee displayed in full. All claims mapped to Proof Plan. Zero PROOF PENDING.',
+    salesletter:'1,840 words. Arc: Before state (verbatim F1/F2/F3) → Enemy named → Mechanism → Promise (G2 exact wording) → Scope Map → Guarantee → Price → CTA.',
+    social:'18 posts across 6 content angles. All G2. Outcome metrics only in case study posts with confirmed proof. Scheduled 3/week for 6 weeks via GHL.',
+    meta:'Meta Business Manager connected. Ad account verified. Custom + Lookalike audiences configured. Pixel events: PageView, Lead, Purchase.',
+    pixel:'Pixel installed. All events firing. UTM parameters applied. Traceability in place for OPT G-Label Accuracy Report.',
+    launchads:'Ads live. 3 creatives, 2 ad sets. G-label pre-launch checklist complete. 72-hour check scheduled.',
+    socials:'Instagram and LinkedIn connected via GHL. Calendar loaded. All content G-label confirmed.',
+    website:'Live. SSL active. Pixel firing. All 6 Proof Plan claims verified. Booking form tested end-to-end.',
+    salespreso:'11 slides: Promise → Mechanism → Scope Map → Guarantee → Price → Next steps. No new claims beyond OFR.',
+    nurture:'5-email sequence: Day 1 Enemy, Day 3 Fear, Day 6 Mechanism, Day 10 Proof, Day 14 Desire + CTA. All G2.',
+    vsl:'7 min 42 sec. Opens F3 verbatim. Enemy at min 2. Mechanism at min 4. Promise at min 5 (G2 exact). No outcome metrics.',
+    salesscript:'48-min call. Discovery (6 ICP questions), Presentation (Promise → Mechanism → Scope → Guarantee → Price), Objection (4 responses that resolve not redirect), Close.',
+    settingscript:'12-min qualification call. Filters: Muslim female, solo service, 3+ yrs, $60k+, no existing offer. No-fit script included.',
+    form:'8 qualification questions. Disqualifier logic: product/e-commerce route to "not currently a fit" page. All paths tested.',
+    ghl:'GHL pipeline: 5 stages. Scope Map + Guarantee pinned on every contact record. Onboarding: Day 0 welcome + Scope Map PDF, Day 1 session link. All 6 session reminders automated.',
+  },
+  gate:{
+    validation:'Proceed. All 6 Amanah Gate screens cleared. Stage 02 STR is cleared to begin.',
+    market:'Proceed. Market Definition complete. No ASSUMPTION items.',
+    pains:'Proceed. VoC extraction complete. Enemy named from data. Truth-Gate Advisory cleared 3 phrases.',
+    avatar:'Proceed. 15 verbatim phrases in Buying Language Bank. No paraphrasing.',
+    competitor:'Proceed. Advantage Register complete. Positioning gap confirmed from data.',
+    adspy:'Proceed. Competitive gap confirmed. 3 specific differentiators in Advantage Register.',
+    contentspy:'Proceed. 6 content angles mapped to named Fears/Desires from S3.',
+    solution:'Proceed. Mechanism verifiable at G2 via 4 documented client outcomes.',
+    icp:'Proceed. ICP specific enough to qualify or disqualify on a setter call.',
+    offer:'Proceed. All 7 Offer Assets complete. G-Label Reckoning done — all claims G1 or G2.',
+    pricing:'Proceed. Honest valuation documented. Price increase plan noted for Cycle 2.',
+    gtm:'Proceed. Channel strategy documented. No urgency claims.',
+    attention:'Proceed. 3 hooks cleared from Truth-Gate Advisory with source evidence.',
+    creative:'Proceed. All ad claims G2. Case study proof anchor confirmed.',
+    generateads:'Proceed. All creative within G-label boundary.',
+    logo:'Proceed. Brand identity finalised.',
+    landing:'Proceed. All claims confirmed against Proof Plan. Zero PROOF PENDING on live page.',
+    salesletter:'Proceed. VoC language preserved verbatim.',
+    social:'Proceed. All posts within G2 boundary.',
+    meta:'Proceed. Ad account verified. Audiences configured.',
+    pixel:'Proceed. All events firing. UTM parameters applied.',
+    launchads:'Proceed. All G-label checks complete.',
+    socials:'Proceed. Content calendar confirmed against G-label register.',
+    website:'Proceed. All Proof Plan claims confirmed.',
+    salespreso:'Proceed. No new claims beyond OFR scope.',
+    nurture:'Proceed. All emails within G2 boundary.',
+    vsl:'Proceed. No outcome metrics. Promise at G2 exact wording.',
+    salesscript:'Proceed. Every objection response resolves — not redirects.',
+    settingscript:'Proceed. Disqualifiers operational. No-fit script included.',
+    form:'Proceed. All ICP qualifier questions mapped. Disqualifier logic tested.',
+    ghl:'Proceed. Scope Map and Guarantee on every contact record.',
+  }
+};
+
+/* ── WORKSPACE COMPONENTS ── */
+function CF({label,value,accent,mono,gl,glc}){
+  return <div className="cf-wrap">
+    <div className="cf-lbl">{label}</div>
+    <div className="cf-val" style={{borderLeftColor:accent||'var(--border2)',fontFamily:mono?'monospace':'inherit'}}>{value}</div>
+    {gl && <span className="cf-gl" style={{background:glc+'22',color:glc,border:`1px solid ${glc}44`}}>{gl}</span>}
+  </div>;
+}
+function DoneBadge(){
+  return <div className="done-badge">
+    <span style={{fontSize:11,color:'var(--out)',fontWeight:500}}>&#10003; Stage complete</span>
+    <span style={{fontSize:10,color:'var(--out)',opacity:.7,marginLeft:3}}>The Clarity Practice · Cycle 1</span>
+  </div>;
+}
+function WsValidation({sample}){
   const gates=[
-    {key:'s1',label:'Core competency is real and verifiable',desc:'Operator can name a specific, verifiable proof link for their primary claimed skill.'},
-    {key:'s2',label:'Market is viable and serves a legitimate need',desc:'The target market has a genuine unmet need that can be served with integrity.'},
-    {key:'s3',label:'Business model is Halal in structure and practice',desc:'Revenue model, client relationship, and delivery method are all permissible.'},
-    {key:'s4',label:'Operator has capacity to deliver what they intend to promise',desc:'Time, skills, and energy are sufficient to honour the offer covenant.'},
-    {key:'s5',label:'Financial runway supports the timeline to first revenue',desc:'The operator can sustain operations until revenue arrives without desperate decision-making.'},
-    {key:'s6',label:'No disqualifying work aversions conflict with the business model',desc:'The offer design does not require the operator to do work they cannot do with integrity.'},
+    {k:'s1',label:'Core competency is real and verifiable',desc:'Operator can name a specific, verifiable proof link for their primary claimed skill.'},
+    {k:'s2',label:'Market is viable and serves a legitimate need',desc:'The target market has a genuine unmet need that can be served with integrity.'},
+    {k:'s3',label:'Business model is Halal in structure and practice',desc:'Revenue model, client relationship, and delivery method are all permissible.'},
+    {k:'s4',label:'Operator has capacity to deliver what they intend to promise',desc:'Time, skills, and energy are sufficient to honour the offer covenant.'},
+    {k:'s5',label:'Financial runway supports the timeline to first revenue',desc:'The operator can sustain operations until revenue arrives.'},
+    {k:'s6',label:'No disqualifying work aversions conflict with the business model',desc:'The offer does not require work the operator cannot do with integrity.'},
   ];
-  const [passed,setPassed]=useState({});
-  const toggle=k=>setPassed(p=>({...p,[k]:!p[k]}));
+  const [passed,setPassed]=useState(sample?{s1:true,s2:true,s3:true,s4:true,s5:true,s6:true}:{});
   const score=Object.values(passed).filter(Boolean).length;
+  const toggle=k=>{if(!sample)setPassed(p=>({...p,[k]:!p[k]}));};
   return <>
-    <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16,padding:'12px 16px',background:'var(--bg3)',borderRadius:'var(--radius)',border:'1px solid var(--border)'}}>
-      <div style={{fontSize:28,fontWeight:500,color:score===6?'var(--out)':score>=4?'var(--qal)':'var(--sal)'}}>
-        {score}/6
-      </div>
+    {sample&&<DoneBadge/>}
+    <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:'9px',border:'1px solid var(--border)'}}>
+      <div style={{fontSize:24,fontWeight:500,color:score===6?'var(--out)':score>=4?'var(--qal)':'var(--sal)'}}>{score}/6</div>
       <div>
-        <div style={{fontSize:13,fontWeight:500,color:'var(--text)',marginBottom:2}}>
-          {score===6?'Amanah Gate Cleared':'Amanah Gate Pending'}
-        </div>
-        <div style={{fontSize:11,color:'var(--text3)'}}>
-          {6-score} screen{6-score!==1?'s':''} remaining before STR can begin
-        </div>
+        <div style={{fontSize:12,fontWeight:500,color:'var(--text)',marginBottom:1}}>{score===6?'Amanah Gate Cleared':'Amanah Gate Pending'}</div>
+        <div style={{fontSize:10,color:'var(--text3)'}}>{6-score} screen{6-score!==1?'s':''} remaining before STR can begin</div>
       </div>
     </div>
-    <div className="checklist">
-      {gates.map(g=>(
-        <div key={g.key} className="check-item" onClick={()=>toggle(g.key)}>
-          <div className={`check-box${passed[g.key]?' checked':''}`}/>
-          <div>
-            <div className={`check-text${passed[g.key]?' checked':''}`}>{g.label}</div>
-            <div style={{fontSize:11,color:'var(--text3)',marginTop:2}}>{g.desc}</div>
-          </div>
-        </div>
-      ))}
+    <div className="chk-list">
+      {gates.map(g=><div key={g.k} className="chk" onClick={()=>toggle(g.k)}>
+        <div className={`chk-box${passed[g.k]?' ck':''}`}/>
+        <div><div className={`chk-txt${passed[g.k]?' ck':''}`}>{g.label}</div><div className="chk-desc">{g.desc}</div></div>
+      </div>)}
     </div>
-    {score===6 && <div className="notice info" style={{marginTop:16}}><span className="notice-icon">✓</span><span className="notice-text">All 6 Amanah Gate screens passed. Stage 02 STR is now cleared to begin. Record the Stage Decision as "Proceed" in the QAL Approval Brief.</span></div>}
+    {score===6&&<div className="notice ni" style={{marginTop:11}}><span>&#10003;</span><span>All 6 screens passed. Stage 02 STR is now cleared.</span></div>}
+    {sample&&<CF label="Stage gate decision" value={S.gate.validation} accent="var(--out)"/>}
   </>;
 }
-
-function WorkspaceOffer(){
-  const [tab,setTab]=useState('promise');
+function WsMarket({sample}){
+  const [tab,setTab]=useState('definition');
+  if(sample) return <>
+    <DoneBadge/>
+    <div className="tabs">
+      {['definition','audience','context'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}
+    </div>
+    {tab==='definition'&&<><CF label="Buyer context" value={S.market_context} accent="var(--str)"/><CF label="Goal" value={S.market_goal} accent="var(--str)"/><CF label="What they've tried" value={S.market_tried} accent="var(--str)"/></>}
+    {tab==='audience'&&<><CF label="Primary segment" value="Muslim Female Solo Operators" accent="var(--str)"/><CF label="Age range" value="28–45" accent="var(--str)"/><CF label="Secondary segment" value="Muslim female creatives $30k–$80k approaching first pricing ceiling" accent="var(--str)"/></>}
+    {tab==='context'&&<><CF label="Market maturity" value="Level 3 — Solution aware, product unaware" accent="var(--str)"/><CF label="Market size estimate" value="~22,000–35,000 qualified prospects in primary segment" accent="var(--str)" gl="G3" glc="var(--sal)"/></>}
+    <CF label="Stage gate decision" value={S.gate.market} accent="var(--out)"/>
+  </>;
   return <>
     <div className="tabs">
-      {['promise','scope','guarantee','pricing'].map(t=>(
-        <button key={t} className={`tab-btn${tab===t?' active':''}`} onClick={()=>setTab(t)}>
-          {t.charAt(0).toUpperCase()+t.slice(1)}
-        </button>
-      ))}
+      {['definition','audience','context'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}
     </div>
-    {tab==='promise' && <>
-      <div className="notice info"><span className="notice-icon">◈</span><span className="notice-text">The Promise must be G1 or G2 only. Could a client use this Promise as an acceptance test for the work they received?</span></div>
-      <div className="field-group">
-        <div className="field-label">Promise statement</div>
-        <textarea className="field-input" rows={3} placeholder="A specific, deliverable-grounded commitment the client can use as a binary yes/no acceptance test..."/>
-      </div>
-      <div className="field-group">
-        <div className="field-label">G-label</div>
-        <select className="field-input">
-          <option>G1 — Verified, proven, documented</option>
-          <option>G2 — Substantiated, evidence available</option>
-        </select>
-      </div>
-      <div className="field-group">
-        <div className="field-label">Proof anchor (required for G1/G2)</div>
-        <input className="field-input" type="text" placeholder="Name the specific evidence that substantiates this Promise..."/>
-      </div>
-      <button className="ws-btn">Save Promise</button>
+    {tab==='definition'&&<>
+      <div className="notice ni"><span>&#9672;</span><span>Al-Basir — genuine seeing, not confirmation of what you already believe.</span></div>
+      <div className="fg"><div className="fl">Buyer context</div><textarea className="fi" rows={3} placeholder="e.g. Muslim women running solo service businesses..."/></div>
+      <div className="fg"><div className="fl">Specific goal they're trying to accomplish</div><textarea className="fi" rows={2} placeholder="e.g. Scale past the revenue ceiling..."/></div>
+      <div className="fg"><div className="fl">What stage of the journey are they at?</div><input className="fi" type="text" placeholder="e.g. Post-first-success, pre-scale..."/></div>
+      <button className="wbtn">Save Market Definition</button>
     </>}
-    {tab==='scope' && <>
-      <div className="field-group">
-        <div className="field-label">Included — what is explicitly covered</div>
-        <textarea className="field-input" rows={3} placeholder="List every deliverable, action, or outcome that is included. Be specific — vague inclusions create ambiguity the client will fill with their own assumptions..."/>
-      </div>
-      <div className="ws-divider"/>
-      <div className="field-group">
-        <div className="field-label">Excluded — what is explicitly not covered</div>
-        <textarea className="field-input" rows={3} placeholder="Name the specific deliverables, actions, or outcomes that are excluded. 'Anything not listed above' is not an exclusion — it is ambiguity..."/>
-      </div>
-      <div className="field-group">
-        <div className="field-label">Change-order triggers</div>
-        <textarea className="field-input" rows={2} placeholder="Name the specific conditions that would require a change order and a renegotiation of scope..."/>
-      </div>
-      <button className="ws-btn">Save Scope Map</button>
+    {tab==='audience'&&<>
+      <div className="frow"><div className="fg"><div className="fl">Primary segment</div><input className="fi" type="text"/></div><div className="fg"><div className="fl">Age range</div><input className="fi" type="text"/></div></div>
+      <div className="fg"><div className="fl">What have they already tried?</div><textarea className="fi" rows={2} placeholder="Courses, coaches, software..."/></div>
+      <div className="fg"><div className="fl">Secondary segment</div><input className="fi" type="text"/></div>
+      <button className="wbtn">Save Audience Profile</button>
     </>}
-    {tab==='guarantee' && <>
-      <div className="notice warning"><span className="notice-icon">◉</span><span className="notice-text">The Guarantee requires all four elements. A guarantee missing any one of them leaves the client carrying risk that belongs to the operator.</span></div>
-      {[
-        {key:'trigger',label:'Trigger Condition','ph':'The specific, objective condition under which the guarantee activates...'},
-        {key:'scope',label:'Scope','ph':'Exactly what the guarantee covers — and only what it covers...'},
-        {key:'remedy',label:'Remedy','ph':'What the operator will do when the trigger condition is met...'},
-        {key:'boundary',label:'Operator-Side Boundaries','ph':'What the client must have done for the guarantee to apply...'},
-      ].map(f=>(
-        <div className="field-group" key={f.key}>
-          <div className="field-label">{f.label}</div>
-          <textarea className="field-input" rows={2} placeholder={f.ph}/>
-        </div>
-      ))}
-      <button className="ws-btn">Save Guarantee</button>
-    </>}
-    {tab==='pricing' && <>
-      <div className="field-group">
-        <div className="field-label">Total price</div>
-        <input className="field-input" type="text" placeholder="$0.00"/>
-      </div>
-      <div className="field-row">
-        <div className="field-group">
-          <div className="field-label">Payment terms</div>
-          <select className="field-input">
-            <option>Paid in full</option>
-            <option>2-part split</option>
-            <option>Monthly retainer</option>
-            <option>Custom</option>
-          </select>
-        </div>
-        <div className="field-group">
-          <div className="field-label">Honest valuation basis</div>
-          <select className="field-input">
-            <option>Value Stack total</option>
-            <option>Time × rate</option>
-            <option>Outcome value</option>
-          </select>
-        </div>
-      </div>
-      <div className="field-group">
-        <div className="field-label">Value Stack (list each component with perceived monetary value)</div>
-        <textarea className="field-input" rows={4} placeholder="Component 1: [Name] — PMV: $X&#10;Component 2: [Name] — PMV: $X&#10;..."/>
-      </div>
-      <button className="ws-btn">Save Pricing Structure</button>
+    {tab==='context'&&<>
+      <div className="fg"><div className="fl">Market maturity level</div><select className="fi"><option value="">Select...</option><option>Level 1 — Problem unaware</option><option>Level 2 — Problem aware, solution unaware</option><option>Level 3 — Solution aware, product unaware</option><option>Level 4 — Product aware, not yet convinced</option><option>Level 5 — Most aware</option></select></div>
+      <div className="fg"><div className="fl">Market size estimate</div><div style={{display:'flex',gap:8}}><input className="fi" type="text" placeholder="~50,000 qualified prospects..."/><select className="fi" style={{width:68,flex:'none'}}><option>G3</option><option>G2</option><option>G1</option><option>G4</option></select></div></div>
+      <button className="wbtn">Save Context</button>
     </>}
   </>;
 }
-
-function WorkspaceDefault({tool}){
-  const domainTools = ['website','pixel','meta','socials','launchads','form','ghl','socials'];
-  const isDomain = domainTools.includes(tool.workspace);
+function WsPains({sample}){
+  if(sample) return <>
+    <DoneBadge/>
+    <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim fears</div>
+      {[S.fear1,S.fear2,S.fear3].map((f,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><span className="gbl g3b">F{i+1}</span><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--sal)',fontStyle:'italic'}}>{f}</div></div>)}
+    </div>
+    <div className="wdiv"/>
+    <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim desires</div>
+      {[S.desire1,S.desire2,S.desire3].map((d,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><span className="gbl g4b">D{i+1}</span><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--ofr)',fontStyle:'italic'}}>{d}</div></div>)}
+    </div>
+    <div className="wdiv"/>
+    <CF label="Enemy Narrative" value={S.enemy} accent="var(--str)"/>
+    <CF label="Stage gate decision" value={S.gate.pains} accent="var(--out)"/>
+  </>;
   return <>
-    <div className="gate-block" style={{borderLeftColor:STAGES[tool.stage].color,background:STAGES[tool.stage].bg}}>
-      <div className="gate-block-title" style={{color:STAGES[tool.stage].color}}>
-        Stage {STAGES[tool.stage].code} {tool.stage} — {STAGES[tool.stage].name}
-      </div>
-      <div className="gate-block-text" style={{color:'var(--text2)'}}>
-        {STAGES[tool.stage].attr} · {tool.bbosSection} · {tool.asset}
-      </div>
-    </div>
-    {isDomain && <div className="field-group">
-      <div className="field-label">Deployment domain</div>
-      <input className="field-input" type="text" defaultValue="https://hub.ogden.ag" readOnly style={{color:'var(--accent)',opacity:.9}}/>
-    </div>}
-    <div className="field-group">
-      <div className="field-label">Working notes for this tool</div>
-      <textarea className="field-input" rows={4} placeholder="Begin your work here..."/>
-    </div>
-    <div className="field-group">
-      <div className="field-label">G-label for primary output</div>
-      <div style={{display:'flex',gap:8}}>
-        {['G1','G2','G3','G4'].map(g=>(
-          <button key={g} className={`ws-btn ws-btn-outline`} style={{padding:'5px 14px'}}>
-            {g}
-          </button>
-        ))}
-      </div>
-    </div>
-    <div className="field-group">
-      <div className="field-label">Stage gate check — can I proceed to the next stage?</div>
-      <textarea className="field-input" rows={2} placeholder="Document any ASSUMPTION items, PROOF PENDING items, or conditions that must be resolved before the next stage..."/>
-    </div>
-    <button className="ws-btn">Save Work</button>
+    <div className="notice nw"><span>&#9673;</span><span>The Enemy is a convergent system — not the client's character, choices, or mindset.</span></div>
+    <div className="fg"><div className="fl">Top 3 verbatim fears</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><span className="gbl g3b">F{i}</span><input className="fi" type="text" placeholder={`Fear ${i} — exact quote...`}/></div>)}</div>
+    <div className="wdiv"/>
+    <div className="fg"><div className="fl">Top 3 verbatim desires</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><span className="gbl g4b">D{i}</span><input className="fi" type="text" placeholder={`Desire ${i} — exact quote...`}/></div>)}</div>
+    <div className="wdiv"/>
+    <div className="fg"><div className="fl">Enemy Narrative</div><textarea className="fi" rows={4} placeholder="The Enemy is not [client's character]. The Enemy is the convergent set of [forces]..."/></div>
+    <button className="wbtn">Save Emotional Triggers</button>
   </>;
 }
-
-function ToolWorkspace({tool}){
-  const map = {
-    market:<WorkspaceMarket/>,
-    pains:<WorkspacePains/>,
-    validation:<WorkspaceValidation/>,
-    offer:<WorkspaceOffer/>,
-  };
-  return map[tool.workspace] || <WorkspaceDefault tool={tool}/>;
+function WsOffer({sample}){
+  const [tab,setTab]=useState('promise');
+  if(sample) return <>
+    <DoneBadge/>
+    <div className="tabs">{['promise','scope','guarantee','pricing'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}</div>
+    {tab==='promise'&&<><CF label="Promise statement" value={S.promise} accent="var(--ofr)" gl="G2" glc="var(--out)"/><CF label="Proof anchor" value={S.proof} accent="var(--out)"/></>}
+    {tab==='scope'&&<><CF label="Included" value={S.scope_in} accent="var(--out)" mono/><div className="wdiv"/><CF label="Excluded" value={S.scope_ex} accent="var(--sal)" mono/></>}
+    {tab==='guarantee'&&<><CF label="Trigger condition" value={S.guar_t} accent="var(--ofr)"/><CF label="Remedy" value={S.guar_r} accent="var(--out)"/><CF label="Operator-side boundaries" value={S.guar_b} accent="var(--qal)"/></>}
+    {tab==='pricing'&&<><CF label="Price" value={S.price} accent="var(--accent)"/><CF label="Value stack" value={S.value_stack} accent="var(--ofr)" mono/></>}
+    <CF label="Stage gate decision" value={S.gate.offer} accent="var(--out)"/>
+  </>;
+  return <>
+    <div className="tabs">{['promise','scope','guarantee','pricing'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}</div>
+    {tab==='promise'&&<>
+      <div className="notice ni"><span>&#9672;</span><span>The Promise must be G1 or G2 only. Could a client use it as an acceptance test?</span></div>
+      <div className="fg"><div className="fl">Promise statement</div><textarea className="fi" rows={3} placeholder="A specific, deliverable-grounded commitment..."/></div>
+      <div className="frow"><div className="fg"><div className="fl">G-label</div><select className="fi"><option>G1 — Verified, proven</option><option>G2 — Substantiated</option></select></div><div className="fg"><div className="fl">Proof anchor</div><input className="fi" type="text" placeholder="Name the specific evidence..."/></div></div>
+      <button className="wbtn">Save Promise</button>
+    </>}
+    {tab==='scope'&&<>
+      <div className="fg"><div className="fl">Included</div><textarea className="fi" rows={3} placeholder="List every deliverable explicitly..."/></div>
+      <div className="wdiv"/>
+      <div className="fg"><div className="fl">Excluded</div><textarea className="fi" rows={3} placeholder="Name specific exclusions..."/></div>
+      <div className="fg"><div className="fl">Change-order triggers</div><textarea className="fi" rows={2} placeholder="Conditions requiring renegotiation..."/></div>
+      <button className="wbtn">Save Scope Map</button>
+    </>}
+    {tab==='guarantee'&&<>
+      <div className="notice nw"><span>&#9673;</span><span>All four elements required. Missing any one leaves client carrying risk that belongs to you.</span></div>
+      {[{k:'t',l:'Trigger Condition'},{k:'s',l:'Scope'},{k:'r',l:'Remedy'},{k:'b',l:'Operator-Side Boundaries'}].map(f=><div className="fg" key={f.k}><div className="fl">{f.l}</div><textarea className="fi" rows={2} placeholder={`${f.l}...`}/></div>)}
+      <button className="wbtn">Save Guarantee</button>
+    </>}
+    {tab==='pricing'&&<>
+      <div className="frow"><div className="fg"><div className="fl">Total price</div><input className="fi" type="text" placeholder="$0.00"/></div><div className="fg"><div className="fl">Payment terms</div><select className="fi"><option>Paid in full</option><option>2-part split</option><option>Monthly retainer</option></select></div></div>
+      <div className="fg"><div className="fl">Value stack (each component + PMV)</div><textarea className="fi" rows={4} placeholder={"Component 1 — PMV: $X\nComponent 2 — PMV: $X\n..."}/></div>
+      <button className="wbtn">Save Pricing Structure</button>
+    </>}
+  </>;
+}
+function WsGeneric({tool,sample}){
+  const s=STAGES[tool.stage];
+  const glMap={competitor:'G1',avatar:'G1',adspy:'G2',contentspy:'G2',attention:'G2',creative:'G2',generateads:'G2',logo:'G1',landing:'G2',salesletter:'G2',social:'G2',meta:'G1',pixel:'G1',launchads:'G2',socials:'G1',website:'G2',salespreso:'G2',nurture:'G2',vsl:'G2',salesscript:'G1',settingscript:'G1',form:'G1',ghl:'G1',solution:'G2',icp:'G2',pricing:'G2',gtm:'G2'};
+  const glcMap={G1:'var(--out)',G2:'var(--str)',G3:'var(--sal)',G4:'var(--ofr)'};
+  const gl=glMap[tool.ws]||'G2';const glc=glcMap[gl];
+  const notesTxt=S.notes[tool.id]||'';const gateTxt=S.gate[tool.id]||'';
+  if(sample&&notesTxt) return <>
+    <DoneBadge/>
+    <div className="gb-block" style={{borderLeftColor:s.c,background:s.bg}}>
+      <div className="gb-title" style={{color:s.c}}>Stage {s.code} {s.key} — {s.name}</div>
+      <div className="gb-sub">{s.attr} · {tool.bsec} · {tool.asset}</div>
+    </div>
+    <CF label="Working notes" value={notesTxt} accent={s.c}/>
+    <div style={{marginBottom:12}}>
+      <div className="fl" style={{marginBottom:7}}>G-label for primary output</div>
+      <span style={{display:'inline-flex',background:glc+'22',color:glc,border:`1px solid ${glc}44`,borderRadius:4,padding:'3px 12px',fontSize:11,fontWeight:600}}>{gl}</span>
+    </div>
+    <CF label="Stage gate decision" value={gateTxt} accent="var(--out)"/>
+  </>;
+  return <>
+    <div className="gb-block" style={{borderLeftColor:s.c,background:s.bg}}>
+      <div className="gb-title" style={{color:s.c}}>Stage {s.code} {s.key} — {s.name}</div>
+      <div className="gb-sub">{s.attr} · {tool.bsec} · {tool.asset}</div>
+    </div>
+    <div className="fg"><div className="fl">Working notes</div><textarea className="fi" rows={4} placeholder="Begin your work here..."/></div>
+    <div className="fg"><div className="fl">G-label for primary output</div><div style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=><button key={g} className="wbtn wbtn-o" style={{padding:'3px 11px'}}>{g}</button>)}</div></div>
+    <div className="fg"><div className="fl">Stage gate check</div><textarea className="fi" rows={2} placeholder="Document any ASSUMPTION items, PROOF PENDING items, or conditions..."/></div>
+    <button className="wbtn">Save Work</button>
+  </>;
+}
+function Workspace({tool,sample}){
+  if(tool.ws==='validation') return <WsValidation sample={sample}/>;
+  if(tool.ws==='market')     return <WsMarket sample={sample}/>;
+  if(tool.ws==='pains')      return <WsPains sample={sample}/>;
+  if(tool.ws==='offer')      return <WsOffer sample={sample}/>;
+  return <WsGeneric tool={tool} sample={sample}/>;
 }
 
-function ToolDetail({tool, onBack}){
-  const s = STAGES[tool.stage];
-  return (
-    <div className="detail">
-      <div className="breadcrumb">
-        <button className="breadcrumb-link" onClick={onBack}>Overview</button>
-        <span className="breadcrumb-sep">›</span>
-        <span>{tool.section}</span>
-        <span className="breadcrumb-sep">›</span>
-        <span style={{color:'var(--text2)'}}>{tool.label}</span>
-      </div>
-      <div className="detail-header">
-        <div className="detail-eyebrow" style={{color:s.color}}>{tool.section}</div>
-        <div className="detail-title">{tool.label}</div>
-        <div className="detail-badges">
-          {stagePill(tool.stage,'lg')}
-          <span className="badge badge-outline">Stage {s.code} · {s.name}</span>
-          <span className="badge badge-outline">{tool.bbosSection}</span>
+/* ── ROLE DASHBOARD ── */
+function RoleDashboard({role, onSelect}){
+  const ri = ROLE_IDX[role.id];
+  const owns  = TOOLS.filter(t=>t.perms[ri]==='O');
+  const edits = TOOLS.filter(t=>t.perms[ri]==='E');
+  const views = TOOLS.filter(t=>t.perms[ri]==='V');
+  const myTools = [...owns,...edits];
+  const s=STAGES;
+  return <div className="dash">
+    <div className="dash-hdr">
+      <div className="dash-role-row">
+        <div className="dash-avatar" style={{background:role.bg,color:role.color}}>{role.initials}</div>
+        <div>
+          <div className="dash-role-name">{role.label}</div>
+          <div style={{fontSize:11,color:'var(--text3)'}}>{role.sub}</div>
         </div>
       </div>
-      <div className="detail-grid">
-        <div className="detail-block" style={{background:s.bg,border:`1px solid ${s.border}`}}>
-          <div className="detail-block-label" style={{color:s.color}}>Governing attribute</div>
-          <div className="detail-block-value" style={{color:s.color}}>{s.attr}</div>
-        </div>
-        <div className="detail-block" style={{background:'var(--bg2)',border:'1px solid var(--border)'}}>
-          <div className="detail-block-label" style={{color:'var(--text3)'}}>BBOS asset</div>
-          <div className="detail-block-value" style={{color:'var(--text2)'}}>{tool.asset}</div>
+      <div className="dash-role-scope">{role.scope}</div>
+    </div>
+    <div className="dash-stats">
+      <div className="stat-card"><div className="stat-num" style={{color:role.color}}>{owns.length}</div><div className="stat-lbl">Assets you own</div></div>
+      <div className="stat-card"><div className="stat-num" style={{color:'var(--str)'}}>{edits.length}</div><div className="stat-lbl">Assets you edit</div></div>
+      <div className="stat-card"><div className="stat-num" style={{color:'var(--text3)'}}>{views.length}</div><div className="stat-lbl">For reference only</div></div>
+    </div>
+    {myTools.length>0&&<>
+      <div className="dash-section">
+        <div className="dash-sec-hdr"><div className="dash-sec-lbl">Your assets</div><div className="dash-sec-line"/></div>
+        <div className="dash-grid">
+          {myTools.map(t=>{
+            const p=t.perms[ri];const sg=STAGES[t.stage];
+            return <div key={t.id} className="dash-card" onClick={()=>onSelect(t.id)}>
+              <div className="dash-card-top">
+                <div className="dash-card-name">{t.label}</div>
+                <PermPill p={p} size="sm"/>
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:5,marginTop:4}}>
+                <span className="dash-card-stage" style={{background:sg.bg,color:sg.c}}>{sg.code} {t.stage}</span>
+                <span className="dash-card-asset">{t.sec}</span>
+              </div>
+            </div>;
+          })}
         </div>
       </div>
-      <div className="detail-rationale">
-        <div className="detail-rationale-label">Mapping rationale</div>
-        <div className="detail-rationale-text">{tool.rationale}</div>
+    </>}
+    {views.length>0&&<>
+      <div className="dash-section">
+        <div className="dash-sec-hdr"><div className="dash-sec-lbl">For reference</div><div className="dash-sec-line"/><div style={{fontSize:10,color:'var(--text3)',whiteSpace:'nowrap'}}>View only</div></div>
+        <div className="dash-grid">
+          {views.map(t=>{
+            const sg=STAGES[t.stage];
+            return <div key={t.id} className="dash-card ref-card" onClick={()=>onSelect(t.id)}>
+              <div className="dash-card-top">
+                <div className="dash-card-name">{t.label}</div>
+                <PermPill p="V" size="sm"/>
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:5,marginTop:4}}>
+                <span className="dash-card-stage" style={{background:sg.bg,color:sg.c}}>{sg.code} {t.stage}</span>
+                <span className="dash-card-asset">{t.sec}</span>
+              </div>
+            </div>;
+          })}
+        </div>
       </div>
-      <div className="detail-workspace">
-        <div className="workspace-label">Workspace</div>
-        <ToolWorkspace tool={tool}/>
+    </>}
+  </div>;
+}
+
+/* ── TOOL DETAIL ── */
+function ToolDetail({tool,onBack,sample,role}){
+  const s=STAGES[tool.stage];
+  const p = role.id==='all' ? 'O' : rolePerm(tool,role.id);
+  const canEdit = p==='O'||p==='E';
+  return <div className="det">
+    <div className="bc">
+      <button className="bc-btn" onClick={onBack}>{role.id==='all'?'Overview':role.label+' dashboard'}</button>
+      <span>›</span><span>{tool.sec}</span>
+      <span>›</span><span style={{color:'var(--text2)'}}>{tool.label}</span>
+    </div>
+    {role.id!=='all'&&<div className="perm-banner" style={{background:permBg(p),borderColor:permBorder(p)}}>
+      <PermPill p={p} size="md"/>
+      <span className="perm-banner-desc" style={{color:permColor(p)}}>{PERM_DESCS[p]}</span>
+    </div>}
+    {sample&&<div style={{display:'flex',alignItems:'center',gap:7,padding:'7px 12px',background:'var(--out-bg)',border:'1px solid var(--out-b)',borderRadius:5,marginBottom:14}}>
+      <span style={{fontSize:11,color:'var(--out)',fontWeight:500}}>Sample ICP</span>
+      <span style={{fontSize:11,color:'var(--text3)'}}>The Clarity Practice · Cycle 1</span>
+    </div>}
+    <div className="det-ey" style={{color:s.c}}>{tool.sec}</div>
+    <div className="det-title">{tool.label}</div>
+    <div className="det-badges">
+      <Pill k={tool.stage} size="sm"/>
+      <span className="bgo">Stage {s.code} · {s.name}</span>
+      <span className="bgo">{tool.bsec}</span>
+    </div>
+    <div className="det-grid">
+      <div className="det-blk" style={{background:s.bg,border:`1px solid ${s.b}`}}>
+        <div className="det-blk-lbl" style={{color:s.c}}>Governing attribute</div>
+        <div className="det-blk-val" style={{color:s.c}}>{s.attr}</div>
+      </div>
+      <div className="det-blk" style={{background:'var(--bg2)',border:'1px solid var(--border)'}}>
+        <div className="det-blk-lbl" style={{color:'var(--text3)'}}>BBOS asset</div>
+        <div className="det-blk-val" style={{color:'var(--text2)'}}>{tool.asset}</div>
       </div>
     </div>
-  );
+    <div className="det-rat">
+      <div className="det-rat-lbl">Mapping rationale</div>
+      <div className="det-rat-txt">{tool.rat}</div>
+    </div>
+    <div className="ws-card">
+      <div className="ws-lbl">{sample?`Completed workspace — The Clarity Practice`:'Workspace'}</div>
+      {canEdit
+        ? <Workspace tool={tool} sample={sample}/>
+        : <div className="view-only">
+            <div className="view-only-msg">
+              This asset is outside your edit scope as {role.label}. You have View access — use the completed data above for context when building your own assets.
+              {p==='-'&&` This tool is not part of the ${role.label} workflow.`}
+            </div>
+          </div>
+      }
+    </div>
+  </div>;
 }
 
-/* ── ASSET VIEW ─────────────────────────────────────────── */
-function AssetDetail({tool, onBack}){
-  const s = STAGES[tool.stage];
-  return (
-    <div className="av-detail">
-      <button className="av-detail-back" onClick={onBack}>
-        ← All assets
-      </button>
-      <div className="av-asset-card">
-        <div className="av-card-header" style={{borderTop:`3px solid ${s.color}`}}>
-          <div className="av-card-label" style={{color:s.color}}>
-            Stage {s.code} {s.key} · {s.name}
-          </div>
-          <div className="av-card-title">{tool.label}</div>
-          <div className="av-card-meta">
-            <span style={{background:s.bg,color:s.color,border:`1px solid ${s.border}`,borderRadius:5,padding:'3px 10px',fontSize:11,fontWeight:600}}>
-              {tool.asset}
-            </span>
-            <span style={{fontSize:11,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:5,padding:'3px 10px'}}>
-              {tool.section}
-            </span>
-          </div>
-        </div>
-        <div className="av-card-body">
-          <p className="av-desc">{tool.desc}</p>
-          <div className="av-divider"/>
-          <div className="av-field-row">
-            <span className="av-field-key">BBOS section</span>
-            <span className="av-field-val">{tool.bbosSection}</span>
-          </div>
-          <div className="av-field-row">
-            <span className="av-field-key">Asset reference</span>
-            <span className="av-field-val">{tool.asset}</span>
-          </div>
-          <div className="av-field-row">
-            <span className="av-field-key">Governs</span>
-            <span className="av-field-val" style={{color:s.color}}>{s.attr}</span>
-          </div>
-          <div className="av-divider"/>
-          <p style={{fontSize:13,color:'var(--text3)',lineHeight:1.7,fontStyle:'italic'}}>
-            {tool.rationale}
-          </p>
+/* ── ASSET VIEW ── */
+function AssetDetail({tool,onBack,role}){
+  const s=STAGES[tool.stage];
+  const p=role.id==='all'?'O':rolePerm(tool,role.id);
+  return <div className="avd">
+    <button className="avd-back" onClick={onBack}>&#8592; All assets</button>
+    {role.id!=='all'&&<div className="perm-banner" style={{background:permBg(p),borderColor:permBorder(p),marginBottom:14}}>
+      <PermPill p={p} size="md"/>
+      <span className="perm-banner-desc" style={{color:permColor(p)}}>{PERM_DESCS[p]}</span>
+    </div>}
+    <div className="avd-card">
+      <div className="avd-hdr" style={{borderTop:`3px solid ${s.c}`}}>
+        <div className="avd-stage-lbl" style={{color:s.c}}>Stage {s.code} {s.key} · {s.name}</div>
+        <div className="avd-title">{tool.label}</div>
+        <div className="avd-meta">
+          <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'2px 8px',fontSize:9,fontWeight:600}}>{tool.asset}</span>
+          <span style={{fontSize:9,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,padding:'2px 8px'}}>{tool.sec}</span>
         </div>
       </div>
+      <div className="avd-body">
+        <p className="avd-desc">{tool.desc}</p>
+        <div className="avd-div"/>
+        <div className="avd-row"><span className="avd-key">BBOS section</span><span className="avd-val">{tool.bsec}</span></div>
+        <div className="avd-row"><span className="avd-key">Asset</span><span className="avd-val">{tool.asset}</span></div>
+        <div className="avd-row"><span className="avd-key">Governs</span><span className="avd-val" style={{color:s.c}}>{s.attr}</span></div>
+        <div className="avd-div"/>
+        <p className="avd-rat">{tool.rat}</p>
+      </div>
     </div>
-  );
+  </div>;
 }
 
-function AssetView({selId, setSelId}){
-  const byStage = {};
+function AssetView({selId,setSelId,role}){
+  const tool=TOOLS.find(t=>t.id===selId);
+  if(tool) return <AssetDetail tool={tool} onBack={()=>setSelId(null)} role={role}/>;
+  const byStage={};
   Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
-  TOOLS.forEach(t=>{if(byStage[t.stage])byStage[t.stage].push(t);});
+  TOOLS.forEach(t=>{
+    if(!byStage[t.stage]) return;
+    if(role.id==='all'||rolePerm(t,role.id)!=='-') byStage[t.stage].push(t);
+  });
+  return <div className="av">
+    {Object.values(STAGES).map(s=>{
+      const items=byStage[s.key]||[];
+      if(!items.length) return null;
+      return <div key={s.key} className="av-stage">
+        <div className="av-stage-hdr">
+          <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:3,padding:'2px 8px',fontSize:9,fontWeight:600}}>{s.code} {s.key}</span>
+          <span className="av-stage-name">{s.name}</span>
+          <span className="av-stage-attr">{s.attr}</span>
+        </div>
+        <div className="av-list">
+          {items.map(t=>{
+            const p=role.id==='all'?'O':rolePerm(t,role.id);
+            return <div key={t.id} className={`av-row${selId===t.id?' on':''}`} onClick={()=>setSelId(t.id)}>
+              <div className="av-bar" style={{background:s.c+'55'}}/>
+              <div className="av-body">
+                <div className="av-name">{t.label}</div>
+                <div className="av-ref">{t.asset}</div>
+              </div>
+              <div className="av-right">
+                {role.id!=='all'&&<PermPill p={p} size="sm"/>}
+                <span className="av-sec">{t.sec}</span>
+              </div>
+            </div>;
+          })}
+        </div>
+      </div>;
+    })}
+  </div>;
+}
 
-  const selTool = TOOLS.find(t=>t.id===selId);
-  if(selTool) return <AssetDetail tool={selTool} onBack={()=>setSelId(null)}/>;
-
-  return (
-    <div className="asset-view">
+/* ── OVERVIEW ── */
+function Overview({onSelect,role}){
+  const byStage={};
+  Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
+  TOOLS.forEach(t=>{byStage[t.stage]&&byStage[t.stage].push(t);});
+  const bySec={};
+  SECS.forEach(s=>{bySec[s]=TOOLS.filter(t=>t.sec===s&&(role.id==='all'||rolePerm(t,role.id)!=='-'));});
+  return <div className="ov">
+    <div className="ov-ey">Barakah Business Operating System</div>
+    <div className="ov-title">TruthMarket<br/>Pipeline Map</div>
+    <div className="ov-sub">Every TruthMarket tool maps to a BBOS pipeline stage with a governing attribute. No outreach without research. No research without qualification. No offer without honest valuation.</div>
+    <div className="pip">
       {Object.values(STAGES).map(s=>{
-        const items = byStage[s.key]||[];
-        if(!items.length) return null;
-        return (
-          <div key={s.key} className="av-stage-block">
-            <div className="av-stage-hdr">
-              <span className="av-stage-pill" style={{background:s.bg,color:s.color,border:`1px solid ${s.border}`}}>
-                {s.code} {s.key}
-              </span>
-              <span className="av-stage-name">{s.name}</span>
-              <span className="av-stage-attr">{s.attr}</span>
-            </div>
-            <div className="av-asset-list">
-              {items.map(t=>(
-                <div
-                  key={t.id}
-                  className={`av-asset-row${selId===t.id?' selected':''}`}
-                  onClick={()=>setSelId(t.id)}
-                >
-                  <div className="av-asset-marker" style={{background:s.color+'60'}}/>
-                  <div className="av-asset-body">
-                    <div className="av-asset-name">{t.label}</div>
-                    <div className="av-asset-ref">{t.asset}</div>
-                  </div>
-                  <div className="av-asset-section">{t.section}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
+        const cnt=(byStage[s.key]||[]).length;
+        return <div key={s.key} className="pip-item" style={{background:s.bg,borderColor:s.b}}>
+          <div className="pip-code" style={{color:s.c}}>{s.code} {s.key}</div>
+          <div className="pip-name" style={{color:s.c}}>{s.name}</div>
+          <div className="pip-cnt" style={{color:s.c}}>{cnt} tools</div>
+          <div className="pip-attr" style={{color:s.c}}>{s.attr}</div>
+        </div>;
       })}
     </div>
-  );
-}
-
-function Overview({onSelect}){
-  const byStage = {};
-  Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
-  TOOLS.forEach(t=>{if(byStage[t.stage])byStage[t.stage].push(t);});
-  const bySec = {};
-  SECTIONS.forEach(s=>{bySec[s]=TOOLS.filter(t=>t.section===s);});
-
-  return (
-    <div className="overview">
-      <div className="overview-hero">
-        <div className="overview-eyebrow">Barakah Business Operating System</div>
-        <div className="overview-title">TruthMarket<br/>Pipeline Map</div>
-        <div className="overview-sub">
-          Every TruthMarket tool maps to a BBOS pipeline stage with a governing attribute.
-          No outreach without research. No research without qualification. No offer without honest valuation.
-        </div>
-      </div>
-
-      <div className="stage-pipeline">
-        {Object.values(STAGES).map(s=>{
-          const cnt = (byStage[s.key]||[]).length;
-          return (
-            <div key={s.key} className="stage-pip-item" style={{background:s.bg,borderColor:s.border}}>
-              <div className="stage-pip-code" style={{color:s.color}}>{s.code} {s.key}</div>
-              <div className="stage-pip-name" style={{color:s.color}}>{s.name}</div>
-              <div className="stage-pip-count" style={{color:s.color}}>{cnt} tool{cnt!==1?'s':''}</div>
-              <div className="stage-pip-attr" style={{color:s.color}}>{s.attr}</div>
-            </div>
-          );
-        })}
-      </div>
-
-      {SECTIONS.map(sec=>(
-        <div key={sec}>
-          <div className="section-divider">
-            <div className="section-divider-label">{sec}</div>
-            <div className="section-divider-line"/>
-            <span style={{fontSize:11,color:'var(--text3)',whiteSpace:'nowrap'}}>{bySec[sec].length} tools</span>
-          </div>
-          <div className="tools-grid" style={{marginBottom:28}}>
-            {bySec[sec].map(t=>(
-              <div key={t.id} className="tool-card" onClick={()=>onSelect(t.id)}>
-                <div className="tool-card-top">
-                  <div className="tool-card-name">{t.label}</div>
-                  {stagePill(t.stage,'sm')}
-                </div>
-                <div className="tool-card-asset">{t.asset}</div>
+    {SECS.map(sec=>{
+      const tools=bySec[sec];
+      if(!tools.length) return null;
+      return <div key={sec}>
+        <div className="sec-div"><div className="sec-div-lbl">{sec}</div><div className="sec-div-line"/><div className="sec-div-cnt">{tools.length} tools</div></div>
+        <div className="tc-grid" style={{marginBottom:20}}>
+          {tools.map(t=>{
+            const p=role.id==='all'?'O':rolePerm(t,role.id);
+            return <div key={t.id} className="tc" onClick={()=>onSelect(t.id)}>
+              <div className="tc-top">
+                <div className="tc-name">{t.label}</div>
+                <Pill k={t.stage} size="sm"/>
               </div>
-            ))}
-          </div>
+              <div style={{display:'flex',alignItems:'center',gap:5,marginTop:4}}>
+                <span className="tc-asset">{t.asset}</span>
+              </div>
+              {role.id!=='all'&&<div style={{marginTop:6}}><PermPill p={p} size="sm"/></div>}
+            </div>;
+          })}
         </div>
-      ))}
-    </div>
-  );
+      </div>;
+    })}
+  </div>;
 }
 
+/* ── APP ── */
 function App(){
-  const [selId, setSelId] = useState(null);
-  const [collapsed, setCollapsed] = useState({});
-  const [viewMode, setViewMode] = useState('pipeline'); // 'pipeline' | 'asset'
-  const selTool = TOOLS.find(t=>t.id===selId);
-  const toggle = s => setCollapsed(c=>({...c,[s]:!c[s]}));
-  const switchView = mode => { setViewMode(mode); setSelId(null); };
+  const [selId,setSelId]=useState(null);
+  const [collapsed,setCol]=useState({});
+  const [view,setView]=useState('pipeline');
+  const [sample,setSample]=useState(false);
+  const [roleId,setRoleId]=useState('all');
+  const role=ROLES.find(r=>r.id===roleId)||ROLES[0];
+  const selTool=TOOLS.find(t=>t.id===selId);
+  const toggleCol=k=>setCol(c=>({...c,[k]:!c[k]}));
+  const switchView=v=>{setView(v);setSelId(null);};
+  const switchRole=id=>{setRoleId(id);setSelId(null);setView('pipeline');};
+  const switchSample=v=>{setSample(v);setView('pipeline');setSelId(null);};
 
-  return (
-    <div className="app">
-      {/* TOPBAR */}
-      <div className="topbar">
-        <div className="logo">
-          <div className="logo-mark">
-            <svg viewBox="0 0 14 14"><path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5L7 1Z"/></svg>
-          </div>
-          <span className="logo-text">TruthMarket</span>
-          <span className="logo-sep">×</span>
-          <span className="logo-sub">BBOS</span>
-        </div>
-        <div className="topbar-right">
-          <div className="view-toggle">
-            <button className={`vt-btn${viewMode==='pipeline'?' active':''}`} onClick={()=>switchView('pipeline')}>
-              Pipeline
-            </button>
-            <button className={`vt-btn${viewMode==='asset'?' active':''}`} onClick={()=>switchView('asset')}>
-              Assets
-            </button>
-          </div>
-          <span className="tb-badge">31 tools mapped</span>
+  const sidebarTools = roleId==='all'
+    ? TOOLS
+    : TOOLS.filter(t=>rolePerm(t,roleId)!=='-');
+
+  const toolsByStage={};
+  Object.keys(STAGES).forEach(k=>{toolsByStage[k]=[];});
+  sidebarTools.forEach(t=>{toolsByStage[t.stage]&&toolsByStage[t.stage].push(t);});
+
+  function mainContent(){
+    if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role}/>;
+    if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role}/>;
+    if(roleId!=='all') return <RoleDashboard role={role} onSelect={setSelId}/>;
+    return <Overview onSelect={setSelId} role={role}/>;
+  }
+
+  return <div className="app">
+    {/* TOPBAR */}
+    <div className="tb">
+      <div className="tb-logo">
+        <div className="tb-mark"><svg viewBox="0 0 14 14"><path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5Z"/></svg></div>
+        <span className="tb-name">TruthMarket</span>
+        <span className="tb-sep">×</span>
+        <span className="tb-sub">BBOS</span>
+      </div>
+      <div className="tb-divider"/>
+      <div className="role-sel-wrap">
+        <span className="role-sel-lbl">Role</span>
+        <div className="role-sel">
+          {ROLES.map(r=><button key={r.id} className={`rs-btn${roleId===r.id?' on':''}`}
+            style={roleId===r.id?{background:r.bg,color:r.color}:{}}
+            onClick={()=>switchRole(r.id)}>{r.id==='all'?'All':r.label}</button>)}
         </div>
       </div>
-
-      {/* SIDEBAR */}
-      <div className="sidebar">
-        <div className="pipeline-nav">
-          <button className={`pipeline-nav-btn${!selId?' active':''}`} onClick={()=>setSelId(null)}>
-            <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
-            {viewMode==='asset' ? 'All Assets' : 'Pipeline Overview'}
-          </button>
+      <div className="tb-right">
+        <div className="seg">
+          <button className={`sg-btn${view==='pipeline'?' on':''}`} onClick={()=>switchView('pipeline')}>Pipeline</button>
+          <button className={`sg-btn${view==='asset'?' on':''}`} onClick={()=>switchView('asset')}>Assets</button>
         </div>
-
-        {Object.values(STAGES).map(s=>{
-          const items = TOOLS.filter(t=>t.stage===s.key);
-          const open = !collapsed[s.key];
-          return (
-            <div key={s.key} className="nav-section">
-              <div className="nav-section-hdr" onClick={()=>toggle(s.key)}
-                style={{borderLeft:`2px solid ${s.color}40`}}>
-                <div style={{display:'flex',flexDirection:'column',gap:1}}>
-                  <span style={{fontSize:9,fontWeight:600,letterSpacing:'1px',textTransform:'uppercase',color:s.color}}>
-                    {s.code} — {s.name}
-                  </span>
-                  <span style={{fontSize:9,color:'var(--text3)',fontStyle:'italic'}}>{s.attr}</span>
-                </div>
-                <div style={{display:'flex',gap:6,alignItems:'center'}}>
-                  <span className="nav-section-count"
-                    style={{background:s.bg,color:s.color,border:`1px solid ${s.border}`}}>
-                    {items.length}
-                  </span>
-                  <span className={`nav-chevron ${open?'open':'closed'}`}>▾</span>
-                </div>
-              </div>
-              {open && items.map(t=>(
-                <div key={t.id} className={`nav-item${selId===t.id?' active':''}`} onClick={()=>setSelId(t.id)}>
-                  <div className="nav-item-dot" style={{background:s.color+'80',border:`1px solid ${s.color}40`}}/>
-                  <div style={{flex:1,display:'flex',flexDirection:'column',gap:1}}>
-                    <span className="nav-item-label">{t.label}</span>
-                    <span style={{fontSize:9,color:'var(--text3)',lineHeight:1.3}}>{t.section}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* MAIN */}
-      <div className="main">
-        {viewMode === 'asset'
-          ? <AssetView selId={selId} setSelId={setSelId}/>
-          : selTool
-            ? <ToolDetail tool={selTool} onBack={()=>setSelId(null)}/>
-            : <Overview onSelect={setSelId}/>
-        }
+        <div className="seg">
+          <button className={`sg-btn${!sample?' on':''}`} onClick={()=>switchSample(false)}>Blank</button>
+          <button className={`sg-btn${sample?' on':''}`} onClick={()=>switchSample(true)}>Sample ✦</button>
+        </div>
+        {sample&&<span className="tb-badge" style={{background:'var(--out-bg)',color:'var(--out)',border:'1px solid var(--out-b)'}}>The Clarity Practice</span>}
       </div>
     </div>
-  );
+
+    {/* SIDEBAR */}
+    <div className="sb">
+      {roleId!=='all'&&<div className="role-banner">
+        <div className="role-avatar" style={{background:role.bg,color:role.color}}>{role.initials}</div>
+        <div className="role-banner-info">
+          <div className="role-banner-name">{role.label}</div>
+          <div className="role-banner-sub">{sidebarTools.length} tools in scope</div>
+        </div>
+      </div>}
+      <div className="sb-top">
+        <button className={`sb-overview${!selId?' on':''}`} onClick={()=>setSelId(null)}>
+          <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
+          {roleId!=='all'?role.label+' Dashboard':view==='asset'?'All Assets':'Pipeline Overview'}
+        </button>
+      </div>
+      {Object.values(STAGES).map(s=>{
+        const items=toolsByStage[s.key]||[];
+        if(!items.length) return null;
+        const open=!collapsed[s.key];
+        return <div key={s.key} className="sb-sec">
+          <div className="sb-sec-hdr" onClick={()=>toggleCol(s.key)} style={{borderLeft:`2px solid ${s.c}40`}}>
+            <div>
+              <div className="sb-sec-code" style={{color:s.c}}>{s.code} — {s.name}</div>
+              <div className="sb-sec-attr">{s.attr}</div>
+            </div>
+            <div className="sb-sec-right">
+              <span className="sb-cnt" style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`}}>{items.length}</span>
+              <span className={`sb-chev ${open?'open':'closed'}`}>▾</span>
+            </div>
+          </div>
+          {open&&items.map(t=>{
+            const p=roleId==='all'?'O':rolePerm(t,roleId);
+            return <div key={t.id} className={`sb-item${selId===t.id?' on':''}`} onClick={()=>setSelId(t.id)}>
+              <div className="sb-item-dot" style={{background:s.c+'90'}}/>
+              <div className="sb-item-body">
+                <div className="sb-item-label">{t.label}</div>
+                <div className="sb-item-sub">{t.sec}</div>
+              </div>
+              {roleId!=='all'&&<PermPill p={p} size="sm"/>}
+            </div>;
+          })}
+        </div>;
+      })}
+    </div>
+
+    {/* MAIN */}
+    <div className="main">{mainContent()}</div>
+  </div>;
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
