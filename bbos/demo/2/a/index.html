@@ -226,6 +226,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 /* view-only overlay */
 .view-only{background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:14px 18px;margin-top:4px}
 .view-only-msg{font-size:12px;color:var(--text3);line-height:1.7}
+/* dua blocks */
+.dua-block{margin:0;border-top:1px solid var(--border);background:transparent}
+.dua-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
+.dua-toggle:hover{background:var(--bg3)}
+.dua-glyph{font-size:10px;flex-shrink:0;opacity:.55}
+.dua-label{flex:1;min-width:0}
+.dua-kind{font-size:8px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;display:block;line-height:1.2}
+.dua-title-txt{font-size:10px;color:var(--text3);line-height:1.3}
+.dua-chev{font-size:7px;color:var(--text3);flex-shrink:0;transition:transform .15s}
+.dua-chev.open{transform:rotate(0)}.dua-chev.closed{transform:rotate(-90deg)}
+.dua-body{padding:2px 14px 12px}
+.dua-arabic{font-size:15px;line-height:1.9;color:var(--text);text-align:right;direction:rtl;letter-spacing:.02em;margin-bottom:8px;font-family:'DM Serif Display',serif}
+.dua-trans{font-size:10px;color:var(--text3);font-style:italic;line-height:1.5;margin-bottom:4px}
+.dua-meaning{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:4px}
+.dua-source{font-size:9px;color:var(--text3);opacity:.6}
 </style>
 </head>
 <body>
@@ -255,7 +270,65 @@ const STAGES = {
   FUL:{code:'07',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
 };
 
-// perms: [strat, copy, media, setter, closer, fulfil]  O=owns E=edit V=view -=none
+const CLOSING_DUA = {
+  arabic:'رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',
+  trans:'Rabbanā taqabbal minnā, innaka anta s-samī\'u l-\'alīm',
+  meaning:'"Our Lord, accept this from us. Indeed You are the All-Hearing, the All-Knowing."',
+  source:'Al-Baqarah 2:127',
+  title:'Closing',
+};
+
+const DUAS = {
+  QAL:{
+    title:'Openness and Clarity',
+    arabic:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي',
+    trans:'Rabbi shraḥ lī ṣadrī wa yassir lī amrī wa-ḥlul \'uqdatan min lisānī yafqahū qawlī',
+    meaning:'"My Lord, expand for me my chest, ease for me my task, and untie the knot from my tongue that they may understand my speech."',
+    source:'Quran · Tā-Hā 20:25–28',
+    closing:{
+      title:'Steadfastness After Guidance',
+      arabic:'رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ',
+      trans:'Rabbanā lā tuzigh qulūbanā ba\'da idh hadaytanā wa hab lanā min ladunka raḥmah, innaka anta l-Wahhāb',
+      meaning:'"Our Lord, do not let our hearts deviate after You have guided us. Grant us from Yourself mercy. Indeed, You are the Bestower."',
+      source:'Quran · Āl \'Imrān 3:8',
+    },
+  },
+  STR:{
+    title:'Clarity of Sight',
+    arabic:'اللَّهُمَّ أَرِنَا الْحَقَّ حَقًّا وَارْزُقْنَا اتِّبَاعَهُ وَأَرِنَا الْبَاطِلَ بَاطِلًا وَارْزُقْنَا اجْتِنَابَهُ',
+    trans:'Allāhumma arinā l-ḥaqqa ḥaqqan wa-rzuqnā ttibā\'ahu, wa arinā l-bāṭila bāṭilan wa-rzuqnā jtinābahu',
+    meaning:'"O Allah, show us the truth as truth and grant us the ability to follow it, and show us falsehood as falsehood and grant us the ability to avoid it."',
+    source:'Supplications of the Prophet ﷺ · Grade: Hasan',
+  },
+  OFR:{
+    title:'Rightness and Aim',
+    arabic:'اللَّهُمَّ أَلْهِمْنِي رُشْدِي وَأَعِذْنِي مِنْ شَرِّ نَفْسِي',
+    trans:'Allāhumma alhimnī rushdī wa a\'idhnī min sharri nafsī',
+    meaning:'"O Allah, inspire me with my right conduct and protect me from the evil of my own self."',
+    source:'Sunan al-Tirmidhī · Grade: Hasan',
+  },
+  OUT:{
+    title:'Tawakkul',
+    arabic:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',
+    trans:'Ḥasbunā Allāhu wa ni\'ma l-wakīl',
+    meaning:'"Allah is sufficient for us, and He is the best disposer of affairs."',
+    source:'Quran · Āl \'Imrān 3:173 · Sahih al-Bukhari No. 4563',
+  },
+  SAL:{
+    title:'Discernment',
+    arabic:'اللَّهُمَّ أَرِنَا الْحَقَّ حَقًّا وَارْزُقْنَا اتِّبَاعَهُ وَأَرِنَا الْبَاطِلَ بَاطِلًا وَارْزُقْنَا اجْتِنَابَهُ',
+    trans:'Allāhumma arinā l-ḥaqqa ḥaqqan wa-rzuqnā ttibā\'ahu, wa arinā l-bāṭila bāṭilan wa-rzuqnā jtinābahu',
+    meaning:'"O Allah, show us the truth as truth and grant us the ability to follow it, and show us falsehood as falsehood and grant us the ability to avoid it."',
+    source:'Supplications of the Prophet ﷺ · Grade: Hasan',
+  },
+  FUL:{
+    title:'Excellence in Work',
+    arabic:'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',
+    trans:'Allāhumma a\'innī \'alā dhikrika wa shukrika wa ḥusni \'ibādatika',
+    meaning:'"O Allah, help me to remember You, to thank You, and to worship You in the best manner."',
+    source:'Sunan Abī Dāwūd · Narrated by Mu\'adh ibn Jabal RA · Grade: Sahih',
+  },
+};
 const TOOLS = [
   {id:'validation', label:'Expert Validation Score',   sec:'Research',      stage:'QAL', asset:'Amanah Gate — S1–S6',              bsec:'Research Factory', ws:'validation',
    desc:'Screen the operator\'s core competency, market viability, and capacity to build with integrity.',
@@ -2906,6 +2979,27 @@ function Overview({onSelect,role}){
 }
 
 /* ── APP ── */
+function DuaBlock({dua, kind, stageColor}){
+  const [open,setOpen]=useState(false);
+  const isClosing = kind==='closing';
+  return <div className="dua-block">
+    <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
+      <span className="dua-glyph" style={{color:stageColor}}>⧁</span>
+      <span className="dua-label">
+        <span className="dua-kind" style={{color:stageColor}}>{isClosing?'Closing Dua':'Opening Dua'}</span>
+        <span className="dua-title-txt">{dua.title}</span>
+      </span>
+      <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
+    </button>
+    {open&&<div className="dua-body">
+      <div className="dua-arabic">{dua.arabic}</div>
+      <div className="dua-trans">{dua.trans}</div>
+      <div className="dua-meaning">{dua.meaning}</div>
+      <div className="dua-source">{dua.source}</div>
+    </div>}
+  </div>;
+}
+
 function App(){
   const [selId,setSelId]=useState(null);
   const [collapsed,setCol]=useState({});
@@ -2993,17 +3087,21 @@ function App(){
               <span className={`sb-chev ${open?'open':'closed'}`}>▾</span>
             </div>
           </div>
-          {open&&items.map(t=>{
-            const p=roleId==='all'?'O':rolePerm(t,roleId);
-            return <div key={t.id} className={`sb-item${selId===t.id?' on':''}`} onClick={()=>setSelId(t.id)}>
-              <div className="sb-item-dot" style={{background:s.c+'90'}}/>
-              <div className="sb-item-body">
-                <div className="sb-item-label">{t.label}</div>
-                <div className="sb-item-sub">{t.sec}</div>
-              </div>
-              {roleId!=='all'&&<PermPill p={p} size="sm"/>}
-            </div>;
-          })}
+          {open&&<>
+            {DUAS[s.key]&&<DuaBlock dua={DUAS[s.key]} kind="opening" stageColor={s.c}/>}
+            {items.map(t=>{
+              const p=roleId==='all'?'O':rolePerm(t,roleId);
+              return <div key={t.id} className={`sb-item${selId===t.id?' on':''}`} onClick={()=>setSelId(t.id)}>
+                <div className="sb-item-dot" style={{background:s.c+'90'}}/>
+                <div className="sb-item-body">
+                  <div className="sb-item-label">{t.label}</div>
+                  <div className="sb-item-sub">{t.sec}</div>
+                </div>
+                {roleId!=='all'&&<PermPill p={p} size="sm"/>}
+              </div>;
+            })}
+            <DuaBlock dua={(DUAS[s.key]&&DUAS[s.key].closing)||{...CLOSING_DUA,title:'Closing'}} kind="closing" stageColor={s.c}/>
+          </>}
         </div>;
       })}
     </div>
