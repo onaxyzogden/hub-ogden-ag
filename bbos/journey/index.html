@@ -418,7 +418,7 @@ body {
 }
 
 /* ── PAGE TRANSITION VEIL ── */
-#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;animation:veil-out 0.55s ease 0.05s forwards;}
+#page-veil{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:1;animation:veil-out 0.55s ease 0.05s forwards;}
 @keyframes veil-out{to{opacity:0;}}
 </style>
 </head>
@@ -705,6 +705,12 @@ document.addEventListener('keydown', e => {
   veil.style.background = bodyBg;
 
   // CSS handles entrance fade — JS only handles exit and bfcache restore
+
+  // Hard-clear pointer-events after animation completes — iOS Safari safety
+  veil.addEventListener('animationend', function(){
+    veil.style.pointerEvents = 'none';
+    veil.style.opacity = '0';
+  });
 
   // bfcache restore — restart the CSS animation
   window.addEventListener('pageshow', function(e){

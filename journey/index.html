@@ -137,7 +137,7 @@ body{background: var(--bg);color:var(--parchment);font-family:var(--sans);min-he
 @media(prefers-reduced-motion:reduce){.now-dot{animation:none!important;opacity:1;}}
 
 /* ── PAGE TRANSITION VEIL ── */
-#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;animation:veil-out 0.55s ease 0.05s forwards;}
+#page-veil{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:1;animation:veil-out 0.55s ease 0.05s forwards;}
 @keyframes veil-out{to{opacity:0;}}
 </style>
 </head>
@@ -404,6 +404,12 @@ document.addEventListener('fullscreenchange',()=>{
   veil.style.background = bodyBg;
 
   // CSS handles entrance fade — JS only handles exit and bfcache restore
+
+  // Hard-clear pointer-events after animation completes — iOS Safari safety
+  veil.addEventListener('animationend', function(){
+    veil.style.pointerEvents = 'none';
+    veil.style.opacity = '0';
+  });
 
   // bfcache restore — restart the CSS animation
   window.addEventListener('pageshow', function(e){
