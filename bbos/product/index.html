@@ -93,7 +93,8 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 @media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}.llm-row{gap:0.5rem;}}
 
 /* ── PAGE TRANSITION VEIL ── */
-#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;animation:veil-fallback 0.4s ease 0.9s forwards;}
+@keyframes veil-fallback{to{opacity:0;pointer-events:none;}}
 </style>
 </head>
 <body>
@@ -416,18 +417,24 @@ const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySe
   var bodyBg = getComputedStyle(document.body).backgroundColor;
   veil.style.background = bodyBg;
 
-  // Fade in on load
+  // Fade in on load — with hard timeout fallback for iOS Safari
   function fadeIn(){
+    veil.style.animation = 'none'; // JS takes over, dismiss CSS fallback
     requestAnimationFrame(function(){
-      veil.style.transition = 'opacity 0.4s ease';
-      veil.style.opacity = '0';
+      requestAnimationFrame(function(){
+        veil.style.transition = 'opacity 0.4s ease';
+        veil.style.opacity = '0';
+        veil.style.pointerEvents = 'none';
+      });
     });
   }
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', fadeIn);
-  } else {
-    fadeIn();
-  }
+  // Try immediately, on DOMContentLoaded, on load, and hard timeout — whichever fires first
+  var _veiled = false;
+  function _fadeOnce(){ if(_veiled) return; _veiled=true; fadeIn(); }
+  if(document.readyState !== 'loading'){ _fadeOnce(); }
+  document.addEventListener('DOMContentLoaded', _fadeOnce);
+  window.addEventListener('load', _fadeOnce);
+  setTimeout(_fadeOnce, 800); // absolute fallback — page always visible within 0.8s
 
   // Re-run on bfcache restore
   window.addEventListener('pageshow', function(e){
@@ -439,6 +446,7 @@ const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySe
         requestAnimationFrame(function(){
           veil.style.transition = 'opacity 0.4s ease';
           veil.style.opacity = '0';
+          veil.style.pointerEvents = 'none';
         });
       });
     }

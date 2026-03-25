@@ -405,7 +405,8 @@ body {
 }
 
 /* ── PAGE TRANSITION VEIL ── */
-#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;}
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;animation:veil-fallback 0.4s ease 0.9s forwards;}
+@keyframes veil-fallback{to{opacity:0;pointer-events:none;}}
 </style>
 </head>
 <body>
@@ -742,18 +743,24 @@ secIds.forEach(id => { const el = document.getElementById(id); if (el) secObs.ob
   var bodyBg = getComputedStyle(document.body).backgroundColor;
   veil.style.background = bodyBg;
 
-  // Fade in on load
+  // Fade in on load — with hard timeout fallback for iOS Safari
   function fadeIn(){
+    veil.style.animation = 'none'; // JS takes over, dismiss CSS fallback
     requestAnimationFrame(function(){
-      veil.style.transition = 'opacity 0.4s ease';
-      veil.style.opacity = '0';
+      requestAnimationFrame(function(){
+        veil.style.transition = 'opacity 0.4s ease';
+        veil.style.opacity = '0';
+        veil.style.pointerEvents = 'none';
+      });
     });
   }
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', fadeIn);
-  } else {
-    fadeIn();
-  }
+  // Try immediately, on DOMContentLoaded, on load, and hard timeout — whichever fires first
+  var _veiled = false;
+  function _fadeOnce(){ if(_veiled) return; _veiled=true; fadeIn(); }
+  if(document.readyState !== 'loading'){ _fadeOnce(); }
+  document.addEventListener('DOMContentLoaded', _fadeOnce);
+  window.addEventListener('load', _fadeOnce);
+  setTimeout(_fadeOnce, 800); // absolute fallback — page always visible within 0.8s
 
   // Re-run on bfcache restore
   window.addEventListener('pageshow', function(e){
@@ -765,6 +772,7 @@ secIds.forEach(id => { const el = document.getElementById(id); if (el) secObs.ob
         requestAnimationFrame(function(){
           veil.style.transition = 'opacity 0.4s ease';
           veil.style.opacity = '0';
+          veil.style.pointerEvents = 'none';
         });
       });
     }
