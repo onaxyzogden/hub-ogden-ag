@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TruthMarket × BBOS</title>
+<title>Barakah Business Operating System</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -24,7 +24,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 /* topbar */
 .tb{grid-column:1/-1;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--border);background:var(--bg2);gap:10px;z-index:10;flex-wrap:nowrap;overflow:hidden}
 .tb-logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.tb-mark{width:24px;height:24px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-mark{width:30px;height:30px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--bg);line-height:1}
 .tb-mark svg{width:12px;height:12px;fill:var(--bg)}
 .tb-name{font-family:'DM Serif Display',serif;font-size:14px;color:var(--text)}
 .tb-sep{color:var(--text3);font-size:12px;margin:0 1px}
@@ -2798,8 +2798,8 @@ function AssetDetail({tool,onBack,role}){
           <span style={{fontSize:9,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,padding:'2px 8px'}}>{tool.sec}</span>
         </div>
         {doc&&<div style={{display:'flex',gap:2,borderTop:'1px solid var(--border)',marginTop:4,paddingTop:2}}>
-          <button onClick={()=>setTab('asset')} style={{padding:'6px 14px',border:'none',borderBottom:`2px solid ${tab==='asset'?s.c:'transparent'}`,background:'transparent',color:tab==='asset'?s.c:'var(--text3)',fontSize:11,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}>Full asset</button>
           <button onClick={()=>setTab('meta')} style={{padding:'6px 14px',border:'none',borderBottom:`2px solid ${tab==='meta'?s.c:'transparent'}`,background:'transparent',color:tab==='meta'?s.c:'var(--text3)',fontSize:11,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}>Reference</button>
+          <button onClick={()=>setTab('asset')} style={{padding:'6px 14px',border:'none',borderBottom:`2px solid ${tab==='asset'?s.c:'transparent'}`,background:'transparent',color:tab==='asset'?s.c:'var(--text3)',fontSize:11,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}>Full asset</button>
         </div>}
       </div>
       <div className="avd-body">
@@ -2938,10 +2938,8 @@ function App(){
     {/* TOPBAR */}
     <div className="tb">
       <div className="tb-logo">
-        <div className="tb-mark"><svg viewBox="0 0 14 14"><path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5Z"/></svg></div>
-        <span className="tb-name">TruthMarket</span>
-        <span className="tb-sep">×</span>
-        <span className="tb-sub">BBOS</span>
+        <div className="tb-mark" style={{fontSize:15,fontWeight:700,letterSpacing:0}}>⧁</div>
+        <span className="tb-name">Barakah Business Operating System</span>
       </div>
       <div className="tb-divider"/>
       <div className="role-sel-wrap">
