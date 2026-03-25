@@ -479,6 +479,17 @@ const DUAS = {
   },
 };
 
+/* ── S# SECTION DEFINITIONS ── */
+const S_DEFS = {
+  'S1':['S1 · Market Definition',      'The first Research Factory layer. Defines the buyer\'s context, what transformation they\'re seeking, and the gap the current market leaves unaddressed. Everything downstream — VoC, triggers, content — is built on the precision of this definition.'],
+  'S2':['S2 · VoC Buying Language Bank','Verbatim phrases extracted directly from source material: forums, DMs, interviews, intake submissions. Not paraphrased — the exact words buyers use to name their pain and desire. The verbatim requirement is a Basirah practice: paraphrasing is a subtle form of not seeing.'],
+  'S3':['S3 · Emotional Triggers',      'The specific fears (F1–F3) and desires (D1–D3) that drive the buying decision, plus the named systemic Enemy the offer positions against. S3 is where VoC language becomes narrative — the before-state, the frustration, and what the operator\'s mechanism is positioned to resolve.'],
+  'S4':['S4 · Advantage & Content Layer','The competitive intelligence and content framework layer. Includes the Advantage Register (what this operator has that competitors don\'t), the Competitive Landscape analysis, and the Amanah Content Engine that maps S1–S3 findings to specific content angles.'],
+  'S5':['S5 · Proof & Validation',       'The evidence layer. Maps every claim in the offer and content assets to a G-label (G1–G4). Ensures that nothing is stated that isn\'t supported by the operator\'s actual documented results.'],
+  'S6':['S6 · Mechanism & Solution',     'The operator\'s named methodology — the specific, named process by which the transformation is produced. Must be verifiable and distinct from what competitors offer.'],
+};
+
+
 const CLOSING_DUA = {
   title:'Honest Completion',
   arabic:'رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',
@@ -2597,6 +2608,18 @@ function AttrLabel({attr, color}){
     </span>)}
   </span>;
 }
+
+function SLabel({v, style, className}){
+  if(!v) return null;
+  const m = v.match(/^(S[1-6])(?:\s*[—–-]\s*(.+))?$/);
+  if(!m) return <span style={style} className={className}>{v}</span>;
+  const [,code,rest] = m;
+  const def = S_DEFS[code];
+  if(!def) return <span style={style} className={className}>{v}</span>;
+  return <Tip def={def}>
+    <span style={{...style, cursor:'help', borderBottom:'1px dashed currentColor'}} className={className}>{v}</span>
+  </Tip>;
+}
 function DocRenderer({content,stageColor}){
   if(!content) return null;
   const ac = stageColor||'var(--accent)';
@@ -3034,7 +3057,7 @@ function ToolDetail({tool,onBack,sample,role}){
       </div>
       <div className="det-blk" style={{background:'var(--bg2)',border:'1px solid var(--border)'}}>
         <div className="det-blk-lbl" style={{color:'var(--text3)'}}>BBOS asset</div>
-        <div className="det-blk-val" style={{color:'var(--text2)'}}>{tool.asset}</div>
+        <div className="det-blk-val" style={{color:'var(--text2)'}}><SLabel v={tool.asset}/></div>
       </div>
     </div>
     <div className="det-rat">
@@ -3053,10 +3076,12 @@ function ToolDetail({tool,onBack,sample,role}){
 }
 
 /* ── ASSET VIEW ── */
-function AssetDetail({tool,onBack,role}){
+function AssetDetail({tool,onBack,role,sample}){
   const s=STAGES[tool.stage];
   const p=role.id==='all'?'O':rolePerm(tool,role.id);
-  const doc = DOC[tool.id] || (S.notes[tool.id] ? `## ${tool.label}\n\n${S.notes[tool.id]}` : null);
+  const doc = sample
+    ? (DOC[tool.id] || (S.notes[tool.id] ? `## ${tool.label}\n\n${S.notes[tool.id]}` : null))
+    : null;
   const [tab,setTab]=useState(doc?'asset':'meta');
 
   if(p==='-') return <ScopeGate tool={tool} role={role}/>;
@@ -3071,7 +3096,7 @@ function AssetDetail({tool,onBack,role}){
         <div className="avd-stage-lbl" style={{color:s.c}}>Stage {s.code} {s.key} · {s.name}</div>
         <div className="avd-title">{tool.label}</div>
         <div className="avd-meta" style={{marginBottom:doc?12:0}}>
-          <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'2px 8px',fontSize:9,fontWeight:600}}>{tool.asset}</span>
+          <SLabel v={tool.asset} style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'2px 8px',fontSize:9,fontWeight:600}}/>
           <span style={{fontSize:9,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,padding:'2px 8px'}}>{tool.sec}</span>
         </div>
         {doc&&<div style={{display:'flex',gap:2,borderTop:'1px solid var(--border)',marginTop:4,paddingTop:2}}>
@@ -3084,7 +3109,7 @@ function AssetDetail({tool,onBack,role}){
           <p className="avd-desc">{tool.desc}</p>
           <div className="avd-div"/>
           <div className="avd-row"><span className="avd-key">BBOS section</span><span className="avd-val">{tool.bsec}</span></div>
-          <div className="avd-row"><span className="avd-key">Asset</span><span className="avd-val">{tool.asset}</span></div>
+          <div className="avd-row"><span className="avd-key">Asset</span><span className="avd-val"><SLabel v={tool.asset}/></span></div>
           <div className="avd-row"><span className="avd-key">Governs</span><span className="avd-val" style={{color:s.c}}>{s.attr}</span></div>
           <div className="avd-div"/>
           <p className="avd-rat">{tool.rat}</p>
@@ -3095,9 +3120,9 @@ function AssetDetail({tool,onBack,role}){
   </div>;
 }
 
-function AssetView({selId,setSelId,role}){
+function AssetView({selId,setSelId,role,sample}){
   const tool=TOOLS.find(t=>t.id===selId);
-  if(tool) return <AssetDetail tool={tool} onBack={()=>setSelId(null)} role={role}/>;
+  if(tool) return <AssetDetail tool={tool} onBack={()=>setSelId(null)} role={role} sample={sample}/>;
   const byStage={};
   Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
   TOOLS.forEach(t=>{
@@ -3121,7 +3146,7 @@ function AssetView({selId,setSelId,role}){
               <div className="av-bar" style={{background:s.c+'55'}}/>
               <div className="av-body">
                 <div className="av-name">{t.label}</div>
-                <div className="av-ref">{t.asset}</div>
+                <div className="av-ref"><SLabel v={t.asset}/></div>
               </div>
               <div className="av-right">
                 {role.id!=='all'&&<PermPill p={p} size="sm"/>}
@@ -3224,7 +3249,7 @@ function Overview({onSelect, role, sample}){
                     border:filled?'1px solid rgba(74,222,128,.25)':'1px solid var(--border)',
                   }}>{filled?'● Filled':'○ Empty'}</span>}
                 </div>
-                <div className="tc-asset">{t.asset}</div>
+                <div className="tc-asset"><SLabel v={t.asset}/></div>
               </div>;
             })}
           </div>
@@ -3357,7 +3382,7 @@ function App(){
   const toggleCol=k=>setCol(c=>({...c,[k]:!c[k]}));
   const switchView=v=>setView(v);
   const switchRole=id=>{ setRoleId(id); };
-  const switchSample=v=>{setSample(v);setView('pipeline');setSelId(null);};
+  const switchSample=v=>{ setSample(v); };
 
   const sidebarTools = roleId==='all'
     ? TOOLS
@@ -3368,7 +3393,7 @@ function App(){
   sidebarTools.forEach(t=>{toolsByStage[t.stage]&&toolsByStage[t.stage].push(t);});
 
   function mainContent(){
-    if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role}/>;
+    if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role} sample={sample}/>;
     if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role}/>;
     return <Overview onSelect={setSelId} role={role} sample={sample}/>;
   }
