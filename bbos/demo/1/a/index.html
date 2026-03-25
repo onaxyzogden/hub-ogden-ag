@@ -170,6 +170,65 @@ function defVal(sec) {
   return "";
 }
 
+
+// ── ROLE DEFINITIONS ──────────────────────────────────────────────────────
+const ROLES = {
+  owner: {
+    id:"owner", label:"Owner", icon:"◈", color:"#C9A84C",
+    desc:"Full access. Owns the Covenant Engine, all approval briefs, and the G-label ceiling.",
+    visibleStages: ["int","qal","str","ofr","out","sal","ful","ret","opt"],
+    visibleModules: null, // null = all
+    canOpenCovenant: true,
+    stripItems: ["ceiling","voc","pp","briefs","progress"],
+    specialView: null
+  },
+  strategist: {
+    id:"strategist", label:"Strategist", icon:"◎", color:"#C9A84C",
+    desc:"Research and strategy layer. Builds the VoC foundation all downstream execution depends on.",
+    visibleStages: ["str"],
+    visibleModules: ["pain","icp","competitor","avatar","adspy","contentspy"],
+    canOpenCovenant: false,
+    stripItems: ["ceiling","voc"],
+    specialView: null
+  },
+  creative: {
+    id:"creative", label:"Creative", icon:"◇", color:"#B07CC6",
+    desc:"Ad creative, copy, and content production. Works within the G-ceiling and VoC constraints set upstream.",
+    visibleStages: ["out"],
+    visibleModules: ["genads","logo","landing","nurture","salesletter","vsl","social"],
+    canOpenCovenant: false,
+    stripItems: ["ceiling","voc","pp"],
+    specialView: null
+  },
+  ops: {
+    id:"ops", label:"Ops / Ads", icon:"◉", color:"#7090B8",
+    desc:"Infrastructure, paid channels, and technical deployment. Executes the channel plan.",
+    visibleStages: ["out"],
+    visibleModules: ["gtm","ghl","meta","pixel","launchads","socials","website","form"],
+    canOpenCovenant: false,
+    stripItems: ["pp"],
+    specialView: null
+  },
+  sales: {
+    id:"sales", label:"Sales", icon:"◐", color:"#7EB8A4",
+    desc:"Discovery calls, setting, and conversion. Works within the Scope Map and G-label ceiling.",
+    visibleStages: ["sal"],
+    visibleModules: ["setting","salespres","salesscript"],
+    canOpenCovenant: false,
+    stripItems: ["ceiling","pp"],
+    specialView: null
+  },
+  delivery: {
+    id:"delivery", label:"Delivery", icon:"◑", color:"#7AAA88",
+    desc:"Fulfilment. Sees only what was promised, what's in scope, and what the guarantee requires.",
+    visibleStages: [],
+    visibleModules: [],
+    canOpenCovenant: false,
+    stripItems: [],
+    specialView: "deliveryBrief"
+  }
+};
+
 // ── APP ───────────────────────────────────────────────────────────────────
 function App() {
   // ── DEMO: Operator — Sarah Khan · Service Business Systemisation Consultant
@@ -607,6 +666,7 @@ function App() {
     salesscript: "Objection responses at G2 — no inflation under pressure. The 'I've tried coaching before' objection is the highest-frequency — the response acknowledges the objection rather than dismissing it. Binary disqualifiers are non-negotiable."
   };
 
+  const [role, setRole] = useState("owner");
   const [activeStage, setActiveStage] = useState("str");
   const [openModule, setOpenModule] = useState(null);
   const [completed, setCompleted] = useState(DEMO_COMPLETED);
@@ -647,50 +707,92 @@ function App() {
           </div>
           <div style={S.wmTag}>Covenant Growth Engine · Demo · Sarah Khan Consulting · Owner Extraction Method</div>
         </div>
-        <button style={S.covenantBtn} onClick={() => setCovenantOpen(true)}>
-          <span style={S.covenantIcon}>⧁</span> Covenant Engine
-          {(activePP > 0 || !foundation.gCeiling) && <span style={S.covenantAlert}>{activePP > 0 ? activePP : "!"}</span>}
-        </button>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={S.roleSwitcher}>
+            {Object.values(ROLES).map(r => (
+              <button key={r.id}
+                style={{...S.roleBtn, borderColor:role===r.id?r.color:"transparent", color:role===r.id?r.color:"#444", background:role===r.id?"#161616":"transparent"}}
+                onClick={()=>{ setRole(r.id); setOpenModule(null); if(r.visibleStages.length>0){setActiveStage(r.visibleStages[0]);} }}>
+                <span style={{marginRight:5}}>{r.icon}</span>{r.label}
+              </button>
+            ))}
+          </div>
+          {ROLES[role].canOpenCovenant && (
+            <button style={S.covenantBtn} onClick={() => setCovenantOpen(true)}>
+              <span style={S.covenantIcon}>⧁</span> Covenant Engine
+              {(activePP > 0 || !foundation.gCeiling) && <span style={S.covenantAlert}>{activePP > 0 ? activePP : "!"}</span>}
+            </button>
+          )}
+        </div>
       </header>
 
-      {/* FOUNDATION STRIP */}
-      <div style={S.strip}>
-        <StripItem label="G-Ceiling" value={foundation.gCeiling || "Not set"} color={foundation.gCeiling ? G_COLORS[foundation.gCeiling] : "#444"} alert={!foundation.gCeiling} />
-        <div style={S.stripDiv}/>
-        <StripItem label="VoC Phrases" value={`${foundation.vocBank.length} total · ${clearedVoC} Truth-Gate cleared`} color={foundation.vocBank.length > 0 ? "#C9A84C" : "#444"} />
-        <div style={S.stripDiv}/>
-        <StripItem label="Proof Pending" value={activePP > 0 ? `${activePP} active restriction${activePP>1?"s":""}` : "None active"} color={activePP > 0 ? "#B07060" : "#555"} alert={activePP > 0} />
-        <div style={S.stripDiv}/>
-        <StripItem label="Approval Briefs" value={`${signedCount}/4 signed`} color={signedCount === 4 ? "#7EB8A4" : signedCount > 0 ? "#C9A84C" : "#444"} />
-        <div style={S.stripDiv}/>
-        <StripItem label="Progress" value={`${doneTM}/${totalTM} TM modules`} color="#888" />
+      {/* FOUNDATION STRIP — role filtered */}
+      {ROLES[role].stripItems.length > 0 && (
+        <div style={S.strip}>
+          {ROLES[role].stripItems.includes("ceiling") && <>
+            <StripItem label="G-Ceiling" value={foundation.gCeiling || "Not set"} color={foundation.gCeiling ? G_COLORS[foundation.gCeiling] : "#444"} alert={!foundation.gCeiling && role==="owner"} />
+            <div style={S.stripDiv}/>
+          </>}
+          {ROLES[role].stripItems.includes("voc") && <>
+            <StripItem label="VoC Phrases" value={`${foundation.vocBank.length} total · ${clearedVoC} Truth-Gate cleared`} color={foundation.vocBank.length > 0 ? "#C9A84C" : "#444"} />
+            <div style={S.stripDiv}/>
+          </>}
+          {ROLES[role].stripItems.includes("pp") && <>
+            <StripItem label="Proof Pending" value={activePP > 0 ? `${activePP} active restriction${activePP>1?"s":""}` : "None active"} color={activePP > 0 ? "#B07060" : "#555"} alert={activePP > 0} />
+            <div style={S.stripDiv}/>
+          </>}
+          {ROLES[role].stripItems.includes("briefs") && <>
+            <StripItem label="Approval Briefs" value={`${signedCount}/4 signed`} color={signedCount === 4 ? "#7EB8A4" : signedCount > 0 ? "#C9A84C" : "#444"} />
+            <div style={S.stripDiv}/>
+          </>}
+          {ROLES[role].stripItems.includes("progress") && (
+            <StripItem label="Progress" value={`${doneTM}/${totalTM} TM modules`} color="#888" />
+          )}
+        </div>
+      )}
+
+      {/* ROLE CONTEXT BAR */}
+      <div style={{...S.roleBar, borderColor:ROLES[role].color+"33", background:ROLES[role].color+"08"}}>
+        <span style={{...S.roleBarIcon, color:ROLES[role].color}}>{ROLES[role].icon}</span>
+        <span style={{...S.roleBarName, color:ROLES[role].color}}>{ROLES[role].label}</span>
+        <span style={S.roleBarDesc}>{ROLES[role].desc}</span>
       </div>
-
       <div style={S.body}>
-        {/* SIDEBAR */}
-        <nav style={S.nav}>
-          {STAGES.map(s => {
-            const done = s.tmModules.filter(m => completed[m.id]).length;
-            const total = s.tmModules.length;
-            const active = activeStage === s.id;
-            const allLocked = total > 0 && s.tmModules.every(m => isLocked(m.id, foundation.briefs));
-            return (
-              <button key={s.id} style={{...S.navBtn, borderLeft:`3px solid ${active ? s.color : "transparent"}`, background: active ? "#161616":"transparent"}}
-                onClick={() => { setActiveStage(s.id); setOpenModule(null); setStageTab(total > 0 ? "tm" : "bbos"); }}>
-                <div style={{...S.navCode, color: active ? s.color : "#444"}}>{s.code}</div>
-                <div style={{...S.navLabel, color: active ? "#ddd" : "#555"}}>{s.label}</div>
-                {total > 0 ? (
-                  <div style={S.navProg}>
-                    <div style={S.navBar}><div style={{...S.navFill, width:`${Math.round((done/total)*100)}%`, background:s.color}}/></div>
-                    <span style={{...S.navN, color: allLocked ? "#B07060" : "#333"}}>{allLocked ? "🔒" : `${done}/${total}`}</span>
-                  </div>
-                ) : <div style={S.navBonly}>BBOS native</div>}
-              </button>
-            );
-          })}
-        </nav>
+        {/* SIDEBAR — role filtered */}
+        {ROLES[role].specialView !== "deliveryBrief" && (
+          <nav style={S.nav}>
+            {STAGES.filter(s => ROLES[role].visibleStages.includes(s.id)).map(s => {
+              const roleMods = ROLES[role].visibleModules ? s.tmModules.filter(m => ROLES[role].visibleModules.includes(m.id)) : s.tmModules;
+              const done = roleMods.filter(m => completed[m.id]).length;
+              const total = roleMods.length;
+              const active = activeStage === s.id;
+              const allLocked = total > 0 && roleMods.every(m => isLocked(m.id, foundation.briefs));
+              return (
+                <button key={s.id} style={{...S.navBtn, borderLeft:`3px solid ${active ? s.color : "transparent"}`, background: active ? "#161616":"transparent"}}
+                  onClick={() => { setActiveStage(s.id); setOpenModule(null); setStageTab(total > 0 ? "tm" : "bbos"); }}>
+                  <div style={{...S.navCode, color: active ? s.color : "#444"}}>{s.code}</div>
+                  <div style={{...S.navLabel, color: active ? "#ddd" : "#555"}}>{s.label}</div>
+                  {total > 0 ? (
+                    <div style={S.navProg}>
+                      <div style={S.navBar}><div style={{...S.navFill, width:`${Math.round((done/total)*100)}%`, background:s.color}}/></div>
+                      <span style={{...S.navN, color: allLocked ? "#B07060" : "#333"}}>{allLocked ? "🔒" : `${done}/${total}`}</span>
+                    </div>
+                  ) : <div style={S.navBonly}>BBOS native</div>}
+                </button>
+              );
+            })}
+          </nav>
+        )}
 
-        {/* MAIN */}
+        {/* DELIVERY BRIEF — special view for delivery role */}
+        {ROLES[role].specialView === "deliveryBrief" && (
+          <div style={{flex:1, overflowY:"auto"}}>
+            <DeliveryBrief wsData={wsData} foundation={foundation} />
+          </div>
+        )}
+
+        {/* MAIN PIPELINE VIEW */}
+        {ROLES[role].specialView !== "deliveryBrief" && (
         <main style={{...S.main, maxWidth: openModule ? 300 : "100%"}}>
           <div style={S.phHead}>
             <div>
@@ -713,7 +815,7 @@ function App() {
 
           {stageTab === "tm" && stage.tmModules.length > 0 && (
             <div style={{...S.grid, gridTemplateColumns: openModule ? "1fr" : "repeat(auto-fill,minmax(188px,1fr))"}}>
-              {stage.tmModules.map(mod => {
+              {(ROLES[role].visibleModules ? stage.tmModules.filter(m => ROLES[role].visibleModules.includes(m.id)) : stage.tmModules).map(mod => {
                 const locked = isLocked(mod.id, foundation.briefs);
                 const done = !!completed[mod.id];
                 const isOpen = openModule === mod.id;
@@ -773,6 +875,8 @@ function App() {
             </div>
           ) : null}
         </main>
+
+        )} {/* end role pipeline view */}
 
         {/* WORKSPACE PANEL */}
         {openModule && openMod && WS[openModule] && (
@@ -1138,6 +1242,12 @@ const S = {
   chkBox:{width:12,height:12,borderRadius:2,border:"1px solid",flexShrink:0,marginTop:2,display:"flex",alignItems:"center",justifyContent:"center"},
   scalePip:{width:26,height:26,borderRadius:3,border:"none",cursor:"pointer",fontSize:11,fontWeight:700,fontFamily:"inherit"},
   glBtn2:{border:"1px solid",borderRadius:2,padding:"3px 8px",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"},
+  roleSwitcher:{display:"flex",gap:4,background:"#111",border:"1px solid #1a1a1a",borderRadius:4,padding:3},
+  roleBtn:{border:"1px solid transparent",borderRadius:3,padding:"5px 10px",fontSize:9,fontWeight:600,letterSpacing:"0.1em",cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s"},
+  roleBar:{display:"flex",alignItems:"center",gap:8,padding:"7px 24px",borderBottom:"1px solid",fontSize:11},
+  roleBarIcon:{fontSize:13,fontWeight:700},
+  roleBarName:{fontWeight:700,letterSpacing:"0.06em",fontSize:10,textTransform:"uppercase"},
+  roleBarDesc:{color:"#555",fontSize:10,fontStyle:"italic"},
   actBar:{marginTop:18,paddingTop:14,borderTop:"1px solid #141414",display:"flex",flexWrap:"wrap",gap:6},
   actP:{border:"none",borderRadius:3,color:"#111",fontSize:11,fontWeight:700,letterSpacing:"0.06em",padding:"8px 13px",cursor:"pointer",fontFamily:"inherit"},
   actS:{background:"transparent",border:"1px solid #1e1e1e",borderRadius:3,color:"#555",fontSize:10,padding:"7px 11px",cursor:"pointer",fontFamily:"inherit"},
@@ -1163,6 +1273,174 @@ const S = {
   briefCard:{border:"1px solid",borderRadius:4,padding:"14px 16px"},
   signBtn:{border:"1px solid",borderRadius:3,fontSize:10,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",fontWeight:700,letterSpacing:"0.04em"},
 };
+
+
+// ── DELIVERY BRIEF ────────────────────────────────────────────────────────
+function DeliveryBrief({ wsData, foundation }) {
+  const ofr = wsData["offer-creation"] || {};
+  const bldr = wsData["builder"] || {};
+  const activePP = foundation.proofPending.filter(p => p.status === "pending");
+  const promise = ofr.promise || {};
+  const included = Array.isArray(ofr.included) ? ofr.included.filter(Boolean) : [];
+  const excluded = Array.isArray(ofr.excluded) ? ofr.excluded.filter(Boolean) : [];
+  const guarantee = bldr.guarantee || "";
+
+  const [milestones, setMilestones] = useState([
+    {label:"Day 1 — Dependency Audit complete", done:false, note:""},
+    {label:"Day 14 — Architecture Design signed off with client", done:false, note:""},
+    {label:"Day 30 — First 2 systems installed and team trained", done:false, note:""},
+    {label:"Day 45 — Milestone review · 3 of 5 templates complete", done:false, note:""},
+    {label:"Day 60 — Authority Transfer Protocol tested under real conditions", done:false, note:""},
+    {label:"Day 90 — Full stress test complete · offboarding initiated", done:false, note:""},
+  ]);
+  const [proofCaptures, setProofCaptures] = useState([
+    {prompt:"Week 2: Ask client — 'What's shifted in how you're spending your time this week?'", captured:""},
+    {prompt:"Day 45 review: Request written confirmation of hours recovered", captured:""},
+    {prompt:"Day 90: Request video testimonial and written case study permission", captured:""},
+  ]);
+
+  const toggleMS = i => setMilestones(ms => ms.map((m,j) => j===i ? {...m, done:!m.done} : m));
+  const updateMSNote = (i,v) => setMilestones(ms => ms.map((m,j) => j===i ? {...m, note:v} : m));
+  const updatePC = (i,v) => setProofCaptures(ps => ps.map((p,j) => j===i ? {...p, captured:v} : p));
+
+  const completedMS = milestones.filter(m => m.done).length;
+
+  return (
+    <div style={DB.root}>
+      <div style={DB.header}>
+        <div>
+          <div style={DB.headerLabel}>◑ Delivery Brief</div>
+          <div style={DB.headerTitle}>Your role: Fulfilment</div>
+          <div style={DB.headerSub}>This view contains everything you need to deliver what was promised. The marketing strategy, ad creative, and pricing decisions are not your concern. Your job is to honour the commitment below.</div>
+        </div>
+        <div style={DB.msCounter}>
+          <div style={{fontSize:24, fontWeight:700, color:"#7AAA88"}}>{completedMS}/6</div>
+          <div style={{fontSize:9, color:"#555", letterSpacing:"0.14em", textTransform:"uppercase"}}>milestones</div>
+        </div>
+      </div>
+
+      <div style={DB.grid}>
+        {/* THE PROMISE */}
+        <div style={{...DB.card, borderColor:"#7EB8A444"}}>
+          <div style={{...DB.cardLbl, color:"#7EB8A4"}}>The Promise</div>
+          <div style={{...DB.cardSub}}>What was committed to the client. This is your acceptance test — if this is not delivered, the guarantee is triggered.</div>
+          {promise.text ? (
+            <>
+              <div style={DB.promiseText}>{promise.text}</div>
+              <div style={{...DB.glBadge, background:G_COLORS[promise.g]+"22", color:G_COLORS[promise.g], border:`1px solid ${G_COLORS[promise.g]}44`}}>
+                {promise.g} — {G_MEANINGS[promise.g]}
+              </div>
+            </>
+          ) : <div style={DB.empty}>No promise documented yet — complete OFR Offer Creation first.</div>}
+        </div>
+
+        {/* SCOPE MAP */}
+        <div style={{...DB.card, gridColumn:"span 2"}}>
+          <div style={{...DB.cardLbl, color:"#7EB8A4"}}>Scope Map</div>
+          <div style={DB.cardSub}>What is included in this engagement and what is explicitly excluded. If a client requests something not on the Included list, that is a change-order conversation — not something you absorb silently.</div>
+          <div style={DB.scopeGrid}>
+            <div>
+              <div style={{...DB.scopeHead, color:"#7EB8A4"}}>✓ Included</div>
+              {included.length > 0 ? included.map((item,i) => (
+                <div key={i} style={DB.scopeItem}><span style={{color:"#7EB8A4", marginRight:8}}>✓</span>{item}</div>
+              )) : <div style={DB.empty}>Not yet documented</div>}
+            </div>
+            <div>
+              <div style={{...DB.scopeHead, color:"#B07060"}}>✕ Excluded</div>
+              {excluded.length > 0 ? excluded.map((item,i) => (
+                <div key={i} style={DB.scopeItem}><span style={{color:"#B07060", marginRight:8}}>✕</span>{item}</div>
+              )) : <div style={DB.empty}>Not yet documented</div>}
+            </div>
+          </div>
+        </div>
+
+        {/* GUARANTEE CONDITIONS */}
+        <div style={{...DB.card, borderColor:"#C9A84C33"}}>
+          <div style={{...DB.cardLbl, color:"#C9A84C"}}>Guarantee — Know the trigger</div>
+          <div style={DB.cardSub}>Read this carefully. Understand what triggers the guarantee so you can ensure it is never triggered by inadequate delivery — and so you can defend against a trigger that originates from the client's non-execution.</div>
+          {guarantee ? (
+            <div style={DB.guaranteeText}>{guarantee}</div>
+          ) : <div style={DB.empty}>No guarantee documented yet.</div>}
+        </div>
+
+        {/* PROOF PENDING RESTRICTIONS */}
+        {activePP.length > 0 && (
+          <div style={{...DB.card, borderColor:"#B0706044", background:"#B0706008"}}>
+            <div style={{...DB.cardLbl, color:"#B07060"}}>⚠ Claims you must NOT make verbally</div>
+            <div style={DB.cardSub}>These claims are PROOF PENDING — they have not been substantiated. Do not repeat them to the client as confirmed outcomes, regardless of how confident you feel about them.</div>
+            {activePP.map(p => (
+              <div key={p.id} style={DB.ppRestriction}>✕ "{p.claim}"</div>
+            ))}
+          </div>
+        )}
+
+        {/* CLIENT SUCCESS MILESTONES */}
+        <div style={{...DB.card, gridColumn:"span 2", borderColor:"#7AAA8844"}}>
+          <div style={{...DB.cardLbl, color:"#7AAA88"}}>Client Success Milestones</div>
+          <div style={DB.cardSub}>Track delivery progress against these checkpoints. Each completed milestone is a proof capture opportunity. Your notes here become the case study.</div>
+          {milestones.map((ms, i) => (
+            <div key={i} style={{...DB.msRow, borderColor: ms.done ? "#7AAA8833" : "#1a1a1a"}}>
+              <div style={{...DB.msCheck, background:ms.done?"#7AAA88":"transparent", borderColor:ms.done?"#7AAA88":"#2e2e2e", cursor:"pointer"}}
+                onClick={()=>toggleMS(i)}>
+                {ms.done && <span style={{fontSize:9,color:"#111",fontWeight:700}}>✓</span>}
+              </div>
+              <div style={{flex:1}}>
+                <div style={{...DB.msLabel, color:ms.done?"#7AAA88":"#888", textDecoration:ms.done?"line-through":"none"}}>{ms.label}</div>
+                {ms.done && (
+                  <input style={DB.msNote} placeholder="Note what actually happened…"
+                    value={ms.note} onChange={e=>updateMSNote(i,e.target.value)} />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* PROOF CAPTURE */}
+        <div style={{...DB.card, borderColor:"#C9A84C33"}}>
+          <div style={{...DB.cardLbl, color:"#C9A84C"}}>Proof Capture Protocol</div>
+          <div style={DB.cardSub}>Proof is captured during delivery, not after. These are the moments to ask. The case studies and testimonials that substantiate future G1/G2 claims are built here.</div>
+          {proofCaptures.map((pc, i) => (
+            <div key={i} style={DB.pcRow}>
+              <div style={DB.pcPrompt}>{pc.prompt}</div>
+              <textarea style={DB.pcInput} rows={2} placeholder="What was captured…"
+                value={pc.captured} onChange={e=>updatePC(i,e.target.value)} />
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+const DB = {
+  root:{padding:"24px 28px", overflowY:"auto", height:"100%"},
+  header:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,paddingBottom:18,borderBottom:"1px solid #161616"},
+  headerLabel:{fontSize:10,color:"#7AAA88",letterSpacing:"0.2em",textTransform:"uppercase",fontWeight:700,marginBottom:6},
+  headerTitle:{fontSize:20,fontWeight:400,fontStyle:"italic",color:"#e0d8cc",marginBottom:8},
+  headerSub:{fontSize:11,color:"#555",lineHeight:1.7,maxWidth:520},
+  msCounter:{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0,paddingLeft:24},
+  grid:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14},
+  card:{background:"#111",border:"1px solid #1a1a1a",borderRadius:5,padding:"16px 14px",display:"flex",flexDirection:"column",gap:10},
+  cardLbl:{fontSize:9,letterSpacing:"0.2em",textTransform:"uppercase",fontWeight:700},
+  cardSub:{fontSize:10,color:"#555",lineHeight:1.6,fontStyle:"italic"},
+  promiseText:{fontSize:12,color:"#ddd",lineHeight:1.75,fontStyle:"italic"},
+  glBadge:{fontSize:9,padding:"3px 8px",borderRadius:2,letterSpacing:"0.08em",alignSelf:"flex-start"},
+  scopeGrid:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginTop:4},
+  scopeHead:{fontSize:9,letterSpacing:"0.16em",textTransform:"uppercase",fontWeight:700,marginBottom:8},
+  scopeItem:{fontSize:11,color:"#888",lineHeight:1.6,marginBottom:4,display:"flex",alignItems:"flex-start"},
+  guaranteeText:{fontSize:11,color:"#999",lineHeight:1.75},
+  ppRestriction:{fontSize:11,color:"#B07060",lineHeight:1.5,padding:"6px 0",borderBottom:"1px solid #1a1a1a"},
+  msRow:{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 0",borderBottom:"1px solid"},
+  msCheck:{width:14,height:14,borderRadius:2,border:"1px solid",flexShrink:0,marginTop:2,display:"flex",alignItems:"center",justifyContent:"center"},
+  msLabel:{fontSize:11,lineHeight:1.4,marginBottom:4},
+  msNote:{background:"#141414",border:"1px solid #1e1e1e",borderRadius:2,color:"#bbb",fontSize:10,fontFamily:"Georgia,serif",padding:"5px 7px",width:"100%"},
+  pcRow:{display:"flex",flexDirection:"column",gap:5,paddingBottom:10,borderBottom:"1px solid #161616"},
+  pcPrompt:{fontSize:10,color:"#888",lineHeight:1.5,fontStyle:"italic"},
+  pcInput:{background:"#141414",border:"1px solid #1e1e1e",borderRadius:2,color:"#bbb",fontSize:10,fontFamily:"Georgia,serif",padding:"6px 8px",resize:"none"},
+  empty:{fontSize:10,color:"#2e2e2e",fontStyle:"italic"},
+};
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
