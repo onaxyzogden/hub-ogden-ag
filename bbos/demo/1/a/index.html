@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthMarket — Research Intelligence Platform</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { background: #111; }
+    #root { height: 100%; }
+    textarea, input, select, button { font-family: Georgia, 'Times New Roman', serif; }
+    textarea { resize: vertical; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #0e0e0e; }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #444 !important; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+
+const workspaces = {
+  pain: {
+    objective: "Surface 3–5 urgent, undeniable problems your market is already paying to solve.",
+    sections: [
+      { label: "Pain Statements", type: "repeater", key: "pains", placeholder: "Describe a specific, bleeding-neck pain in the prospect's own language…", addLabel: "+ Add pain" },
+      { label: "Source Evidence", type: "repeater", key: "sources", placeholder: "Forum thread, review, interview quote, or Reddit post URL…", addLabel: "+ Add source" },
+      { label: "Urgency Rating", type: "scale", key: "urgency", hint: "How urgent is this pain? (1 = background noise · 5 = bleeding neck)", max: 5 },
+    ],
+    actions: ["Save Research", "Export to VoC Bank"],
+  },
+  icp: {
+    objective: "Define your Ideal Customer Profile with enough precision to qualify or disqualify on first contact.",
+    sections: [
+      { label: "Who They Are", type: "textarea", key: "who", placeholder: "Age, role, situation, context…" },
+      { label: "What They're Trying to Accomplish", type: "textarea", key: "goal", placeholder: "Immediate goal and deeper aspiration…" },
+      { label: "What They've Already Tried", type: "textarea", key: "tried", placeholder: "Previous solutions, why they failed…" },
+      { label: "Disqualifiers", type: "repeater", key: "disq", placeholder: "A trait that removes them from consideration…", addLabel: "+ Add disqualifier" },
+    ],
+    actions: ["Save ICP", "Export Profile"],
+  },
+  competitor: {
+    objective: "Map existing solutions, their gaps, and where the Enemy Narrative lives.",
+    sections: [
+      { label: "Competitors", type: "competitor-table", key: "competitors" },
+      { label: "The Shared Enemy", type: "textarea", key: "enemy", placeholder: "Name the external system or convergent forces that has produced the prospect's struggle…" },
+      { label: "The Gap No One Is Filling", type: "textarea", key: "gap", placeholder: "What specific outcome or mechanism is missing from every existing solution?" },
+    ],
+    actions: ["Save Analysis", "Send to Strategy"],
+  },
+  "offer-creation": {
+    objective: "Design a promise grounded in mechanism — specific, scoped, and deliverable.",
+    sections: [
+      { label: "The Promise (G-Label)", type: "glabel-field", key: "promise", placeholder: "State the specific, deliverable-grounded commitment your client can use as an acceptance test…" },
+      { label: "The Mechanism", type: "textarea", key: "mechanism", placeholder: "The specific, ethical process that reliably produces the promised result…" },
+      { label: "What's Included", type: "repeater", key: "included", placeholder: "A specific deliverable or commitment…", addLabel: "+ Add inclusion" },
+      { label: "What's Excluded", type: "repeater", key: "excluded", placeholder: "A specific non-commitment or boundary…", addLabel: "+ Add exclusion" },
+    ],
+    actions: ["Save Offer Draft", "Advance to Pricing"],
+  },
+  gtm: {
+    objective: "Select a go-to-market motion calibrated to your constraints and audience.",
+    sections: [
+      { label: "Primary GTM Motion", type: "select", key: "motion", options: ["— Select —", "Outbound (cold email / DM)", "Paid Ads (Meta / Google)", "Content-led (organic)", "Referral / Partnerships", "Community-led", "Direct Outreach"] },
+      { label: "Primary Channel", type: "input", key: "channel", placeholder: "e.g. LinkedIn DMs, Instagram Reels, Google Search…" },
+      { label: "First 30-Day Target", type: "input", key: "target", placeholder: "e.g. 3 discovery calls booked" },
+      { label: "Constraints & Limitations", type: "textarea", key: "constraints", placeholder: "Budget, time, skills, audience size…" },
+    ],
+    actions: ["Save GTM Plan"],
+  },
+  pricing: {
+    objective: "Calculate honest valuation against your value stack and market range.",
+    sections: [
+      { label: "Value Stack Items", type: "value-stack", key: "stack" },
+      { label: "Market Price Range", type: "range-input", key: "range" },
+      { label: "Your Price", type: "input", key: "price", placeholder: "Final price — e.g. £2,400 or $997/mo" },
+      { label: "Pricing Rationale", type: "textarea", key: "rationale", placeholder: "Why is this price honest and fair relative to what is being exchanged?" },
+    ],
+    actions: ["Save Pricing", "Add to Offer Builder"],
+  },
+  validation: {
+    objective: "Score your offer on evidence strength before committing to creative production.",
+    sections: [
+      { label: "Validation Checklist", type: "checklist", key: "checks", items: [
+        "Promise is specific and measurable",
+        "Mechanism is named and unique",
+        "ICP is defined to qualifying precision",
+        "At least one piece of external proof exists",
+        "Competitor gap is documented",
+        "Pricing is within market range and justified",
+        "Operator has capacity to deliver the scope",
+        "Guarantee is written with all four elements",
+      ]},
+    ],
+    actions: ["Calculate Score", "Proceed to Builder"],
+  },
+  builder: {
+    objective: "Assemble the complete Offer Asset Pack — scope map, guarantee, proof plan.",
+    sections: [
+      { label: "Guarantee Statement", type: "textarea", key: "guarantee", placeholder: "Trigger condition · Scope · Remedy · Operator-side boundaries…" },
+      { label: "Proof Assets", type: "repeater", key: "proof", placeholder: "Case study, metric, testimonial, or credential…", addLabel: "+ Add proof asset" },
+      { label: "Payment Structure", type: "input", key: "payment", placeholder: "e.g. 50% upfront, 50% on delivery · or 3 monthly instalments" },
+    ],
+    actions: ["Finalise Offer Pack", "Export to Creative"],
+  },
+  avatar: {
+    objective: "Document the voice, fears, desires, and buying triggers of your ideal buyer.",
+    sections: [
+      { label: "Avatar Name", type: "input", key: "name", placeholder: "Give them a name — makes the writing feel real" },
+      { label: "Their Voice (verbatim phrases)", type: "repeater", key: "voice", placeholder: "Exact words they use when the performance drops…", addLabel: "+ Add phrase" },
+      { label: "Top 3 Fears", type: "repeater", key: "fears", placeholder: "What do they dread most?", addLabel: "+ Add fear" },
+      { label: "Top 3 Desires", type: "repeater", key: "desires", placeholder: "What do they secretly hope for?", addLabel: "+ Add desire" },
+      { label: "Buying Triggers", type: "textarea", key: "triggers", placeholder: "What event or realisation typically precedes a purchase decision?" },
+    ],
+    actions: ["Save Avatar", "Export to Ad Brief"],
+  },
+  adspy: {
+    objective: "Analyse competitor ad creative — what's running, what's winning, what's missing.",
+    sections: [
+      { label: "Competitors to Audit", type: "repeater", key: "competitors", placeholder: "Competitor name or Meta Ad Library URL…", addLabel: "+ Add competitor" },
+      { label: "Winning Ad Formats Observed", type: "checklist", key: "formats", items: ["UGC / talking head", "Testimonial carousel", "Problem–agitation hook", "Before / after", "Direct offer", "Educational value"] },
+      { label: "Dominant Hook Patterns", type: "repeater", key: "hooks", placeholder: "Recurring opening line or visual device…", addLabel: "+ Add hook pattern" },
+      { label: "The Gap", type: "textarea", key: "gap", placeholder: "What angle or emotion is no competitor currently owning?" },
+    ],
+    actions: ["Save Audit", "Inform Ad Brief"],
+  },
+  contentspy: {
+    objective: "Map the organic content landscape — hooks, angles, and proven formats.",
+    sections: [
+      { label: "Top Performing Accounts", type: "repeater", key: "accounts", placeholder: "Account handle and platform…", addLabel: "+ Add account" },
+      { label: "Proven Content Formats", type: "checklist", key: "formats", items: ["Long-form essay", "Short-form video", "Thread / carousel", "Case study post", "Hot take / contrarian", "Tutorial / how-to", "Story arc"] },
+      { label: "Winning Hooks Observed", type: "repeater", key: "hooks", placeholder: "A hook pattern that consistently generates engagement…", addLabel: "+ Add hook" },
+      { label: "Organic Gap Opportunity", type: "textarea", key: "gap", placeholder: "What topic or format is underserved in this space?" },
+    ],
+    actions: ["Save Research", "Brief Content Plan"],
+  },
+  genads: {
+    objective: "Produce ad creative from your VoC language bank and validated angles.",
+    sections: [
+      { label: "Primary Hook", type: "textarea", key: "hook", placeholder: "The opening line or visual concept — sourced from VoC…" },
+      { label: "Ad Format", type: "select", key: "format", options: ["— Select —", "Static image", "Short video (15–30s)", "Carousel", "Long video (60s+)", "Story"] },
+      { label: "Core Message (Body)", type: "textarea", key: "body", placeholder: "The argument, story, or problem framing in the ad…" },
+      { label: "Call to Action", type: "input", key: "cta", placeholder: "e.g. Book a free call · Download the guide · Apply now" },
+      { label: "G-Label Check", type: "select", key: "glabel", options: ["— Select —", "G1 — Proven claim (evidence on hand)", "G2 — Reasonable claim (evidence in progress)", "G3 — Plausible claim (no current evidence)", "G4 — Aspirational / future state"] },
+    ],
+    actions: ["Save Ad Brief", "Generate Variations"],
+  },
+  logo: {
+    objective: "Brand mark creation aligned to positioning and market context.",
+    sections: [
+      { label: "Brand Name", type: "input", key: "brandname", placeholder: "The name as it should appear on the mark" },
+      { label: "Positioning in One Line", type: "input", key: "positioning", placeholder: "e.g. The research-first offer builder for service businesses" },
+      { label: "Visual Direction", type: "select", key: "direction", options: ["— Select —", "Minimal / wordmark", "Geometric / abstract mark", "Editorial / serif", "Bold / modern sans", "Organic / hand-drawn"] },
+      { label: "Reference Styles or Colours", type: "textarea", key: "references", placeholder: "Describe references, styles to avoid, or hex codes if known…" },
+    ],
+    actions: ["Save Brief", "Generate Logo"],
+  },
+  landing: {
+    objective: "Build a conversion-optimised page with your offer copy and proof assets.",
+    sections: [
+      { label: "Page Sections Checklist", type: "checklist", key: "sections", items: ["Hero — headline from Truth-Gate cleared phrase", "Sub-headline — identifies the ICP", "Problem section — Enemy Narrative Before state", "Mechanism — how it works", "Offer details — scope and what's included", "Social proof — testimonials / results", "Guarantee", "FAQ", "CTA — above fold and at close"] },
+      { label: "Hero Headline", type: "input", key: "headline", placeholder: "Verbatim VoC phrase or Truth-Gate cleared language…" },
+      { label: "Primary CTA Copy", type: "input", key: "cta", placeholder: "e.g. Book your free strategy call" },
+    ],
+    actions: ["Save Page Plan", "Build Page"],
+  },
+  salespres: {
+    objective: "Deck structure and content for live or recorded sales conversations.",
+    sections: [
+      { label: "Deck Sections", type: "checklist", key: "sections", items: ["1. Who this is for", "2. The Enemy — why they're stuck", "3. Why existing solutions fail", "4. The mechanism", "5. The promise", "6. Proof / case studies", "7. The offer — what's included", "8. Guarantee", "9. Pricing and next steps"] },
+      { label: "Presentation Format", type: "select", key: "format", options: ["— Select —", "Live video call (Zoom/Meet)", "Loom / pre-recorded walkthrough", "In-person slide deck", "PDF send-ahead"] },
+    ],
+    actions: ["Save Structure", "Build Deck"],
+  },
+  nurture: {
+    objective: "Email and message sequences that move cold leads toward readiness.",
+    sections: [
+      { label: "Sequence Type", type: "select", key: "type", options: ["— Select —", "Lead magnet follow-up", "Webinar / event follow-up", "Cold outreach warm-up", "Re-engagement", "Post-call no-show"] },
+      { label: "Sequence Length", type: "select", key: "length", options: ["— Select —", "3 emails", "5 emails", "7 emails", "10 emails", "Custom"] },
+      { label: "Email Angles", type: "repeater", key: "angles", placeholder: "e.g. Email 1 — Enemy Narrative · Email 2 — Case study…", addLabel: "+ Add email angle" },
+    ],
+    actions: ["Save Sequence Plan", "Write Sequence"],
+  },
+  salesletter: {
+    objective: "Long-form copy built on the Enemy Narrative and Truth-Gate cleared phrases.",
+    sections: [
+      { label: "Headline", type: "input", key: "headline", placeholder: "Truth-Gate cleared phrase as the primary headline…" },
+      { label: "Letter Sections", type: "checklist", key: "sections", items: ["Who this letter is for", "Before — the Enemy Narrative trap", "Why nothing has worked", "The mechanism / transformation", "Proof — results and stories", "The offer breakdown", "Guarantee", "FAQ and objection handling", "Close and CTA"] },
+      { label: "Primary CTA", type: "input", key: "cta", placeholder: "The single action you want the reader to take…" },
+    ],
+    actions: ["Save Brief", "Write Letter"],
+  },
+  vsl: {
+    objective: "Video script that pre-frames, qualifies, and pre-sells before the discovery call.",
+    sections: [
+      { label: "Script Sections", type: "checklist", key: "sections", items: ["Hook — who this is for (first 10 seconds)", "The problem — Enemy Narrative", "Why current solutions fail", "The mechanism — a different way", "Proof — result or story", "The offer — what happens next", "CTA — how to book / apply"] },
+      { label: "Target Duration", type: "select", key: "duration", options: ["— Select —", "Under 5 minutes", "5–10 minutes", "10–20 minutes"] },
+      { label: "Tone", type: "select", key: "tone", options: ["— Select —", "Calm authority", "Urgent / direct", "Conversational", "Story-first"] },
+    ],
+    actions: ["Save Brief", "Write Script"],
+  },
+  social: {
+    objective: "Platform-specific creative formatted for organic distribution.",
+    sections: [
+      { label: "Platforms", type: "checklist", key: "platforms", items: ["Instagram Reels", "Instagram Feed", "TikTok", "YouTube Shorts", "LinkedIn", "X / Twitter", "Facebook"] },
+      { label: "Content Pillars", type: "repeater", key: "pillars", placeholder: "e.g. Enemy Narrative · Mechanism · Social Proof · Belief Shift", addLabel: "+ Add pillar" },
+      { label: "Posting Frequency", type: "input", key: "frequency", placeholder: "e.g. 3x per week on Instagram, 1x on LinkedIn" },
+    ],
+    actions: ["Save Social Plan", "Generate Assets"],
+  },
+  salesscript: {
+    objective: "Closing script structured around objection resolution and commitment.",
+    sections: [
+      { label: "Script Sections", type: "checklist", key: "sections", items: ["Open — set the frame", "Situation questions", "Problem questions — surface the pain", "Implication — what happens if nothing changes", "Need-payoff — the ideal outcome", "Transition to offer", "Present price with anchor", "Handle objections", "Commitment and next steps"] },
+      { label: "Top Objections to Pre-Handle", type: "repeater", key: "objections", placeholder: "e.g. I need to think about it · The price is too high…", addLabel: "+ Add objection" },
+    ],
+    actions: ["Save Script Outline", "Write Full Script"],
+  },
+  setting: {
+    objective: "Appointment-setting conversation guide for cold and warm outreach.",
+    sections: [
+      { label: "Outreach Channel", type: "select", key: "channel", options: ["— Select —", "Cold email", "LinkedIn DM", "Instagram DM", "SMS", "Cold call", "Warm referral"] },
+      { label: "Opening Hook", type: "textarea", key: "hook", placeholder: "The first sentence or subject line — specific to their situation…" },
+      { label: "Qualification Questions", type: "repeater", key: "qualifiers", placeholder: "A question that confirms they match the ICP…", addLabel: "+ Add qualifier" },
+      { label: "Call-to-Book CTA", type: "input", key: "cta", placeholder: "The line that asks for the booking…" },
+    ],
+    actions: ["Save Script", "Test Sequence"],
+  },
+  ghl: {
+    objective: "Integrate GoHighLevel — pipelines, automations, and contact records.",
+    sections: [
+      { label: "Sub-Account Name", type: "input", key: "account", placeholder: "Your GHL sub-account name…" },
+      { label: "API Key", type: "input", key: "api", placeholder: "Paste your GHL API key…" },
+      { label: "Pipeline Name", type: "input", key: "pipeline", placeholder: "e.g. TruthMarket — Sales Pipeline" },
+      { label: "Setup Checklist", type: "checklist", key: "checks", items: ["Sub-account created", "API key generated and saved", "Pipeline stages match offer stages", "Lead source tags configured", "Automation triggers tested"] },
+    ],
+    actions: ["Test Connection", "Save Settings"],
+  },
+  meta: {
+    objective: "Link Meta Business Manager and ad account for campaign deployment.",
+    sections: [
+      { label: "Business Manager ID", type: "input", key: "bmid", placeholder: "15-digit Business Manager ID…" },
+      { label: "Ad Account ID", type: "input", key: "aaid", placeholder: "act_XXXXXXXXXXXXXXX" },
+      { label: "Facebook Page Name", type: "input", key: "page", placeholder: "Page name connected to the ad account…" },
+      { label: "Setup Checklist", type: "checklist", key: "checks", items: ["Business Manager verified", "Ad account in good standing", "Payment method added", "Facebook Page linked", "Instagram account connected"] },
+    ],
+    actions: ["Verify Connection", "Save Settings"],
+  },
+  pixel: {
+    objective: "Deploy and verify the Meta Pixel for conversion tracking and retargeting.",
+    sections: [
+      { label: "Pixel ID", type: "input", key: "pixelid", placeholder: "16-digit Pixel ID from Events Manager…" },
+      { label: "Install Method", type: "select", key: "method", options: ["— Select —", "Manual (GTM)", "GHL native integration", "WordPress plugin", "Direct code injection"] },
+      { label: "Events to Track", type: "checklist", key: "events", items: ["PageView", "ViewContent", "Lead", "CompleteRegistration", "Purchase", "InitiateCheckout"] },
+      { label: "Verification Status", type: "select", key: "status", options: ["— Select —", "Not installed", "Installed — not verified", "Verified and firing"] },
+    ],
+    actions: ["Open Events Manager", "Test Events"],
+  },
+  launchads: {
+    objective: "Publish validated ad creative to your live campaign structure.",
+    sections: [
+      { label: "Campaign Objective", type: "select", key: "objective", options: ["— Select —", "Leads", "Conversions", "Traffic", "Awareness", "Engagement"] },
+      { label: "Daily Budget", type: "input", key: "budget", placeholder: "e.g. £30/day" },
+      { label: "Target Audience Summary", type: "textarea", key: "audience", placeholder: "Age, interests, behaviours, lookalike source…" },
+      { label: "Launch Checklist", type: "checklist", key: "checks", items: ["Ad creative approved", "Pixel verified and firing", "Landing page live and tested", "Form connected to CRM", "Budget and schedule set", "UTM parameters added"] },
+    ],
+    actions: ["Review & Launch", "Save Campaign Brief"],
+  },
+  socials: {
+    objective: "Sync social accounts for organic publishing and engagement tracking.",
+    sections: [
+      { label: "Accounts to Connect", type: "checklist", key: "accounts", items: ["Instagram Business", "Facebook Page", "LinkedIn Profile / Page", "TikTok Business", "X / Twitter", "YouTube"] },
+      { label: "Publishing Tool", type: "select", key: "tool", options: ["— Select —", "GHL Social Planner", "Buffer", "Later", "Metricool", "Native (manual)"] },
+    ],
+    actions: ["Connect Accounts", "Test Post"],
+  },
+  website: {
+    objective: "Publish your landing page to a live domain with SSL and analytics.",
+    sections: [
+      { label: "Domain Name", type: "input", key: "domain", placeholder: "e.g. youroffer.com" },
+      { label: "Hosting / Builder", type: "select", key: "host", options: ["— Select —", "GHL Funnel Builder", "Webflow", "WordPress", "Framer", "Leadpages", "Custom"] },
+      { label: "Launch Checklist", type: "checklist", key: "checks", items: ["Domain purchased and DNS configured", "SSL certificate active (HTTPS)", "Page loads under 3 seconds", "Mobile-responsive confirmed", "Analytics installed", "Privacy policy added"] },
+    ],
+    actions: ["Check Site", "Mark Live"],
+  },
+  form: {
+    objective: "Install intake forms, test submission flow, and confirm CRM data routing.",
+    sections: [
+      { label: "Form Tool", type: "select", key: "tool", options: ["— Select —", "GHL Form Builder", "Typeform", "Tally", "JotForm", "Custom HTML"] },
+      { label: "Form URL", type: "input", key: "url", placeholder: "Paste the live form URL…" },
+      { label: "Form Fields", type: "repeater", key: "fields", placeholder: "e.g. Full name · Email · Phone · How did you hear about us?", addLabel: "+ Add field" },
+      { label: "Test Checklist", type: "checklist", key: "checks", items: ["Test submission sent", "Contact created in CRM", "Confirmation email triggered", "Owner notified of new lead", "Form embedded on landing page"] },
+    ],
+    actions: ["Send Test Submission", "Mark Complete"],
+  },
+};
+
+const phases = [
+  { id: "research", label: "01 — Research", tagline: "Find your market", color: "#C9A84C",
+    modules: [{ id: "pain", icon: "⚡", title: "Bleeding-Neck Pains" }, { id: "icp", icon: "🎯", title: "ICP Segmentation" }, { id: "competitor", icon: "🔍", title: "Competitor Search" }] },
+  { id: "offer", label: "02 — Offer", tagline: "Build your solution", color: "#7EB8A4",
+    modules: [{ id: "offer-creation", icon: "🏗️", title: "Offer Creation" }, { id: "gtm", icon: "🚀", title: "Proven GTM" }, { id: "pricing", icon: "⚖️", title: "Pricing Expert" }, { id: "validation", icon: "✅", title: "Validation Score" }, { id: "builder", icon: "📐", title: "Offer Builder" }] },
+  { id: "creative", label: "03 — Creative", tagline: "Attention & conversion", color: "#B07CC6",
+    modules: [{ id: "avatar", icon: "👤", title: "Avatar Intake" }, { id: "adspy", icon: "📡", title: "Ad Spy" }, { id: "contentspy", icon: "📰", title: "Content Spy" }, { id: "genads", icon: "🎬", title: "Generate Ads" }, { id: "logo", icon: "✦", title: "Generate Logo" }, { id: "landing", icon: "🖥️", title: "Landing Page" }, { id: "salespres", icon: "📊", title: "Sales Presentation" }, { id: "nurture", icon: "📬", title: "Nurture Sequences" }, { id: "salesletter", icon: "📄", title: "Sales Letter" }, { id: "vsl", icon: "🎥", title: "Pre-Call VSL" }, { id: "social", icon: "📱", title: "Social Assets" }, { id: "salesscript", icon: "💬", title: "Sales Script" }, { id: "setting", icon: "📞", title: "Setting Script" }] },
+  { id: "launch", label: "04 — Launch", tagline: "Deploy & integrate", color: "#E07B54",
+    modules: [{ id: "ghl", icon: "🔗", title: "Connect GHL" }, { id: "meta", icon: "Ⓜ️", title: "Connect Meta" }, { id: "pixel", icon: "📍", title: "Install Pixel" }, { id: "launchads", icon: "▶️", title: "Launch Ads" }, { id: "socials", icon: "🌐", title: "Connect Socials" }, { id: "website", icon: "🏠", title: "Deploy Website" }, { id: "form", icon: "📋", title: "Add Form & Test" }] },
+];
+
+function TruthMarket() {
+  const [activePhase, setActivePhase] = useState("research");
+  const [completed, setCompleted] = useState({});
+  const [openModule, setOpenModule] = useState(null);
+  const [wsData, setWsData] = useState({});
+  const [notes, setNotes] = useState({});
+
+  const currentPhase = phases.find(p => p.id === activePhase);
+  const openPhase = phases.find(p => p.modules.some(m => m.id === openModule));
+  const openMod = openPhase?.modules.find(m => m.id === openModule);
+  const accent = openPhase?.color || currentPhase.color;
+
+  const totalModules = phases.reduce((a, p) => a + p.modules.length, 0);
+  const totalDone = Object.values(completed).filter(Boolean).length;
+  const totalPct = Math.round((totalDone / totalModules) * 100);
+
+  const phasePct = (phase) => {
+    const done = phase.modules.filter(m => completed[m.id]).length;
+    return { done, total: phase.modules.length, pct: Math.round((done / phase.modules.length) * 100) };
+  };
+
+  const setField = (mid, key, val) =>
+    setWsData(p => ({ ...p, [mid]: { ...(p[mid] || {}), [key]: val } }));
+  const getField = (mid, key, fb = "") => wsData[mid]?.[key] ?? fb;
+
+  return (
+    <div style={S.root}>
+      <div style={S.grain} />
+      <header style={S.header}>
+        <div style={S.wordmark}>
+          <span style={S.wT}>T</span><span style={S.wR}>RUTH</span>
+          <span style={S.wDot}>·</span>
+          <span style={S.wR}>MARKET</span>
+          <span style={S.wSub}>Research Intelligence Platform</span>
+        </div>
+        <div style={S.hpWrap}>
+          <span style={S.hpTxt}>Overall</span>
+          <div style={S.hpBar}><div style={{ ...S.hpFill, width: `${totalPct}%` }} /></div>
+          <span style={S.hpTxt}>{totalDone}/{totalModules}</span>
+        </div>
+      </header>
+
+      <div style={S.body}>
+        {/* Sidebar */}
+        <nav style={S.sidebar}>
+          {phases.map(ph => {
+            const { done, total, pct } = phasePct(ph);
+            const active = activePhase === ph.id;
+            return (
+              <button key={ph.id} style={{ ...S.navBtn, borderLeft: `3px solid ${active ? ph.color : "transparent"}`, background: active ? "#161616" : "transparent" }}
+                onClick={() => { setActivePhase(ph.id); setOpenModule(null); }}>
+                <div style={{ ...S.navDot, background: active ? ph.color : "#272727" }} />
+                <div style={S.navTxt}>
+                  <div style={{ ...S.navLbl, color: active ? ph.color : "#666" }}>{ph.label}</div>
+                  <div style={S.navTag}>{ph.tagline}</div>
+                  <div style={S.navPr}>
+                    <div style={S.navPrBar}><div style={{ ...S.navPrFill, width: `${pct}%`, background: ph.color }} /></div>
+                    <span style={S.navPrN}>{done}/{total}</span>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+          <div style={S.divider} />
+          <div style={S.lgnd}>
+            <div style={S.lgRow}><span style={{ ...S.lgDot, border: "1px solid #2e2e2e" }} />Not started</div>
+            <div style={S.lgRow}><span style={{ ...S.lgDot, background: "#C9A84C", border: "none" }} />Complete</div>
+          </div>
+        </nav>
+
+        {/* Grid */}
+        <main style={{ ...S.main, maxWidth: openModule ? 300 : "100%", minWidth: openModule ? 200 : 0 }}>
+          <div style={S.phHead}>
+            <div>
+              <div style={{ ...S.phLbl, color: currentPhase.color }}>{currentPhase.label}</div>
+              <div style={S.phTag}>{currentPhase.tagline}</div>
+            </div>
+            <div style={S.phStat}>{(() => { const { done, total } = phasePct(currentPhase); return `${done} of ${total}`; })()}</div>
+          </div>
+          <div style={{ ...S.grid, gridTemplateColumns: openModule ? "1fr" : "repeat(auto-fill,minmax(190px,1fr))" }}>
+            {currentPhase.modules.map(mod => {
+              const done = !!completed[mod.id];
+              const isOpen = openModule === mod.id;
+              return (
+                <div key={mod.id} style={{ ...S.card, ...(done ? S.cDone : {}), ...(isOpen ? { borderColor: currentPhase.color, background: "#1c1c1c" } : {}) }}
+                  onClick={() => setOpenModule(isOpen ? null : mod.id)}>
+                  <div style={S.cTop}>
+                    <span style={S.cIcon}>{mod.icon}</span>
+                    <button style={{ ...S.chkBtn, background: done ? currentPhase.color : "transparent", borderColor: done ? currentPhase.color : "#333" }}
+                      onClick={e => { e.stopPropagation(); setCompleted(p => ({ ...p, [mod.id]: !p[mod.id] })); }}>
+                      {done && <span style={S.chkMk}>✓</span>}
+                    </button>
+                  </div>
+                  <div style={{ ...S.cTitle, color: isOpen ? "#fff" : "#bbb" }}>{mod.title}</div>
+                  {isOpen && <div style={{ ...S.cHint, color: currentPhase.color }}>workspace open →</div>}
+                </div>
+              );
+            })}
+          </div>
+        </main>
+
+        {/* Detail Panel */}
+        {openModule && openMod && (
+          <aside style={S.panel}>
+            <div style={S.panelScroll}>
+              <div style={S.pHead}>
+                <div>
+                  <div style={{ ...S.pPhLbl, color: accent }}>{openPhase?.label}</div>
+                  <div style={S.pTitle}><span style={S.pIcon}>{openMod.icon}</span>{openMod.title}</div>
+                </div>
+                <button style={S.closeBtn} onClick={() => setOpenModule(null)}>✕</button>
+              </div>
+              <div style={S.objBox}>
+                <span style={{ ...S.objLbl, color: accent }}>Objective</span>
+                <p style={S.objTxt}>{workspaces[openModule]?.objective}</p>
+              </div>
+              <div style={{ ...S.accentBar, background: accent }} />
+              <div style={S.fieldStack}>
+                {workspaces[openModule]?.sections.map(sec => (
+                  <Section key={sec.key} sec={sec} modId={openModule}
+                    value={getField(openModule, sec.key, sec.type === "repeater" ? [""] : sec.type === "checklist" ? {} : sec.type === "scale" ? 3 : sec.type === "competitor-table" ? [{ name: "", price: "", weakness: "" }] : sec.type === "value-stack" ? [{ item: "", value: "" }] : sec.type === "range-input" ? { min: "", max: "" } : sec.type === "glabel-field" ? { text: "", g: "" } : "")}
+                    onChange={val => setField(openModule, sec.key, val)}
+                    accent={accent} />
+                ))}
+                <div style={S.fld}>
+                  <div style={S.fLbl}>Notes</div>
+                  <textarea style={S.ta} rows={3} placeholder="Private working notes…"
+                    value={notes[openModule] || ""} onChange={e => setNotes(p => ({ ...p, [openModule]: e.target.value }))} />
+                </div>
+              </div>
+              <div style={S.actBar}>
+                {workspaces[openModule]?.actions.map((a, i) => (
+                  <button key={i} style={i === 0 ? { ...S.actP, background: accent } : S.actS}>{a}</button>
+                ))}
+                <button style={S.actC} onClick={() => setCompleted(p => ({ ...p, [openModule]: !p[openModule] }))}>
+                  {completed[openModule] ? "✓ Completed" : "Mark Complete"}
+                </button>
+              </div>
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Section({ sec, modId, value, onChange, accent }) {
+  if (sec.type === "textarea") return (
+    <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+      <textarea style={S.ta} rows={4} placeholder={sec.placeholder} value={value} onChange={e => onChange(e.target.value)} /></div>
+  );
+  if (sec.type === "input") return (
+    <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+      <input style={S.inp} placeholder={sec.placeholder} value={value} onChange={e => onChange(e.target.value)} /></div>
+  );
+  if (sec.type === "select") return (
+    <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+      <select style={S.sel} value={value} onChange={e => onChange(e.target.value)}>
+        {sec.options.map(o => <option key={o}>{o}</option>)}
+      </select></div>
+  );
+  if (sec.type === "repeater") {
+    const items = Array.isArray(value) ? value : [""];
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        {items.map((it, i) => (
+          <div key={i} style={S.repRow}>
+            <input style={{ ...S.inp, flex: 1 }} placeholder={sec.placeholder} value={it}
+              onChange={e => { const n = [...items]; n[i] = e.target.value; onChange(n); }} />
+            {items.length > 1 && <button style={S.remBtn} onClick={() => onChange(items.filter((_, j) => j !== i))}>✕</button>}
+          </div>
+        ))}
+        <button style={{ ...S.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...items, ""])}>{sec.addLabel}</button>
+      </div>
+    );
+  }
+  if (sec.type === "checklist") {
+    const ch = (typeof value === "object" && !Array.isArray(value)) ? value : {};
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        {sec.items.map(it => (
+          <div key={it} style={S.chkRow} onClick={() => onChange({ ...ch, [it]: !ch[it] })}>
+            <div style={{ ...S.chkBox, background: ch[it] ? accent : "transparent", borderColor: ch[it] ? accent : "#333" }}>
+              {ch[it] && <span style={S.chkBoxMk}>✓</span>}
+            </div>
+            <span style={{ ...S.chkRowLbl, color: ch[it] ? "#bbb" : "#555", textDecoration: ch[it] ? "line-through" : "none" }}>{it}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (sec.type === "scale") {
+    const v = typeof value === "number" ? value : 3;
+    const labels = ["", "Background noise", "Present but tolerable", "Significant pain", "High urgency", "Bleeding neck"];
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        <div style={S.scaleHint}>{sec.hint}</div>
+        <div style={S.scaleRow}>
+          {[1,2,3,4,5].map(n => (
+            <button key={n} style={{ ...S.scalePip, background: n <= v ? accent : "#1e1e1e", color: n <= v ? "#111" : "#444" }}
+              onClick={() => onChange(n)}>{n}</button>
+          ))}
+          <span style={{ ...S.scaleLbl, color: accent }}>{labels[v]}</span>
+        </div>
+      </div>
+    );
+  }
+  if (sec.type === "glabel-field") {
+    const v = typeof value === "object" ? value : { text: "", g: "" };
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        <textarea style={S.ta} rows={3} placeholder={sec.placeholder} value={v.text || ""}
+          onChange={e => onChange({ ...v, text: e.target.value })} />
+        <div style={S.glRow}>
+          <span style={S.glLbl}>G-Label:</span>
+          {["G1","G2","G3","G4"].map(g => (
+            <button key={g} style={{ ...S.glBtn, background: v.g === g ? accent : "#1a1a1a", color: v.g === g ? "#111" : "#444", borderColor: v.g === g ? accent : "#2e2e2e" }}
+              onClick={() => onChange({ ...v, g })}>{g}</button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (sec.type === "competitor-table") {
+    const rows = Array.isArray(value) && value.length ? value : [{ name: "", price: "", weakness: "" }];
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        {rows.map((r, i) => (
+          <div key={i} style={{ ...S.repRow, gap: 4, marginBottom: 4 }}>
+            <input style={{ ...S.inp, flex: 2 }} placeholder="Competitor…" value={r.name} onChange={e => { const n=[...rows]; n[i]={...r,name:e.target.value}; onChange(n); }} />
+            <input style={{ ...S.inp, flex: 1 }} placeholder="Price…" value={r.price} onChange={e => { const n=[...rows]; n[i]={...r,price:e.target.value}; onChange(n); }} />
+            <input style={{ ...S.inp, flex: 2 }} placeholder="Weakness…" value={r.weakness} onChange={e => { const n=[...rows]; n[i]={...r,weakness:e.target.value}; onChange(n); }} />
+          </div>
+        ))}
+        <button style={{ ...S.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...rows, { name:"", price:"", weakness:"" }])}>+ Add competitor</button>
+      </div>
+    );
+  }
+  if (sec.type === "value-stack") {
+    const rows = Array.isArray(value) && value.length ? value : [{ item: "", value: "" }];
+    const total = rows.reduce((a, r) => a + (parseFloat(r.value)||0), 0);
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        {rows.map((r, i) => (
+          <div key={i} style={{ ...S.repRow, gap: 4, marginBottom: 4 }}>
+            <input style={{ ...S.inp, flex: 3 }} placeholder="Item…" value={r.item} onChange={e => { const n=[...rows]; n[i]={...r,item:e.target.value}; onChange(n); }} />
+            <input style={{ ...S.inp, flex: 1 }} placeholder="£…" value={r.value} onChange={e => { const n=[...rows]; n[i]={...r,value:e.target.value}; onChange(n); }} />
+          </div>
+        ))}
+        <button style={{ ...S.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...rows, { item:"", value:"" }])}>+ Add item</button>
+        <div style={S.stackTot}>Stack total: <strong style={{ color: accent }}>£{total.toLocaleString()}</strong></div>
+      </div>
+    );
+  }
+  if (sec.type === "range-input") {
+    const v = (typeof value === "object" && !Array.isArray(value)) ? value : { min: "", max: "" };
+    return (
+      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <input style={{ ...S.inp, flex: 1 }} placeholder="Low (£)…" value={v.min} onChange={e => onChange({ ...v, min: e.target.value })} />
+          <span style={{ color: "#444" }}>–</span>
+          <input style={{ ...S.inp, flex: 1 }} placeholder="High (£)…" value={v.max} onChange={e => onChange({ ...v, max: e.target.value })} />
+        </div>
+      </div>
+    );
+  }
+  return null;
+}
+
+const S = {
+  root: { fontFamily: "'Georgia','Times New Roman',serif", background: "#111", minHeight: "100vh", color: "#e0d8cc", position: "relative", overflow: "hidden" },
+  grain: { position: "fixed", inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`, pointerEvents: "none", zIndex: 0, opacity: 0.5 },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 28px", borderBottom: "1px solid #1a1a1a", position: "sticky", top: 0, background: "#111", zIndex: 10 },
+  wordmark: { display: "flex", alignItems: "baseline", gap: 3 },
+  wT: { fontSize: 24, fontWeight: 700, color: "#C9A84C" },
+  wR: { fontSize: 18, fontWeight: 400, letterSpacing: "0.22em", color: "#ddd" },
+  wDot: { fontSize: 15, color: "#C9A84C", margin: "0 7px" },
+  wSub: { fontSize: 9, letterSpacing: "0.28em", color: "#3a3a3a", textTransform: "uppercase", marginLeft: 14 },
+  hpWrap: { display: "flex", alignItems: "center", gap: 8 },
+  hpTxt: { fontSize: 10, color: "#555", letterSpacing: "0.1em" },
+  hpBar: { width: 120, height: 2, background: "#1e1e1e", borderRadius: 1 },
+  hpFill: { height: "100%", background: "#C9A84C", borderRadius: 1, transition: "width 0.4s" },
+  body: { display: "flex", position: "relative", zIndex: 1, height: "calc(100vh - 57px)" },
+  sidebar: { width: 200, flexShrink: 0, borderRight: "1px solid #1a1a1a", padding: "20px 0", display: "flex", flexDirection: "column", gap: 2, background: "#0c0c0c", overflowY: "auto" },
+  navBtn: { display: "flex", alignItems: "flex-start", gap: 9, padding: "11px 16px", background: "transparent", border: "none", cursor: "pointer", width: "100%", textAlign: "left" },
+  navDot: { width: 6, height: 6, borderRadius: "50%", marginTop: 5, flexShrink: 0 },
+  navTxt: { display: "flex", flexDirection: "column", gap: 2, flex: 1 },
+  navLbl: { fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" },
+  navTag: { fontSize: 9, color: "#3a3a3a", fontStyle: "italic" },
+  navPr: { display: "flex", alignItems: "center", gap: 5, marginTop: 4 },
+  navPrBar: { flex: 1, height: 1.5, background: "#1a1a1a", borderRadius: 1 },
+  navPrFill: { height: "100%", borderRadius: 1, transition: "width 0.4s" },
+  navPrN: { fontSize: 9, color: "#3a3a3a" },
+  divider: { height: 1, background: "#181818", margin: "14px 16px" },
+  lgnd: { padding: "0 16px", display: "flex", flexDirection: "column", gap: 6 },
+  lgRow: { display: "flex", alignItems: "center", gap: 6, fontSize: 9, color: "#3a3a3a" },
+  lgDot: { width: 6, height: 6, borderRadius: "50%", flexShrink: 0, background: "transparent" },
+  main: { flex: 1, padding: "22px 22px", overflowY: "auto", transition: "max-width 0.25s ease", minWidth: 0 },
+  phHead: { display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid #1a1a1a" },
+  phLbl: { fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700, marginBottom: 4 },
+  phTag: { fontSize: 20, fontWeight: 400, fontStyle: "italic", lineHeight: 1.2 },
+  phStat: { fontSize: 10, color: "#3a3a3a" },
+  grid: { display: "grid", gap: 10 },
+  card: { background: "#141414", border: "1px solid #1e1e1e", borderRadius: 5, padding: "14px 12px", cursor: "pointer", transition: "border-color 0.2s, background 0.2s", display: "flex", flexDirection: "column", gap: 8 },
+  cDone: { opacity: 0.45 },
+  cTop: { display: "flex", justifyContent: "space-between", alignItems: "center" },
+  cIcon: { fontSize: 16 },
+  chkBtn: { width: 18, height: 18, borderRadius: "50%", border: "1px solid", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0 },
+  chkMk: { fontSize: 9, color: "#111", fontWeight: 700 },
+  cTitle: { fontSize: 12, fontWeight: 600, lineHeight: 1.3, transition: "color 0.2s" },
+  cHint: { fontSize: 9, letterSpacing: "0.1em", fontStyle: "italic" },
+  panel: { width: 400, flexShrink: 0, borderLeft: "1px solid #1a1a1a", background: "#0c0c0c", overflowY: "auto" },
+  panelScroll: { padding: "22px 20px", display: "flex", flexDirection: "column" },
+  pHead: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 },
+  pPhLbl: { fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 5 },
+  pTitle: { fontSize: 18, fontWeight: 600, display: "flex", alignItems: "center", gap: 7 },
+  pIcon: { fontSize: 16 },
+  closeBtn: { background: "transparent", border: "none", color: "#383838", fontSize: 14, cursor: "pointer", padding: "3px 5px" },
+  objBox: { marginBottom: 14 },
+  objLbl: { fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", display: "block", marginBottom: 5, fontWeight: 700 },
+  objTxt: { fontSize: 11, color: "#666", lineHeight: 1.65, margin: 0, fontStyle: "italic" },
+  accentBar: { height: 1, marginBottom: 18, opacity: 0.25 },
+  fieldStack: { display: "flex", flexDirection: "column", gap: 16 },
+  fld: { display: "flex", flexDirection: "column", gap: 6 },
+  fLbl: { fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "#777", fontWeight: 700 },
+  ta: { background: "#141414", border: "1px solid #242424", borderRadius: 3, color: "#bbb", fontSize: 11, fontFamily: "inherit", padding: "9px 10px", resize: "vertical", lineHeight: 1.65, outline: "none" },
+  inp: { background: "#141414", border: "1px solid #242424", borderRadius: 3, color: "#bbb", fontSize: 11, fontFamily: "inherit", padding: "8px 10px", outline: "none" },
+  sel: { background: "#141414", border: "1px solid #242424", borderRadius: 3, color: "#bbb", fontSize: 11, fontFamily: "inherit", padding: "8px 10px", outline: "none" },
+  repRow: { display: "flex", gap: 5, alignItems: "center" },
+  remBtn: { background: "transparent", border: "none", color: "#333", fontSize: 10, cursor: "pointer", padding: "3px 5px" },
+  addBtn: { background: "transparent", border: "1px solid", borderRadius: 3, fontSize: 10, padding: "5px 9px", cursor: "pointer", fontFamily: "inherit", letterSpacing: "0.06em", alignSelf: "flex-start" },
+  chkRow: { display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" },
+  chkBox: { width: 12, height: 12, borderRadius: 2, border: "1px solid", flexShrink: 0, marginTop: 2, display: "flex", alignItems: "center", justifyContent: "center" },
+  chkBoxMk: { fontSize: 8, color: "#111", fontWeight: 700 },
+  chkRowLbl: { fontSize: 11, lineHeight: 1.5 },
+  scaleHint: { fontSize: 10, color: "#555", fontStyle: "italic" },
+  scaleRow: { display: "flex", alignItems: "center", gap: 6 },
+  scalePip: { width: 28, height: 28, borderRadius: 3, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" },
+  scaleLbl: { fontSize: 10, fontStyle: "italic", marginLeft: 4 },
+  glRow: { display: "flex", alignItems: "center", gap: 5, marginTop: 2 },
+  glLbl: { fontSize: 9, color: "#555", letterSpacing: "0.1em" },
+  glBtn: { border: "1px solid", borderRadius: 2, padding: "3px 8px", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
+  stackTot: { fontSize: 11, color: "#555", marginTop: 6, paddingTop: 6, borderTop: "1px solid #1a1a1a" },
+  actBar: { marginTop: 20, paddingTop: 16, borderTop: "1px solid #1a1a1a", display: "flex", flexWrap: "wrap", gap: 7 },
+  actP: { border: "none", borderRadius: 3, color: "#111", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", padding: "9px 14px", cursor: "pointer", fontFamily: "inherit" },
+  actS: { background: "transparent", border: "1px solid #252525", borderRadius: 3, color: "#666", fontSize: 10, padding: "8px 12px", cursor: "pointer", fontFamily: "inherit" },
+  actC: { background: "transparent", border: "1px dashed #2e2e2e", borderRadius: 3, color: "#555", fontSize: 10, padding: "8px 12px", cursor: "pointer", fontFamily: "inherit", marginLeft: "auto" },
+};
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(TruthMarket));
+  </script>
+</body>
+</html>
