@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Moontrance Community — An Intentional Muslim Life on Land</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0e0d0b;
+  --parchment:  #f5f0e8;
+  --bone:       #ede7d9;
+  --dust:       #d4c9b5;
+  --mid:        #3d3830;
+  --soft:       #6b6158;
+  --faint:      #7a7068;
+  --amber:      #b89050;
+  --amber-light:#d4aa66;
+  --amber-muted:#7a5d2a;
+  --earth:      #a0745a;
+  --deep:       #1a1714;
+  --line:       rgba(184,144,80,0.2);
+  --line-soft:  rgba(14,13,11,0.08);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono:  'DM Mono', monospace;
+  --sans:  'Instrument Sans', system-ui, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--parchment);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.5;}
+
+.skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--ink);color:var(--parchment);padding:0.6rem 1.25rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-decoration:none;border-radius:2px;}
+.skip-nav:focus{top:0.75rem;}
+:focus-visible{outline:2.5px solid var(--amber);outline-offset:3px;border-radius:2px;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 3rem;height:52px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft);}
+.nav-brand{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
+.nav-symbol{font-family:var(--sans);font-size:1.1rem;color:var(--amber-muted);font-style:normal;}
+.nav-name{font-family:var(--mono);font-size:0.875rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);}
+.nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);text-decoration:none;padding-bottom:2px;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;}
+.nav-links a:hover{color:var(--amber-muted);border-color:var(--amber);}
+.nav-links a.nav-cta{background:var(--ink);color:var(--parchment);padding:0.45rem 1.25rem;border:none;border-radius:2px;transition:background 0.2s;}
+.nav-links a.nav-cta:hover{background:var(--amber-muted);}
+.nav-toggle{display:none;background:none;border:1.5px solid var(--dust);border-radius:2px;padding:0.45rem 0.6rem;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:2.5rem;height:2.5rem;}
+.nav-toggle span{display:block;width:18px;height:1.5px;background:var(--ink);border-radius:1px;transition:transform 0.25s,opacity 0.2s;transform-origin:center;}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.nav-drawer{display:none;position:fixed;inset:0;z-index:199;background:rgba(245,240,232,0.97);backdrop-filter:blur(16px);padding:5rem 2rem 2rem;flex-direction:column;transform:translateY(-100%);transition:transform 0.3s ease;}
+.nav-drawer.open{transform:translateY(0);}
+.nav-drawer-links{list-style:none;border-top:1px solid var(--dust);}
+.nav-drawer-links li{border-bottom:1px solid var(--line-soft);}
+.nav-drawer-links a{display:block;padding:1.1rem 0;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color 0.2s;}
+.nav-drawer-links a:hover{color:var(--amber-muted);}
+.nav-drawer-cta{display:block;margin-top:2rem;padding:1rem;text-align:center;background:var(--ink);color:var(--parchment);border-radius:2px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding-top:52px;position:relative;overflow:hidden;display:grid;grid-template-rows:1fr auto;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 15% 45%,rgba(184,144,80,0.07) 0%,transparent 60%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%);}
+.hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1280px;margin:0 auto;padding:5rem 3rem 4rem;}
+.hero-left{max-width:560px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:2rem;padding:0.4rem 0.85rem;border:1px solid var(--line);border-radius:2px;background:rgba(184,144,80,0.05);}
+.hero-eyebrow span{color:var(--amber);}
+.hero-dua{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--soft);line-height:1.8;margin-bottom:2.5rem;padding-left:1.25rem;border-left:2px solid var(--line);}
+.hero-dua-arabic{display:block;font-size:1.5rem;font-style:normal;color:var(--amber-muted);line-height:2;text-align:right;margin-bottom:0.25rem;direction:rtl;}
+.hero-dua-trans{display:block;font-size:0.82rem;font-style:italic;color:var(--faint);margin-bottom:0.4rem;}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,4.5vw,4rem);line-height:1.12;color:var(--ink);margin-bottom:1.5rem;letter-spacing:-0.01em;}
+h1 em{font-style:italic;color:var(--amber-muted);}
+.hero-sub{font-size:1.05rem;color:var(--mid);line-height:1.8;margin-bottom:1rem;}
+.hero-sub strong{color:var(--ink);font-weight:600;}
+.hero-distinction{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--soft);margin-bottom:2.5rem;padding:1rem 1.25rem;background:rgba(184,144,80,0.06);border-left:3px solid var(--amber);line-height:1.8;}
+.hero-state-box{margin-bottom:2rem;padding:0.9rem 1.25rem;border:1px solid var(--line);border-left:3px solid var(--amber-muted);border-radius:2px;background:rgba(184,144,80,0.05);}
+.hero-state-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.4rem;}
+.hero-state-text{font-size:0.875rem;color:var(--soft);line-height:1.65;}
+.hero-actions{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:0.6rem;background:var(--ink);color:var(--parchment);padding:0.9rem 2rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border-radius:2px;border:1.5px solid var(--ink);transition:background 0.25s,border-color 0.25s;}
+.btn-primary:hover{background:var(--amber-muted);border-color:var(--amber-muted);}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.6rem;color:var(--mid);font-family:var(--mono);font-size:0.875rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding-bottom:2px;border-bottom:1px solid var(--dust);transition:color 0.2s,border-color 0.2s;}
+.btn-secondary:hover{color:var(--amber-muted);border-color:var(--amber);}
+
+/* ── SEASONS PANEL ── */
+.season-panel{background:var(--bone);border:1px solid var(--dust);border-radius:4px;overflow:hidden;box-shadow:0 24px 64px rgba(14,13,11,0.1),0 4px 16px rgba(14,13,11,0.05);}
+.season-panel-header{padding:1rem 1.5rem;background:var(--ink);display:flex;align-items:center;justify-content:space-between;}
+.season-panel-title{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dust);}
+.season-panel-sub{font-family:var(--mono);font-size:0.75rem;color:rgba(245,240,232,0.45);letter-spacing:0.1em;}
+.season-panel-hint{padding:0.55rem 1.5rem;background:rgba(14,13,11,0.04);border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:0.75rem;color:var(--faint);letter-spacing:0.08em;}
+.season-list{padding:0;}
+.season-row{padding:1.25rem 1.5rem;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:90px 1fr;gap:1rem;align-items:start;cursor:pointer;transition:background 0.15s;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;}
+.season-row:last-child{border-bottom:none;}
+.season-row:hover{background:rgba(184,144,80,0.07);}
+.season-row:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;}
+.season-name{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);padding-top:0.1rem;}
+.season-desc{font-size:0.875rem;color:var(--mid);line-height:1.6;text-align:left;}
+.season-desc strong{color:var(--ink);font-weight:600;}
+.community-notice{padding:0.9rem 1.5rem;background:rgba(184,144,80,0.07);border-top:1px solid rgba(184,144,80,0.15);font-family:var(--serif);font-style:italic;font-size:0.88rem;color:var(--amber-muted);line-height:1.65;text-align:center;}
+
+/* ── SEASON DRAWER ── */
+.drawer-overlay{position:fixed;inset:0;z-index:300;background:rgba(14,13,11,0.35);opacity:0;pointer-events:none;transition:opacity 0.3s ease;backdrop-filter:blur(2px);}
+.drawer-overlay.active{opacity:1;pointer-events:all;}
+.season-drawer{position:fixed;top:0;right:0;bottom:0;z-index:301;width:min(520px,95vw);background:var(--parchment);border-left:1px solid var(--dust);box-shadow:-24px 0 64px rgba(14,13,11,0.12);transform:translateX(100%);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;display:flex;flex-direction:column;}
+.season-drawer.open{transform:translateX(0);}
+.season-drawer-header{padding:1.5rem;border-bottom:1px solid var(--line-soft);display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;position:sticky;top:0;background:var(--parchment);z-index:10;}
+.sdh-left{}
+.sdh-code{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.3rem;}
+.sdh-name{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:0.2rem;}
+.sdh-sub{font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--soft);}
+.sdh-controls{display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+.sdh-nav{display:flex;gap:0.3rem;}
+.sdh-nav-btn{background:none;border:1px solid var(--dust);border-radius:2px;padding:0.38rem 1.1rem;cursor:pointer;font-family:var(--mono);font-size:0.82rem;color:var(--soft);transition:background 0.2s,color 0.2s,border-color 0.2s;line-height:1;}
+.sdh-nav-btn:hover{background:var(--bone);color:var(--ink);border-color:var(--amber-muted);}
+.sdh-close{background:none;border:1px solid var(--dust);border-radius:2px;padding:0.4rem 0.7rem;cursor:pointer;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;color:var(--soft);transition:all 0.2s;white-space:nowrap;}
+.sdh-close:hover{background:var(--bone);color:var(--ink);}
+.season-drawer-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;gap:1.75rem;}
+.sd-block{}
+.sd-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.85rem;display:flex;align-items:center;gap:0.6rem;}
+.sd-label::after{content:'';flex:1;height:1px;background:var(--line);}
+.sd-prose{font-size:0.875rem;color:var(--mid);line-height:1.8;}
+.sd-ayah{padding:1.25rem 1.5rem;background:rgba(184,144,80,0.07);border:1px solid var(--line);border-radius:3px;text-align:center;}
+.sd-ayah-arabic{font-family:var(--serif);font-size:1.25rem;color:var(--amber-muted);direction:rtl;display:block;line-height:2;margin-bottom:0.4rem;}
+.sd-ayah-trans{font-family:var(--serif);font-style:italic;font-size:0.9rem;color:var(--mid);display:block;line-height:1.65;margin-bottom:0.5rem;}
+.sd-ayah-source{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;color:var(--faint);}
+.sd-tasks{list-style:none;display:flex;flex-direction:column;gap:0.45rem;}
+.sd-task{display:grid;grid-template-columns:10px 1fr;gap:0.6rem;align-items:baseline;}
+.sd-task-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);opacity:0.7;margin-top:5px;flex-shrink:0;}
+.sd-task-text{font-size:0.875rem;color:var(--mid);line-height:1.55;}
+.sd-note{padding:1rem 1.25rem;border-left:3px solid var(--amber);background:rgba(184,144,80,0.05);border-radius:3px;font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}
+
+/* ── SHARED SECTION ── */
+.section{padding:6rem 3rem;max-width:1280px;margin:0 auto;}
+.section-label{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--line);}
+h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,3.5vw,3rem);line-height:1.2;color:var(--ink);margin-bottom:1.5rem;}
+h2 em{font-style:italic;color:var(--amber-muted);}
+.prose{font-size:1.05rem;color:var(--mid);line-height:1.9;}
+.prose p{margin-bottom:1.35rem;}
+.prose p:last-child{margin-bottom:0;}
+.prose strong{color:var(--ink);font-weight:600;}
+.prose em{font-family:var(--serif);font-style:italic;color:var(--amber-muted);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:3rem;}
+
+/* ── FOUNDATION (dark) ── */
+.dark-section{background:var(--ink);color:var(--parchment);padding:0;}
+.dark-inner{max-width:1280px;margin:0 auto;padding:6rem 3rem;}
+.dark-section .section-label{color:var(--amber-light);}
+.dark-section .section-label::after{background:rgba(184,144,80,0.2);}
+.dark-section h2{color:var(--parchment);}
+.dark-section h2 em{color:var(--amber-light);}
+.dark-intro{max-width:680px;font-size:1.05rem;color:rgba(245,240,232,0.75);line-height:1.9;margin-bottom:3.5rem;}
+.dark-intro strong{color:var(--parchment);font-weight:500;}
+.dark-quote{padding:1.5rem 2rem;border:1px solid rgba(184,144,80,0.25);border-radius:3px;background:rgba(184,144,80,0.06);margin-bottom:3.5rem;max-width:700px;font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--amber-light);line-height:1.85;}
+.dark-quote cite{display:block;margin-top:0.75rem;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(184,144,80,0.55);font-style:normal;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.value-cell{padding:1.75rem 1.5rem;background:rgba(14,13,11,0.6);transition:background 0.2s;}
+.value-cell:hover{background:rgba(184,144,80,0.08);}
+.value-arabic{font-family:var(--serif);font-size:1.4rem;color:var(--amber-light);direction:rtl;margin-bottom:0.3rem;line-height:1.6;}
+.value-name{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--parchment);margin-bottom:0.15rem;}
+.value-trans{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:rgba(184,144,80,0.7);margin-bottom:0.5rem;}
+.value-meaning{font-size:0.82rem;color:rgba(245,240,232,0.68);line-height:1.55;}
+
+/* ── PARTICIPATION ── */
+.participation-section{background:#f9f5ee;border-top:1px solid var(--dust);border-bottom:1px solid var(--dust);}
+.participation-inner{max-width:1280px;margin:0 auto;padding:6rem 3rem;}
+.participation-table{border:1px solid var(--dust);border-radius:3px;overflow:hidden;margin-top:3rem;}
+.pt-row{display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid var(--line-soft);}
+.pt-row:last-child{border-bottom:none;}
+.pt-key{padding:1.25rem 1.5rem;background:rgba(14,13,11,0.04);border-right:1px solid var(--line-soft);font-family:var(--sans);font-size:0.875rem;font-weight:600;color:var(--ink);display:flex;align-items:center;}
+.pt-val{padding:1.25rem 1.5rem;font-size:0.875rem;color:var(--mid);line-height:1.7;}
+.pt-val em{font-family:var(--serif);font-style:italic;color:var(--amber-muted);}
+
+/* ── WHAT IT ASKS ── */
+.asks-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;}
+.ask-card{padding:1.5rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);}
+.ask-card::before{content:'';display:block;width:3px;height:100%;background:var(--amber);position:absolute;left:0;top:0;border-radius:3px 0 0 3px;}
+.ask-card{position:relative;}
+.ask-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;}
+.ask-text{font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}
+
+/* ── TOWARD RESIDENCY ── */
+.residency-section{background:var(--bone);border-top:1px solid var(--dust);border-bottom:1px solid var(--dust);padding:6rem 0;}
+.residency-inner{max-width:1280px;margin:0 auto;padding:0 3rem;}
+.residency-prose{font-size:1.05rem;color:var(--mid);line-height:1.9;max-width:680px;}
+.residency-prose p{margin-bottom:1.35rem;}
+.residency-prose p:last-child{margin-bottom:0;}
+.residency-prose strong{color:var(--ink);}
+.residency-prose em{font-family:var(--serif);font-style:italic;color:var(--amber-muted);}
+.honest-box{margin-top:2.5rem;padding:1.25rem 1.5rem;border:1px solid var(--line);border-left:3px solid var(--amber-muted);border-radius:3px;background:var(--parchment);}
+.honest-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;}
+.honest-text{font-size:0.875rem;color:var(--soft);line-height:1.7;}
+
+/* ── INVITATION ── */
+.invitation-section{padding:8rem 3rem;max-width:760px;margin:0 auto;text-align:center;}
+.invitation-dua{font-family:var(--serif);font-size:1.6rem;color:var(--amber-muted);direction:rtl;margin-bottom:0.4rem;line-height:2;}
+.invitation-dua-trans{font-family:var(--serif);font-style:italic;font-size:0.875rem;color:var(--faint);margin-bottom:3rem;display:block;}
+.invitation-h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--ink);line-height:1.3;margin-bottom:1.5rem;}
+.invitation-h2 em{font-style:italic;color:var(--amber-muted);}
+.invitation-body{font-size:1.05rem;color:var(--mid);line-height:1.9;margin-bottom:2.5rem;font-family:var(--serif);font-style:italic;}
+.invitation-note{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.12em;color:var(--faint);margin-top:1.5rem;line-height:1.7;}
+
+/* ── FOOTER ── */
+footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(255,255,255,0.05);}
+.footer-mark{font-family:var(--mono);font-size:0.875rem;color:rgba(245,240,232,0.55);letter-spacing:0.12em;text-transform:uppercase;}
+.footer-mark span{color:var(--amber-light);}
+.footer-line{font-family:var(--serif);font-style:italic;font-size:0.875rem;color:rgba(245,240,232,0.55);}
+
+/* ── ANIMATIONS ── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .nav{padding:0 1.5rem;}
+  .nav-links{display:none;}
+  .nav-toggle{display:flex;}
+  .nav-drawer{display:flex;}
+  .hero-content{grid-template-columns:1fr;padding:4rem 1.5rem 3rem;}
+  .hero-right{display:none;}
+  .two-col{grid-template-columns:1fr;gap:2.5rem;}
+  .values-grid{grid-template-columns:1fr 1fr;}
+  .asks-grid{grid-template-columns:1fr;}
+  .section{padding:4rem 1.5rem;}
+  .dark-inner,.residency-inner,.participation-inner{padding:4rem 1.5rem;}
+  .pt-row{grid-template-columns:1fr;}
+  .pt-key{border-right:none;border-bottom:1px solid var(--line-soft);}
+  .invitation-section{padding:5rem 1.5rem;}
+  footer{padding:2rem 1.5rem;}
+}
+@media(max-width:640px){
+  .values-grid{grid-template-columns:1fr;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}
+  .fade-up{opacity:1;transform:none;transition:none;}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<header>
+<nav class="nav" aria-label="Main navigation">
+  <a href="/moontrance/" class="nav-brand">
+    <span class="nav-symbol" aria-hidden="true">◐</span>
+    <span class="nav-name">Moontrance</span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#why">Why This Exists</a></li>
+    <li><a href="#foundations">The Foundations</a></li>
+    <li><a href="#participation">Seasonal Participation</a></li>
+    <li><a href="#residency">Toward Residency</a></li>
+    <li><a href="#invitation" class="nav-cta">Begin a Conversation</a></li>
+  </ul>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open navigation menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+</header>
+
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <ul class="nav-drawer-links" role="list">
+    <li><a href="#why">Why This Exists</a></li>
+    <li><a href="#foundations">The Foundations</a></li>
+    <li><a href="#participation">Seasonal Participation</a></li>
+    <li><a href="#residency">Toward Residency</a></li>
+  </ul>
+  <a href="#invitation" class="nav-drawer-cta">◐ &nbsp; Begin a Conversation</a>
+</div>
+
+<div class="drawer-overlay" id="seasonOverlay" role="presentation" aria-hidden="true"></div>
+<aside class="season-drawer" id="seasonDrawer" role="complementary" aria-label="Season detail" aria-hidden="true">
+  <div class="season-drawer-header">
+    <div class="sdh-left">
+      <p class="sdh-code" id="sdCode"></p>
+      <h2 class="sdh-name" id="sdName"></h2>
+      <p class="sdh-sub" id="sdSub"></p>
+    </div>
+    <div class="sdh-controls">
+      <div class="sdh-nav">
+        <button class="sdh-nav-btn" id="sdPrev" aria-label="Previous season">←</button>
+        <button class="sdh-nav-btn" id="sdNext" aria-label="Next season">→</button>
+      </div>
+      <button class="sdh-close" id="sdClose" aria-label="Close season detail">Close ×</button>
+    </div>
+  </div>
+  <div class="season-drawer-body" id="sdBody"></div>
+</aside>
+
+<main id="main-content">
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-left fade-up visible">
+      <div class="hero-eyebrow">◐ &nbsp;<span>The Moontrance Community</span></div>
+
+      <div class="hero-dua" role="note">
+        <span class="hero-dua-arabic" lang="ar" dir="rtl">وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا</span>
+        <span class="hero-dua-trans">Wa-tasimu bi-ḥabli llāhi jamīʿan wa-lā tafarraqū</span>
+        Hold fast, all of you together, to the rope of Allah — and do not be divided.
+        <span style="display:block;margin-top:0.4rem;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;color:var(--faint);">Qur'an · Āl 'Imrān 3:103</span>
+      </div>
+
+      <h1>A community rooted<br>in land, <em>faith,</em><br>and deliberate life.</h1>
+
+      <p class="hero-sub">
+        If you're here, you likely came through the Collective.
+        Something on that land, or in that encounter, made you wonder
+        whether there was something more permanent here — <strong>a way of life,
+        not just a visit.</strong>
+      </p>
+
+      <div class="hero-distinction">
+        This is not a membership programme. It is a community forming slowly,
+        on purpose, around a shared understanding that Muslim life was meant
+        to be lived in jama'ah — together, on the land, with the signs of
+        Allah in daily view.
+      </div>
+
+      <div class="hero-state-box" role="note">
+        <p class="hero-state-label">Current State &nbsp;·&nbsp; Forming</p>
+        <p class="hero-state-text">
+          The community is in its earliest stage. Seasonal participation
+          is where it begins — people who want to contribute to the land's life
+          over a growing season, be known in the work and in the values,
+          and see whether this is home. The residency model comes after
+          the foundation is established.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#invitation" class="btn-primary">◐ &nbsp; Begin a Conversation</a>
+        <a href="#why" class="btn-secondary">Understand why this exists →</a>
+      </div>
+    </div>
+
+    <div class="hero-right fade-up visible" aria-hidden="true">
+      <div class="season-panel">
+        <div class="season-panel-header">
+          <span class="season-panel-title">Seasonal Participation</span>
+          <span class="season-panel-sub">Year One</span>
+        </div>
+        <p class="season-panel-hint">Select any season to go deeper →</p>
+        <div class="season-list">
+          <button class="season-row" data-season="spring" aria-label="Spring — view detail">
+            <div class="season-name">Planting Faith</div>
+            <div class="season-desc"><strong>The land wakes up.</strong> Planting, soil preparation, water system setup. The season that asks the most of your hands and teaches the most about the land's character.</div>
+          </button>
+          <button class="season-row" data-season="summer" aria-label="Summer — view detail">
+            <div class="season-name">Carrying Through</div>
+            <div class="season-desc"><strong>The land gives.</strong> Tending, harvest, guest experience support during Collective visits. Long days, early fajr, and the particular barakah of working when most people are still asleep.</div>
+          </button>
+          <button class="season-row" data-season="autumn" aria-label="Autumn — view detail">
+            <div class="season-name">Reckoning</div>
+            <div class="season-desc"><strong>The land prepares.</strong> Harvest close, preservation, infrastructure for winter. The season for deeper conversation — about what was built, what held, what the next year asks.</div>
+          </button>
+          <button class="season-row" data-season="winter" aria-label="Winter — view detail">
+            <div class="season-name">Stillness</div>
+            <div class="season-desc"><strong>The land rests.</strong> Study, planning, communal reflection. The season least visible to guests — and most formative for the people who stayed through it.</div>
+          </button>
+        </div>
+        <div class="community-notice">
+          Participation begins with one season. Most people who stay for all four know by the end of the first.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHY THIS EXISTS ── -->
+<section class="section" id="why">
+  <div class="section-label">Why This Exists</div>
+  <h2>Because Muslim life was designed<br>for <em>jama'ah</em> — not isolation.</h2>
+  <div class="two-col">
+    <div class="prose fade-up">
+      <p>Most Muslims in the GTA are living the private Muslim life well. Salah in the home. Halal food. Ramadan with family. But the communal dimensions of the deen — the daily proximity to people who share your values, the tarbiyah of children who grow up surrounded by believing adults, the shared stewardship of something beyond your own household — these are difficult to sustain in dispersed suburban life.</p>
+      <p>This community is an attempt to answer that gap. Not with an institution or a programme, but with <strong>land, work, proximity, and the slow accumulation of trust.</strong></p>
+      <p>The Collective is where people encounter the vision. The community is where some of them decide to live it. The distinction matters: not everyone who visits the Collective is called to this. But we believe the people who are called to it will recognise it when they feel it.</p>
+    </div>
+    <div class="fade-up">
+      <div style="padding:1.75rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);margin-bottom:1.25rem;position:relative;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);border-radius:3px 0 0 3px;"></div>
+        <p style="font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;">On isolation</p>
+        <p style="font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;">The Prophet ﷺ said: "The wolf only takes the sheep that strays from the flock." The community is not an escape from the world — it is a return to the natural condition of Muslim life.</p>
+      </div>
+      <div style="padding:1.75rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);margin-bottom:1.25rem;position:relative;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);border-radius:3px 0 0 3px;"></div>
+        <p style="font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;">On the land</p>
+        <p style="font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;">The land is not the purpose. It is the condition. Having shared land means having a shared reason to show up, a shared thing to steward, and a shared stake in something that outlasts any one family's season.</p>
+      </div>
+      <div style="padding:1.75rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);position:relative;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);border-radius:3px 0 0 3px;"></div>
+        <p style="font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;">On slowness</p>
+        <p style="font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;">This community is being built slowly on purpose. Rushed communities fracture. The right size and the right people matter more than the quickest timeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOUNDATIONS ── -->
+<div class="dark-section" id="foundations">
+  <div class="dark-inner">
+    <div class="section-label">The Foundations</div>
+    <h2>Five qualities that hold<br><em>the life we're building.</em></h2>
+    <p class="dark-intro">These are not values decided in a meeting. They are the Islamic concepts that have always governed communal Muslim life — named here because <strong>a community that cannot articulate what holds it will not hold for long.</strong></p>
+    <blockquote class="dark-quote">
+      "The believers in their mutual love, mercy, and compassion are like one body — when one limb is in pain, the rest of the body responds with sleeplessness and fever."
+      <cite>Sahih al-Bukhari &amp; Muslim · Narrated by al-Nu'man ibn Bashir RA</cite>
+    </blockquote>
+    <div class="values-grid" role="list">
+      <div class="value-cell" role="listitem">
+        <div class="value-arabic" lang="ar" dir="rtl">الجماعة</div>
+        <div class="value-name">Jama'ah</div>
+        <div class="value-trans">The community, together</div>
+        <div class="value-meaning">Daily life in proximity to other Muslims. Not occasional gatherings — sustained, ordinary presence with people who share your deen.</div>
+      </div>
+      <div class="value-cell" role="listitem">
+        <div class="value-arabic" lang="ar" dir="rtl">الخلافة</div>
+        <div class="value-name">Khilafah</div>
+        <div class="value-trans">Stewardship of the earth</div>
+        <div class="value-meaning">We did not inherit this land. We are its stewards. How we treat the soil, the water, and the creatures here is an act of worship or a violation of it.</div>
+      </div>
+      <div class="value-cell" role="listitem">
+        <div class="value-arabic" lang="ar" dir="rtl">التربية</div>
+        <div class="value-name">Tarbiyah</div>
+        <div class="value-trans">Cultivation and upbringing</div>
+        <div class="value-meaning">Children who grow up surrounded by believing adults, productive land, and a daily rhythm anchored by salah are receiving a tarbiyah that no school can replicate.</div>
+      </div>
+      <div class="value-cell" role="listitem">
+        <div class="value-arabic" lang="ar" dir="rtl">التفكّر</div>
+        <div class="value-name">Tafakkur</div>
+        <div class="value-trans">Deliberate reflection</div>
+        <div class="value-meaning">The land is full of signs. A community that has learned to see them — in the soil, in the seasons, in the birds at fajr — is practicing one of the most repeated Quranic invitations.</div>
+      </div>
+      <div class="value-cell" role="listitem">
+        <div class="value-arabic" lang="ar" dir="rtl">الأدب</div>
+        <div class="value-name">Adab</div>
+        <div class="value-trans">Right conduct and courtesy</div>
+        <div class="value-meaning">Adab toward the land. Toward guests. Toward one another. Toward the disagreements that any real community will have. This is the quality that holds everything else.</div>
+      </div>
+      <div class="value-cell" role="listitem">
+        <div class="value-arabic" lang="ar" dir="rtl">الأمانة</div>
+        <div class="value-name">Amanah</div>
+        <div class="value-trans">Trust and reliability</div>
+        <div class="value-meaning">You said you would show up for the harvest. The land does not reschedule. Amanah here is not an abstract virtue — it is a commitment with real consequences for real people.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SEASONAL PARTICIPATION ── -->
+<div class="participation-section" id="participation">
+  <div class="participation-inner">
+    <div class="section-label">Seasonal Participation</div>
+    <h2>What belonging asks of you<br>in <em>the first year.</em></h2>
+    <div class="two-col">
+      <div class="prose fade-up">
+        <p>Seasonal participation is not a trial membership. It is the first real expression of what this community is — people choosing to show up for the land and for each other, season after season, until belonging is established in the most honest way: through sustained presence and shared work.</p>
+        <p>Most people who are called to this community will know it during the first season. Not from a decision made at a desk, but from the particular feeling of fajr on the land, or the specific quality of a conversation after a long day of shared work, or the moment their child asks a question that the land answers better than any book could.</p>
+        <p><strong>There is no application. There is a conversation.</strong> If you feel the pull, reach out. We will spend time together first — on the land, in ordinary circumstances — before anything more formal is discussed.</p>
+      </div>
+      <div class="fade-up">
+        <div class="participation-table">
+          <div class="pt-row"><div class="pt-key">Commitment</div><div class="pt-val">One full growing season to start. Presence during key land periods — planting, tending, and harvest at minimum.</div></div>
+          <div class="pt-row"><div class="pt-key">What you bring</div><div class="pt-val">Your hands, your time, and your honest self. Skills are welcome. Willingness to learn matters more.</div></div>
+          <div class="pt-row"><div class="pt-key">What you receive</div><div class="pt-val">Access to the land and its rhythms. Proximity to people living the same values. A share of what the land produces. And the slow accumulation of something harder to name.</div></div>
+          <div class="pt-row"><div class="pt-key">Salah</div><div class="pt-val">The five daily prayers are the structure of the day here. Not a requirement imposed — a reality already present. The community prays in jama'ah.</div></div>
+          <div class="pt-row"><div class="pt-key">Families</div><div class="pt-val">Children are welcome and their presence is part of the point. The tarbiyah that happens naturally when children are embedded in a working Muslim community is not incidental — it is one of the primary reasons this exists.</div></div>
+          <div class="pt-row"><div class="pt-key">Current state</div><div class="pt-val"><em>Forming. Land acquisition is the next milestone. Conversations are happening now.</em></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:4rem;">
+      <p style="font-family:var(--mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:1.5rem;">What seasonal participation asks and what it holds</p>
+      <div class="asks-grid fade-up">
+        <div class="ask-card"><p class="ask-label">It asks for consistency</p><p class="ask-text">You cannot steward a living system occasionally. The land does not pause because something came up. Showing up when it is inconvenient is how trust is built — with the land and with the people on it.</p></div>
+        <div class="ask-card"><p class="ask-label">It asks for honesty</p><p class="ask-text">About your capacity. About your intention. About whether you are here for the vision or for the aesthetic of the vision. The land will reveal the difference — it always does.</p></div>
+        <div class="ask-card"><p class="ask-label">It holds your children</p><p class="ask-text">In a community of believing adults, on productive land, with daily salah in jama'ah and work that connects them to creation — your children are receiving something the suburbs cannot offer.</p></div>
+        <div class="ask-card"><p class="ask-label">It holds your deen</p><p class="ask-text">The daily proximity to people living the same values, the accountability that comes with shared work, and the particular quality of worship done in jama'ah on land you care for — these strengthen what isolation quietly erodes.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOWARD RESIDENCY ── -->
+<div class="residency-section" id="residency">
+  <div class="residency-inner">
+    <div class="section-label">Toward Residency</div>
+    <h2>What comes after<br><em>the foundation is laid.</em></h2>
+    <div class="two-col">
+      <div class="residency-prose fade-up">
+        <p>The residency model is a future state. We name it here because the people who are right for seasonal participation deserve to know where this is going — and because the trajectory matters for the decisions families make now.</p>
+        <p>Residency means a Muslim family making their home on or near the land. Participating in its daily life not as a seasonal commitment but as a permanent one. <em>Children growing up within the community.</em> Multiple generations, eventually.</p>
+        <p>This is a significant thing to build toward. It requires the right land, the right legal structures, the right financial models, and — most importantly — the right people, already known to each other, already proven in the seasonal years.</p>
+        <p><strong>We will not rush it.</strong> A community that rushes into permanence before trust is established is building on sand. The seasonal years are the foundation, not the waiting room.</p>
+      </div>
+      <div class="fade-up">
+        <div class="honest-box">
+          <p class="honest-label">An honest account of where we are</p>
+          <p class="honest-text">The residency model is designed and documented. The land that would hold it has not yet been acquired. The community is in its earliest conversations. If you are thinking about this in terms of a timeline for your family — the honest answer is that the first seasonal participants are the people who will, in part, determine that timeline. The people who show up now are not waiting for the community to form. They are forming it.</p>
+        </div>
+        <div style="margin-top:1.25rem;padding:1.25rem 1.5rem;border:1px solid var(--dust);border-radius:3px;background:var(--parchment);">
+          <p style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.6rem;">The sequence</p>
+          <div style="font-size:0.875rem;color:var(--mid);line-height:2;display:flex;flex-direction:column;gap:0;">
+            <span>1 &nbsp;·&nbsp; Land acquired</span>
+            <span>2 &nbsp;·&nbsp; Collective experiences open</span>
+            <span>3 &nbsp;·&nbsp; Seasonal participation begins</span>
+            <span>4 &nbsp;·&nbsp; Community foundation established</span>
+            <span>5 &nbsp;·&nbsp; Residency model activated</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── INVITATION ── -->
+<section class="invitation-section" id="invitation">
+  <div class="invitation-dua" lang="ar" dir="rtl">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</div>
+  <span class="invitation-dua-trans">Our Lord, grant us from our spouses and offspring the comfort of our eyes, and make us a leader for the righteous. — Al-Furqan 25:74</span>
+  <h2 class="invitation-h2">If this is<br><em>calling you —</em></h2>
+  <p class="invitation-body">
+    We are not looking for people who are excited about the idea.
+    We are looking for people who feel the weight of it — who understand
+    what it asks, who have thought about what it would mean for their family,
+    and who still feel drawn.
+    If that is you, we would like to know you.
+    Not through a form — through a conversation.
+  </p>
+  <a href="https://hub.ogden.ag/moontrance/community/" class="btn-primary" style="margin:0 auto;">◐ &nbsp; Begin a Conversation</a>
+  <p class="invitation-note">
+    This page is not widely linked. If you found it, you likely came through the Collective — or someone who did shared it with you. That is by design.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-mark"><span aria-hidden="true">◐</span> &nbsp; The Moontrance Community</div>
+  <div class="footer-line">Rooted in land, faith, and deliberate life.</div>
+  <div class="footer-mark">hub.ogden.ag</div>
+</footer>
+
+<script>
+const seasonOrder = ['spring','summer','autumn','winter'];
+
+const seasons = {
+  spring: {
+    code: 'Spring', name: 'Planting Faith', sub: 'The land wakes up',
+    what: `Spring is the season of new contracts. The land has been quiet through winter and is ready to be worked — but it will not wait. Planting windows are narrow, soil preparation cannot be postponed, and the water systems that will sustain the whole year need to be in order before the heat arrives. This is the season that most quickly reveals whether someone is serious about what they said they wanted.`,
+    tasks: [
+      `Soil preparation — turning, amending, testing. Understanding what this particular land carries and what it needs`,
+      `Planting — seeds and seedlings in the ground at the right moment, which requires watching the land rather than a calendar`,
+      `Water system setup — drip lines, irrigation channels, water storage. What you do here determines what survives in July`,
+      `Animal care intensification — birthing season for some livestock, increased tending across the board`,
+      `Infrastructure repair — what winter broke, spring reveals. Fences, structures, pathways`,
+    ],
+    spiritual: `Spring carries the Quranic quality of ihya — revival, the giving of life after death. The land demonstrates this annually with a completeness that no lecture can match. A participant who works a spring season and does not find their relationship with Surah Ya-Sin changed is not paying attention.`,
+    ayah: {
+      arabic: `وَهُوَ الَّذِي يُرْسِلُ الرِّيَاحَ بُشْرًا بَيْنَ يَدَيْ رَحْمَتِهِ حَتَّى إِذَا أَقَلَّتْ سَحَابًا ثِقَالًا سُقْنَاهُ لِبَلَدٍ مَيِّتٍ`,
+      trans: `He is the One who sends the winds as heralds of glad tidings before His mercy — until, when they have carried heavy clouds, We drive them to a dead land and send down rain.`,
+      source: `Qur\u2019an \u00b7 Al-A\u2018r\u0101f 7:57`,
+    },
+    note: `Most people who have only lived suburban springs are surprised by how physical this season is. The body learns the land in spring. By the end of it, you know where the water pools, where the frost lingers, which corners warm first. That knowledge is not transferable — it has to be earned here.`,
+  },
+  summer: {
+    code: 'Summer', name: 'Carrying Through', sub: 'The land gives',
+    what: `Summer is the season of abundance and sustained attention. The land is producing and needs daily tending. Guests from the Collective are visiting. The community is most visible to the outside world in this season — and the quality of what people experience at Moontrance during summer is built or broken by what the community does every morning before most people have had breakfast.`,
+    tasks: [
+      `Daily harvesting — vegetables, fruit, herbs. Timing matters; a day late on harvest is a loss`,
+      `Tending — watering, weeding, pest management. Sustained and unglamorous. The season tests consistency`,
+      `Guest experience support — the Collective experiences run in summer. Community members may be part of the visible face of the land`,
+      `Preservation and processing — what cannot be sold or eaten immediately needs to be stored, dried, preserved`,
+      `Livestock care in heat — water, shade, welfare. Animals are more demanding in high summer`,
+    ],
+    spiritual: `Summer is the season of shukr — gratitude made visible. The land is giving what was planted and tended in faith. There is a particular quality to fajr in summer: the sun rises early, the birds are present, and the work begins before the world is awake. Participants consistently describe summer fajr on the land as one of the experiences that changes them.`,
+    ayah: {
+      arabic: `فَلْيَنظُرِ الْإِنسَانُ إِلَى طَعَامِهِ \u25aa أَنَّا صَبَبْنَا الْمَاءَ صَبًّا \u25aa ثُمَّ شَقَقْنَا الْأَرْضَ شَقًّا`,
+      trans: `Let man look at his food — how We poured down rain abundantly, then split the earth open, splitting it apart.`,
+      source: `Qur\u2019an \u00b7 \u2018Abasa 80:24\u201326`,
+    },
+    note: `Summer is when the community is most tested by exhaustion. Long days, physical work, and the presence of guests means there is little room to be private about who you are. What a person is like when they are tired and there is still work to do — that is what summer reveals. It is not a comfortable season. It is a formative one.`,
+  },
+  autumn: {
+    code: 'Autumn', name: 'Reckoning', sub: 'The land prepares',
+    what: `Autumn is the season of honesty. The growing year is closing, and the land makes clear what the decisions of spring and summer produced. A good harvest is earned. A poor one is informative. This is the season for looking at what was and deciding what comes next — and those conversations, held when the work is visible and the consequences are real, are more valuable than any planning session held in the abstract.`,
+    tasks: [
+      `Main harvest — the large-scale gathering of what the year produced. Physically demanding and communally satisfying`,
+      `Preservation — canning, fermenting, drying, root cellaring. The community's winter food security is built in autumn`,
+      `Soil restoration — cover crops planted, compost turned in, beds prepared for winter. What you do now determines spring`,
+      `Infrastructure winterisation — water systems drained, structures prepared, equipment stored`,
+      `Seed saving — selecting and saving seed from the strongest plants for next year's planting`,
+    ],
+    spiritual: `Autumn carries tawbah — turning, accounting, return. The agricultural year is a natural cycle of muhasaba. What did we plant? What did we tend? What did we neglect? What did the land give us despite our failures? These questions, asked genuinely over a harvest, have a different quality than the same questions asked in a dhikr circle. Both are necessary. Autumn on the land makes the latter feel earned.`,
+    ayah: {
+      arabic: `إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِّأُولِي الْأَلْبَابِ`,
+      trans: `Indeed, in the creation of the heavens and earth and the alternation of night and day are signs for those of understanding.`,
+      source: `Qur\u2019an \u00b7 \u0100l \u2018Imr\u0101n 3:190`,
+    },
+    note: `Autumn is the season that most often produces the conversation about whether someone wants to return. Not because they are asked — but because the harvest makes the question unavoidable. Sitting with what the year produced, surrounded by the people you worked it with, the question of next year answers itself for most people.`,
+  },
+  winter: {
+    code: 'Winter', name: 'Stillness', sub: 'The land rests — and so do we',
+    what: `Winter is the season no guest ever sees. The Collective is quiet, the fields are covered, and the community turns inward. This is the most formative season for the people who stay through it — and the least visible. It is the season of study, of conversation, of planning, and of the kind of slow accumulation of understanding that can only happen when there is no urgent work demanding your hands.`,
+    tasks: [
+      `Study — reading, learning, deepening knowledge of the land sciences, Islamic scholarship, and the frameworks that hold the community`,
+      `Planning — what the next year plants, what the next year builds, what the community wants to grow into`,
+      `Maintenance and building — projects that cannot be done during growing season, long-term infrastructure`,
+      `Community conversation — the deep discussions that summer does not have space for. What is working. What is not. What we owe each other`,
+      `Rest — genuine, unapologetic rest. The land is modeling something when it goes quiet. The community follows`,
+    ],
+    spiritual: `Winter carries the quality of tafakkur at its most sustained. When the land is stripped of its summer abundance, what remains is structure — the bones of the land, the bare trees, the quality of light on frozen ground. Participants who have worked a full year often describe winter as the season when they understood the land most clearly, because it stopped performing and simply was. This quality of presence — existing without producing — is one the community practices together in winter.`,
+    ayah: {
+      arabic: `الَّذِينَ يَذْكُرُونَ اللَّهَ قِيَامًا وَقُعُودًا وَعَلَى جُنُوبِهِمْ وَيَتَفَكَّرُونَ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ`,
+      trans: `Those who remember Allah while standing, sitting, and lying on their sides, and who reflect upon the creation of the heavens and earth.`,
+      source: `Qur\u2019an \u00b7 \u0100l \u2018Imr\u0101n 3:191`,
+    },
+    note: `The people who find winter the hardest are usually the people who came for the productivity of the land. The people who find it the richest are usually the ones who came for the community. Winter is the season that most clearly reveals which one someone actually wanted.`,
+  },
+};
+
+function buildSeasonContent(key) {
+  const s = seasons[key];
+  let html = '';
+
+  html += `<div class="sd-block">
+    <p class="sd-label">What This Season Is</p>
+    <p class="sd-prose">${s.what}</p>
+  </div>`;
+
+  html += `<div class="sd-block">
+    <p class="sd-label">What the Land Asks</p>
+    <ul class="sd-tasks">
+      ${s.tasks.map(t => `<li class="sd-task"><span class="sd-task-dot" aria-hidden="true"></span><span class="sd-task-text">${t}</span></li>`).join('')}
+    </ul>
+  </div>`;
+
+  html += `<div class="sd-block">
+    <p class="sd-label">The Spiritual Dimension</p>
+    <p class="sd-prose">${s.spiritual}</p>
+  </div>`;
+
+  html += `<div class="sd-block">
+    <p class="sd-label">A Sign in Creation</p>
+    <div class="sd-ayah">
+      <span class="sd-ayah-arabic" lang="ar" dir="rtl">${s.ayah.arabic}</span>
+      <span class="sd-ayah-trans">${s.ayah.trans}</span>
+      <span class="sd-ayah-source">${s.ayah.source}</span>
+    </div>
+  </div>`;
+
+  html += `<div class="sd-block">
+    <p class="sd-label">What Participants Find</p>
+    <div class="sd-note">${s.note}</div>
+  </div>`;
+
+  return html;
+}
+
+// ── DRAWER LOGIC ──
+const overlay  = document.getElementById('seasonOverlay');
+const drawer   = document.getElementById('seasonDrawer');
+const closeBtn = document.getElementById('sdClose');
+let _sy = 0, lastFocused = null, currentSeason = null;
+
+function openSeason(key) {
+  currentSeason = key;
+  const s = seasons[key];
+  document.getElementById('sdCode').textContent = s.code;
+  document.getElementById('sdName').textContent = s.name;
+  document.getElementById('sdSub').textContent  = s.sub;
+  document.getElementById('sdBody').innerHTML   = buildSeasonContent(key);
+  drawer.scrollTop = 0;
+
+  _sy = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top      = '-' + _sy + 'px';
+  document.body.style.width    = '100%';
+
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden','false');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+  closeBtn.focus();
+}
+
+function closeSeason() {
+  drawer.classList.remove('open');
+  overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden','true');
+  drawer.setAttribute('aria-hidden','true');
+  document.body.style.position = '';
+  document.body.style.top      = '';
+  document.body.style.width    = '';
+  window.scrollTo(0, _sy);
+  if (lastFocused) lastFocused.focus();
+}
+
+function navigateSeason(dir) {
+  const idx  = seasonOrder.indexOf(currentSeason);
+  const next = seasonOrder[(idx + dir + seasonOrder.length) % seasonOrder.length];
+  openSeason(next);
+}
+
+document.querySelectorAll('.season-row[data-season]').forEach(row => {
+  function activate() { lastFocused = row; openSeason(row.dataset.season); }
+  row.addEventListener('click', activate);
+  row.addEventListener('touchend', e => { e.preventDefault(); activate(); }, { passive: false });
+  row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }});
+});
+
+closeBtn.addEventListener('click', closeSeason);
+closeBtn.addEventListener('touchend', e => { e.preventDefault(); closeSeason(); }, { passive: false });
+overlay.addEventListener('click', closeSeason);
+document.getElementById('sdPrev').addEventListener('click', () => navigateSeason(-1));
+document.getElementById('sdNext').addEventListener('click', () => navigateSeason(1));
+
+document.addEventListener('keydown', e => {
+  if (!drawer.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeSeason();
+  if (e.key === 'ArrowRight') navigateSeason(1);
+  if (e.key === 'ArrowLeft')  navigateSeason(-1);
+});
+
+drawer.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const f = Array.from(drawer.querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled);
+  if (!f.length) return;
+  if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length-1].focus(); }
+  else if (!e.shiftKey && document.activeElement === f[f.length-1]) { e.preventDefault(); f[0].focus(); }
+});
+
+// ── NAV DRAWER ──
+const navToggle = document.querySelector('.nav-toggle');
+const navDrawer = document.getElementById('nav-drawer');
+if (navToggle && navDrawer) {
+  const dLinks = Array.from(navDrawer.querySelectorAll('a'));
+  let _nsy = 0;
+  function openNav(){ _nsy=window.scrollY; document.body.style.position='fixed'; document.body.style.top='-'+_nsy+'px'; document.body.style.width='100%'; navDrawer.classList.add('open'); navToggle.setAttribute('aria-expanded','true'); navToggle.setAttribute('aria-label','Close navigation menu'); if(dLinks[0]) setTimeout(()=>dLinks[0].focus(),50); }
+  function closeNav(){ navDrawer.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); navToggle.setAttribute('aria-label','Open navigation menu'); document.body.style.position=''; document.body.style.top=''; document.body.style.width=''; window.scrollTo(0,_nsy); navToggle.focus(); }
+  function addTap(el,fn){ el.addEventListener('click',fn); el.addEventListener('touchend',e=>{e.preventDefault();fn();},{passive:false}); }
+  addTap(navToggle,()=>navDrawer.classList.contains('open')?closeNav():openNav());
+  dLinks.forEach(a=>addTap(a,closeNav));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&navDrawer.classList.contains('open')) closeNav(); });
+}
+
+const fadeObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); fadeObs.unobserve(e.target); }});
+},{ threshold:0.1, rootMargin:'0px 0px -40px 0px' });
+document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>fadeObs.observe(el));
+</script>
+</body>
+</html>
