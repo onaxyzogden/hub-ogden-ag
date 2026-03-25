@@ -26,16 +26,16 @@ const { useState, useMemo } = React;
 
 // ── STAGE MAP ──────────────────────────────────────────────────────────────
 const STAGES = [
-  { id:"int", code:"00 INT", label:"Intake", attr:"Al-Awwal · Ash-Shahid", color:"#666",
+  { id:"int", code:"01 INT", label:"Intake", attr:"Al-Awwal · Ash-Shahid", color:"#666",
     purpose:"Foundational self-assessment before any business work begins. Declares constraints, work aversions, and financial runway that every downstream stage must honour.",
     bbosAssets:["Normalised Intake Packet","Routing Decision Record","IFB — Intake Form Build","Field Validation Rules"],
     tmModules:[], bbosOnly:true },
-  { id:"qal", code:"01 QAL", label:"Qualification", attr:"Al-Haqq · Al-Khabir", color:"#B07060",
+  { id:"qal", code:"02 QAL", label:"Qualification", attr:"Al-Haqq · Al-Khabir", color:"#B07060",
     purpose:"Ethical inventory and stewardship evaluation. The Amanah Gate sets the G-label ceiling for every claim made in the entire pipeline. No downstream module can exceed this ceiling.",
     bbosAssets:["S1 — Core Competency","S2 — Advantage Register","S3 — Proof Audit","S4 — Energy Profile","S5 — Constraint Map","S6 — Regulatory Baseline","Amanah Gate Decision"],
     tmModules:[], bbosOnly:true,
     hasGate:true, gateId:"qal", gateLabel:"Amanah Gate" },
-  { id:"str", code:"02 STR", label:"Strategy", attr:"Al-Basir", color:"#C9A84C",
+  { id:"str", code:"03 STR", label:"Strategy", attr:"Al-Basir", color:"#C9A84C",
     purpose:"Market research and VoC extraction. All VoC must be verbatim. The Enemy is named as an external system, never a character flaw. Truth-Gate Advisory clears phrases for headline use.",
     bbosAssets:["S1 — Market Definition","S2 — VoC Buying Language Bank (15+ verbatim)","S3 — Emotional Triggers","S4 — Enemy Analysis","S5 — Strategic Constraints","Asset 1 — Belief Statement","Asset 2 — Enemy Narrative","Asset 3 — Positioning Statement","Asset 4 — Amanah Content Engine","Asset 5 — Truth-Gate Advisory"],
     tmModules:[
@@ -48,7 +48,7 @@ const STAGES = [
     ],
     requiresBrief:"qal", gateLabel:"Amanah Gate must be signed",
     hasGate:true, gateId:"str", gateLabel2:"STR Approval Brief" },
-  { id:"ofr", code:"03 OFR", label:"Offer", attr:"Al-Adl · Al-Muqsit", color:"#7EB8A4",
+  { id:"ofr", code:"04 OFR", label:"Offer", attr:"Al-Adl · Al-Muqsit", color:"#7EB8A4",
     purpose:"Covenant offer design. The Promise must carry a G-label at or below the QAL ceiling. Scope Map names what is included AND excluded. PROOF PENDING items enter the Pipeline Integrity Ledger.",
     bbosAssets:["Asset 1 — Promise (G1/G2 only)","Asset 2 — Ideal Customer Profile","Asset 3 — Mechanism","Asset 4 — Scope Map","Asset 5 — Value Stack","Asset 6 — Guarantee (4 elements)","Asset 7 — Pricing Structure","Asset 8 — Proof Plan","IC-OFR Integrity Gate"],
     tmModules:[
@@ -59,7 +59,7 @@ const STAGES = [
     ],
     requiresBrief:"str", gateLabel:"STR Approval Brief must be signed",
     hasGate:true, gateId:"ofr", gateLabel2:"OFR Approval Brief" },
-  { id:"out", code:"04 OUT", label:"Outreach", attr:"Ar-Razzaq · As-Sittir", color:"#B07CC6",
+  { id:"out", code:"05 OUT", label:"Outreach", attr:"Ar-Razzaq · As-Sittir", color:"#B07CC6",
     purpose:"Channel deployment and creative production. Hooks are attention devices — not guarantees. All claims must pass the Scarcity Checkpoint. PROOF PENDING restrictions travel with every asset.",
     bbosAssets:["Channel Plan & Lead Criteria","Hook Library (attention only)","Outreach Sequences","Scarcity Checkpoint"],
     tmModules:[
@@ -82,7 +82,7 @@ const STAGES = [
     ],
     requiresBrief:"ofr", gateLabel:"OFR Approval Brief must be signed",
     hasGate:true, gateId:"out", gateLabel2:"OUT Approval Brief" },
-  { id:"sal", code:"05 SAL", label:"Sales", attr:"Ar-Razzaq · Al-Latif · As-Sittir", color:"#7090B8",
+  { id:"sal", code:"06 SAL", label:"Sales", attr:"Ar-Razzaq · Al-Latif · As-Sittir", color:"#7090B8",
     purpose:"Fit-based conversion. Binary ICP disqualifiers are held. Verbal claims must not exceed the G-label ceiling from QAL. Every commitment made in a call must exist in the Scope Map.",
     bbosAssets:["Fit Call Structure","Binary Disqualifiers","Verbal Inflation Checkpoint","Covenant Commitment"],
     tmModules:[
@@ -90,15 +90,15 @@ const STAGES = [
       { id:"salesscript", icon:"💬", title:"Sales Script", anchor:"VIC + Fit Call", claims:true, usesVoC:false },
     ],
     requiresBrief:"out", gateLabel:"OUT Approval Brief must be signed" },
-  { id:"ful", code:"06 FUL", label:"Fulfillment", attr:"Al-Muhsin · Al-Wali · Ash-Shakur", color:"#7AAA88",
+  { id:"ful", code:"07 FUL", label:"Fulfillment", attr:"Al-Muhsin · Al-Wali · Ash-Shakur", color:"#7AAA88",
     purpose:"Delivery of what was promised. Every step mapped to the OFR Scope Map. Client success milestones and proof capture are built into delivery — not left to chance.",
     bbosAssets:["Onboarding Checklist","Client Intake Form","Execution SOP","QC Checklist","Client Success Milestones","Proof Capture Protocol","Offboarding Sequence"],
     tmModules:[], bbosOnly:true },
-  { id:"ret", code:"07 RET", label:"Retention", attr:"Ash-Shakur · Al-Wadud", color:"#A07890",
+  { id:"ret", code:"08 RET", label:"Retention", attr:"Ash-Shakur · Al-Wadud", color:"#A07890",
     purpose:"Re-engagement from appreciation, not extraction. Each segment — cold lead, past client, silent prospect — has a distinct posture. No pressure. No false urgency.",
     bbosAssets:["Segment Map","Cold Lead Re-Engagement (5 touches)","Past Client Nurture (3 touches)","Re-Activation Campaign","Upsell Path"],
     tmModules:[], bbosOnly:true },
-  { id:"opt", code:"08 OPT", label:"Optimization", attr:"Al-Hasib · As-Subbuh · Al-Quddus", color:"#8888A8",
+  { id:"opt", code:"09 OPT", label:"Optimization", attr:"Al-Hasib · As-Subbuh · Al-Quddus", color:"#8888A8",
     purpose:"Honest reckoning. The cycle reviewed against what was promised and delivered. G-label accuracy assessed. Constraint Evolution Map produced. Cycle Memory feeds the next cycle's STR.",
     bbosAssets:["Performance Reckoning","Covenant Integrity Audit","G-Label Accuracy Report","Proof Plan Refresh","Constraint Evolution Map","Restoration Mandate","Scaling Readiness Assessment"],
     tmModules:[], bbosOnly:true },
@@ -793,7 +793,7 @@ function App() {
 
         {/* MAIN PIPELINE VIEW */}
         {ROLES[role].specialView !== "deliveryBrief" && (
-        <main style={{...S.main, maxWidth: openModule ? 300 : "100%"}}>
+        <main style={{...S.main, width: openModule ? 280 : "100%", flexShrink: openModule ? 0 : 1}}>
           <div style={S.phHead}>
             <div>
               <div style={{...S.phCode, color: accent}}>{stage.code} — {stage.label}</div>
@@ -997,10 +997,10 @@ function CovenantEngine({ foundation, updF, onClose }) {
   const unsignBrief = key => updF("briefs", {...foundation.briefs, [key]:false});
 
   const briefDefs = [
-    { key:"qal", label:"Amanah Gate", stage:"01 QAL", desc:"Confirms G-label ceiling is set, financial runway is documented, and the operator passes the ethical inventory.", unlocks:"All STR (02) modules" },
-    { key:"str", label:"STR Approval Brief", stage:"02 STR", desc:"Confirms VoC Bank is complete with 15+ verbatim phrases, Truth-Gate Advisory is signed, and Enemy Narrative is produced.", unlocks:"All OFR (03) modules" },
-    { key:"ofr", label:"OFR Approval Brief", stage:"03 OFR", desc:"Confirms the Offer Asset Pack is complete: Promise G-labelled, Scope Map explicit, Guarantee has 4 elements, PROOF PENDING items entered.", unlocks:"All OUT (04) + SAL (05) modules" },
-    { key:"out", label:"OUT Approval Brief", stage:"04 OUT", desc:"Confirms Scarcity Checkpoint passed, all PROOF PENDING restrictions honoured in live creative, channel infrastructure deployed and tested.", unlocks:"SAL (05) modules" },
+    { key:"qal", label:"Amanah Gate", stage:"02 QAL", desc:"Confirms G-label ceiling is set, financial runway is documented, and the operator passes the ethical inventory.", unlocks:"All STR (02) modules" },
+    { key:"str", label:"STR Approval Brief", stage:"03 STR", desc:"Confirms VoC Bank is complete with 15+ verbatim phrases, Truth-Gate Advisory is signed, and Enemy Narrative is produced.", unlocks:"All OFR (03) modules" },
+    { key:"ofr", label:"OFR Approval Brief", stage:"04 OFR", desc:"Confirms the Offer Asset Pack is complete: Promise G-labelled, Scope Map explicit, Guarantee has 4 elements, PROOF PENDING items entered.", unlocks:"All OUT (04) + SAL (05) modules" },
+    { key:"out", label:"OUT Approval Brief", stage:"05 OUT", desc:"Confirms Scarcity Checkpoint passed, all PROOF PENDING restrictions honoured in live creative, channel infrastructure deployed and tested.", unlocks:"SAL (05) modules" },
   ];
 
   return (
@@ -1218,8 +1218,8 @@ const S = {
   gateLbl:{fontSize:9,letterSpacing:"0.2em",textTransform:"uppercase",fontWeight:700,display:"block",marginBottom:5},
   gateTxt:{fontSize:11,color:"#555",lineHeight:1.6,fontStyle:"italic"},
   gateBtn:{background:"transparent",border:"1px solid",borderRadius:3,fontSize:10,padding:"6px 12px",cursor:"pointer",fontFamily:"inherit",marginTop:10},
-  panel:{width:390,flexShrink:0,borderLeft:"1px solid #141414",background:"#090909",overflowY:"auto",animation:"fadeIn 0.2s ease"},
-  panelInner:{padding:"20px 18px"},
+  panel:{flex:1,minWidth:0,borderLeft:"1px solid #141414",background:"#090909",overflowY:"auto",animation:"fadeIn 0.2s ease"},
+  panelInner:{padding:"24px 32px", maxWidth:900, width:"100%"},
   pHead:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12},
   pCode:{fontSize:9,letterSpacing:"0.2em",textTransform:"uppercase",marginBottom:4},
   pTitle:{fontSize:16,fontWeight:600,display:"flex",alignItems:"center",gap:6},
