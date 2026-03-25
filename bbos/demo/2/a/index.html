@@ -304,6 +304,29 @@ const STAGES = {
   FUL:{code:'07',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
 };
 
+const PHASES = {
+  QAL:'Foundation',
+  STR:'Foundation',
+  OFR:'Build',
+  OUT:'Launch',
+  SAL:'Launch',
+  FUL:'Deliver',
+};
+
+const PHASE_ORDER = ['Foundation','Build','Launch','Deliver'];
+
+const STATUS_META = {
+  'Not Started': {color:'var(--text3)',bg:'var(--bg3)',border:'var(--border2)',dot:'○'},
+  'Active':      {color:'#f59e0b',   bg:'rgba(245,158,11,.1)',border:'rgba(245,158,11,.25)',dot:'◉'},
+  'Complete':    {color:'#4ade80',   bg:'rgba(74,222,128,.1)',border:'rgba(74,222,128,.25)',dot:'●'},
+};
+
+// Sample-mode gate status per stage (blank = all Not Started)
+const SAMPLE_STAGE_STATUS = {
+  QAL:'Complete', STR:'Complete', OFR:'Complete',
+  OUT:'Complete', SAL:'Active',   FUL:'Active',
+};
+
 /* ── GOVERNING ATTRIBUTE TOOLTIPS (Layer 1) ── */
 const ATTRS = {
   'Al-Haqq':    'The Truth / The Real — the standard against which every claim in this stage is measured. Not the truth you wish were true, but what is verifiable.',
@@ -2945,10 +2968,44 @@ function RoleDashboard({role, onSelect}){
 }
 
 /* ── TOOL DETAIL ── */
+function ScopeGate({tool, role}){
+  const rolesWithAccess = ['strat','copy','media','setter','closer','fulfil']
+    .filter(id => rolePerm(tool, id) !== '-')
+    .map(id => ROLES.find(r=>r.id===id)?.label)
+    .filter(Boolean);
+  return <div style={{
+    display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+    height:'100%', minHeight:420, gap:20, textAlign:'center', padding:'48px 32px'
+  }}>
+    <div style={{
+      width:48, height:48, borderRadius:10, background:'var(--bg3)',
+      border:'1px solid var(--border2)', display:'flex', alignItems:'center',
+      justifyContent:'center', fontSize:22, color:'var(--text3)', opacity:.5
+    }}>⊘</div>
+    <div style={{maxWidth:340}}>
+      <div style={{
+        fontSize:11, fontWeight:700, letterSpacing:'1px', textTransform:'uppercase',
+        color:'var(--text3)', marginBottom:10
+      }}>Outside Your Scope</div>
+      <div style={{fontSize:13, color:'var(--text2)', lineHeight:1.7}}>
+        The <strong style={{color:'var(--text)'}}>{role.label}</strong> role does not have access to <strong style={{color:'var(--text)'}}>{tool.label}</strong>.
+      </div>
+    </div>
+    {rolesWithAccess.length>0&&<div style={{
+      fontSize:11, color:'var(--text3)', background:'var(--bg3)',
+      border:'1px solid var(--border)', borderRadius:7,
+      padding:'10px 16px', maxWidth:340, lineHeight:1.7
+    }}>
+      Access is available under: <span style={{color:'var(--text2)'}}>{rolesWithAccess.join(' · ')}</span>
+    </div>}
+  </div>;
+}
+
 function ToolDetail({tool,onBack,sample,role}){
   const s=STAGES[tool.stage];
   const p = role.id==='all' ? 'O' : rolePerm(tool,role.id);
   const canEdit = p==='O'||p==='E';
+  if(p==='-') return <ScopeGate tool={tool} role={role}/>;
   return <div className="det">
     <div className="bc">
       <button className="bc-btn" onClick={onBack}>{role.id==='all'?'Overview':role.label+' dashboard'}</button>
@@ -3001,6 +3058,8 @@ function AssetDetail({tool,onBack,role}){
   const p=role.id==='all'?'O':rolePerm(tool,role.id);
   const doc = DOC[tool.id] || (S.notes[tool.id] ? `## ${tool.label}\n\n${S.notes[tool.id]}` : null);
   const [tab,setTab]=useState(doc?'asset':'meta');
+
+  if(p==='-') return <ScopeGate tool={tool} role={role}/>;
   return <div className="avd">
     <button className="avd-back" onClick={onBack}>&#8592; All assets</button>
     {role.id!=='all'&&<div className="perm-banner" style={{background:permBg(p),borderColor:permBorder(p),marginBottom:14}}>
@@ -3077,50 +3136,101 @@ function AssetView({selId,setSelId,role}){
 }
 
 /* ── OVERVIEW ── */
-function Overview({onSelect,role}){
+function Overview({onSelect, role, sample}){
   const byStage={};
   Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
-  TOOLS.forEach(t=>{byStage[t.stage]&&byStage[t.stage].push(t);});
-  const bySec={};
-  SECS.forEach(s=>{bySec[s]=TOOLS.filter(t=>t.sec===s&&(role.id==='all'||rolePerm(t,role.id)!=='-'));});
+  TOOLS.forEach(t=>{
+    if(!byStage[t.stage]) return;
+    if(role.id==='all'||rolePerm(t,role.id)!=='-') byStage[t.stage].push(t);
+  });
+
+  function stageStatus(key){
+    if(!sample) return 'Not Started';
+    return SAMPLE_STAGE_STATUS[key]||'Not Started';
+  }
+  function toolFilled(t){
+    return sample && !!(DOC[t.id]||S.notes[t.id]);
+  }
+
+  const stages = Object.values(STAGES);
+
   return <div className="ov">
     <div className="ov-ey">Barakah Business Operating System</div>
-    <div className="ov-title">{/* ⚑ NEEDS NAME: product/platform name goes here */}<br/>Pipeline Map</div>
+    <div className="ov-title">{/* ⚑ NEEDS NAME */}<br/>Pipeline Map</div>
     <div className="ov-sub">Every tool in this system maps to a BBOS pipeline stage with a governing attribute. No outreach without research. No research without qualification. No offer without honest valuation.</div>
+
+    {/* PIP STRIP — now with status badges */}
     <div className="pip">
-      {Object.values(STAGES).map(s=>{
+      {stages.map(s=>{
         const cnt=(byStage[s.key]||[]).length;
+        const st=stageStatus(s.key);
+        const sm=STATUS_META[st];
         return <div key={s.key} className="pip-item" style={{background:s.bg,borderColor:s.b,color:s.c}}>
           <div className="pip-code">{s.code}</div>
           <div className="pip-name">{s.name}</div>
           <div className="pip-cnt">{cnt} tools</div>
           <div className="pip-attr">{s.attr}</div>
+          <div style={{marginTop:6,display:'inline-flex',alignItems:'center',gap:4,padding:'2px 7px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
+            <span style={{fontSize:8,color:sm.color}}>{sm.dot}</span>
+            <span style={{fontSize:8,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
+          </div>
         </div>;
       })}
     </div>
-    {SECS.map(sec=>{
-      const tools=bySec[sec]||[];
-      if(!tools.length) return null;
-      return <div key={sec}>
-        <div className="sec-div">
-          <span className="sec-div-lbl">{sec}</span>
-          <span className="sec-div-line"/>
-          <span className="sec-div-cnt">{tools.length} tools</span>
-        </div>
-        <div className="tc-grid">
-          {tools.map(t=>{
-            const sg=STAGES[t.stage]||{};
-            return <div key={t.id} className="tc" onClick={()=>onSelect(t.id)}>
-              <div className="tc-top">
-                <div className="tc-name">{t.label}</div>
-                <span style={{fontSize:9,padding:'2px 6px',borderRadius:3,background:sg.bg,color:sg.c,fontWeight:600,letterSpacing:.3,flexShrink:0}}>{sg.code} {t.stage}</span>
-              </div>
-              <div className="tc-asset">{t.asset}</div>
-            </div>;
-          })}
-        </div>
-      </div>;
-    })}
+
+    {/* STAGE BLOCKS — grouped with phase dividers */}
+    {(()=>{
+      let lastPhase=null;
+      return stages.map(s=>{
+        const items=byStage[s.key]||[];
+        if(!items.length) return null;
+        const phase=PHASES[s.key];
+        const st=stageStatus(s.key);
+        const sm=STATUS_META[st];
+        const showDivider = phase!==lastPhase;
+        lastPhase=phase;
+        return <div key={s.key}>
+          {showDivider&&<div style={{display:'flex',alignItems:'center',gap:10,margin:'28px 0 16px'}}>
+            <span style={{fontSize:9,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'var(--text3)',whiteSpace:'nowrap'}}>{phase}</span>
+            <span style={{flex:1,height:1,background:'var(--border)'}}/>
+          </div>}
+          {/* Stage header */}
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:12,gap:12}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'3px 9px',fontSize:9,fontWeight:700,letterSpacing:'.5px',flexShrink:0}}>
+                {s.code} · {s.name.toUpperCase()}
+              </span>
+              <span style={{fontSize:11,color:'var(--text3)',fontStyle:'italic'}}>{s.attr}</span>
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+              <span style={{fontSize:9,color:'var(--text3)'}}>{phase}</span>
+              <span style={{display:'inline-flex',alignItems:'center',gap:4,padding:'3px 9px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
+                <span style={{fontSize:9,color:sm.color}}>{sm.dot}</span>
+                <span style={{fontSize:9,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
+              </span>
+            </div>
+          </div>
+          {/* Tool cards */}
+          <div className="tc-grid" style={{marginBottom:8}}>
+            {items.map(t=>{
+              const filled=toolFilled(t);
+              return <div key={t.id} className="tc" onClick={()=>onSelect(t.id)}>
+                <div className="tc-top">
+                  <div className="tc-name">{t.label}</div>
+                  {sample&&<span style={{
+                    fontSize:8,padding:'2px 7px',borderRadius:20,flexShrink:0,fontWeight:600,letterSpacing:'.3px',
+                    background:filled?'rgba(74,222,128,.12)':'var(--bg3)',
+                    color:filled?'#4ade80':'var(--text3)',
+                    border:filled?'1px solid rgba(74,222,128,.25)':'1px solid var(--border)',
+                  }}>{filled?'● Filled':'○ Empty'}</span>}
+                </div>
+                <div className="tc-asset">{t.asset}</div>
+              </div>;
+            })}
+          </div>
+        </div>;
+      });
+    })()}
   </div>;
 }
 
@@ -3246,7 +3356,7 @@ function App(){
   const selTool=TOOLS.find(t=>t.id===selId);
   const toggleCol=k=>setCol(c=>({...c,[k]:!c[k]}));
   const switchView=v=>setView(v);
-  const switchRole=id=>{setRoleId(id);setSelId(null);setView('pipeline');};
+  const switchRole=id=>{ setRoleId(id); };
   const switchSample=v=>{setSample(v);setView('pipeline');setSelId(null);};
 
   const sidebarTools = roleId==='all'
@@ -3260,7 +3370,7 @@ function App(){
   function mainContent(){
     if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role}/>;
     if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role}/>;
-    return <Overview onSelect={setSelId} role={role}/>;
+    return <Overview onSelect={setSelId} role={role} sample={sample}/>;
   }
 
   return <div className="app">
