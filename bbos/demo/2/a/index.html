@@ -241,6 +241,40 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .dua-trans{font-size:10px;color:var(--text3);font-style:italic;line-height:1.5;margin-bottom:4px}
 .dua-meaning{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:4px}
 .dua-source{font-size:9px;color:var(--text3);opacity:.6}
+/* Annotation block inside dua body */
+.dua-annotations{margin-top:12px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:10px}
+.dua-ann-card{background:var(--bg3);border-radius:5px;padding:8px 10px}
+.dua-ann-attr{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
+.dua-ann-text{font-size:10px;color:var(--text2);line-height:1.65}
+/* Governing Attributes block */
+.sb-attr-block{border-top:1px solid var(--border);background:transparent}
+.sb-attr-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
+.sb-attr-toggle:hover{background:var(--bg3)}
+.sb-attr-icon{font-size:10px;flex-shrink:0;opacity:.4;color:var(--text2)}
+.sb-attr-label{flex:1;min-width:0}
+.sb-attr-kind{font-size:8px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--text3);display:block;line-height:1.2}
+.sb-attr-names{font-size:10px;color:var(--text3);line-height:1.3}
+.sb-attr-body{padding:0 10px 10px}
+.sb-attr-card{background:var(--bg3);border-radius:5px;padding:9px 11px;margin-bottom:6px}
+.sb-attr-card:last-child{margin-bottom:0}
+.sb-attr-card-name{font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:5px}
+.sb-attr-card-text{font-size:10px;color:var(--text2);line-height:1.65}
+/* Readiness & Reflection blocks */
+.sb-readiness-block,.sb-reflect-block{border-top:1px solid var(--border);background:transparent}
+.sb-readiness-toggle,.sb-reflect-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
+.sb-readiness-toggle:hover,.sb-reflect-toggle:hover{background:var(--bg3)}
+.sb-rr-icon{font-size:11px;flex-shrink:0;opacity:.4;color:var(--text2)}
+.sb-rr-label{flex:1;min-width:0}
+.sb-rr-kind{font-size:8px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--text3);display:block;line-height:1.2}
+.sb-rr-sub{font-size:10px;color:var(--text3);line-height:1.3}
+.sb-rr-body{padding:0 10px 12px}
+.sb-rr-frame{font-size:10px;color:var(--text3);font-style:italic;line-height:1.6;padding:0 4px 10px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.sb-rr-table{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sb-rr-col{background:var(--bg3);border-radius:5px;padding:8px 9px}
+.sb-rr-col-hdr{font-size:8px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:7px;opacity:.7}
+.sb-rr-col-hdr.yes{color:#4ade80}.sb-rr-col-hdr.not{color:var(--text3)}
+.sb-rr-item{font-size:9px;color:var(--text2);line-height:1.55;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sb-rr-item:last-child{border-bottom:none;padding-bottom:0}
 </style>
 </head>
 <body>
@@ -270,65 +304,166 @@ const STAGES = {
   FUL:{code:'07',key:'FUL',name:'Fulfillment',attr:'Al-Muhsin · Al-Wali',c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
 };
 
-const CLOSING_DUA = {
-  title:'Closing',
-  arabic:'رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',
-  trans:'Rabbanā taqabbal minnā, innaka anta s-samī\'u l-\'alīm',
-  meaning:'"Our Lord, accept this from us. Indeed You are the All-Hearing, the All-Knowing."',
-  source:'Al-Baqarah 2:127',
+/* ── GOVERNING ATTRIBUTE TOOLTIPS (Layer 1) ── */
+const ATTRS = {
+  'Al-Haqq':    'The Truth / The Real — the standard against which every claim in this stage is measured. Not the truth you wish were true, but what is verifiable.',
+  'Al-Khabir':  'The All-Aware — who already knows what you have and what you don\'t. Al-Khabir does not need you to perform competence. He needs you to be honest about what is actually present.',
+  'Al-Basir':   'The All-Seeing — inner sight (basirah). Strategy built on genuine seeing carries Barakah. Strategy built on assumption does not. The verbatim extraction requirement exists because paraphrasing is a subtle form of not seeing.',
+  'Al-Adl':     'The Just — the standard the offer must meet. Every party receives what they are owed. You cannot shift risk onto the client that rightfully belongs to you.',
+  'Al-Muqsit':  'The Equitable — the bilateral application of justice. The Scope Map exclusions and the four-element Guarantee exist because partial covenants create partial trust.',
+  'Ar-Razzaq':  'The Provider — not you. The bird leaves the nest empty and returns full, having done its work in reliance. Outreach built from tawakkul produces a different quality than outreach built from anxiety.',
+  'As-Sittir':  'The Veiler — who closes with dignity. How a door that isn\'t opening is closed says something about what you believe about the person on the other side.',
+  'Al-Latif':   'The Subtly Kind — who sees what is genuinely present and responds with precision. Listening governed by Al-Latif hears the thing that wasn\'t expected and lets it change the direction.',
+  'Al-Muhsin':  'The Ultimate Good-Doer — who perfects rather than merely fulfils. Al-Muhsin asks not whether the scope was met but whether this was the honest best effort.',
+  'Al-Wali':    'The Protective Friend — who stands between those in His care and the harm they don\'t yet see. Every QC check run before the client encounters a gap is Al-Wali in practice.',
+  'Ash-Shakur': 'The Most Appreciative — who rewards the smallest good beyond what it deserves. Ash-Shakur asks whether the gratitude at the close is genuine, or gratitude designed to produce a retention outcome.',
 };
 
 const DUAS = {
   QAL:{
     title:'Truth & Discernment · The Amanah Gate',
-    arabic:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي',
-    trans:'Rabbi shraḥ lī ṣadrī wa yassir lī amrī wa-ḥlul \'uqdatan min lisānī yafqahū qawlī',
+    arabic:'\u0631\u064e\u0628\u0650\u0651 \u0627\u0634\u0652\u0631\u064e\u062d\u0652 \u0644\u0650\u064a \u0635\u064e\u062f\u0652\u0631\u0650\u064a \u0648\u064e\u064a\u064e\u0633\u0650\u0651\u0631\u0652 \u0644\u0650\u064a \u0623\u064e\u0645\u0652\u0631\u0650\u064a \u0648\u064e\u0627\u062d\u0652\u0644\u064f\u0644\u0652 \u0639\u064f\u0642\u0652\u062f\u064e\u0629\u064b \u0645\u0650\u0651\u0646 \u0644\u0650\u0651\u0633\u064e\u0627\u0646\u0650\u064a \u064a\u064e\u0641\u0652\u0642\u064e\u0647\u064f\u0648\u0627 \u0642\u064e\u0648\u0652\u0644\u0650\u064a',
+    trans:"Rabbi shraḥ lī ṣadrī wa yassir lī amrī wa-ḥlul 'uqdatan min lisānī yafqahū qawlī",
     meaning:'"My Lord, expand for me my chest, ease for me my task, and untie the knot from my tongue that they may understand my speech."',
-    source:'Ṭā-Hā 20:25–28',
+    source:'Ṭā-Hā 20:25\u201328',
+    annotations:[
+      {attr:'Al-Haqq · The Truth',text:'Allah is Al-Haqq — the Truth, the Real. His standard does not adjust based on how the gate decision is made. The purpose of this stage is not to find a way through the gate — it is to honestly assess whether you should enter. A gate passed from aspiration rather than fact does not become honest by clearing the stage. It produces a foundation that carries the dishonesty forward into every stage above it.'},
+      {attr:'Al-Khabir · The All-Aware',text:'Allah is Al-Khabir — the All-Aware, who holds complete knowledge of what is present and what is absent. The capacity you declare at this stage is known to Al-Khabir in full — including what you have and what you don\'t, what the evidence supports and what it doesn\'t. The honest declaration made here is not for the system. It is made in the presence of the One who already knows.'},
+    ],
+    readiness:{
+      frame:'Al-Haqq does not change based on how the gate decision is made. Al-Khabir is already holding the full picture. This check is an invitation to begin from the same truth.',
+      governing:['You apply the disqualification criteria to yourself with the same rigor you would apply to someone else.','The thing you most hope this stage doesn\'t surface is the first thing you are bringing to it.'],
+      notYet:['You give yourself the benefit of the doubt in places where a client would not be given the same.','The S4 Energy Profile reflects your public-facing capacity rather than what Al-Khabir already knows is actually there.'],
+    },
+    reflection:{
+      frame:'Al-Haqq does not change based on how the gate decision was made. Al-Khabir held the full picture throughout. This reflection is an invitation to reckon with what was actually present.',
+      governing:['The Amanah Gate decision was made from what is verifiably true now, not from what you intend to become.','You named at least one constraint that made the picture less flattering — and named it anyway.'],
+      notYet:['You gave yourself the benefit of the doubt in a dimension where the evidence did not support it — and you know which one.','The question you most hoped this stage would not surface was the one you answered most quickly.'],
+    },
     closing:{
       title:'Steadfastness After Guidance',
-      arabic:'رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ',
-      trans:'Rabbanā lā tuzigh qulūbanā ba\'da idh hadaytanā wa hab lanā min ladunka raḥmah, innaka anta l-Wahhāb',
+      arabic:'\u0631\u064e\u0628\u0651\u064e\u0646\u064e\u0627 \u0644\u064e\u0627 \u062a\u064f\u0632\u0650\u063a\u0652 \u0642\u064f\u0644\u064f\u0648\u0628\u064e\u0646\u064e\u0627 \u0628\u064e\u0639\u0652\u062f\u064e \u0625\u0650\u0630\u0652 \u0647\u064e\u062f\u064e\u064a\u0652\u062a\u064e\u0646\u064e\u0627 \u0648\u064e\u0647\u064e\u0628\u0652 \u0644\u064e\u0646\u064e\u0627 \u0645\u0650\u0646 \u0644\u064e\u0651\u062f\u064f\u0646\u0643\u064e \u0631\u064e\u062d\u0652\u0645\u064e\u0629\u064b \u06da \u0625\u0650\u0646\u0651\u064e\u0643\u064e \u0623\u064e\u0646\u062a\u064e \u0627\u0644\u0652\u0648\u064e\u0647\u0651\u064e\u0627\u0628\u064f',
+      trans:"Rabbanā lā tuzigh qulūbanā ba'da idh hadaytanā wa hab lanā min ladunka raḥmah, innaka anta l-Wahhāb",
       meaning:'"Our Lord, do not let our hearts deviate after You have guided us. Grant us from Yourself mercy. Indeed, You are the Bestower."',
-      source:'Āl \'Imrān 3:8',
+      source:"\u0100l 'Imrān 3:8",
     },
   },
   STR:{
     title:'Clear Sight · Strategic Discernment',
-    arabic:'رَبِّ زِدْنِي عِلْمًا، وَأَرِنَا الْأَشْيَاءَ كَمَا هِيَ',
-    trans:'Rabbi zidnī \'ilmā, wa arinā l-ashyā\'a kamā hiya',
+    arabic:'\u0631\u064e\u0628\u0650\u0651 \u0632\u0650\u062f\u0652\u0646\u0650\u064a \u0639\u0650\u0644\u0652\u0645\u064b\u0627\u060c \u0648\u064e\u0623\u064e\u0631\u0650\u0646\u064e\u0627 \u0627\u0644\u0652\u0623\u064e\u0634\u0652\u064a\u064e\u0627\u0621\u064e \u0643\u064e\u0645\u064e\u0627 \u0647\u0650\u064a\u064e',
+    trans:"Rabbi zidnī 'ilmā, wa arinā l-ashyā'a kamā hiya",
     meaning:'"My Lord, increase me in knowledge, and show us things as they truly are."',
     source:'Ṭā-Hā 20:114 (first phrase) · classical supplication (second)',
+    annotations:[
+      {attr:'Al-Basir · The All-Seeing',text:'Allah is Al-Basir — the All-Seeing, not as external surveillance but as perfect inner sight. Al-Basir is basirah: seeing clearly what is actually there rather than what you expect or hope to find. Market research conducted under Al-Basir is an act of genuine looking. The verbatim extraction requirement exists for this reason: paraphrasing is a subtle form of not seeing. Strategy built on actual human language carries what strategy built on the operator\'s summary of that language does not.'},
+    ],
+    readiness:{
+      frame:'Al-Basir sees without distortion. This check is an invitation to ask whether you are looking — or confirming.',
+      governing:['The Voice of Customer data has shaped your strategy in a direction you didn\'t originally intend.','The questions you are bringing to your research subjects are designed to surface their real experience, not to generate quotable validation.'],
+      notYet:['The research has confirmed everything you already believed.','Paraphrasing has already begun — you are summarising what people said rather than preserving their exact words.'],
+    },
+    reflection:{
+      frame:'Al-Basir saw the research as it was collected. This reflection is an invitation to look honestly at what was seen and what was missed.',
+      governing:['The VoC data shaped the strategy in a direction you hadn\'t originally planned for.','The source material is verbatim — you can point to the exact phrase that produced the headline, and it came from the data, not from the offer.'],
+      notYet:['The research confirmed what you already believed in most dimensions.','At least one phrase in the content engine was paraphrased before it was used — you summarised rather than preserved.'],
+    },
   },
   OFR:{
     title:'Justice & Equity · The Covenant Offer',
-    arabic:'اللَّهُمَّ إِنِّي أَسْأَلُكَ قِسْطًا فِي الرِّضَا وَالْغَضَبِ، وَأَنْ لَا أَتَجَاوَزَ حَقَّ أَحَدٍ',
-    trans:'Allāhumma innī as\'aluka qisṭan fī r-riḍā wa l-ghaḍab, wa an lā atajāwaza ḥaqqa aḥad',
+    arabic:'\u0627\u0644\u0644\u0651\u064e\u0647\u064f\u0645\u0651\u064e \u0625\u0650\u0646\u0650\u0651\u064a \u0623\u064e\u0633\u0652\u0623\u064e\u0644\u064f\u0643\u064e \u0642\u0650\u0633\u0652\u0637\u064b\u0627 \u0641\u0650\u064a \u0627\u0644\u0631\u0650\u0651\u0636\u064e\u0627 \u0648\u064e\u0627\u0644\u0652\u063a\u064e\u0636\u064e\u0628\u0650\u060c \u0648\u064e\u0623\u064e\u0646\u0652 \u0644\u064e\u0627 \u0623\u064e\u062a\u064e\u062c\u064e\u0627\u0648\u064e\u0632\u064e \u062d\u064e\u0642\u0651\u064e \u0623\u064e\u062d\u064e\u062f\u064d',
+    trans:"Allāhumma innī as'aluka qis\u1e6dan fī r-riḍā wa l-ghaḍab, wa an lā atajāwaza ḥaqqa aḥad",
     meaning:'"O Allah, I ask You for equity in contentment and in anger, and that I not transgress the right of anyone."',
     source:'Adapted from prophetic supplications on justice',
+    annotations:[
+      {attr:'Al-Adl · The Just',text:'Allah is Al-Adl — the Just, whose justice is the standard the offer must meet: every party receives exactly what they are owed. The offer is a public covenant. Al-Adl asks whether every element that makes a covenant just — a specific Promise, a complete Scope Map, a full Guarantee, an honest Price — is present. A covenant missing any one of its elements is not a just offer. It is a partial transfer of obligation from the operator to the client.'},
+      {attr:'Al-Muqsit · The Equitable',text:'Allah is Al-Muqsit — the One who establishes equity between parties. Al-Muqsit is the bilateral application: you cannot shift risk onto the client that rightfully belongs to you, nor accept risk that belongs to them. Al-Muqsit is most often absent at the edges of the offer — in what the Scope Map excludes without naming, and in the guarantee that sounds complete but leaves a trigger condition ambiguous.'},
+    ],
+    readiness:{
+      frame:'Al-Adl does not adjust based on commercial pressure. Al-Muqsit asks whether the distribution of risk and obligation between the two parties is genuinely fair.',
+      governing:['The Scope Map exclusions are explicit enough that no reasonable person could claim they expected something not listed.','The Scope Map Integrity Check was completed before the asset was marked finished — including the question you most hoped wouldn\'t surface a gap.'],
+      notYet:['You leave ambiguities in the offer because clarifying them might make it harder to sell.','The guarantee covers a proxy outcome that is easier to control rather than the outcome the client actually cares about.'],
+    },
+    reflection:{
+      frame:'Al-Adl does not change based on how the offer performed. Al-Muqsit held the distribution of risk throughout. This reflection is an invitation to look at whether the covenant was genuinely just.',
+      governing:['A client reading this offer could have made a fully informed decision from the document alone.','The guarantee carried all four required elements and the trigger condition was genuinely objective.'],
+      notYet:['There is at least one exclusion a reasonable client could claim they expected — and you knew it when you wrote the Scope Map.','The pricing was set at what the market would bear rather than what the Value Stack honestly justifies.'],
+    },
   },
   OUT:{
     title:'Tawakkul · Outreach from Trust',
-    arabic:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ، نِعْمَ الْمَوْلَىٰ وَنِعْمَ النَّصِيرُ',
-    trans:'Ḥasbunā Allāhu wa ni\'ma l-wakīl, ni\'ma l-mawlā wa ni\'ma n-naṣīr',
+    arabic:'\u062d\u064e\u0633\u0652\u0628\u064f\u0646\u064e\u0627 \u0627\u0644\u0644\u0651\u064e\u0647\u064f \u0648\u064e\u0646\u0650\u0639\u0652\u0645\u064e \u0627\u0644\u0652\u0648\u064e\u0643\u0650\u064a\u0644\u064f\u060c \u0646\u0650\u0639\u0652\u0645\u064e \u0627\u0644\u0652\u0645\u064e\u0648\u0652\u0644\u064e\u0649\u0670 \u0648\u064e\u0646\u0650\u0639\u0652\u0645\u064e \u0627\u0644\u0646\u0651\u064e\u0635\u0650\u064a\u0631\u064f',
+    trans:"Ḥasbunā Allāhu wa ni'ma l-wakīl, ni'ma l-mawlā wa ni'ma n-naṣīr",
     meaning:'"Allah is sufficient for us, and He is the best disposer of affairs. What an excellent Protector, and what an excellent Helper."',
-    source:'Āl \'Imrān 3:173 · Al-Anfāl 8:40',
+    source:"\u0100l 'Imrān 3:173 · Al-Anfāl 8:40",
+    annotations:[
+      {attr:'Ar-Razzaq · The Provider',text:'Allah is Ar-Razzaq — the Provider. Not the operator, not the campaign, not the pipeline. The bird leaves the nest empty and returns full, having done its work in reliance. Outreach built from anxiety about where the next client is coming from produces a different quality of message than outreach built from tawakkul in Ar-Razzaq. The tone of the message carries the operator\'s posture. The prospect can feel the difference.'},
+      {attr:'As-Sittir · The Veiler',text:'Allah is As-Sittir — the One who covers and protects with dignity. As-Sittir governs the disqualification end of outreach: how a door is closed that isn\'t opening says something about what the operator believes about the person on the other side. A No-Fit delivered with dignity and specificity is As-Sittir in practice. A No-Fit that avoids clarity to avoid discomfort is not kindness — it is a failure of care.'},
+    ],
+    readiness:{
+      frame:'Ar-Razzaq is the Provider. As-Sittir governs how doors close. This check is an invitation to examine the posture these assets carry.',
+      governing:['You would write the No-Fit Script with the same care you write the Hook Library.','The outreach assets read the same whether the pipeline is full or empty — the tone does not depend on the pressure.'],
+      notYet:['Scarcity language appears in the assets without a documented real-world constraint behind it.','At least one follow-up was sent past the point where it was serving the prospect — it was serving your need for a response.'],
+    },
+    reflection:{
+      frame:'Ar-Razzaq held the provision throughout. As-Sittir witnessed how the doors that didn\'t open were closed. This reflection is an invitation to look at what posture the outreach actually carried.',
+      governing:['The outreach assets were written from a posture of service — the tone holds regardless of current pipeline pressure.','Every No-Fit message in this stage closed the door with clarity and dignity.'],
+      notYet:['At least one asset was adjusted when the pipeline was thin in a way it would not have been when the pipeline was full.','A prospect was followed up past the point where it was serving them.'],
+    },
   },
   SAL:{
     title:'Discernment & Presence · The Fit Call',
-    arabic:'اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلًا',
-    trans:'Allāhumma lā sahla illā mā ja\'altahu sahlan, wa anta taj\'alu l-ḥazna idhā shi\'ta sahlā',
+    arabic:'\u0627\u0644\u0644\u0651\u064e\u0647\u064f\u0645\u0651\u064e \u0644\u064e\u0627 \u0633\u064e\u0647\u0652\u0644\u064e \u0625\u0650\u0644\u0651\u064e\u0627 \u0645\u064e\u0627 \u062c\u064e\u0639\u064e\u0644\u0652\u062a\u064e\u0647\u064f \u0633\u064e\u0647\u0652\u0644\u064b\u0627\u060c \u0648\u064e\u0623\u064e\u0646\u0652\u062a\u064e \u062a\u064e\u062c\u0652\u0639\u064e\u0644\u064f \u0627\u0644\u0652\u062d\u064e\u0632\u0652\u0646\u064e \u0625\u0650\u0630\u064e\u0627 \u0634\u0650\u0626\u0652\u062a\u064e \u0633\u064e\u0647\u0652\u0644\u064b\u0627',
+    trans:"Allāhumma lā sahla illā mā ja'altahu sahlan, wa anta taj'alu l-ḥazna idhā shi'ta sahlā",
     meaning:'"O Allah, nothing is easy except what You make easy, and You make the difficult easy whenever You will."',
     source:'Reported by Ibn Ḥibbān',
+    annotations:[
+      {attr:'Ar-Razzaq · The Provider',text:'Allah is Ar-Razzaq — the Provider. Before the call, this quality asks whether the operator\'s participation in the conversation is contingent on a close. The operator who enters a sales call needing it to close is not discerning fit — they are managing an outcome. The provision does not depend on whether this particular call closes. Ar-Razzaq already knows what has been written.'},
+      {attr:'Al-Latif · The Subtly Kind',text:'Allah is Al-Latif — the Subtly Kind, who sees what is genuinely present and responds to it with precision. On the call, Al-Latif is the quality that notices the thing the prospect said that the operator hadn\'t anticipated — and lets it change how the conversation goes. An objection response that resolves the concern is Al-Latif in practice. One that redirects it is not.'},
+      {attr:'As-Sittir · The Veiler',text:'Allah is As-Sittir — the Veiler, who closes with dignity. At the close of the call, As-Sittir governs how the door that isn\'t opening is handled. The prospect who leaves a no-fit call knowing exactly what the decision is and why — with their dignity intact — has been treated as As-Sittir would treat them.'},
+    ],
+    readiness:{
+      frame:'Ar-Razzaq holds the provision. Al-Latif asks whether you are listening to understand. As-Sittir will govern how the call closes. This check is an invitation to examine which posture you are entering from.',
+      governing:['You are entering this call to genuinely discern whether this person is a fit — not to close.','You would disqualify someone without a moment of hesitation about the revenue if the qualification criteria weren\'t met.'],
+      notYet:['The objection responses are designed to overcome resistance rather than to clarify genuine fit.','A constraint in the offer was not planned to be named on the call because naming it feels like it would cost the close.'],
+    },
+    reflection:{
+      frame:'Ar-Razzaq held the provision. Al-Latif witnessed whether the listening was genuine. As-Sittir governed how the doors that closed were closed.',
+      governing:['You disqualified at least one person during this stage without a moment of hesitation about the revenue.','You heard something at least once that you hadn\'t anticipated and let it change how you understood the prospect\'s situation.'],
+      notYet:['At least one objection response redirected the concern rather than resolved it.','A limitation in the offer was not named on a call because naming it felt like it would cost the close.'],
+    },
   },
   FUL:{
     title:'Delivery as Worship · Iḥsān in Action',
-    arabic:'اللَّهُمَّ أَعِنِّي عَلَى إِتْمَامِ مَا تَوَلَّيْتُهُ بِإِحْسَانٍ، وَاجْعَلْهُ خَالِصًا لِوَجْهِكَ الْكَرِيمِ',
-    trans:'Allāhumma a\'innī \'alā itmāmi mā tawallaytuhu bi-iḥsān, wa j\'alhu khāliṣan li-wajhika l-karīm',
+    arabic:'\u0627\u0644\u0644\u0651\u064e\u0647\u064f\u0645\u0651\u064e \u0623\u064e\u0639\u0650\u0646\u0650\u0651\u064a \u0639\u064e\u0644\u064e\u0649 \u0625\u0650\u062a\u0652\u0645\u064e\u0627\u0645\u0650 \u0645\u064e\u0627 \u062a\u064e\u0648\u064e\u0644\u0651\u064e\u064a\u0652\u062a\u064f\u0647\u064f \u0628\u0650\u0625\u0650\u062d\u0652\u0633\u064e\u0627\u0646\u064d\u060c \u0648\u064e\u0627\u062c\u0652\u0639\u064e\u0644\u0652\u0647\u064f \u062e\u064e\u0627\u0644\u0650\u0635\u064b\u0627 \u0644\u0650\u0648\u064e\u062c\u0652\u0647\u0650\u0643\u064e \u0627\u0644\u0652\u0643\u064e\u0631\u0650\u064a\u0645\u0650',
+    trans:"Allāhumma a'innī 'alā itmāmi mā tawallaytuhu bi-iḥsān, wa j'alhu khāliṣan li-wajhika l-karīm",
     meaning:'"O Allah, help me to complete what I have undertaken with excellence, and make it purely for Your noble countenance."',
     source:'Adapted from classical supplications for sincerity in work',
+    annotations:[
+      {attr:'Al-Muhsin · The Ultimate Good-Doer',text:'Allah is Al-Muhsin — the One who does not merely fulfil obligation but perfects what He gives. Al-Muhsin asks a question the Scope Map alone cannot answer: is this the honest best effort, or is it the minimum that passes? The Prophet \ufdfa said: Allah has prescribed Ihsan in all things. The gap between adequate and excellent is not always visible to the client — but Al-Muhsin sees it.'},
+      {attr:'Al-Wali · The Protective Friend',text:'Allah is Al-Wali — the Protective Friend who stands between those in His care and the harm they do not yet see. Al-Wali asks whether the QC checklist was run before the client encountered a gap, or after. The operator who checks before the client needs to ask is embodying a divine quality. Every checklist item run proactively is an act of wilayah: standing between the client and something they don\'t yet know exists.'},
+      {attr:'Ash-Shakur · The Most Appreciative',text:'Allah is Ash-Shakur — the Most Appreciative. Ash-Shakur governs the close: the offboarding sequence, the retention seed, the final message. The seed that follows genuine gratitude carries Barakah. The seed that precedes it carries only strategy. Ash-Shakur asks whether the gratitude at the end is real — not as a retention tactic, but as an honest acknowledgment of the trust the client placed in the operator\'s hands.'},
+    ],
+    readiness:{
+      frame:'Al-Muhsin asks whether the work will be excellent or adequate. Al-Wali asks whether the client will be protected. Ash-Shakur asks whether the gratitude at the end will be genuine.',
+      governing:['The quality of delivery you are about to produce is something you would be proud to show to the person whose opinion you most respect in this field.','The client\'s trust is present to you as something sacred — something they extended before you had proven yourself to them in this engagement.'],
+      notYet:['Proof capture is planned as an afterthought rather than being built into the milestone structure from the start.','The client feels like a project to be completed rather than a person whose trust has been placed in your hands.'],
+    },
+    reflection:{
+      frame:'Al-Muhsin witnessed whether the work was the honest best effort. Al-Wali held the client throughout. Ash-Shakur already knows whether the trust was honoured.',
+      governing:['There was a moment in the delivery where you gave something the client didn\'t ask for and didn\'t expect — not to impress them, but because you saw a gap and filling it was right.','The Offboarding Sequence closed with gratitude that was genuine — not gratitude designed to produce a retention outcome.'],
+      notYet:['There was a step in the Execution SOP where the gap between adequate and excellent was live — and capacity made the choice for you before Ihsan could.','The proof capture felt more like extraction than documentation — the consent was obtained, but the timing or framing made it feel like the operator needed the proof more than the client wanted to give it.'],
+    },
   },
 };
+
+const CLOSING_DUA = {
+  title:'Honest Completion',
+  arabic:'رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',
+  trans:"Rabbanā taqabbal minnā, innaka anta s-samī'u l-'alīm",
+  meaning:'"Our Lord, accept this from us. Indeed You are the All-Hearing, the All-Knowing."',
+  source:'Al-Baqarah 2:127',
+};
+
 const TOOLS = [
   {id:'validation', label:'Expert Validation Score',   sec:'Research',      stage:'QAL', asset:'Amanah Gate — S1–S6',              bsec:'Research Factory', ws:'validation',
    desc:'Screen the operator\'s core competency, market viability, and capacity to build with integrity.',
@@ -2355,7 +2490,7 @@ const TIP_PAD = 10;
 const SIDEBAR_W = 276;
 
 function Tip({term, def, children}){
-  const entry = def || GLOSSARY[term];
+  const entry = def || GLOSSARY[term] || (ATTRS[term] ? ['⧁ '+term, ATTRS[term]] : null);
   if(!entry) return <span>{children}</span>;
   const [label, desc] = Array.isArray(entry) ? entry : [term, entry];
   const [tip, setTip] = useState(null);
@@ -2428,6 +2563,16 @@ function tipify(text, prefix=''){
       ? <Tip key={`${prefix}${i}`} term={seg}>{seg}</Tip>
       : seg
   );
+}
+
+function AttrLabel({attr, color}){
+  const parts = attr.split(' · ');
+  return <span>
+    {parts.map((p,i)=><span key={p}>
+      {i>0&&<span style={{color:'var(--text3)',margin:'0 3px'}}>·</span>}
+      <Tip term={p}><span style={{color}}>{p}</span></Tip>
+    </span>)}
+  </span>;
 }
 function DocRenderer({content,stageColor}){
   if(!content) return null;
@@ -2940,36 +3085,37 @@ function Overview({onSelect,role}){
   SECS.forEach(s=>{bySec[s]=TOOLS.filter(t=>t.sec===s&&(role.id==='all'||rolePerm(t,role.id)!=='-'));});
   return <div className="ov">
     <div className="ov-ey">Barakah Business Operating System</div>
-    <div className="ov-title">TruthMarket<br/>Pipeline Map</div>
-    <div className="ov-sub">Every TruthMarket tool maps to a BBOS pipeline stage with a governing attribute. No outreach without research. No research without qualification. No offer without honest valuation.</div>
+    <div className="ov-title">{/* ⚑ NEEDS NAME: product/platform name goes here */}<br/>Pipeline Map</div>
+    <div className="ov-sub">Every tool in this system maps to a BBOS pipeline stage with a governing attribute. No outreach without research. No research without qualification. No offer without honest valuation.</div>
     <div className="pip">
       {Object.values(STAGES).map(s=>{
         const cnt=(byStage[s.key]||[]).length;
-        return <div key={s.key} className="pip-item" style={{background:s.bg,borderColor:s.b}}>
-          <div className="pip-code" style={{color:s.c}}>{s.code} {s.key}</div>
-          <div className="pip-name" style={{color:s.c}}>{s.name}</div>
-          <div className="pip-cnt" style={{color:s.c}}>{cnt} tools</div>
-          <div className="pip-attr" style={{color:s.c}}>{s.attr}</div>
+        return <div key={s.key} className="pip-item" style={{background:s.bg,borderColor:s.b,color:s.c}}>
+          <div className="pip-code">{s.code}</div>
+          <div className="pip-name">{s.name}</div>
+          <div className="pip-cnt">{cnt} tools</div>
+          <div className="pip-attr">{s.attr}</div>
         </div>;
       })}
     </div>
     {SECS.map(sec=>{
-      const tools=bySec[sec];
+      const tools=bySec[sec]||[];
       if(!tools.length) return null;
       return <div key={sec}>
-        <div className="sec-div"><div className="sec-div-lbl">{sec}</div><div className="sec-div-line"/><div className="sec-div-cnt">{tools.length} tools</div></div>
-        <div className="tc-grid" style={{marginBottom:20}}>
+        <div className="sec-div">
+          <span className="sec-div-lbl">{sec}</span>
+          <span className="sec-div-line"/>
+          <span className="sec-div-cnt">{tools.length} tools</span>
+        </div>
+        <div className="tc-grid">
           {tools.map(t=>{
-            const p=role.id==='all'?'O':rolePerm(t,role.id);
+            const sg=STAGES[t.stage]||{};
             return <div key={t.id} className="tc" onClick={()=>onSelect(t.id)}>
               <div className="tc-top">
                 <div className="tc-name">{t.label}</div>
-                <Pill k={t.stage} size="sm"/>
+                <span style={{fontSize:9,padding:'2px 6px',borderRadius:3,background:sg.bg,color:sg.c,fontWeight:600,letterSpacing:.3,flexShrink:0}}>{sg.code} {t.stage}</span>
               </div>
-              <div style={{display:'flex',alignItems:'center',gap:5,marginTop:4}}>
-                <span className="tc-asset">{t.asset}</span>
-              </div>
-              {role.id!=='all'&&<div style={{marginTop:6}}><PermPill p={p} size="sm"/></div>}
+              <div className="tc-asset">{t.asset}</div>
             </div>;
           })}
         </div>
@@ -2978,10 +3124,10 @@ function Overview({onSelect,role}){
   </div>;
 }
 
-/* ── APP ── */
-function DuaBlock({dua, kind, stageColor}){
+function DuaBlock({dua, kind, stageColor, stageKey}){
   const [open,setOpen]=useState(false);
   const isClosing = kind==='closing';
+  const annotations = (!isClosing && stageKey && DUAS[stageKey]) ? DUAS[stageKey].annotations : null;
   return <div className="dua-block">
     <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
       <span className="dua-glyph" style={{color:stageColor}}>⧁</span>
@@ -2996,6 +3142,96 @@ function DuaBlock({dua, kind, stageColor}){
       <div className="dua-trans">{dua.trans}</div>
       <div className="dua-meaning">{dua.meaning}</div>
       <div className="dua-source">{dua.source}</div>
+      {annotations&&annotations.length>0&&<>
+        <div style={{height:1,background:'var(--border)',margin:'10px 0'}}/>
+        {annotations.map((a,i)=><div key={i} style={i>0?{marginTop:10,paddingTop:10,borderTop:'1px solid var(--border)'}:{}}>
+          <div style={{fontSize:9,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:4}}>⧁ {a.attr}</div>
+          <div style={{fontSize:11,color:'var(--text3)',lineHeight:1.65,fontStyle:'italic'}}>{a.text}</div>
+        </div>)}
+      </>}
+    </div>}
+  </div>;
+}
+
+function AttributeBlock({stageKey, stageColor}){
+  const d = DUAS[stageKey];
+  if(!d||!d.annotations||!d.annotations.length) return null;
+  const [open,setOpen]=useState(false);
+  const names = d.annotations.map(a=>a.attr.split(' · ')[0]).join(' · ');
+  return <div className="dua-block">
+    <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
+      <span className="dua-glyph" style={{color:stageColor}}>⧁</span>
+      <span className="dua-label">
+        <span className="dua-kind" style={{color:stageColor}}>Governing Attributes</span>
+        <span className="dua-title-txt">{names}</span>
+      </span>
+      <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
+    </button>
+    {open&&<div className="dua-body">
+      {d.annotations.map((a,i)=><div key={i} style={i>0?{marginTop:12,paddingTop:12,borderTop:'1px solid var(--border)'}:{}}>
+        <div style={{fontSize:10,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:5}}>⧁ {a.attr}</div>
+        <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,fontStyle:'italic'}}>{a.text}</div>
+      </div>)}
+    </div>}
+  </div>;
+}
+
+function ReadinessBlock({stageKey, stageColor}){
+  const d = DUAS[stageKey];
+  if(!d||!d.readiness) return null;
+  const r = d.readiness;
+  const [open,setOpen]=useState(false);
+  return <div className="dua-block">
+    <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
+      <span className="dua-glyph" style={{color:stageColor,fontSize:9,lineHeight:1}}>▣</span>
+      <span className="dua-label">
+        <span className="dua-kind" style={{color:stageColor}}>Opening Readiness Check</span>
+        <span className="dua-title-txt">Before you begin</span>
+      </span>
+      <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
+    </button>
+    {open&&<div className="dua-body">
+      <div style={{fontSize:11,color:'var(--text3)',fontStyle:'italic',lineHeight:1.65,marginBottom:10,paddingBottom:10,borderBottom:'1px solid var(--border)'}}>{r.frame}</div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+        <div>
+          <div style={{fontSize:9,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Governing when</div>
+          {r.governing.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text2)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:`2px solid ${stageColor}55`}}>{s}</div>)}
+        </div>
+        <div>
+          <div style={{fontSize:9,fontWeight:600,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Not yet rested in when</div>
+          {r.notYet.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text3)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:'2px solid var(--border2)'}}>{s}</div>)}
+        </div>
+      </div>
+    </div>}
+  </div>;
+}
+
+function ReflectionBlock({stageKey, stageColor}){
+  const d = DUAS[stageKey];
+  if(!d||!d.reflection) return null;
+  const r = d.reflection;
+  const [open,setOpen]=useState(false);
+  return <div className="dua-block">
+    <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
+      <span className="dua-glyph" style={{color:stageColor,fontSize:9,lineHeight:1}}>◈</span>
+      <span className="dua-label">
+        <span className="dua-kind" style={{color:stageColor}}>Closing Reflection</span>
+        <span className="dua-title-txt">Before you close this stage</span>
+      </span>
+      <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
+    </button>
+    {open&&<div className="dua-body">
+      <div style={{fontSize:11,color:'var(--text3)',fontStyle:'italic',lineHeight:1.65,marginBottom:10,paddingBottom:10,borderBottom:'1px solid var(--border)'}}>{r.frame}</div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+        <div>
+          <div style={{fontSize:9,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Were governing when</div>
+          {r.governing.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text2)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:`2px solid ${stageColor}55`}}>{s}</div>)}
+        </div>
+        <div>
+          <div style={{fontSize:9,fontWeight:600,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Present but not yet rested in when</div>
+          {r.notYet.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text3)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:'2px solid var(--border2)'}}>{s}</div>)}
+        </div>
+      </div>
     </div>}
   </div>;
 }
@@ -3024,7 +3260,6 @@ function App(){
   function mainContent(){
     if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role}/>;
     if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role}/>;
-    if(roleId!=='all') return <RoleDashboard role={role} onSelect={setSelId}/>;
     return <Overview onSelect={setSelId} role={role}/>;
   }
 
@@ -3088,7 +3323,9 @@ function App(){
             </div>
           </div>
           {open&&<>
-            {DUAS[s.key]&&<DuaBlock dua={DUAS[s.key]} kind="opening" stageColor={s.c}/>}
+            {DUAS[s.key]&&<DuaBlock dua={DUAS[s.key]} kind="opening" stageColor={s.c} stageKey={s.key}/>}
+            <AttributeBlock stageKey={s.key} stageColor={s.c}/>
+            <ReadinessBlock stageKey={s.key} stageColor={s.c}/>
             {items.map(t=>{
               const p=roleId==='all'?'O':rolePerm(t,roleId);
               return <div key={t.id} className={`sb-item${selId===t.id?' on':''}`} onClick={()=>setSelId(t.id)}>
@@ -3100,7 +3337,8 @@ function App(){
                 {roleId!=='all'&&<PermPill p={p} size="sm"/>}
               </div>;
             })}
-            <DuaBlock dua={(DUAS[s.key]&&DUAS[s.key].closing)||{...CLOSING_DUA,title:'Closing'}} kind="closing" stageColor={s.c}/>
+            <ReflectionBlock stageKey={s.key} stageColor={s.c}/>
+            <DuaBlock dua={DUAS[s.key]?.closing||{...CLOSING_DUA,title:'Closing'}} kind="closing" stageColor={s.c}/>
           </>}
         </div>;
       })}
