@@ -169,6 +169,50 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .tab-btn{padding:8px 16px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:all .12s;margin-bottom:-1px;letter-spacing:.3px}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-btn:hover:not(.active){color:var(--text2)}
+
+/* VIEW TOGGLE */
+.view-toggle{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px;gap:2px}
+.vt-btn{padding:4px 12px;border-radius:4px;border:none;background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;letter-spacing:.3px}
+.vt-btn.active{background:var(--bg4);color:var(--text);box-shadow:0 1px 3px #00000030}
+.vt-btn:hover:not(.active){color:var(--text2)}
+
+/* ASSET VIEW */
+.asset-view{padding:28px 32px;max-width:820px}
+.av-stage-block{margin-bottom:36px}
+.av-stage-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.av-stage-pill{padding:4px 12px;border-radius:5px;font-size:11px;font-weight:600;letter-spacing:.5px}
+.av-stage-name{font-size:14px;font-weight:500;color:var(--text)}
+.av-stage-attr{font-size:11px;color:var(--text3);font-style:italic;margin-left:auto}
+.av-asset-list{display:flex;flex-direction:column;gap:1px}
+.av-asset-row{display:flex;align-items:flex-start;gap:0;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .12s}
+.av-asset-row:first-child{border-radius:var(--radius) var(--radius) 0 0}
+.av-asset-row:last-child{border-radius:0 0 var(--radius) var(--radius)}
+.av-asset-row:only-child{border-radius:var(--radius)}
+.av-asset-row:not(:last-child){border-bottom-color:transparent}
+.av-asset-row:hover{background:var(--bg3);z-index:1;border-color:var(--border2)}
+.av-asset-row.selected{background:var(--accent-bg);border-color:var(--accent2)40;z-index:2}
+.av-asset-marker{width:3px;border-radius:2px 0 0 2px;align-self:stretch;flex-shrink:0}
+.av-asset-body{flex:1;padding:13px 16px;min-width:0}
+.av-asset-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;line-height:1.35}
+.av-asset-row.selected .av-asset-name{color:var(--accent)}
+.av-asset-ref{font-size:11px;color:var(--text3);line-height:1.4}
+.av-asset-section{font-size:10px;color:var(--text3);background:var(--bg4);border-radius:3px;padding:1px 6px;white-space:nowrap;align-self:center;margin-right:14px;margin-top:13px;flex-shrink:0}
+
+/* ASSET DETAIL PANEL */
+.av-detail{padding:28px 32px;max-width:780px}
+.av-detail-back{display:flex;align-items:center;gap:6px;margin-bottom:20px;font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
+.av-detail-back:hover{color:var(--text2)}
+.av-asset-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg,12px);overflow:hidden;margin-bottom:16px}
+.av-card-header{padding:20px 24px 18px;border-bottom:1px solid var(--border)}
+.av-card-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:6px}
+.av-card-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1.3;margin-bottom:10px}
+.av-card-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.av-card-body{padding:20px 24px}
+.av-desc{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:0}
+.av-divider{height:1px;background:var(--border);margin:20px 0}
+.av-field-row{display:flex;gap:6px;margin-bottom:10px;align-items:flex-start}
+.av-field-key{font-size:11px;color:var(--text3);min-width:110px;flex-shrink:0;padding-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.av-field-val{font-size:13px;color:var(--text2);line-height:1.5}
 </style>
 </head>
 <body>
@@ -645,7 +689,6 @@ function ToolDetail({tool, onBack}){
         <span className="breadcrumb-sep">›</span>
         <span style={{color:'var(--text2)'}}>{tool.label}</span>
       </div>
-
       <div className="detail-header">
         <div className="detail-eyebrow" style={{color:s.color}}>{tool.section}</div>
         <div className="detail-title">{tool.label}</div>
@@ -655,7 +698,6 @@ function ToolDetail({tool, onBack}){
           <span className="badge badge-outline">{tool.bbosSection}</span>
         </div>
       </div>
-
       <div className="detail-grid">
         <div className="detail-block" style={{background:s.bg,border:`1px solid ${s.border}`}}>
           <div className="detail-block-label" style={{color:s.color}}>Governing attribute</div>
@@ -666,16 +708,107 @@ function ToolDetail({tool, onBack}){
           <div className="detail-block-value" style={{color:'var(--text2)'}}>{tool.asset}</div>
         </div>
       </div>
-
       <div className="detail-rationale">
         <div className="detail-rationale-label">Mapping rationale</div>
         <div className="detail-rationale-text">{tool.rationale}</div>
       </div>
-
       <div className="detail-workspace">
         <div className="workspace-label">Workspace</div>
         <ToolWorkspace tool={tool}/>
       </div>
+    </div>
+  );
+}
+
+/* ── ASSET VIEW ─────────────────────────────────────────── */
+function AssetDetail({tool, onBack}){
+  const s = STAGES[tool.stage];
+  return (
+    <div className="av-detail">
+      <button className="av-detail-back" onClick={onBack}>
+        ← All assets
+      </button>
+      <div className="av-asset-card">
+        <div className="av-card-header" style={{borderTop:`3px solid ${s.color}`}}>
+          <div className="av-card-label" style={{color:s.color}}>
+            Stage {s.code} {s.key} · {s.name}
+          </div>
+          <div className="av-card-title">{tool.label}</div>
+          <div className="av-card-meta">
+            <span style={{background:s.bg,color:s.color,border:`1px solid ${s.border}`,borderRadius:5,padding:'3px 10px',fontSize:11,fontWeight:600}}>
+              {tool.asset}
+            </span>
+            <span style={{fontSize:11,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:5,padding:'3px 10px'}}>
+              {tool.section}
+            </span>
+          </div>
+        </div>
+        <div className="av-card-body">
+          <p className="av-desc">{tool.desc}</p>
+          <div className="av-divider"/>
+          <div className="av-field-row">
+            <span className="av-field-key">BBOS section</span>
+            <span className="av-field-val">{tool.bbosSection}</span>
+          </div>
+          <div className="av-field-row">
+            <span className="av-field-key">Asset reference</span>
+            <span className="av-field-val">{tool.asset}</span>
+          </div>
+          <div className="av-field-row">
+            <span className="av-field-key">Governs</span>
+            <span className="av-field-val" style={{color:s.color}}>{s.attr}</span>
+          </div>
+          <div className="av-divider"/>
+          <p style={{fontSize:13,color:'var(--text3)',lineHeight:1.7,fontStyle:'italic'}}>
+            {tool.rationale}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AssetView({selId, setSelId}){
+  const byStage = {};
+  Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
+  TOOLS.forEach(t=>{if(byStage[t.stage])byStage[t.stage].push(t);});
+
+  const selTool = TOOLS.find(t=>t.id===selId);
+  if(selTool) return <AssetDetail tool={selTool} onBack={()=>setSelId(null)}/>;
+
+  return (
+    <div className="asset-view">
+      {Object.values(STAGES).map(s=>{
+        const items = byStage[s.key]||[];
+        if(!items.length) return null;
+        return (
+          <div key={s.key} className="av-stage-block">
+            <div className="av-stage-hdr">
+              <span className="av-stage-pill" style={{background:s.bg,color:s.color,border:`1px solid ${s.border}`}}>
+                {s.code} {s.key}
+              </span>
+              <span className="av-stage-name">{s.name}</span>
+              <span className="av-stage-attr">{s.attr}</span>
+            </div>
+            <div className="av-asset-list">
+              {items.map(t=>(
+                <div
+                  key={t.id}
+                  className={`av-asset-row${selId===t.id?' selected':''}`}
+                  onClick={()=>setSelId(t.id)}
+                >
+                  <div className="av-asset-marker" style={{background:s.color+'60'}}/>
+                  <div className="av-asset-body">
+                    <div className="av-asset-name">{t.label}</div>
+                    <div className="av-asset-ref">{t.asset}</div>
+                  </div>
+                  <div className="av-asset-section">{t.section}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -739,11 +872,10 @@ function Overview({onSelect}){
 function App(){
   const [selId, setSelId] = useState(null);
   const [collapsed, setCollapsed] = useState({});
+  const [viewMode, setViewMode] = useState('pipeline'); // 'pipeline' | 'asset'
   const selTool = TOOLS.find(t=>t.id===selId);
   const toggle = s => setCollapsed(c=>({...c,[s]:!c[s]}));
-  const byStage={};
-  Object.keys(STAGES).forEach(k=>{byStage[k]=0;});
-  TOOLS.forEach(t=>{if(t.stage in byStage)byStage[t.stage]++;});
+  const switchView = mode => { setViewMode(mode); setSelId(null); };
 
   return (
     <div className="app">
@@ -758,12 +890,15 @@ function App(){
           <span className="logo-sub">BBOS</span>
         </div>
         <div className="topbar-right">
-          <span className="tb-badge">31 tools mapped</span>
-          <div className="progress-bar">
-            {Object.values(STAGES).map(s=>(
-              <div key={s.key} className="pb-dot pending" title={s.name} style={{background:`${s.color}55`}}/>
-            ))}
+          <div className="view-toggle">
+            <button className={`vt-btn${viewMode==='pipeline'?' active':''}`} onClick={()=>switchView('pipeline')}>
+              Pipeline
+            </button>
+            <button className={`vt-btn${viewMode==='asset'?' active':''}`} onClick={()=>switchView('asset')}>
+              Assets
+            </button>
           </div>
+          <span className="tb-badge">31 tools mapped</span>
         </div>
       </div>
 
@@ -772,7 +907,7 @@ function App(){
         <div className="pipeline-nav">
           <button className={`pipeline-nav-btn${!selId?' active':''}`} onClick={()=>setSelId(null)}>
             <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
-            Pipeline Overview
+            {viewMode==='asset' ? 'All Assets' : 'Pipeline Overview'}
           </button>
         </div>
 
@@ -813,9 +948,11 @@ function App(){
 
       {/* MAIN */}
       <div className="main">
-        {selTool
-          ? <ToolDetail tool={selTool} onBack={()=>setSelId(null)}/>
-          : <Overview onSelect={setSelId}/>
+        {viewMode === 'asset'
+          ? <AssetView selId={selId} setSelId={setSelId}/>
+          : selTool
+            ? <ToolDetail tool={selTool} onBack={()=>setSelId(null)}/>
+            : <Overview onSelect={setSelId}/>
         }
       </div>
     </div>
