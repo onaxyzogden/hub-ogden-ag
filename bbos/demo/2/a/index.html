@@ -2915,7 +2915,7 @@ function App(){
   const role=ROLES.find(r=>r.id===roleId)||ROLES[0];
   const selTool=TOOLS.find(t=>t.id===selId);
   const toggleCol=k=>setCol(c=>({...c,[k]:!c[k]}));
-  const switchView=v=>{setView(v);setSelId(null);};
+  const switchView=v=>setView(v);
   const switchRole=id=>{setRoleId(id);setSelId(null);setView('pipeline');};
   const switchSample=v=>{setSample(v);setView('pipeline');setSelId(null);};
 
