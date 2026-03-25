@@ -8,15 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:         #0d0c08;
-  --bg-mid:     #131209;
+  --bg:         #2a2218;
+  --bg-mid:     #332a1e;
   --parchment:  #f0ebe0;
   --bone:       #d8d0bf;
   --dust:       #8a8070;
   --gold:       #b89050;
   --gold-light: #cca866;
   --gold-muted: #9d7a40;
-  --gold-dim:   rgba(184,144,80,0.18);
+  --gold-dim:   rgba(184,144,80,0.25);
   --line:       rgba(240,235,224,0.07);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --mono:  'DM Mono', monospace;
@@ -161,7 +161,7 @@ body {
 }
 
 .phase {
-  background: rgba(10,9,6,0.6);
+  background: rgba(42,34,24,0.80);
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 1.75rem 1.5rem 1.5rem;
@@ -298,7 +298,7 @@ body {
   box-shadow: 0 0 5px currentColor;
 }
 .milestone.done .milestone-text {
-  color: var(--bone);
+  color: rgba(240,235,224,0.88);
 }
 .milestone.done .milestone-dot::after {
   content: '';
@@ -362,7 +362,7 @@ body {
   color: var(--dust);
 }
 .footer-note strong {
-  color: var(--bone);
+  color: rgba(240,235,224,0.88);
   font-weight: 400;
 }
 .footer-date {
