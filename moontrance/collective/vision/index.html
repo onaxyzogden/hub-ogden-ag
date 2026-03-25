@@ -147,8 +147,8 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 @media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.5rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}.cta-buttons{width:100%;}.cta-btn,.cta-btn-secondary{width:100%;justify-content:center;}}
 
 /* ── PAGE TRANSITION VEIL ── */
-#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;transition:opacity 0.4s ease;animation:veil-fallback 0.4s ease 0.9s forwards;}
-@keyframes veil-fallback{to{opacity:0;pointer-events:none;}}
+#page-veil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:1;animation:veil-out 0.55s ease 0.05s forwards;}
+@keyframes veil-out{to{opacity:0;}}
 </style>
 </head>
 <body>
@@ -495,38 +495,18 @@ const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySe
   var bodyBg = getComputedStyle(document.body).backgroundColor;
   veil.style.background = bodyBg;
 
-  // Fade in on load — with hard timeout fallback for iOS Safari
-  function fadeIn(){
-    veil.style.animation = 'none'; // JS takes over, dismiss CSS fallback
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        veil.style.transition = 'opacity 0.4s ease';
-        veil.style.opacity = '0';
-        veil.style.pointerEvents = 'none';
-      });
-    });
-  }
-  // Try immediately, on DOMContentLoaded, on load, and hard timeout — whichever fires first
-  var _veiled = false;
-  function _fadeOnce(){ if(_veiled) return; _veiled=true; fadeIn(); }
-  if(document.readyState !== 'loading'){ _fadeOnce(); }
-  document.addEventListener('DOMContentLoaded', _fadeOnce);
-  window.addEventListener('load', _fadeOnce);
-  setTimeout(_fadeOnce, 800); // absolute fallback — page always visible within 0.8s
+  // CSS handles entrance fade — JS only handles exit and bfcache restore
 
-  // Re-run on bfcache restore
+  // bfcache restore — restart the CSS animation
   window.addEventListener('pageshow', function(e){
     if (e.persisted){
-      veil.style.transition = 'none';
-      veil.style.opacity = '1';
       veil.style.background = getComputedStyle(document.body).backgroundColor;
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          veil.style.transition = 'opacity 0.4s ease';
-          veil.style.opacity = '0';
-          veil.style.pointerEvents = 'none';
-        });
-      });
+      veil.style.animation = 'none';
+      veil.style.opacity = '1';
+      veil.style.pointerEvents = 'none';
+      // Force reflow then restart animation
+      void veil.offsetHeight;
+      veil.style.animation = 'veil-out 0.55s ease 0.05s forwards';
     }
   });
 
