@@ -3,453 +3,482 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TruthMarket — Research Intelligence Platform</title>
+  <title>TruthMarket × BBOS Pipeline</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-    body { background: #111; }
-    #root { height: 100%; }
-    textarea, input, select, button { font-family: Georgia, 'Times New Roman', serif; }
-    textarea { resize: vertical; }
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #0e0e0e; }
-    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
-    input:focus, textarea:focus, select:focus { outline: none; border-color: #444 !important; }
+    html, body, #root { height: 100%; background: #0f0f0f; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #252525; border-radius: 2px; }
+    input, textarea, select, button { font-family: Georgia, serif; }
+    input:focus, textarea:focus, select:focus { outline: none; }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
 
-  <script type="text/babel">
-    const { useState } = React;
-
-
-const workspaces = {
-  pain: {
-    objective: "Surface 3–5 urgent, undeniable problems your market is already paying to solve.",
-    sections: [
-      { label: "Pain Statements", type: "repeater", key: "pains", placeholder: "Describe a specific, bleeding-neck pain in the prospect's own language…", addLabel: "+ Add pain" },
-      { label: "Source Evidence", type: "repeater", key: "sources", placeholder: "Forum thread, review, interview quote, or Reddit post URL…", addLabel: "+ Add source" },
-      { label: "Urgency Rating", type: "scale", key: "urgency", hint: "How urgent is this pain? (1 = background noise · 5 = bleeding neck)", max: 5 },
+// ── BBOS Stage Map ─────────────────────────────────────────────────────────
+const stages = [
+  {
+    code: "00 INT",
+    id: "int",
+    label: "Intake",
+    attr: "Al-Awwal · Ash-Shahid",
+    attrMeaning: "The First · The Witness",
+    color: "#888",
+    purpose: "Foundational self-assessment and capability audit. The operator declares who they are, what they have, and what constraints are non-negotiable before any business work begins.",
+    bbosOnly: true,
+    bbosAssets: [
+      { label: "Normalised Intake Packet", note: "All six intake sections mapped to BBOS fields" },
+      { label: "Routing Decision Record", note: "Basis for proceeding to QAL or rejection" },
+      { label: "IFB — Intake Form Build", note: "Google Form · field validation rules · mapping guide" },
     ],
-    actions: ["Save Research", "Export to VoC Bank"],
+    tmModules: [],
+    gateNote: "No TruthMarket modules operate here. INT is the covenant foundation — it establishes the operator's constraints, work aversions, and financial runway that all downstream stages must respect.",
   },
-  icp: {
-    objective: "Define your Ideal Customer Profile with enough precision to qualify or disqualify on first contact.",
-    sections: [
-      { label: "Who They Are", type: "textarea", key: "who", placeholder: "Age, role, situation, context…" },
-      { label: "What They're Trying to Accomplish", type: "textarea", key: "goal", placeholder: "Immediate goal and deeper aspiration…" },
-      { label: "What They've Already Tried", type: "textarea", key: "tried", placeholder: "Previous solutions, why they failed…" },
-      { label: "Disqualifiers", type: "repeater", key: "disq", placeholder: "A trait that removes them from consideration…", addLabel: "+ Add disqualifier" },
+  {
+    code: "01 QAL",
+    id: "qal",
+    label: "Qualification",
+    attr: "Al-Haqq · Al-Khabir",
+    attrMeaning: "The Truth · The All-Aware",
+    color: "#B07060",
+    purpose: "Ethical inventory and stewardship evaluation. The Amanah Gate determines whether the operator's niche, competency, and proof level can support an honest offer. Disqualification here is a mercy.",
+    bbosOnly: true,
+    bbosAssets: [
+      { label: "S1 — Core Competency Assessment", note: "Verified skills and proof links" },
+      { label: "S2 — Advantage Register", note: "Genuine differentiators vs assumed ones" },
+      { label: "S3 — Proof Audit", note: "G-label ceiling set here for all downstream claims" },
+      { label: "S4 — Energy Profile", note: "Capacity constraints that shape offer scope" },
+      { label: "S5 — Constraint Map", note: "Financial runway · time · skills · work aversions" },
+      { label: "S6 — Regulatory Baseline", note: "Compliance requirements confirmed" },
+      { label: "Amanah Gate Decision", note: "Proceed · Conditional · Reject — documented" },
     ],
-    actions: ["Save ICP", "Export Profile"],
+    tmModules: [],
+    gateNote: "No TruthMarket modules operate here. QAL establishes the G-label ceiling — the maximum proof level any future claim can carry. Every TruthMarket module in later stages inherits this constraint.",
   },
-  competitor: {
-    objective: "Map existing solutions, their gaps, and where the Enemy Narrative lives.",
-    sections: [
-      { label: "Competitors", type: "competitor-table", key: "competitors" },
-      { label: "The Shared Enemy", type: "textarea", key: "enemy", placeholder: "Name the external system or convergent forces that has produced the prospect's struggle…" },
-      { label: "The Gap No One Is Filling", type: "textarea", key: "gap", placeholder: "What specific outcome or mechanism is missing from every existing solution?" },
+  {
+    code: "02 STR",
+    id: "str",
+    label: "Strategy",
+    attr: "Al-Basir",
+    attrMeaning: "The All-Seeing",
+    color: "#C9A84C",
+    purpose: "Market research and Voice of Customer extraction. The operator sees the audience as they actually are — not as they project. All VoC must be verbatim. The Enemy is named as a system, never a character.",
+    bbosOnly: false,
+    bbosAssets: [
+      { label: "S1 — Market Definition", note: "Target buyer's current situation and goal" },
+      { label: "S2 — VoC Buying Language Bank", note: "15+ verbatim phrases — no paraphrasing" },
+      { label: "S3 — Emotional Triggers", note: "Top 3 fears · Top 3 desires from the data" },
+      { label: "S4 — Enemy Analysis", note: "External system named as The Enemy · competitor gap" },
+      { label: "S5 — Strategic Constraints", note: "From QAL Asset Pack · ASSUMPTIONs labelled" },
+      { label: "Asset 1 — Belief Statement", note: "One sentence: if believed, offer is the only solution" },
+      { label: "Asset 2 — Enemy Narrative", note: "3-paragraph arc: Before · Transformation · After (G4)" },
+      { label: "Asset 3 — Positioning Statement", note: "VoC-seeded · one sentence · competitor-aware" },
+      { label: "Asset 4 — Amanah Content Engine", note: "6 angles from S3 fears and desires" },
+      { label: "Asset 5 — Truth-Gate Advisory", note: "3 phrases cleared for headline use from the data" },
     ],
-    actions: ["Save Analysis", "Send to Strategy"],
-  },
-  "offer-creation": {
-    objective: "Design a promise grounded in mechanism — specific, scoped, and deliverable.",
-    sections: [
-      { label: "The Promise (G-Label)", type: "glabel-field", key: "promise", placeholder: "State the specific, deliverable-grounded commitment your client can use as an acceptance test…" },
-      { label: "The Mechanism", type: "textarea", key: "mechanism", placeholder: "The specific, ethical process that reliably produces the promised result…" },
-      { label: "What's Included", type: "repeater", key: "included", placeholder: "A specific deliverable or commitment…", addLabel: "+ Add inclusion" },
-      { label: "What's Excluded", type: "repeater", key: "excluded", placeholder: "A specific non-commitment or boundary…", addLabel: "+ Add exclusion" },
+    tmModules: [
+      { id: "pain", icon: "⚡", title: "Bleeding-Neck Pains", bbosAnchor: "S2 + S3", note: "VoC extraction and emotional trigger mapping. All entries must be verbatim — paraphrasing closes the window." },
+      { id: "icp", icon: "🎯", title: "ICP Segmentation", bbosAnchor: "S1", note: "Market definition refined to qualifying precision. Feeds directly into OFR Asset 2." },
+      { id: "competitor", icon: "🔍", title: "Competitor Search", bbosAnchor: "S4", note: "Enemy Analysis — external systemic forces, not character flaws. Competitor gap documented here." },
+      { id: "avatar", icon: "👤", title: "Avatar Intake", bbosAnchor: "S1 · S2 · S3", note: "Voice, fears, desires, buying triggers — all sourced from verbatim data, not operator assumption." },
+      { id: "adspy", icon: "📡", title: "Ad Spy", bbosAnchor: "S4", note: "Competitor creative audit feeds the Enemy Narrative and Truth-Gate Advisory." },
+      { id: "contentspy", icon: "📰", title: "Content Spy", bbosAnchor: "Asset 4", note: "Organic content landscape feeds the Amanah Content Engine angles." },
     ],
-    actions: ["Save Offer Draft", "Advance to Pricing"],
+    gateNote: "STR Approval Brief required before OFR begins. Truth-Gate Advisory must be completed — only cleared phrases may be used as headlines downstream.",
   },
-  gtm: {
-    objective: "Select a go-to-market motion calibrated to your constraints and audience.",
-    sections: [
-      { label: "Primary GTM Motion", type: "select", key: "motion", options: ["— Select —", "Outbound (cold email / DM)", "Paid Ads (Meta / Google)", "Content-led (organic)", "Referral / Partnerships", "Community-led", "Direct Outreach"] },
-      { label: "Primary Channel", type: "input", key: "channel", placeholder: "e.g. LinkedIn DMs, Instagram Reels, Google Search…" },
-      { label: "First 30-Day Target", type: "input", key: "target", placeholder: "e.g. 3 discovery calls booked" },
-      { label: "Constraints & Limitations", type: "textarea", key: "constraints", placeholder: "Budget, time, skills, audience size…" },
+  {
+    code: "03 OFR",
+    id: "ofr",
+    label: "Offer",
+    attr: "Al-Adl · Al-Muqsit",
+    attrMeaning: "The Just · The Equitable",
+    color: "#7EB8A4",
+    purpose: "Covenant offer design. The Scope Map names exactly what is included and excluded. The Guarantee must carry all four elements. Pricing reflects honest valuation — not what the market might bear.",
+    bbosOnly: false,
+    bbosAssets: [
+      { label: "Asset 1 — The Promise", note: "G1 or G2 only · PROOF PENDING if evidence absent" },
+      { label: "Asset 2 — Ideal Customer Profile", note: "Built from STR S1 + S2 · qualifying precision" },
+      { label: "Asset 3 — The Mechanism", note: "Unique, ethical process · named and defensible" },
+      { label: "Asset 4 — Scope Map", note: "INCLUDED · EXCLUDED · Change-Order Triggers" },
+      { label: "Asset 5 — Value Stack", note: "Each component with Perceived Monetary Value" },
+      { label: "Asset 6 — Risk Reversal / Guarantee", note: "Trigger · Scope · Remedy · Operator Boundaries" },
+      { label: "Asset 7 — Pricing Structure", note: "Price · payment terms · honest valuation" },
+      { label: "Asset 8 — Proof Plan", note: "Evidence for all G1/G2 claims · PROOF PENDING tracked" },
+      { label: "Ihsan Baseline Gate (IC-OFR)", note: "5-point integrity check before brief is prepared" },
     ],
-    actions: ["Save GTM Plan"],
-  },
-  pricing: {
-    objective: "Calculate honest valuation against your value stack and market range.",
-    sections: [
-      { label: "Value Stack Items", type: "value-stack", key: "stack" },
-      { label: "Market Price Range", type: "range-input", key: "range" },
-      { label: "Your Price", type: "input", key: "price", placeholder: "Final price — e.g. £2,400 or $997/mo" },
-      { label: "Pricing Rationale", type: "textarea", key: "rationale", placeholder: "Why is this price honest and fair relative to what is being exchanged?" },
+    tmModules: [
+      { id: "offer-creation", icon: "🏗️", title: "Offer Creation", bbosAnchor: "Asset 1 · Asset 3", note: "Promise + Mechanism. Must carry a G-label. G1/G2 requires proof. G3/G4 must not be presented as proven." },
+      { id: "pricing", icon: "⚖️", title: "Pricing Expert", bbosAnchor: "Asset 5 · Asset 7", note: "Value Stack builds the PMV justification. Pricing must reflect honest exchange — not manufactured scarcity." },
+      { id: "validation", icon: "✅", title: "Validation Score", bbosAnchor: "IC-OFR Gate", note: "The Ihsan Baseline Gate. All five checks must pass before OFR Approval Brief is prepared." },
+      { id: "builder", icon: "📐", title: "Offer Builder", bbosAnchor: "Full OFR Asset Pack", note: "Assembles Assets 1–8. Scope Map exclusions and Guarantee must be explicit. PROOF PENDING items enter the Pipeline Integrity Ledger." },
     ],
-    actions: ["Save Pricing", "Add to Offer Builder"],
+    gateNote: "OFR Approval Brief required before OUT begins. PROOF PENDING items restrict client-facing use of claims — they cannot be presented as substantiated downstream.",
   },
-  validation: {
-    objective: "Score your offer on evidence strength before committing to creative production.",
-    sections: [
-      { label: "Validation Checklist", type: "checklist", key: "checks", items: [
-        "Promise is specific and measurable",
-        "Mechanism is named and unique",
-        "ICP is defined to qualifying precision",
-        "At least one piece of external proof exists",
-        "Competitor gap is documented",
-        "Pricing is within market range and justified",
-        "Operator has capacity to deliver the scope",
-        "Guarantee is written with all four elements",
-      ]},
+  {
+    code: "04 OUT",
+    id: "out",
+    label: "Outreach",
+    attr: "Ar-Razzaq · As-Sittir",
+    attrMeaning: "The Provider · The Concealer",
+    color: "#B07CC6",
+    purpose: "Channel deployment and creative production. Hooks are attention devices — they must not imply guarantees. Outreach built from tawakkul invites; outreach built from scarcity anxiety grasps.",
+    bbosOnly: false,
+    bbosAssets: [
+      { label: "Channel Plan & Lead Criteria", note: "Primary + secondary platforms · execution guidelines" },
+      { label: "Hook Library", note: "Attention devices only — no claims, no guarantees" },
+      { label: "Outreach Sequences", note: "Message cadence · warm-up · objection intelligence" },
+      { label: "Scarcity Checkpoint", note: "All urgency language reviewed against G-labels" },
     ],
-    actions: ["Calculate Score", "Proceed to Builder"],
-  },
-  builder: {
-    objective: "Assemble the complete Offer Asset Pack — scope map, guarantee, proof plan.",
-    sections: [
-      { label: "Guarantee Statement", type: "textarea", key: "guarantee", placeholder: "Trigger condition · Scope · Remedy · Operator-side boundaries…" },
-      { label: "Proof Assets", type: "repeater", key: "proof", placeholder: "Case study, metric, testimonial, or credential…", addLabel: "+ Add proof asset" },
-      { label: "Payment Structure", type: "input", key: "payment", placeholder: "e.g. 50% upfront, 50% on delivery · or 3 monthly instalments" },
+    tmModules: [
+      { id: "gtm", icon: "🚀", title: "Proven GTM", bbosAnchor: "Channel Plan", note: "Motion and channel selection calibrated to S5 operator constraints from QAL." },
+      { id: "genads", icon: "🎬", title: "Generate Ads", bbosAnchor: "Hook Library", note: "Hooks sourced from Truth-Gate cleared phrases only. No result-implying language without G1/G2 proof." },
+      { id: "logo", icon: "✦", title: "Generate Logo", bbosAnchor: "Brand Identity", note: "Brand mark aligned to STR Positioning Statement." },
+      { id: "landing", icon: "🖥️", title: "Landing Page", bbosAnchor: "Outreach Asset", note: "Hero headline from Truth-Gate cleared phrases. Enemy Narrative Before state in problem section." },
+      { id: "nurture", icon: "📬", title: "Nurture Sequences", bbosAnchor: "Outreach Sequences", note: "Cold lead warm-up sequences. No pressure, no false urgency. Each message: one purpose, one CTA." },
+      { id: "salesletter", icon: "📄", title: "Sales Letter", bbosAnchor: "Long-form Outreach Asset", note: "Built on Enemy Narrative and Truth-Gate cleared phrases. G-label discipline throughout." },
+      { id: "vsl", icon: "🎥", title: "Pre-Call VSL", bbosAnchor: "Pre-SAL Qualifier", note: "Pre-frames and qualifies before the discovery call. Reduces unqualified conversations." },
+      { id: "social", icon: "📱", title: "Social Assets", bbosAnchor: "Hook Library", note: "Amanah Content Engine angles distributed across platforms. G-labels applied to all outcome claims." },
+      { id: "setting", icon: "📞", title: "Setting Script", bbosAnchor: "Outreach Sequences", note: "Appointment-setting guide. Qualifies against ICP before booking — protects SAL stage from unfit prospects." },
+      { id: "ghl", icon: "🔗", title: "Connect GHL", bbosAnchor: "CRM Infrastructure", note: "Pipeline stages must mirror BBOS stages. Lead source tags enable stage-level analytics." },
+      { id: "meta", icon: "Ⓜ️", title: "Connect Meta", bbosAnchor: "Paid Channel Setup", note: "Ad account in good standing before creative deployment." },
+      { id: "pixel", icon: "📍", title: "Install Pixel", bbosAnchor: "Conversion Tracking", note: "Pixel fires before ads launch. Events verified in Events Manager." },
+      { id: "launchads", icon: "▶️", title: "Launch Ads", bbosAnchor: "Channel Deployment", note: "Creative must have passed Scarcity Checkpoint and G-label review before going live." },
+      { id: "socials", icon: "🌐", title: "Connect Socials", bbosAnchor: "Organic Infrastructure", note: "Organic and paid channels aligned to same Amanah Content Engine pillars." },
+      { id: "website", icon: "🏠", title: "Deploy Website", bbosAnchor: "Landing Infrastructure", note: "Page must be live and verified before ads run. Form-to-CRM routing confirmed." },
+      { id: "form", icon: "📋", title: "Add Form & Test", bbosAnchor: "Lead Capture", note: "Test submission confirms CRM routing. This is the boundary where a prospect becomes a lead." },
     ],
-    actions: ["Finalise Offer Pack", "Export to Creative"],
+    gateNote: "OUT Approval Brief required before SAL begins. All PROOF PENDING restrictions from OFR must be honoured in every outreach asset. The Scarcity Checkpoint reviews all urgency language.",
   },
-  avatar: {
-    objective: "Document the voice, fears, desires, and buying triggers of your ideal buyer.",
-    sections: [
-      { label: "Avatar Name", type: "input", key: "name", placeholder: "Give them a name — makes the writing feel real" },
-      { label: "Their Voice (verbatim phrases)", type: "repeater", key: "voice", placeholder: "Exact words they use when the performance drops…", addLabel: "+ Add phrase" },
-      { label: "Top 3 Fears", type: "repeater", key: "fears", placeholder: "What do they dread most?", addLabel: "+ Add fear" },
-      { label: "Top 3 Desires", type: "repeater", key: "desires", placeholder: "What do they secretly hope for?", addLabel: "+ Add desire" },
-      { label: "Buying Triggers", type: "textarea", key: "triggers", placeholder: "What event or realisation typically precedes a purchase decision?" },
+  {
+    code: "05 SAL",
+    id: "sal",
+    label: "Sales",
+    attr: "Ar-Razzaq · Al-Latif · As-Sittir",
+    attrMeaning: "The Provider · The Subtle · The Concealer",
+    color: "#7090B8",
+    purpose: "Fit-based conversion. The discovery call determines genuine fit — not pressure-based conversion. Binary disqualifiers from the ICP must be honoured. Verbal inflation in the call is a G-label violation.",
+    bbosOnly: false,
+    bbosAssets: [
+      { label: "Fit Call Structure", note: "Situation · Problem · Implication · Need-Payoff" },
+      { label: "Binary Disqualifiers", note: "ICP exclusions must be honoured — not negotiated" },
+      { label: "Verbal Inflation Checkpoint", note: "Claims made in calls must stay within G-label ceiling" },
+      { label: "Covenant Commitment", note: "Agreement framing as covenant — not persuasion close" },
     ],
-    actions: ["Save Avatar", "Export to Ad Brief"],
-  },
-  adspy: {
-    objective: "Analyse competitor ad creative — what's running, what's winning, what's missing.",
-    sections: [
-      { label: "Competitors to Audit", type: "repeater", key: "competitors", placeholder: "Competitor name or Meta Ad Library URL…", addLabel: "+ Add competitor" },
-      { label: "Winning Ad Formats Observed", type: "checklist", key: "formats", items: ["UGC / talking head", "Testimonial carousel", "Problem–agitation hook", "Before / after", "Direct offer", "Educational value"] },
-      { label: "Dominant Hook Patterns", type: "repeater", key: "hooks", placeholder: "Recurring opening line or visual device…", addLabel: "+ Add hook pattern" },
-      { label: "The Gap", type: "textarea", key: "gap", placeholder: "What angle or emotion is no competitor currently owning?" },
+    tmModules: [
+      { id: "salespres", icon: "📊", title: "Sales Presentation", bbosAnchor: "Fit Call Structure", note: "Deck mirrors the BBOS Fit Call structure. Enemy Narrative precedes the offer — never lead with price." },
+      { id: "salesscript", icon: "💬", title: "Sales Script", bbosAnchor: "Fit Call + Verbal Inflation Checkpoint", note: "Objection responses must not inflate G-labels. No verbal claims that exceed what the Offer Asset Pack supports." },
     ],
-    actions: ["Save Audit", "Inform Ad Brief"],
+    gateNote: "SAL Approval Brief required before FUL begins. Verbal Inflation Checkpoint reviews actual call recordings against G-label ceilings. Every commitment made verbally must be in the Scope Map.",
   },
-  contentspy: {
-    objective: "Map the organic content landscape — hooks, angles, and proven formats.",
-    sections: [
-      { label: "Top Performing Accounts", type: "repeater", key: "accounts", placeholder: "Account handle and platform…", addLabel: "+ Add account" },
-      { label: "Proven Content Formats", type: "checklist", key: "formats", items: ["Long-form essay", "Short-form video", "Thread / carousel", "Case study post", "Hot take / contrarian", "Tutorial / how-to", "Story arc"] },
-      { label: "Winning Hooks Observed", type: "repeater", key: "hooks", placeholder: "A hook pattern that consistently generates engagement…", addLabel: "+ Add hook" },
-      { label: "Organic Gap Opportunity", type: "textarea", key: "gap", placeholder: "What topic or format is underserved in this space?" },
+  {
+    code: "06 FUL",
+    id: "ful",
+    label: "Fulfillment",
+    attr: "Al-Muhsin · Al-Wali · Ash-Shakur",
+    attrMeaning: "The Excellent · The Protector · The Grateful",
+    color: "#7AAA88",
+    purpose: "Delivery of what was promised. Every step mapped to the OFR Scope Map. Client success milestones and proof capture are built into the delivery process — not added after.",
+    bbosOnly: true,
+    bbosAssets: [
+      { label: "Onboarding Checklist", note: "Payment to work-start with communication triggers" },
+      { label: "Client Intake Form", note: "Constraints · access · client success definition" },
+      { label: "Execution SOP", note: "Step-by-step delivery mapped to OFR scope" },
+      { label: "Quality Control Checklist", note: "Aligned to OFR outcome and guarantee conditions" },
+      { label: "Client Success Milestones", note: "3–5 checkpoints with message templates" },
+      { label: "Proof Capture Protocol", note: "Case study data and testimonial collection built in" },
+      { label: "Offboarding Sequence", note: "Close · retention seed · RET stage handoff" },
     ],
-    actions: ["Save Research", "Brief Content Plan"],
+    tmModules: [],
+    gateNote: "No TruthMarket modules here. FUL is where the covenant is kept — or broken. PROOF PENDING items from OFR may be resolved here if proof is captured during delivery.",
   },
-  genads: {
-    objective: "Produce ad creative from your VoC language bank and validated angles.",
-    sections: [
-      { label: "Primary Hook", type: "textarea", key: "hook", placeholder: "The opening line or visual concept — sourced from VoC…" },
-      { label: "Ad Format", type: "select", key: "format", options: ["— Select —", "Static image", "Short video (15–30s)", "Carousel", "Long video (60s+)", "Story"] },
-      { label: "Core Message (Body)", type: "textarea", key: "body", placeholder: "The argument, story, or problem framing in the ad…" },
-      { label: "Call to Action", type: "input", key: "cta", placeholder: "e.g. Book a free call · Download the guide · Apply now" },
-      { label: "G-Label Check", type: "select", key: "glabel", options: ["— Select —", "G1 — Proven claim (evidence on hand)", "G2 — Reasonable claim (evidence in progress)", "G3 — Plausible claim (no current evidence)", "G4 — Aspirational / future state"] },
+  {
+    code: "07 RET",
+    id: "ret",
+    label: "Retention",
+    attr: "Ash-Shakur · Al-Wadud",
+    attrMeaning: "The Grateful · The Loving",
+    color: "#A07890",
+    purpose: "Re-engagement from appreciation, not extraction. Cold leads, past clients, and silent prospects each have a specific posture. No manipulation, no false urgency, no pressure.",
+    bbosOnly: true,
+    bbosAssets: [
+      { label: "S1 — Segment Map", note: "Cold Lead · Past Client · Re-Activation · Warm Non-Convert" },
+      { label: "Cold Lead Re-Engagement Sequence", note: "5 touches · warming not pushing · CTA on final message only" },
+      { label: "Past Client Nurture Sequence", note: "3 touches · value-forward · upsell seed (no hard pitch)" },
+      { label: "Re-Activation Campaign", note: "2-week plan for 60+ day silent leads" },
+      { label: "Upsell Path", note: "Next offer as natural continuation — never extraction" },
     ],
-    actions: ["Save Ad Brief", "Generate Variations"],
+    tmModules: [],
+    gateNote: "The Nurture Sequences module in TruthMarket / OUT covers cold-lead warming. RET goes further — it is the structured re-engagement of people who already gave the operator something.",
   },
-  logo: {
-    objective: "Brand mark creation aligned to positioning and market context.",
-    sections: [
-      { label: "Brand Name", type: "input", key: "brandname", placeholder: "The name as it should appear on the mark" },
-      { label: "Positioning in One Line", type: "input", key: "positioning", placeholder: "e.g. The research-first offer builder for service businesses" },
-      { label: "Visual Direction", type: "select", key: "direction", options: ["— Select —", "Minimal / wordmark", "Geometric / abstract mark", "Editorial / serif", "Bold / modern sans", "Organic / hand-drawn"] },
-      { label: "Reference Styles or Colours", type: "textarea", key: "references", placeholder: "Describe references, styles to avoid, or hex codes if known…" },
+  {
+    code: "08 OPT",
+    id: "opt",
+    label: "Optimization",
+    attr: "Al-Hasib · As-Subbuh · Al-Quddus",
+    attrMeaning: "The Reckoner · The Pure · The Holy",
+    color: "#8888A8",
+    purpose: "Honest reckoning. The entire cycle reviewed against what was promised, what was delivered, and where G-label inflation occurred. The Constraint Evolution Map traces how every constraint changed across stages.",
+    bbosOnly: true,
+    bbosAssets: [
+      { label: "Performance Reckoning", note: "Planned vs actual · variance analysis · weakest link" },
+      { label: "Covenant Integrity Audit", note: "Each stage's governing quality assessed honestly" },
+      { label: "G-Label Accuracy Report", note: "All G1/G2 claims checked against actual outcomes" },
+      { label: "Proof Plan Refresh", note: "PROOF PENDING resolved or honestly carried forward" },
+      { label: "Constraint Evolution Map", note: "How each QAL constraint evolved through the cycle" },
+      { label: "Restoration Mandate", note: "Every structural weakness with repair requirement" },
+      { label: "Scaling Readiness Assessment", note: "Volume cap with covenant integrity preserved" },
     ],
-    actions: ["Save Brief", "Generate Logo"],
+    tmModules: [],
+    gateNote: "The Cycle Memory System feeds OPT findings into the next cycle's intake. What was learned here constrains what can be claimed in the next cycle.",
   },
-  landing: {
-    objective: "Build a conversion-optimised page with your offer copy and proof assets.",
-    sections: [
-      { label: "Page Sections Checklist", type: "checklist", key: "sections", items: ["Hero — headline from Truth-Gate cleared phrase", "Sub-headline — identifies the ICP", "Problem section — Enemy Narrative Before state", "Mechanism — how it works", "Offer details — scope and what's included", "Social proof — testimonials / results", "Guarantee", "FAQ", "CTA — above fold and at close"] },
-      { label: "Hero Headline", type: "input", key: "headline", placeholder: "Verbatim VoC phrase or Truth-Gate cleared language…" },
-      { label: "Primary CTA Copy", type: "input", key: "cta", placeholder: "e.g. Book your free strategy call" },
-    ],
-    actions: ["Save Page Plan", "Build Page"],
-  },
-  salespres: {
-    objective: "Deck structure and content for live or recorded sales conversations.",
-    sections: [
-      { label: "Deck Sections", type: "checklist", key: "sections", items: ["1. Who this is for", "2. The Enemy — why they're stuck", "3. Why existing solutions fail", "4. The mechanism", "5. The promise", "6. Proof / case studies", "7. The offer — what's included", "8. Guarantee", "9. Pricing and next steps"] },
-      { label: "Presentation Format", type: "select", key: "format", options: ["— Select —", "Live video call (Zoom/Meet)", "Loom / pre-recorded walkthrough", "In-person slide deck", "PDF send-ahead"] },
-    ],
-    actions: ["Save Structure", "Build Deck"],
-  },
-  nurture: {
-    objective: "Email and message sequences that move cold leads toward readiness.",
-    sections: [
-      { label: "Sequence Type", type: "select", key: "type", options: ["— Select —", "Lead magnet follow-up", "Webinar / event follow-up", "Cold outreach warm-up", "Re-engagement", "Post-call no-show"] },
-      { label: "Sequence Length", type: "select", key: "length", options: ["— Select —", "3 emails", "5 emails", "7 emails", "10 emails", "Custom"] },
-      { label: "Email Angles", type: "repeater", key: "angles", placeholder: "e.g. Email 1 — Enemy Narrative · Email 2 — Case study…", addLabel: "+ Add email angle" },
-    ],
-    actions: ["Save Sequence Plan", "Write Sequence"],
-  },
-  salesletter: {
-    objective: "Long-form copy built on the Enemy Narrative and Truth-Gate cleared phrases.",
-    sections: [
-      { label: "Headline", type: "input", key: "headline", placeholder: "Truth-Gate cleared phrase as the primary headline…" },
-      { label: "Letter Sections", type: "checklist", key: "sections", items: ["Who this letter is for", "Before — the Enemy Narrative trap", "Why nothing has worked", "The mechanism / transformation", "Proof — results and stories", "The offer breakdown", "Guarantee", "FAQ and objection handling", "Close and CTA"] },
-      { label: "Primary CTA", type: "input", key: "cta", placeholder: "The single action you want the reader to take…" },
-    ],
-    actions: ["Save Brief", "Write Letter"],
-  },
-  vsl: {
-    objective: "Video script that pre-frames, qualifies, and pre-sells before the discovery call.",
-    sections: [
-      { label: "Script Sections", type: "checklist", key: "sections", items: ["Hook — who this is for (first 10 seconds)", "The problem — Enemy Narrative", "Why current solutions fail", "The mechanism — a different way", "Proof — result or story", "The offer — what happens next", "CTA — how to book / apply"] },
-      { label: "Target Duration", type: "select", key: "duration", options: ["— Select —", "Under 5 minutes", "5–10 minutes", "10–20 minutes"] },
-      { label: "Tone", type: "select", key: "tone", options: ["— Select —", "Calm authority", "Urgent / direct", "Conversational", "Story-first"] },
-    ],
-    actions: ["Save Brief", "Write Script"],
-  },
-  social: {
-    objective: "Platform-specific creative formatted for organic distribution.",
-    sections: [
-      { label: "Platforms", type: "checklist", key: "platforms", items: ["Instagram Reels", "Instagram Feed", "TikTok", "YouTube Shorts", "LinkedIn", "X / Twitter", "Facebook"] },
-      { label: "Content Pillars", type: "repeater", key: "pillars", placeholder: "e.g. Enemy Narrative · Mechanism · Social Proof · Belief Shift", addLabel: "+ Add pillar" },
-      { label: "Posting Frequency", type: "input", key: "frequency", placeholder: "e.g. 3x per week on Instagram, 1x on LinkedIn" },
-    ],
-    actions: ["Save Social Plan", "Generate Assets"],
-  },
-  salesscript: {
-    objective: "Closing script structured around objection resolution and commitment.",
-    sections: [
-      { label: "Script Sections", type: "checklist", key: "sections", items: ["Open — set the frame", "Situation questions", "Problem questions — surface the pain", "Implication — what happens if nothing changes", "Need-payoff — the ideal outcome", "Transition to offer", "Present price with anchor", "Handle objections", "Commitment and next steps"] },
-      { label: "Top Objections to Pre-Handle", type: "repeater", key: "objections", placeholder: "e.g. I need to think about it · The price is too high…", addLabel: "+ Add objection" },
-    ],
-    actions: ["Save Script Outline", "Write Full Script"],
-  },
-  setting: {
-    objective: "Appointment-setting conversation guide for cold and warm outreach.",
-    sections: [
-      { label: "Outreach Channel", type: "select", key: "channel", options: ["— Select —", "Cold email", "LinkedIn DM", "Instagram DM", "SMS", "Cold call", "Warm referral"] },
-      { label: "Opening Hook", type: "textarea", key: "hook", placeholder: "The first sentence or subject line — specific to their situation…" },
-      { label: "Qualification Questions", type: "repeater", key: "qualifiers", placeholder: "A question that confirms they match the ICP…", addLabel: "+ Add qualifier" },
-      { label: "Call-to-Book CTA", type: "input", key: "cta", placeholder: "The line that asks for the booking…" },
-    ],
-    actions: ["Save Script", "Test Sequence"],
-  },
-  ghl: {
-    objective: "Integrate GoHighLevel — pipelines, automations, and contact records.",
-    sections: [
-      { label: "Sub-Account Name", type: "input", key: "account", placeholder: "Your GHL sub-account name…" },
-      { label: "API Key", type: "input", key: "api", placeholder: "Paste your GHL API key…" },
-      { label: "Pipeline Name", type: "input", key: "pipeline", placeholder: "e.g. TruthMarket — Sales Pipeline" },
-      { label: "Setup Checklist", type: "checklist", key: "checks", items: ["Sub-account created", "API key generated and saved", "Pipeline stages match offer stages", "Lead source tags configured", "Automation triggers tested"] },
-    ],
-    actions: ["Test Connection", "Save Settings"],
-  },
-  meta: {
-    objective: "Link Meta Business Manager and ad account for campaign deployment.",
-    sections: [
-      { label: "Business Manager ID", type: "input", key: "bmid", placeholder: "15-digit Business Manager ID…" },
-      { label: "Ad Account ID", type: "input", key: "aaid", placeholder: "act_XXXXXXXXXXXXXXX" },
-      { label: "Facebook Page Name", type: "input", key: "page", placeholder: "Page name connected to the ad account…" },
-      { label: "Setup Checklist", type: "checklist", key: "checks", items: ["Business Manager verified", "Ad account in good standing", "Payment method added", "Facebook Page linked", "Instagram account connected"] },
-    ],
-    actions: ["Verify Connection", "Save Settings"],
-  },
-  pixel: {
-    objective: "Deploy and verify the Meta Pixel for conversion tracking and retargeting.",
-    sections: [
-      { label: "Pixel ID", type: "input", key: "pixelid", placeholder: "16-digit Pixel ID from Events Manager…" },
-      { label: "Install Method", type: "select", key: "method", options: ["— Select —", "Manual (GTM)", "GHL native integration", "WordPress plugin", "Direct code injection"] },
-      { label: "Events to Track", type: "checklist", key: "events", items: ["PageView", "ViewContent", "Lead", "CompleteRegistration", "Purchase", "InitiateCheckout"] },
-      { label: "Verification Status", type: "select", key: "status", options: ["— Select —", "Not installed", "Installed — not verified", "Verified and firing"] },
-    ],
-    actions: ["Open Events Manager", "Test Events"],
-  },
-  launchads: {
-    objective: "Publish validated ad creative to your live campaign structure.",
-    sections: [
-      { label: "Campaign Objective", type: "select", key: "objective", options: ["— Select —", "Leads", "Conversions", "Traffic", "Awareness", "Engagement"] },
-      { label: "Daily Budget", type: "input", key: "budget", placeholder: "e.g. £30/day" },
-      { label: "Target Audience Summary", type: "textarea", key: "audience", placeholder: "Age, interests, behaviours, lookalike source…" },
-      { label: "Launch Checklist", type: "checklist", key: "checks", items: ["Ad creative approved", "Pixel verified and firing", "Landing page live and tested", "Form connected to CRM", "Budget and schedule set", "UTM parameters added"] },
-    ],
-    actions: ["Review & Launch", "Save Campaign Brief"],
-  },
-  socials: {
-    objective: "Sync social accounts for organic publishing and engagement tracking.",
-    sections: [
-      { label: "Accounts to Connect", type: "checklist", key: "accounts", items: ["Instagram Business", "Facebook Page", "LinkedIn Profile / Page", "TikTok Business", "X / Twitter", "YouTube"] },
-      { label: "Publishing Tool", type: "select", key: "tool", options: ["— Select —", "GHL Social Planner", "Buffer", "Later", "Metricool", "Native (manual)"] },
-    ],
-    actions: ["Connect Accounts", "Test Post"],
-  },
-  website: {
-    objective: "Publish your landing page to a live domain with SSL and analytics.",
-    sections: [
-      { label: "Domain Name", type: "input", key: "domain", placeholder: "e.g. youroffer.com" },
-      { label: "Hosting / Builder", type: "select", key: "host", options: ["— Select —", "GHL Funnel Builder", "Webflow", "WordPress", "Framer", "Leadpages", "Custom"] },
-      { label: "Launch Checklist", type: "checklist", key: "checks", items: ["Domain purchased and DNS configured", "SSL certificate active (HTTPS)", "Page loads under 3 seconds", "Mobile-responsive confirmed", "Analytics installed", "Privacy policy added"] },
-    ],
-    actions: ["Check Site", "Mark Live"],
-  },
-  form: {
-    objective: "Install intake forms, test submission flow, and confirm CRM data routing.",
-    sections: [
-      { label: "Form Tool", type: "select", key: "tool", options: ["— Select —", "GHL Form Builder", "Typeform", "Tally", "JotForm", "Custom HTML"] },
-      { label: "Form URL", type: "input", key: "url", placeholder: "Paste the live form URL…" },
-      { label: "Form Fields", type: "repeater", key: "fields", placeholder: "e.g. Full name · Email · Phone · How did you hear about us?", addLabel: "+ Add field" },
-      { label: "Test Checklist", type: "checklist", key: "checks", items: ["Test submission sent", "Contact created in CRM", "Confirmation email triggered", "Owner notified of new lead", "Form embedded on landing page"] },
-    ],
-    actions: ["Send Test Submission", "Mark Complete"],
-  },
-};
-
-const phases = [
-  { id: "research", label: "01 — Research", tagline: "Find your market", color: "#C9A84C",
-    modules: [{ id: "pain", icon: "⚡", title: "Bleeding-Neck Pains" }, { id: "icp", icon: "🎯", title: "ICP Segmentation" }, { id: "competitor", icon: "🔍", title: "Competitor Search" }] },
-  { id: "offer", label: "02 — Offer", tagline: "Build your solution", color: "#7EB8A4",
-    modules: [{ id: "offer-creation", icon: "🏗️", title: "Offer Creation" }, { id: "gtm", icon: "🚀", title: "Proven GTM" }, { id: "pricing", icon: "⚖️", title: "Pricing Expert" }, { id: "validation", icon: "✅", title: "Validation Score" }, { id: "builder", icon: "📐", title: "Offer Builder" }] },
-  { id: "creative", label: "03 — Creative", tagline: "Attention & conversion", color: "#B07CC6",
-    modules: [{ id: "avatar", icon: "👤", title: "Avatar Intake" }, { id: "adspy", icon: "📡", title: "Ad Spy" }, { id: "contentspy", icon: "📰", title: "Content Spy" }, { id: "genads", icon: "🎬", title: "Generate Ads" }, { id: "logo", icon: "✦", title: "Generate Logo" }, { id: "landing", icon: "🖥️", title: "Landing Page" }, { id: "salespres", icon: "📊", title: "Sales Presentation" }, { id: "nurture", icon: "📬", title: "Nurture Sequences" }, { id: "salesletter", icon: "📄", title: "Sales Letter" }, { id: "vsl", icon: "🎥", title: "Pre-Call VSL" }, { id: "social", icon: "📱", title: "Social Assets" }, { id: "salesscript", icon: "💬", title: "Sales Script" }, { id: "setting", icon: "📞", title: "Setting Script" }] },
-  { id: "launch", label: "04 — Launch", tagline: "Deploy & integrate", color: "#E07B54",
-    modules: [{ id: "ghl", icon: "🔗", title: "Connect GHL" }, { id: "meta", icon: "Ⓜ️", title: "Connect Meta" }, { id: "pixel", icon: "📍", title: "Install Pixel" }, { id: "launchads", icon: "▶️", title: "Launch Ads" }, { id: "socials", icon: "🌐", title: "Connect Socials" }, { id: "website", icon: "🏠", title: "Deploy Website" }, { id: "form", icon: "📋", title: "Add Form & Test" }] },
 ];
 
-function TruthMarket() {
-  const [activePhase, setActivePhase] = useState("research");
-  const [completed, setCompleted] = useState({});
+// ── Workspace definitions (TM modules only) ──────────────────────────────
+const workspaces = {
+  pain: { objective: "Extract 3–5 urgent pains in verbatim prospect language. These become the S2 VoC Buying Language Bank. No paraphrasing — the exact phrase someone used when the performance dropped is irreplaceable.", sections: [{ label: "Pain Statements (verbatim)", type: "repeater", key: "pains", placeholder: "Exact words from forum, review, interview, or DM…", addLabel: "+ Add verbatim pain" }, { label: "Source Evidence", type: "repeater", key: "sources", placeholder: "URL, screenshot reference, or interview date…", addLabel: "+ Add source" }, { label: "Urgency Rating", type: "scale", key: "urgency", hint: "1 = background noise · 5 = bleeding neck", max: 5 }], actions: ["Save to VoC Bank"] },
+  icp: { objective: "Define the target buyer at qualifying precision — specific enough to accept or reject on first contact. This becomes STR S1 and feeds directly into OFR Asset 2.", sections: [{ label: "Who They Are", type: "textarea", key: "who", placeholder: "Age, role, situation, context…" }, { label: "Goal", type: "textarea", key: "goal", placeholder: "Immediate goal and deeper aspiration…" }, { label: "What They've Already Tried", type: "textarea", key: "tried", placeholder: "Previous solutions and why they failed…" }, { label: "Disqualifiers", type: "repeater", key: "disq", placeholder: "A trait that removes them from consideration…", addLabel: "+ Add disqualifier" }], actions: ["Save ICP", "Export to S1"] },
+  competitor: { objective: "Map S4 Enemy Analysis. Name the external system as The Enemy — never the prospect's character. Document the competitor gap that no existing solution fills.", sections: [{ label: "Competitors", type: "competitor-table", key: "competitors" }, { label: "The Shared Enemy (external system)", type: "textarea", key: "enemy", placeholder: "Name the convergent forces trapping the prospect — cultural, economic, systemic — not their character…" }, { label: "The Gap No One Is Filling", type: "textarea", key: "gap", placeholder: "What specific outcome is missing from every existing solution?" }], actions: ["Save S4 Analysis"] },
+  avatar: { objective: "Document verbatim voice, fears, desires, and buying triggers. All VoC entries must be sourced from actual data — not the operator's projection of what the prospect feels.", sections: [{ label: "Avatar Name", type: "input", key: "name", placeholder: "Give them a name — makes the writing feel real" }, { label: "Voice (verbatim phrases only)", type: "repeater", key: "voice", placeholder: "Exact words from source material…", addLabel: "+ Add phrase" }, { label: "Top 3 Fears (data-sourced)", type: "repeater", key: "fears", placeholder: "What appeared in forums, reviews, or interviews?", addLabel: "+ Add fear" }, { label: "Top 3 Desires (data-sourced)", type: "repeater", key: "desires", placeholder: "What do they secretly hope for?", addLabel: "+ Add desire" }, { label: "Buying Triggers", type: "textarea", key: "triggers", placeholder: "What event typically precedes a purchase decision?" }], actions: ["Save Avatar"] },
+  adspy: { objective: "Feed S4 Enemy Analysis with competitor creative intelligence. The gap you find here is the white space the Hook Library will own.", sections: [{ label: "Competitors to Audit", type: "repeater", key: "comps", placeholder: "Competitor name or Meta Ad Library URL…", addLabel: "+ Add competitor" }, { label: "Winning Ad Formats", type: "checklist", key: "formats", items: ["UGC / talking head", "Testimonial carousel", "Problem–agitation hook", "Before / after", "Direct offer", "Educational value"] }, { label: "Dominant Hook Patterns", type: "repeater", key: "hooks", placeholder: "Recurring opening line or visual device…", addLabel: "+ Add hook pattern" }, { label: "The Creative Gap", type: "textarea", key: "gap", placeholder: "What angle or emotion is no competitor currently owning?" }], actions: ["Save Ad Spy"] },
+  contentspy: { objective: "Feed Asset 4 Amanah Content Engine. Map the organic content landscape to identify which angles are underserved and which formats are proven.", sections: [{ label: "Top Performing Accounts", type: "repeater", key: "accounts", placeholder: "Handle and platform…", addLabel: "+ Add account" }, { label: "Proven Formats", type: "checklist", key: "formats", items: ["Long-form essay", "Short-form video", "Thread / carousel", "Case study post", "Hot take / contrarian", "Tutorial / how-to", "Story arc"] }, { label: "Winning Hooks", type: "repeater", key: "hooks", placeholder: "A hook pattern that consistently generates engagement…", addLabel: "+ Add hook" }, { label: "Organic Gap", type: "textarea", key: "gap", placeholder: "What topic or format is underserved in this space?" }], actions: ["Save to Content Engine"] },
+  "offer-creation": { objective: "Design Assets 1 and 3. The Promise must carry a G-label. G1/G2 requires named proof in Asset 8. If proof is absent, label PROOF PENDING — it cannot appear in client-facing materials until resolved.", sections: [{ label: "The Promise (must have G-Label)", type: "glabel-field", key: "promise", placeholder: "The specific, deliverable-grounded commitment the client can use as an acceptance test…" }, { label: "The Mechanism", type: "textarea", key: "mechanism", placeholder: "The specific, ethical process that reliably produces the promised result…" }, { label: "What's Included (Scope Map)", type: "repeater", key: "included", placeholder: "A specific deliverable or commitment…", addLabel: "+ Add inclusion" }, { label: "What's Excluded (Scope Map)", type: "repeater", key: "excluded", placeholder: "A specific non-commitment or boundary…", addLabel: "+ Add exclusion" }], actions: ["Save to OFR Asset Pack"] },
+  pricing: { objective: "Build Assets 5 and 7. Every item in the Value Stack must have a Perceived Monetary Value that justifies the price. Pricing that cannot be explained honestly is a G-label issue.", sections: [{ label: "Value Stack (Assets 5)", type: "value-stack", key: "stack" }, { label: "Market Price Range", type: "range-input", key: "range" }, { label: "Your Price", type: "input", key: "price", placeholder: "Final price — e.g. £2,400 or $997/mo" }, { label: "Pricing Rationale", type: "textarea", key: "rationale", placeholder: "Why is this price an honest exchange for what is being delivered?" }], actions: ["Save Pricing", "Add to Asset 7"] },
+  validation: { objective: "The Ihsan Baseline Gate (IC-OFR). All five checks must pass before the OFR Approval Brief is prepared. This is not a formality — it is the integrity checkpoint before covenant-making.", sections: [{ label: "IC-OFR Gate Checks", type: "checklist", key: "checks", items: ["Promise is specific and carries a valid G-label", "Mechanism is named and unique — not generic", "ICP is defined to qualifying precision", "Scope Map names both inclusions AND exclusions", "Guarantee has all four elements: Trigger · Scope · Remedy · Operator Boundaries", "Value Stack justifies the price honestly", "All G1/G2 claims have named proof assets in Asset 8", "No verbal commitments exceed what the Scope Map supports"] }], actions: ["Run IC-OFR Gate", "Proceed to Builder"] },
+  builder: { objective: "Finalise the complete OFR Asset Pack. PROOF PENDING items enter the Pipeline Integrity Ledger and carry their restriction forward through OUT, SAL, and FUL — they cannot be presented as substantiated.", sections: [{ label: "Guarantee (Asset 6)", type: "textarea", key: "guarantee", placeholder: "Trigger condition · Scope · Remedy · Operator-side boundaries…" }, { label: "Proof Assets (Asset 8)", type: "repeater", key: "proof", placeholder: "Case study, metric, testimonial, credential — or PROOF PENDING…", addLabel: "+ Add proof asset" }, { label: "Payment Structure (Asset 7)", type: "input", key: "payment", placeholder: "e.g. 50% upfront, 50% on delivery" }, { label: "PROOF PENDING Items", type: "repeater", key: "pending", placeholder: "Claim marked PROOF PENDING — restriction: G3/G4 only until resolved…", addLabel: "+ Add PP item" }], actions: ["Finalise Asset Pack", "Open Pipeline Ledger"] },
+  gtm: { objective: "Channel Plan from OUT Research Factory. Motion selection must respect S5 constraints from QAL — time, capital, skills, and energy limits are not negotiable at this stage.", sections: [{ label: "Primary GTM Motion", type: "select", key: "motion", options: ["— Select —", "Outbound (cold email / DM)", "Paid Ads (Meta / Google)", "Content-led (organic)", "Referral / Partnerships", "Community-led"] }, { label: "Primary Channel", type: "input", key: "channel", placeholder: "e.g. LinkedIn DMs, Instagram Reels, Google Search…" }, { label: "First 30-Day Target", type: "input", key: "target", placeholder: "e.g. 3 discovery calls booked (G3 — aspirational)" }, { label: "S5 Constraints Honoured?", type: "checklist", key: "constraints", items: ["Motion respects financial runway", "Delivery volume fits capacity (hours/week)", "Channel aligns with operator's verified skills", "Energy profile from QAL respected"] }], actions: ["Save Channel Plan"] },
+  genads: { objective: "Hook Library. Hooks are attention devices — they must not contain or imply guarantees. All hooks sourced from Truth-Gate cleared phrases or S3 emotional triggers.", sections: [{ label: "Primary Hook (Truth-Gate source)", type: "textarea", key: "hook", placeholder: "Opening line from Truth-Gate cleared VoC phrase…" }, { label: "Ad Format", type: "select", key: "format", options: ["— Select —", "Static image", "Short video (15–30s)", "Carousel", "Long video (60s+)", "Story"] }, { label: "Core Message", type: "textarea", key: "body", placeholder: "The argument — must stay within OFR Scope Map…" }, { label: "CTA", type: "input", key: "cta", placeholder: "e.g. Book a call · Apply now · Download" }, { label: "G-Label Review", type: "select", key: "glabel", options: ["— Select —", "G1 — Proven (evidence confirmed)", "G2 — Reasonable (evidence in progress)", "G3 — Plausible (no current evidence)", "G4 — Aspirational / future state"] }, { label: "Scarcity Checkpoint", type: "checklist", key: "scarcity", items: ["No false urgency in copy", "No manufactured scarcity", "No result-implying language without G1/G2 proof", "Hook is an invitation — not a grasp"] }], actions: ["Save to Hook Library"] },
+  logo: { objective: "Brand mark aligned to STR Positioning Statement.", sections: [{ label: "Brand Name", type: "input", key: "name", placeholder: "As it should appear on the mark" }, { label: "Positioning Line (from STR Asset 3)", type: "input", key: "positioning", placeholder: "Paste the STR Positioning Statement here…" }, { label: "Visual Direction", type: "select", key: "direction", options: ["— Select —", "Minimal / wordmark", "Geometric / abstract mark", "Editorial / serif", "Bold / modern sans", "Organic / hand-drawn"] }, { label: "References", type: "textarea", key: "refs", placeholder: "Describe references, avoid styles, hex codes…" }], actions: ["Save Logo Brief"] },
+  landing: { objective: "Outreach asset built from STR assets and Truth-Gate cleared phrases. Every section has a BBOS source. No claim exceeds the G-label ceiling.", sections: [{ label: "Sections Checklist", type: "checklist", key: "sections", items: ["Hero — Truth-Gate cleared headline", "Sub-headline — names the ICP specifically", "Problem section — Enemy Narrative Before state", "Mechanism — how it works (no inflation)", "Offer scope — what's included (matches Scope Map)", "Social proof — G-labelled testimonials", "Guarantee (all four elements)", "FAQ — handles STR Objection Intelligence", "CTA — above fold and at close"] }, { label: "Hero Headline (Truth-Gate source)", type: "input", key: "headline", placeholder: "Verbatim Truth-Gate cleared phrase…" }, { label: "Primary CTA", type: "input", key: "cta", placeholder: "e.g. Book your free strategy call" }], actions: ["Save Page Plan"] },
+  nurture: { objective: "Cold lead warm-up sequences. No manipulation, no pressure, no false urgency. Each message: one purpose, one CTA — or no CTA when the message is pure value.", sections: [{ label: "Sequence Type", type: "select", key: "type", options: ["— Select —", "Lead magnet follow-up", "Cold outreach warm-up", "Re-engagement", "Post-call no-show"] }, { label: "Sequence Length", type: "select", key: "length", options: ["— Select —", "3 emails", "5 emails", "7 emails", "10 emails"] }, { label: "Email Angles (one per email)", type: "repeater", key: "angles", placeholder: "e.g. Email 1 — Enemy Narrative · Email 2 — Proof story…", addLabel: "+ Add email angle" }], actions: ["Save Sequence Plan"] },
+  salesletter: { objective: "Long-form outreach asset built on Enemy Narrative and Truth-Gate cleared phrases. G-label discipline required throughout — no inflation in the close.", sections: [{ label: "Headline (Truth-Gate cleared)", type: "input", key: "headline", placeholder: "Truth-Gate phrase as primary headline…" }, { label: "Letter Sections", type: "checklist", key: "sections", items: ["Who this letter is for — names the ICP", "Before — Enemy Narrative trap (external forces)", "Why nothing has worked — competitor gap", "The mechanism — unique and named", "Proof (G-labelled)", "Offer scope — matches Scope Map", "Guarantee (all four elements)", "FAQ — objection handling", "Close and CTA"] }, { label: "Primary CTA", type: "input", key: "cta", placeholder: "The single action the reader should take…" }], actions: ["Save Letter Brief"] },
+  vsl: { objective: "Pre-qualifies and pre-frames before the discovery call. Reduces unfit SAL conversations. No claims that exceed the G-label ceiling.", sections: [{ label: "Script Sections", type: "checklist", key: "sections", items: ["Hook — who this is for (10 seconds)", "The Enemy — why they're stuck", "Why current solutions fail (competitor gap)", "The mechanism — a different way", "Proof (G-labelled)", "The offer — what happens next", "CTA — how to book / apply"] }, { label: "Duration", type: "select", key: "duration", options: ["— Select —", "Under 5 minutes", "5–10 minutes", "10–20 minutes"] }, { label: "Tone", type: "select", key: "tone", options: ["— Select —", "Calm authority", "Urgent / direct", "Conversational", "Story-first"] }], actions: ["Save VSL Brief"] },
+  social: { objective: "Organic creative from Amanah Content Engine angles. All outcome claims carry G-labels. Platforms match operator capacity from S5 constraints.", sections: [{ label: "Platforms", type: "checklist", key: "platforms", items: ["Instagram Reels", "Instagram Feed", "TikTok", "YouTube Shorts", "LinkedIn", "X / Twitter", "Facebook"] }, { label: "Content Pillars (from Asset 4)", type: "repeater", key: "pillars", placeholder: "Angle from Amanah Content Engine…", addLabel: "+ Add pillar" }, { label: "Posting Frequency", type: "input", key: "frequency", placeholder: "Must respect S5 energy and capacity constraints…" }], actions: ["Save Social Plan"] },
+  setting: { objective: "Appointment-setting guide. The ICP disqualifiers from STR S1 must be applied here — unfit prospects should not be booked. Every booking is a covenant, not a number.", sections: [{ label: "Outreach Channel", type: "select", key: "channel", options: ["— Select —", "Cold email", "LinkedIn DM", "Instagram DM", "SMS", "Cold call", "Warm referral"] }, { label: "Opening Hook", type: "textarea", key: "hook", placeholder: "Specific to their situation — sourced from S2 VoC or S4 gap…" }, { label: "ICP Qualification Questions", type: "repeater", key: "qualifiers", placeholder: "A question that confirms they match the ICP…", addLabel: "+ Add qualifier" }, { label: "Binary Disqualifiers (from ICP)", type: "repeater", key: "disqs", placeholder: "A condition that ends the conversation respectfully…", addLabel: "+ Add disqualifier" }], actions: ["Save Setting Script"] },
+  ghl: { objective: "CRM infrastructure. Pipeline stages in GHL must mirror BBOS stages. Lead source tags enable stage-level diagnostic at OPT.", sections: [{ label: "Sub-Account Name", type: "input", key: "account", placeholder: "GHL sub-account name…" }, { label: "Pipeline Name", type: "input", key: "pipeline", placeholder: "e.g. BBOS — Sales Pipeline" }, { label: "Setup Checklist", type: "checklist", key: "checks", items: ["Pipeline stages mirror BBOS stages (STR → OFR → SAL → FUL)", "Lead source tags configured", "Automation triggers tested", "API key secured"] }], actions: ["Test Connection"] },
+  meta: { objective: "Paid channel setup. Ad account must be in good standing before creative deployment.", sections: [{ label: "Business Manager ID", type: "input", key: "bmid", placeholder: "15-digit Business Manager ID…" }, { label: "Ad Account ID", type: "input", key: "aaid", placeholder: "act_XXXXXXXXXXXXXXX" }, { label: "Setup Checklist", type: "checklist", key: "checks", items: ["Business Manager verified", "Ad account in good standing", "Payment method added", "Facebook Page linked", "Instagram connected"] }], actions: ["Verify Connection"] },
+  pixel: { objective: "Conversion tracking. Pixel must fire correctly before ads launch. Events Manager verification is required.", sections: [{ label: "Pixel ID", type: "input", key: "pixelid", placeholder: "16-digit Pixel ID…" }, { label: "Install Method", type: "select", key: "method", options: ["— Select —", "Manual (GTM)", "GHL native", "WordPress plugin", "Direct injection"] }, { label: "Events to Track", type: "checklist", key: "events", items: ["PageView", "ViewContent", "Lead", "CompleteRegistration", "Purchase"] }, { label: "Status", type: "select", key: "status", options: ["— Select —", "Not installed", "Installed — not verified", "Verified and firing"] }], actions: ["Test Events"] },
+  launchads: { objective: "Creative deployment. All ads must have passed the Scarcity Checkpoint and G-label review before going live.", sections: [{ label: "Campaign Objective", type: "select", key: "objective", options: ["— Select —", "Leads", "Conversions", "Traffic", "Awareness"] }, { label: "Daily Budget", type: "input", key: "budget", placeholder: "e.g. £30/day" }, { label: "Audience Summary", type: "textarea", key: "audience", placeholder: "Age · interests · lookalike source…" }, { label: "Pre-Launch Checklist", type: "checklist", key: "checks", items: ["Creative passed Scarcity Checkpoint", "G-label review complete — no inflated claims", "Pixel verified and firing", "Landing page live and tested", "Form connected to CRM", "UTM parameters added"] }], actions: ["Review & Launch"] },
+  socials: { objective: "Organic infrastructure aligned to Amanah Content Engine.", sections: [{ label: "Accounts to Connect", type: "checklist", key: "accounts", items: ["Instagram Business", "Facebook Page", "LinkedIn", "TikTok Business", "X / Twitter", "YouTube"] }, { label: "Publishing Tool", type: "select", key: "tool", options: ["— Select —", "GHL Social Planner", "Buffer", "Later", "Metricool", "Native (manual)"] }], actions: ["Connect Accounts"] },
+  website: { objective: "Live infrastructure. Page must be verified before paid traffic is directed to it.", sections: [{ label: "Domain", type: "input", key: "domain", placeholder: "e.g. youroffer.com" }, { label: "Builder", type: "select", key: "host", options: ["— Select —", "GHL Funnel Builder", "Webflow", "WordPress", "Framer", "Custom"] }, { label: "Launch Checklist", type: "checklist", key: "checks", items: ["Domain and DNS configured", "SSL active (HTTPS)", "Loads under 3 seconds", "Mobile-responsive", "Analytics installed", "Privacy policy added"] }], actions: ["Check Site", "Mark Live"] },
+  form: { objective: "Lead capture confirmation. Test submission must confirm CRM routing before traffic is directed to the page.", sections: [{ label: "Form Tool", type: "select", key: "tool", options: ["— Select —", "GHL Form Builder", "Typeform", "Tally", "JotForm", "Custom HTML"] }, { label: "Form URL", type: "input", key: "url", placeholder: "Live form URL…" }, { label: "Test Checklist", type: "checklist", key: "checks", items: ["Test submission sent", "Contact created in CRM", "Confirmation email triggered", "Owner notified", "Form on live page"] }], actions: ["Send Test"] },
+  salespres: { objective: "Fit Call structure. Enemy Narrative precedes the offer. Price is never introduced before the problem is named. Verbal claims must not exceed the OFR Scope Map.", sections: [{ label: "Deck Sections", type: "checklist", key: "sections", items: ["1. Who this is for — names the ICP", "2. The Enemy — why they're stuck", "3. Why existing solutions fail", "4. The mechanism", "5. The promise (G-labelled)", "6. Proof (G-labelled)", "7. Offer scope — matches Scope Map", "8. Guarantee (all four elements)", "9. Pricing and next steps"] }, { label: "Format", type: "select", key: "format", options: ["— Select —", "Live video call", "Loom / pre-recorded", "In-person deck", "PDF send-ahead"] }], actions: ["Save Deck Structure"] },
+  salesscript: { objective: "Fit Call script. Binary disqualifiers from the ICP must be held. Objection responses must stay within the G-label ceiling. No verbal inflation.", sections: [{ label: "Script Sections", type: "checklist", key: "sections", items: ["Open — set the frame", "Situation questions", "Problem questions — surface the pain", "Implication — what happens if nothing changes", "Need-payoff — the ideal outcome", "Transition to offer", "Present price with honest anchor", "Handle objections — no G-label inflation", "Commitment and next steps"] }, { label: "Top Objections to Pre-Handle", type: "repeater", key: "objections", placeholder: "e.g. I need to think about it…", addLabel: "+ Add objection" }, { label: "Verbal Inflation Checkpoint", type: "checklist", key: "vic", items: ["No result claims made that exceed G-label ceiling", "No commitments made beyond Scope Map", "Binary ICP disqualifiers honoured — no exceptions"] }], actions: ["Save Sales Script"] },
+};
+
+// ── Field defaults ─────────────────────────────────────────────────────────
+function defaultFor(sec) {
+  if (sec.type === "repeater") return [""];
+  if (sec.type === "checklist") return {};
+  if (sec.type === "scale") return 3;
+  if (sec.type === "competitor-table") return [{ name: "", price: "", weakness: "" }];
+  if (sec.type === "value-stack") return [{ item: "", value: "" }];
+  if (sec.type === "range-input") return { min: "", max: "" };
+  if (sec.type === "glabel-field") return { text: "", g: "" };
+  return "";
+}
+
+// ── App ────────────────────────────────────────────────────────────────────
+function App() {
+  const [activeStage, setActiveStage] = useState("str");
   const [openModule, setOpenModule] = useState(null);
+  const [completed, setCompleted] = useState({});
   const [wsData, setWsData] = useState({});
   const [notes, setNotes] = useState({});
+  const [tab, setTab] = useState("tm"); // "tm" | "bbos"
 
-  const currentPhase = phases.find(p => p.id === activePhase);
-  const openPhase = phases.find(p => p.modules.some(m => m.id === openModule));
-  const openMod = openPhase?.modules.find(m => m.id === openModule);
-  const accent = openPhase?.color || currentPhase.color;
+  const stage = stages.find(s => s.id === activeStage);
+  const openMod = stage?.tmModules?.find(m => m.id === openModule);
+  const accent = stage.color;
 
-  const totalModules = phases.reduce((a, p) => a + p.modules.length, 0);
-  const totalDone = Object.values(completed).filter(Boolean).length;
-  const totalPct = Math.round((totalDone / totalModules) * 100);
+  const totalTM = stages.reduce((a, s) => a + s.tmModules.length, 0);
+  const doneTM = Object.values(completed).filter(Boolean).length;
+  const pct = Math.round((doneTM / totalTM) * 100);
 
-  const phasePct = (phase) => {
-    const done = phase.modules.filter(m => completed[m.id]).length;
-    return { done, total: phase.modules.length, pct: Math.round((done / phase.modules.length) * 100) };
-  };
+  const stageDone = (s) => s.tmModules.filter(m => completed[m.id]).length;
 
   const setField = (mid, key, val) =>
     setWsData(p => ({ ...p, [mid]: { ...(p[mid] || {}), [key]: val } }));
-  const getField = (mid, key, fb = "") => wsData[mid]?.[key] ?? fb;
+  const getField = (mid, key, sec) => wsData[mid]?.[key] ?? defaultFor(sec);
 
   return (
-    <div style={S.root}>
-      <div style={S.grain} />
-      <header style={S.header}>
-        <div style={S.wordmark}>
-          <span style={S.wT}>T</span><span style={S.wR}>RUTH</span>
-          <span style={S.wDot}>·</span>
-          <span style={S.wR}>MARKET</span>
-          <span style={S.wSub}>Research Intelligence Platform</span>
+    <div style={A.root}>
+      <div style={A.grain} />
+
+      {/* Header */}
+      <header style={A.hdr}>
+        <div style={A.hdrLeft}>
+          <div style={A.wm}>
+            <span style={A.wmT}>T</span><span style={A.wmR}>RUTH</span>
+            <span style={A.wmX}>×</span>
+            <span style={A.wmB}>BBOS</span>
+          </div>
+          <div style={A.wmSub}>TruthMarket mapped to the Barakah Business Operating System</div>
         </div>
-        <div style={S.hpWrap}>
-          <span style={S.hpTxt}>Overall</span>
-          <div style={S.hpBar}><div style={{ ...S.hpFill, width: `${totalPct}%` }} /></div>
-          <span style={S.hpTxt}>{totalDone}/{totalModules}</span>
+        <div style={A.hdrRight}>
+          <span style={A.hpLbl}>TM Modules</span>
+          <div style={A.hpBar}><div style={{ ...A.hpFill, width: `${pct}%` }} /></div>
+          <span style={A.hpLbl}>{doneTM}/{totalTM}</span>
         </div>
       </header>
 
-      <div style={S.body}>
+      <div style={A.body}>
         {/* Sidebar */}
-        <nav style={S.sidebar}>
-          {phases.map(ph => {
-            const { done, total, pct } = phasePct(ph);
-            const active = activePhase === ph.id;
+        <nav style={A.nav}>
+          {stages.map(s => {
+            const done = stageDone(s);
+            const active = activeStage === s.id;
+            const hasTM = s.tmModules.length > 0;
             return (
-              <button key={ph.id} style={{ ...S.navBtn, borderLeft: `3px solid ${active ? ph.color : "transparent"}`, background: active ? "#161616" : "transparent" }}
-                onClick={() => { setActivePhase(ph.id); setOpenModule(null); }}>
-                <div style={{ ...S.navDot, background: active ? ph.color : "#272727" }} />
-                <div style={S.navTxt}>
-                  <div style={{ ...S.navLbl, color: active ? ph.color : "#666" }}>{ph.label}</div>
-                  <div style={S.navTag}>{ph.tagline}</div>
-                  <div style={S.navPr}>
-                    <div style={S.navPrBar}><div style={{ ...S.navPrFill, width: `${pct}%`, background: ph.color }} /></div>
-                    <span style={S.navPrN}>{done}/{total}</span>
-                  </div>
+              <button key={s.id}
+                style={{ ...A.navBtn, borderLeft: `3px solid ${active ? s.color : "transparent"}`, background: active ? "#171717" : "transparent" }}
+                onClick={() => { setActiveStage(s.id); setOpenModule(null); setTab("tm"); }}>
+                <div>
+                  <div style={{ ...A.navCode, color: active ? s.color : "#444" }}>{s.code}</div>
+                  <div style={{ ...A.navLabel, color: active ? "#ddd" : "#555" }}>{s.label}</div>
+                  {hasTM && (
+                    <div style={A.navProg}>
+                      <div style={A.navBar}><div style={{ ...A.navFill, width: `${Math.round((done/s.tmModules.length)*100)}%`, background: s.color }} /></div>
+                      <span style={{ ...A.navN, color: done === s.tmModules.length && done > 0 ? s.color : "#333" }}>{done}/{s.tmModules.length}</span>
+                    </div>
+                  )}
+                  {!hasTM && <div style={A.navBbosOnly}>BBOS native</div>}
                 </div>
               </button>
             );
           })}
-          <div style={S.divider} />
-          <div style={S.lgnd}>
-            <div style={S.lgRow}><span style={{ ...S.lgDot, border: "1px solid #2e2e2e" }} />Not started</div>
-            <div style={S.lgRow}><span style={{ ...S.lgDot, background: "#C9A84C", border: "none" }} />Complete</div>
-          </div>
         </nav>
 
-        {/* Grid */}
-        <main style={{ ...S.main, maxWidth: openModule ? 300 : "100%", minWidth: openModule ? 200 : 0 }}>
-          <div style={S.phHead}>
+        {/* Main */}
+        <main style={{ ...A.main, maxWidth: openModule ? 320 : "100%" }}>
+          {/* Stage header */}
+          <div style={A.stageHead}>
             <div>
-              <div style={{ ...S.phLbl, color: currentPhase.color }}>{currentPhase.label}</div>
-              <div style={S.phTag}>{currentPhase.tagline}</div>
+              <div style={{ ...A.stageCode, color: accent }}>{stage.code} — {stage.label}</div>
+              <div style={{ ...A.stageAttr, color: accent }}>⧁ {stage.attr}</div>
+              <div style={A.stageAttrMeaning}>{stage.attrMeaning}</div>
             </div>
-            <div style={S.phStat}>{(() => { const { done, total } = phasePct(currentPhase); return `${done} of ${total}`; })()}</div>
+            {stage.tmModules.length > 0 && (
+              <div style={A.stageStat}>{stageDone(stage)} of {stage.tmModules.length} TM modules</div>
+            )}
           </div>
-          <div style={{ ...S.grid, gridTemplateColumns: openModule ? "1fr" : "repeat(auto-fill,minmax(190px,1fr))" }}>
-            {currentPhase.modules.map(mod => {
-              const done = !!completed[mod.id];
-              const isOpen = openModule === mod.id;
-              return (
-                <div key={mod.id} style={{ ...S.card, ...(done ? S.cDone : {}), ...(isOpen ? { borderColor: currentPhase.color, background: "#1c1c1c" } : {}) }}
-                  onClick={() => setOpenModule(isOpen ? null : mod.id)}>
-                  <div style={S.cTop}>
-                    <span style={S.cIcon}>{mod.icon}</span>
-                    <button style={{ ...S.chkBtn, background: done ? currentPhase.color : "transparent", borderColor: done ? currentPhase.color : "#333" }}
-                      onClick={e => { e.stopPropagation(); setCompleted(p => ({ ...p, [mod.id]: !p[mod.id] })); }}>
-                      {done && <span style={S.chkMk}>✓</span>}
-                    </button>
-                  </div>
-                  <div style={{ ...S.cTitle, color: isOpen ? "#fff" : "#bbb" }}>{mod.title}</div>
-                  {isOpen && <div style={{ ...S.cHint, color: currentPhase.color }}>workspace open →</div>}
+
+          <div style={A.stagePurpose}>{stage.purpose}</div>
+
+          {/* Tabs */}
+          <div style={A.tabs}>
+            {stage.tmModules.length > 0 && (
+              <button style={{ ...A.tab, borderBottom: tab === "tm" ? `2px solid ${accent}` : "2px solid transparent", color: tab === "tm" ? accent : "#444" }}
+                onClick={() => setTab("tm")}>TruthMarket Modules</button>
+            )}
+            <button style={{ ...A.tab, borderBottom: tab === "bbos" ? `2px solid ${accent}` : "2px solid transparent", color: tab === "bbos" ? accent : "#444" }}
+              onClick={() => setTab("bbos")}>BBOS Native Assets</button>
+          </div>
+
+          {/* TM Modules */}
+          {(tab === "tm" || stage.tmModules.length === 0) && tab !== "bbos" && (
+            <>
+              {stage.tmModules.length === 0 ? (
+                <div style={A.emptyState}>
+                  <div style={{ ...A.emptyIcon, color: accent }}>⧁</div>
+                  <div style={A.emptyTitle}>BBOS-native stage</div>
+                  <div style={A.emptyNote}>{stage.gateNote}</div>
+                  <button style={A.emptyBtn} onClick={() => setTab("bbos")}>View BBOS Assets →</button>
                 </div>
-              );
-            })}
-          </div>
+              ) : (
+                <>
+                  <div style={{ ...A.grid, gridTemplateColumns: openModule ? "1fr" : "repeat(auto-fill,minmax(200px,1fr))" }}>
+                    {stage.tmModules.map(mod => {
+                      const done = !!completed[mod.id];
+                      const isOpen = openModule === mod.id;
+                      return (
+                        <div key={mod.id}
+                          style={{ ...A.card, ...(done ? A.cDone : {}), ...(isOpen ? { borderColor: accent, background: "#1c1c1c" } : {}) }}
+                          onClick={() => setOpenModule(isOpen ? null : mod.id)}>
+                          <div style={A.cTop}>
+                            <span style={A.cIcon}>{mod.icon}</span>
+                            <button style={{ ...A.chk, background: done ? accent : "transparent", borderColor: done ? accent : "#2e2e2e" }}
+                              onClick={e => { e.stopPropagation(); setCompleted(p => ({ ...p, [mod.id]: !p[mod.id] })); }}>
+                              {done && <span style={A.chkMk}>✓</span>}
+                            </button>
+                          </div>
+                          <div style={{ ...A.cTitle, color: isOpen ? "#fff" : "#bbb" }}>{mod.title}</div>
+                          <div style={{ ...A.cAnchor, color: accent }}>BBOS: {mod.bbosAnchor}</div>
+                          {isOpen && <div style={A.cNote}>{mod.note}</div>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ ...A.gateBox, borderColor: accent + "33" }}>
+                    <span style={{ ...A.gateLbl, color: accent }}>Stage Gate</span>
+                    <p style={A.gateTxt}>{stage.gateNote}</p>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+
+          {/* BBOS Assets */}
+          {tab === "bbos" && (
+            <div style={A.bbosSection}>
+              {stage.bbosAssets.map((asset, i) => (
+                <div key={i} style={A.bbosRow}>
+                  <div style={{ ...A.bbosDot, background: accent }} />
+                  <div>
+                    <div style={{ ...A.bbosAssetName, color: "#ccc" }}>{asset.label}</div>
+                    <div style={A.bbosAssetNote}>{asset.note}</div>
+                  </div>
+                </div>
+              ))}
+              {stage.gateNote && (
+                <div style={{ ...A.gateBox, marginTop: 24, borderColor: accent + "33" }}>
+                  <span style={{ ...A.gateLbl, color: accent }}>Stage Gate</span>
+                  <p style={A.gateTxt}>{stage.gateNote}</p>
+                </div>
+              )}
+            </div>
+          )}
         </main>
 
         {/* Detail Panel */}
-        {openModule && openMod && (
-          <aside style={S.panel}>
-            <div style={S.panelScroll}>
-              <div style={S.pHead}>
+        {openModule && openMod && workspaces[openModule] && (
+          <aside style={A.panel}>
+            <div style={A.panelInner}>
+              <div style={A.pHead}>
                 <div>
-                  <div style={{ ...S.pPhLbl, color: accent }}>{openPhase?.label}</div>
-                  <div style={S.pTitle}><span style={S.pIcon}>{openMod.icon}</span>{openMod.title}</div>
+                  <div style={{ ...A.pCode, color: accent }}>{stage.code} · {openMod.bbosAnchor}</div>
+                  <div style={A.pTitle}><span>{openMod.icon}</span> {openMod.title}</div>
                 </div>
-                <button style={S.closeBtn} onClick={() => setOpenModule(null)}>✕</button>
+                <button style={A.closeBtn} onClick={() => setOpenModule(null)}>✕</button>
               </div>
-              <div style={S.objBox}>
-                <span style={{ ...S.objLbl, color: accent }}>Objective</span>
-                <p style={S.objTxt}>{workspaces[openModule]?.objective}</p>
+              <div style={A.objBox}>
+                <span style={{ ...A.objLbl, color: accent }}>BBOS Objective</span>
+                <p style={A.objTxt}>{workspaces[openModule].objective}</p>
               </div>
-              <div style={{ ...S.accentBar, background: accent }} />
-              <div style={S.fieldStack}>
-                {workspaces[openModule]?.sections.map(sec => (
-                  <Section key={sec.key} sec={sec} modId={openModule}
-                    value={getField(openModule, sec.key, sec.type === "repeater" ? [""] : sec.type === "checklist" ? {} : sec.type === "scale" ? 3 : sec.type === "competitor-table" ? [{ name: "", price: "", weakness: "" }] : sec.type === "value-stack" ? [{ item: "", value: "" }] : sec.type === "range-input" ? { min: "", max: "" } : sec.type === "glabel-field" ? { text: "", g: "" } : "")}
-                    onChange={val => setField(openModule, sec.key, val)}
-                    accent={accent} />
+              <div style={{ ...A.accentLine, background: accent }} />
+              <div style={A.fieldStack}>
+                {workspaces[openModule].sections.map(sec => (
+                  <Field key={sec.key} sec={sec} value={getField(openModule, sec.key, sec)}
+                    onChange={val => setField(openModule, sec.key, val)} accent={accent} />
                 ))}
-                <div style={S.fld}>
-                  <div style={S.fLbl}>Notes</div>
-                  <textarea style={S.ta} rows={3} placeholder="Private working notes…"
+                <div style={A.fld}>
+                  <div style={A.fLbl}>Notes</div>
+                  <textarea style={A.ta} rows={3} placeholder="Private working notes…"
                     value={notes[openModule] || ""} onChange={e => setNotes(p => ({ ...p, [openModule]: e.target.value }))} />
                 </div>
               </div>
-              <div style={S.actBar}>
-                {workspaces[openModule]?.actions.map((a, i) => (
-                  <button key={i} style={i === 0 ? { ...S.actP, background: accent } : S.actS}>{a}</button>
+              <div style={A.actBar}>
+                {workspaces[openModule].actions.map((a, i) => (
+                  <button key={i} style={i === 0 ? { ...A.actP, background: accent } : A.actS}>{a}</button>
                 ))}
-                <button style={S.actC} onClick={() => setCompleted(p => ({ ...p, [openModule]: !p[openModule] }))}>
-                  {completed[openModule] ? "✓ Completed" : "Mark Complete"}
+                <button style={A.actC} onClick={() => setCompleted(p => ({ ...p, [openModule]: !p[openModule] }))}>
+                  {completed[openModule] ? "✓ Complete" : "Mark Complete"}
                 </button>
               </div>
             </div>
@@ -460,211 +489,138 @@ function TruthMarket() {
   );
 }
 
-function Section({ sec, modId, value, onChange, accent }) {
-  if (sec.type === "textarea") return (
-    <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-      <textarea style={S.ta} rows={4} placeholder={sec.placeholder} value={value} onChange={e => onChange(e.target.value)} /></div>
-  );
-  if (sec.type === "input") return (
-    <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-      <input style={S.inp} placeholder={sec.placeholder} value={value} onChange={e => onChange(e.target.value)} /></div>
-  );
-  if (sec.type === "select") return (
-    <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-      <select style={S.sel} value={value} onChange={e => onChange(e.target.value)}>
-        {sec.options.map(o => <option key={o}>{o}</option>)}
-      </select></div>
-  );
+// ── Field Component ────────────────────────────────────────────────────────
+function Field({ sec, value, onChange, accent }) {
+  if (sec.type === "textarea") return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div><textarea style={A.ta} rows={4} placeholder={sec.placeholder} value={value} onChange={e => onChange(e.target.value)} /></div>;
+  if (sec.type === "input") return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div><input style={A.inp} placeholder={sec.placeholder} value={value} onChange={e => onChange(e.target.value)} /></div>;
+  if (sec.type === "select") return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div><select style={A.sel} value={value} onChange={e => onChange(e.target.value)}>{sec.options.map(o => <option key={o}>{o}</option>)}</select></div>;
   if (sec.type === "repeater") {
     const items = Array.isArray(value) ? value : [""];
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        {items.map((it, i) => (
-          <div key={i} style={S.repRow}>
-            <input style={{ ...S.inp, flex: 1 }} placeholder={sec.placeholder} value={it}
-              onChange={e => { const n = [...items]; n[i] = e.target.value; onChange(n); }} />
-            {items.length > 1 && <button style={S.remBtn} onClick={() => onChange(items.filter((_, j) => j !== i))}>✕</button>}
-          </div>
-        ))}
-        <button style={{ ...S.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...items, ""])}>{sec.addLabel}</button>
-      </div>
-    );
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div>{items.map((it, i) => <div key={i} style={A.repRow}><input style={{ ...A.inp, flex: 1 }} placeholder={sec.placeholder} value={it} onChange={e => { const n=[...items]; n[i]=e.target.value; onChange(n); }} />{items.length>1&&<button style={A.remBtn} onClick={()=>onChange(items.filter((_,j)=>j!==i))}>✕</button>}</div>)}<button style={{ ...A.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...items, ""])}>{sec.addLabel}</button></div>;
   }
   if (sec.type === "checklist") {
-    const ch = (typeof value === "object" && !Array.isArray(value)) ? value : {};
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        {sec.items.map(it => (
-          <div key={it} style={S.chkRow} onClick={() => onChange({ ...ch, [it]: !ch[it] })}>
-            <div style={{ ...S.chkBox, background: ch[it] ? accent : "transparent", borderColor: ch[it] ? accent : "#333" }}>
-              {ch[it] && <span style={S.chkBoxMk}>✓</span>}
-            </div>
-            <span style={{ ...S.chkRowLbl, color: ch[it] ? "#bbb" : "#555", textDecoration: ch[it] ? "line-through" : "none" }}>{it}</span>
-          </div>
-        ))}
-      </div>
-    );
+    const ch = (typeof value==="object"&&!Array.isArray(value)) ? value : {};
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div>{sec.items.map(it => <div key={it} style={A.chkRow} onClick={() => onChange({ ...ch, [it]: !ch[it] })}><div style={{ ...A.chkBox, background: ch[it] ? accent : "transparent", borderColor: ch[it] ? accent : "#2e2e2e" }}>{ch[it]&&<span style={A.chkMk2}>✓</span>}</div><span style={{ ...A.chkLbl, color: ch[it] ? "#bbb" : "#555", textDecoration: ch[it] ? "line-through" : "none" }}>{it}</span></div>)}</div>;
   }
   if (sec.type === "scale") {
-    const v = typeof value === "number" ? value : 3;
-    const labels = ["", "Background noise", "Present but tolerable", "Significant pain", "High urgency", "Bleeding neck"];
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        <div style={S.scaleHint}>{sec.hint}</div>
-        <div style={S.scaleRow}>
-          {[1,2,3,4,5].map(n => (
-            <button key={n} style={{ ...S.scalePip, background: n <= v ? accent : "#1e1e1e", color: n <= v ? "#111" : "#444" }}
-              onClick={() => onChange(n)}>{n}</button>
-          ))}
-          <span style={{ ...S.scaleLbl, color: accent }}>{labels[v]}</span>
-        </div>
-      </div>
-    );
+    const v = typeof value==="number" ? value : 3;
+    const lbs = ["","Background noise","Present but tolerable","Significant pain","High urgency","Bleeding neck"];
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div><div style={A.scaleHint}>{sec.hint}</div><div style={A.scaleRow}>{[1,2,3,4,5].map(n=><button key={n} style={{ ...A.scalePip, background: n<=v ? accent : "#1a1a1a", color: n<=v ? "#111" : "#444" }} onClick={()=>onChange(n)}>{n}</button>)}<span style={{ color: accent, fontSize: 10, fontStyle: "italic", marginLeft: 4 }}>{lbs[v]}</span></div></div>;
   }
   if (sec.type === "glabel-field") {
-    const v = typeof value === "object" ? value : { text: "", g: "" };
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        <textarea style={S.ta} rows={3} placeholder={sec.placeholder} value={v.text || ""}
-          onChange={e => onChange({ ...v, text: e.target.value })} />
-        <div style={S.glRow}>
-          <span style={S.glLbl}>G-Label:</span>
-          {["G1","G2","G3","G4"].map(g => (
-            <button key={g} style={{ ...S.glBtn, background: v.g === g ? accent : "#1a1a1a", color: v.g === g ? "#111" : "#444", borderColor: v.g === g ? accent : "#2e2e2e" }}
-              onClick={() => onChange({ ...v, g })}>{g}</button>
-          ))}
-        </div>
-      </div>
-    );
+    const v = typeof value==="object" ? value : { text: "", g: "" };
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div><textarea style={A.ta} rows={3} placeholder={sec.placeholder} value={v.text||""} onChange={e=>onChange({...v,text:e.target.value})} /><div style={A.glRow}><span style={A.glLbl}>G-Label:</span>{["G1","G2","G3","G4"].map(g=><button key={g} style={{ ...A.glBtn, background: v.g===g ? accent : "#1a1a1a", color: v.g===g ? "#111" : "#444", borderColor: v.g===g ? accent : "#2e2e2e" }} onClick={()=>onChange({...v,g})}>{g}</button>)}</div></div>;
   }
   if (sec.type === "competitor-table") {
-    const rows = Array.isArray(value) && value.length ? value : [{ name: "", price: "", weakness: "" }];
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        {rows.map((r, i) => (
-          <div key={i} style={{ ...S.repRow, gap: 4, marginBottom: 4 }}>
-            <input style={{ ...S.inp, flex: 2 }} placeholder="Competitor…" value={r.name} onChange={e => { const n=[...rows]; n[i]={...r,name:e.target.value}; onChange(n); }} />
-            <input style={{ ...S.inp, flex: 1 }} placeholder="Price…" value={r.price} onChange={e => { const n=[...rows]; n[i]={...r,price:e.target.value}; onChange(n); }} />
-            <input style={{ ...S.inp, flex: 2 }} placeholder="Weakness…" value={r.weakness} onChange={e => { const n=[...rows]; n[i]={...r,weakness:e.target.value}; onChange(n); }} />
-          </div>
-        ))}
-        <button style={{ ...S.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...rows, { name:"", price:"", weakness:"" }])}>+ Add competitor</button>
-      </div>
-    );
+    const rows = Array.isArray(value)&&value.length ? value : [{ name:"",price:"",weakness:"" }];
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div>{rows.map((r,i)=><div key={i} style={{ ...A.repRow, gap: 4, marginBottom: 4 }}><input style={{ ...A.inp, flex:2 }} placeholder="Competitor…" value={r.name} onChange={e=>{ const n=[...rows]; n[i]={...r,name:e.target.value}; onChange(n); }} /><input style={{ ...A.inp, flex:1 }} placeholder="Price…" value={r.price} onChange={e=>{ const n=[...rows]; n[i]={...r,price:e.target.value}; onChange(n); }} /><input style={{ ...A.inp, flex:2 }} placeholder="Weakness…" value={r.weakness} onChange={e=>{ const n=[...rows]; n[i]={...r,weakness:e.target.value}; onChange(n); }} /></div>)}<button style={{ ...A.addBtn, color: accent, borderColor: accent }} onClick={()=>onChange([...rows,{name:"",price:"",weakness:""}])}>+ Add competitor</button></div>;
   }
   if (sec.type === "value-stack") {
-    const rows = Array.isArray(value) && value.length ? value : [{ item: "", value: "" }];
-    const total = rows.reduce((a, r) => a + (parseFloat(r.value)||0), 0);
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        {rows.map((r, i) => (
-          <div key={i} style={{ ...S.repRow, gap: 4, marginBottom: 4 }}>
-            <input style={{ ...S.inp, flex: 3 }} placeholder="Item…" value={r.item} onChange={e => { const n=[...rows]; n[i]={...r,item:e.target.value}; onChange(n); }} />
-            <input style={{ ...S.inp, flex: 1 }} placeholder="£…" value={r.value} onChange={e => { const n=[...rows]; n[i]={...r,value:e.target.value}; onChange(n); }} />
-          </div>
-        ))}
-        <button style={{ ...S.addBtn, color: accent, borderColor: accent }} onClick={() => onChange([...rows, { item:"", value:"" }])}>+ Add item</button>
-        <div style={S.stackTot}>Stack total: <strong style={{ color: accent }}>£{total.toLocaleString()}</strong></div>
-      </div>
-    );
+    const rows = Array.isArray(value)&&value.length ? value : [{ item:"",value:"" }];
+    const total = rows.reduce((a,r)=>a+(parseFloat(r.value)||0),0);
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div>{rows.map((r,i)=><div key={i} style={{ ...A.repRow, gap:4, marginBottom:4 }}><input style={{ ...A.inp, flex:3 }} placeholder="Item…" value={r.item} onChange={e=>{ const n=[...rows]; n[i]={...r,item:e.target.value}; onChange(n); }} /><input style={{ ...A.inp, flex:1 }} placeholder="£…" value={r.value} onChange={e=>{ const n=[...rows]; n[i]={...r,value:e.target.value}; onChange(n); }} /></div>)}<button style={{ ...A.addBtn, color: accent, borderColor: accent }} onClick={()=>onChange([...rows,{item:"",value:""}])}>+ Add item</button><div style={{ fontSize:10, color:"#555", marginTop:6, paddingTop:6, borderTop:"1px solid #1a1a1a" }}>Stack total: <strong style={{ color:accent }}>£{total.toLocaleString()}</strong></div></div>;
   }
   if (sec.type === "range-input") {
-    const v = (typeof value === "object" && !Array.isArray(value)) ? value : { min: "", max: "" };
-    return (
-      <div style={S.fld}><div style={S.fLbl}>{sec.label}</div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <input style={{ ...S.inp, flex: 1 }} placeholder="Low (£)…" value={v.min} onChange={e => onChange({ ...v, min: e.target.value })} />
-          <span style={{ color: "#444" }}>–</span>
-          <input style={{ ...S.inp, flex: 1 }} placeholder="High (£)…" value={v.max} onChange={e => onChange({ ...v, max: e.target.value })} />
-        </div>
-      </div>
-    );
+    const v = (typeof value==="object"&&!Array.isArray(value)) ? value : { min:"",max:"" };
+    return <div style={A.fld}><div style={A.fLbl}>{sec.label}</div><div style={{ display:"flex", gap:8, alignItems:"center" }}><input style={{ ...A.inp, flex:1 }} placeholder="Low (£)…" value={v.min} onChange={e=>onChange({...v,min:e.target.value})} /><span style={{ color:"#444" }}>–</span><input style={{ ...A.inp, flex:1 }} placeholder="High (£)…" value={v.max} onChange={e=>onChange({...v,max:e.target.value})} /></div></div>;
   }
   return null;
 }
 
-const S = {
-  root: { fontFamily: "'Georgia','Times New Roman',serif", background: "#111", minHeight: "100vh", color: "#e0d8cc", position: "relative", overflow: "hidden" },
-  grain: { position: "fixed", inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`, pointerEvents: "none", zIndex: 0, opacity: 0.5 },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 28px", borderBottom: "1px solid #1a1a1a", position: "sticky", top: 0, background: "#111", zIndex: 10 },
-  wordmark: { display: "flex", alignItems: "baseline", gap: 3 },
-  wT: { fontSize: 24, fontWeight: 700, color: "#C9A84C" },
-  wR: { fontSize: 18, fontWeight: 400, letterSpacing: "0.22em", color: "#ddd" },
-  wDot: { fontSize: 15, color: "#C9A84C", margin: "0 7px" },
-  wSub: { fontSize: 9, letterSpacing: "0.28em", color: "#3a3a3a", textTransform: "uppercase", marginLeft: 14 },
-  hpWrap: { display: "flex", alignItems: "center", gap: 8 },
-  hpTxt: { fontSize: 10, color: "#555", letterSpacing: "0.1em" },
-  hpBar: { width: 120, height: 2, background: "#1e1e1e", borderRadius: 1 },
-  hpFill: { height: "100%", background: "#C9A84C", borderRadius: 1, transition: "width 0.4s" },
-  body: { display: "flex", position: "relative", zIndex: 1, height: "calc(100vh - 57px)" },
-  sidebar: { width: 200, flexShrink: 0, borderRight: "1px solid #1a1a1a", padding: "20px 0", display: "flex", flexDirection: "column", gap: 2, background: "#0c0c0c", overflowY: "auto" },
-  navBtn: { display: "flex", alignItems: "flex-start", gap: 9, padding: "11px 16px", background: "transparent", border: "none", cursor: "pointer", width: "100%", textAlign: "left" },
-  navDot: { width: 6, height: 6, borderRadius: "50%", marginTop: 5, flexShrink: 0 },
-  navTxt: { display: "flex", flexDirection: "column", gap: 2, flex: 1 },
-  navLbl: { fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" },
-  navTag: { fontSize: 9, color: "#3a3a3a", fontStyle: "italic" },
-  navPr: { display: "flex", alignItems: "center", gap: 5, marginTop: 4 },
-  navPrBar: { flex: 1, height: 1.5, background: "#1a1a1a", borderRadius: 1 },
-  navPrFill: { height: "100%", borderRadius: 1, transition: "width 0.4s" },
-  navPrN: { fontSize: 9, color: "#3a3a3a" },
-  divider: { height: 1, background: "#181818", margin: "14px 16px" },
-  lgnd: { padding: "0 16px", display: "flex", flexDirection: "column", gap: 6 },
-  lgRow: { display: "flex", alignItems: "center", gap: 6, fontSize: 9, color: "#3a3a3a" },
-  lgDot: { width: 6, height: 6, borderRadius: "50%", flexShrink: 0, background: "transparent" },
-  main: { flex: 1, padding: "22px 22px", overflowY: "auto", transition: "max-width 0.25s ease", minWidth: 0 },
-  phHead: { display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid #1a1a1a" },
-  phLbl: { fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700, marginBottom: 4 },
-  phTag: { fontSize: 20, fontWeight: 400, fontStyle: "italic", lineHeight: 1.2 },
-  phStat: { fontSize: 10, color: "#3a3a3a" },
-  grid: { display: "grid", gap: 10 },
-  card: { background: "#141414", border: "1px solid #1e1e1e", borderRadius: 5, padding: "14px 12px", cursor: "pointer", transition: "border-color 0.2s, background 0.2s", display: "flex", flexDirection: "column", gap: 8 },
-  cDone: { opacity: 0.45 },
-  cTop: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-  cIcon: { fontSize: 16 },
-  chkBtn: { width: 18, height: 18, borderRadius: "50%", border: "1px solid", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0 },
-  chkMk: { fontSize: 9, color: "#111", fontWeight: 700 },
-  cTitle: { fontSize: 12, fontWeight: 600, lineHeight: 1.3, transition: "color 0.2s" },
-  cHint: { fontSize: 9, letterSpacing: "0.1em", fontStyle: "italic" },
-  panel: { width: 400, flexShrink: 0, borderLeft: "1px solid #1a1a1a", background: "#0c0c0c", overflowY: "auto" },
-  panelScroll: { padding: "22px 20px", display: "flex", flexDirection: "column" },
-  pHead: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 },
-  pPhLbl: { fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 5 },
-  pTitle: { fontSize: 18, fontWeight: 600, display: "flex", alignItems: "center", gap: 7 },
-  pIcon: { fontSize: 16 },
-  closeBtn: { background: "transparent", border: "none", color: "#383838", fontSize: 14, cursor: "pointer", padding: "3px 5px" },
-  objBox: { marginBottom: 14 },
-  objLbl: { fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", display: "block", marginBottom: 5, fontWeight: 700 },
-  objTxt: { fontSize: 11, color: "#666", lineHeight: 1.65, margin: 0, fontStyle: "italic" },
-  accentBar: { height: 1, marginBottom: 18, opacity: 0.25 },
-  fieldStack: { display: "flex", flexDirection: "column", gap: 16 },
-  fld: { display: "flex", flexDirection: "column", gap: 6 },
-  fLbl: { fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "#777", fontWeight: 700 },
-  ta: { background: "#141414", border: "1px solid #242424", borderRadius: 3, color: "#bbb", fontSize: 11, fontFamily: "inherit", padding: "9px 10px", resize: "vertical", lineHeight: 1.65, outline: "none" },
-  inp: { background: "#141414", border: "1px solid #242424", borderRadius: 3, color: "#bbb", fontSize: 11, fontFamily: "inherit", padding: "8px 10px", outline: "none" },
-  sel: { background: "#141414", border: "1px solid #242424", borderRadius: 3, color: "#bbb", fontSize: 11, fontFamily: "inherit", padding: "8px 10px", outline: "none" },
-  repRow: { display: "flex", gap: 5, alignItems: "center" },
-  remBtn: { background: "transparent", border: "none", color: "#333", fontSize: 10, cursor: "pointer", padding: "3px 5px" },
-  addBtn: { background: "transparent", border: "1px solid", borderRadius: 3, fontSize: 10, padding: "5px 9px", cursor: "pointer", fontFamily: "inherit", letterSpacing: "0.06em", alignSelf: "flex-start" },
-  chkRow: { display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" },
-  chkBox: { width: 12, height: 12, borderRadius: 2, border: "1px solid", flexShrink: 0, marginTop: 2, display: "flex", alignItems: "center", justifyContent: "center" },
-  chkBoxMk: { fontSize: 8, color: "#111", fontWeight: 700 },
-  chkRowLbl: { fontSize: 11, lineHeight: 1.5 },
-  scaleHint: { fontSize: 10, color: "#555", fontStyle: "italic" },
-  scaleRow: { display: "flex", alignItems: "center", gap: 6 },
-  scalePip: { width: 28, height: 28, borderRadius: 3, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" },
-  scaleLbl: { fontSize: 10, fontStyle: "italic", marginLeft: 4 },
-  glRow: { display: "flex", alignItems: "center", gap: 5, marginTop: 2 },
-  glLbl: { fontSize: 9, color: "#555", letterSpacing: "0.1em" },
-  glBtn: { border: "1px solid", borderRadius: 2, padding: "3px 8px", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
-  stackTot: { fontSize: 11, color: "#555", marginTop: 6, paddingTop: 6, borderTop: "1px solid #1a1a1a" },
-  actBar: { marginTop: 20, paddingTop: 16, borderTop: "1px solid #1a1a1a", display: "flex", flexWrap: "wrap", gap: 7 },
-  actP: { border: "none", borderRadius: 3, color: "#111", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", padding: "9px 14px", cursor: "pointer", fontFamily: "inherit" },
-  actS: { background: "transparent", border: "1px solid #252525", borderRadius: 3, color: "#666", fontSize: 10, padding: "8px 12px", cursor: "pointer", fontFamily: "inherit" },
-  actC: { background: "transparent", border: "1px dashed #2e2e2e", borderRadius: 3, color: "#555", fontSize: 10, padding: "8px 12px", cursor: "pointer", fontFamily: "inherit", marginLeft: "auto" },
+// ── Styles ─────────────────────────────────────────────────────────────────
+const A = {
+  root: { fontFamily:"'Georgia','Times New Roman',serif", background:"#0f0f0f", minHeight:"100vh", color:"#e0d8cc", position:"relative", overflow:"hidden" },
+  grain: { position:"fixed", inset:0, backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")`, pointerEvents:"none", zIndex:0 },
+  hdr: { display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 26px", borderBottom:"1px solid #181818", position:"sticky", top:0, background:"#0f0f0f", zIndex:10 },
+  hdrLeft: { display:"flex", flexDirection:"column", gap:3 },
+  wm: { display:"flex", alignItems:"baseline", gap:4 },
+  wmT: { fontSize:22, fontWeight:700, color:"#C9A84C" },
+  wmR: { fontSize:18, fontWeight:400, letterSpacing:"0.2em", color:"#ddd" },
+  wmX: { fontSize:14, color:"#444", margin:"0 8px" },
+  wmB: { fontSize:18, fontWeight:700, letterSpacing:"0.14em", color:"#7eb8a4" },
+  wmSub: { fontSize:9, letterSpacing:"0.24em", color:"#333", textTransform:"uppercase" },
+  hdrRight: { display:"flex", alignItems:"center", gap:8 },
+  hpLbl: { fontSize:9, color:"#444", letterSpacing:"0.12em" },
+  hpBar: { width:100, height:2, background:"#1a1a1a", borderRadius:1 },
+  hpFill: { height:"100%", background:"#C9A84C", borderRadius:1, transition:"width 0.4s" },
+  body: { display:"flex", height:"calc(100vh - 53px)", position:"relative", zIndex:1 },
+  nav: { width:180, flexShrink:0, borderRight:"1px solid #161616", padding:"18px 0", display:"flex", flexDirection:"column", gap:1, background:"#0a0a0a", overflowY:"auto" },
+  navBtn: { display:"flex", padding:"10px 14px", background:"transparent", border:"none", cursor:"pointer", width:"100%", textAlign:"left" },
+  navCode: { fontSize:9, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", marginBottom:2 },
+  navLabel: { fontSize:12, fontWeight:400, letterSpacing:"0.04em" },
+  navProg: { display:"flex", alignItems:"center", gap:5, marginTop:5 },
+  navBar: { flex:1, height:1.5, background:"#181818", borderRadius:1 },
+  navFill: { height:"100%", borderRadius:1, transition:"width 0.4s" },
+  navN: { fontSize:9 },
+  navBbosOnly: { fontSize:9, color:"#2e2e2e", fontStyle:"italic", marginTop:4 },
+  main: { flex:1, padding:"24px 26px", overflowY:"auto", transition:"max-width 0.25s", minWidth:0 },
+  stageHead: { display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 },
+  stageCode: { fontSize:11, fontWeight:700, letterSpacing:"0.2em", textTransform:"uppercase", marginBottom:4 },
+  stageAttr: { fontSize:13, fontWeight:600, letterSpacing:"0.08em", marginBottom:2 },
+  stageAttrMeaning: { fontSize:10, color:"#444", fontStyle:"italic" },
+  stageStat: { fontSize:10, color:"#333" },
+  stagePurpose: { fontSize:12, color:"#666", lineHeight:1.7, fontStyle:"italic", marginBottom:18, paddingBottom:16, borderBottom:"1px solid #161616" },
+  tabs: { display:"flex", gap:0, marginBottom:20, borderBottom:"1px solid #161616" },
+  tab: { background:"transparent", border:"none", borderBottom:"2px solid transparent", padding:"8px 16px 9px", fontSize:10, letterSpacing:"0.14em", textTransform:"uppercase", cursor:"pointer", fontFamily:"inherit" },
+  grid: { display:"grid", gap:10 },
+  card: { background:"#141414", border:"1px solid #1c1c1c", borderRadius:5, padding:"14px 12px", cursor:"pointer", transition:"border-color 0.2s, background 0.2s", display:"flex", flexDirection:"column", gap:7 },
+  cDone: { opacity:0.4 },
+  cTop: { display:"flex", justifyContent:"space-between", alignItems:"center" },
+  cIcon: { fontSize:16 },
+  chk: { width:18, height:18, borderRadius:"50%", border:"1px solid", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", padding:0 },
+  chkMk: { fontSize:9, color:"#111", fontWeight:700 },
+  cTitle: { fontSize:12, fontWeight:600, lineHeight:1.3 },
+  cAnchor: { fontSize:9, letterSpacing:"0.12em", textTransform:"uppercase", fontWeight:600 },
+  cNote: { fontSize:10, color:"#555", lineHeight:1.6, fontStyle:"italic" },
+  gateBox: { marginTop:20, border:"1px solid", borderRadius:4, padding:"14px 16px" },
+  gateLbl: { fontSize:9, letterSpacing:"0.2em", textTransform:"uppercase", fontWeight:700, display:"block", marginBottom:7 },
+  gateTxt: { fontSize:11, color:"#666", lineHeight:1.7, fontStyle:"italic" },
+  bbosSection: { display:"flex", flexDirection:"column", gap:12 },
+  bbosRow: { display:"flex", alignItems:"flex-start", gap:12, padding:"10px 0", borderBottom:"1px solid #161616" },
+  bbosDot: { width:6, height:6, borderRadius:"50%", flexShrink:0, marginTop:5 },
+  bbosAssetName: { fontSize:12, fontWeight:600, marginBottom:3 },
+  bbosAssetNote: { fontSize:10, color:"#555", fontStyle:"italic", lineHeight:1.5 },
+  emptyState: { display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"60px 40px", gap:12, textAlign:"center" },
+  emptyIcon: { fontSize:32 },
+  emptyTitle: { fontSize:14, fontWeight:600, color:"#666" },
+  emptyNote: { fontSize:11, color:"#444", lineHeight:1.7, fontStyle:"italic", maxWidth:440 },
+  emptyBtn: { marginTop:8, background:"transparent", border:"1px solid #2a2a2a", borderRadius:3, color:"#666", fontSize:11, padding:"8px 16px", cursor:"pointer", fontFamily:"inherit" },
+  panel: { width:400, flexShrink:0, borderLeft:"1px solid #161616", background:"#0a0a0a", overflowY:"auto" },
+  panelInner: { padding:"22px 20px" },
+  pHead: { display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:14 },
+  pCode: { fontSize:9, letterSpacing:"0.22em", textTransform:"uppercase", marginBottom:5 },
+  pTitle: { fontSize:17, fontWeight:600, display:"flex", alignItems:"center", gap:7 },
+  closeBtn: { background:"transparent", border:"none", color:"#333", fontSize:14, cursor:"pointer", padding:"3px 5px" },
+  objBox: { marginBottom:14 },
+  objLbl: { fontSize:9, letterSpacing:"0.22em", textTransform:"uppercase", display:"block", marginBottom:5, fontWeight:700 },
+  objTxt: { fontSize:11, color:"#666", lineHeight:1.65, margin:0, fontStyle:"italic" },
+  accentLine: { height:1, marginBottom:18, opacity:0.2 },
+  fieldStack: { display:"flex", flexDirection:"column", gap:16 },
+  fld: { display:"flex", flexDirection:"column", gap:6 },
+  fLbl: { fontSize:9, letterSpacing:"0.2em", textTransform:"uppercase", color:"#777", fontWeight:700 },
+  ta: { background:"#111", border:"1px solid #1e1e1e", borderRadius:3, color:"#bbb", fontSize:11, fontFamily:"inherit", padding:"9px 10px", resize:"vertical", lineHeight:1.65 },
+  inp: { background:"#111", border:"1px solid #1e1e1e", borderRadius:3, color:"#bbb", fontSize:11, fontFamily:"inherit", padding:"8px 10px" },
+  sel: { background:"#111", border:"1px solid #1e1e1e", borderRadius:3, color:"#bbb", fontSize:11, fontFamily:"inherit", padding:"8px 10px" },
+  repRow: { display:"flex", gap:5, alignItems:"center" },
+  remBtn: { background:"transparent", border:"none", color:"#2a2a2a", fontSize:10, cursor:"pointer", padding:"3px 5px" },
+  addBtn: { background:"transparent", border:"1px solid", borderRadius:3, fontSize:10, padding:"5px 9px", cursor:"pointer", fontFamily:"inherit", letterSpacing:"0.06em", alignSelf:"flex-start" },
+  chkRow: { display:"flex", alignItems:"flex-start", gap:8, cursor:"pointer", paddingBottom:2 },
+  chkBox: { width:12, height:12, borderRadius:2, border:"1px solid", flexShrink:0, marginTop:2, display:"flex", alignItems:"center", justifyContent:"center" },
+  chkMk2: { fontSize:8, color:"#111", fontWeight:700 },
+  chkLbl: { fontSize:11, lineHeight:1.5 },
+  scaleHint: { fontSize:10, color:"#555", fontStyle:"italic" },
+  scaleRow: { display:"flex", alignItems:"center", gap:6 },
+  scalePip: { width:28, height:28, borderRadius:3, border:"none", cursor:"pointer", fontSize:12, fontWeight:700, fontFamily:"inherit" },
+  glRow: { display:"flex", alignItems:"center", gap:5, marginTop:2 },
+  glLbl: { fontSize:9, color:"#555", letterSpacing:"0.1em" },
+  glBtn: { border:"1px solid", borderRadius:2, padding:"3px 8px", fontSize:10, fontWeight:700, cursor:"pointer", fontFamily:"inherit" },
+  actBar: { marginTop:20, paddingTop:16, borderTop:"1px solid #161616", display:"flex", flexWrap:"wrap", gap:7 },
+  actP: { border:"none", borderRadius:3, color:"#111", fontSize:11, fontWeight:700, letterSpacing:"0.06em", padding:"9px 14px", cursor:"pointer", fontFamily:"inherit" },
+  actS: { background:"transparent", border:"1px solid #222", borderRadius:3, color:"#666", fontSize:10, padding:"8px 12px", cursor:"pointer", fontFamily:"inherit" },
+  actC: { background:"transparent", border:"1px dashed #222", borderRadius:3, color:"#555", fontSize:10, padding:"8px 12px", cursor:"pointer", fontFamily:"inherit", marginLeft:"auto" },
 };
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(React.createElement(TruthMarket));
-  </script>
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
 </body>
 </html>
