@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Barakah Business Operating System</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -22,62 +22,62 @@
   --ret:#d4a55a;--ret-bg:#d4a55a15;--ret-b:#d4a55a40;
   --opt:#7b6fa0;--opt-bg:#7b6fa015;--opt-b:#7b6fa040;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;overflow:hidden}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.6;overflow:hidden}
 .app{display:grid;grid-template-columns:272px 1fr;grid-template-rows:52px 1fr;height:100vh}
 /* topbar */
 .tb{grid-column:1/-1;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--border);background:var(--bg2);gap:10px;z-index:10;flex-wrap:nowrap;overflow:hidden}
 .tb-logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .tb-mark{width:30px;height:30px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--bg);line-height:1}
 .tb-mark svg{width:12px;height:12px;fill:var(--bg)}
-.tb-name{font-family:'DM Serif Display',serif;font-size:14px;color:var(--text)}
-.tb-sep{color:var(--text3);font-size:12px;margin:0 1px}
-.tb-sub{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.tb-name{font-size:18px;font-weight:500;color:var(--text);letter-spacing:.01em}
+.tb-sep{color:var(--text3);font-size:15px;margin:0 1px}
+.tb-sub{font-size:12px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
 .tb-divider{width:1px;height:20px;background:var(--border2);flex-shrink:0;margin:0 2px}
 .tb-right{margin-left:auto;display:flex;align-items:center;gap:7px;flex-shrink:0}
 /* role selector */
 .role-sel-wrap{display:flex;align-items:center;gap:5px}
-.role-sel-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;flex-shrink:0}
+.role-sel-lbl{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;flex-shrink:0}
 .role-sel{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px;gap:1px}
-.rs-btn{padding:3px 10px;border-radius:4px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;white-space:nowrap;letter-spacing:.2px}
+.rs-btn{padding:3px 10px;border-radius:4px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .12s;white-space:nowrap;letter-spacing:.2px}
 .rs-btn.on{color:var(--text)}
 .rs-btn:not(.on){color:var(--text3)}
 .rs-btn:hover:not(.on){color:var(--text2)}
 /* view seg */
 .seg{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px;gap:1px}
-.sg-btn{padding:3px 10px;border-radius:4px;border:none;background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;letter-spacing:.2px}
+.sg-btn{padding:3px 10px;border-radius:4px;border:none;background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .12s;letter-spacing:.2px}
 .sg-btn.on{background:var(--bg4);color:var(--text)}
 .sg-btn:hover:not(.on){color:var(--text2)}
-.tb-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;flex-shrink:0}
+.tb-badge{font-size:12px;padding:3px 9px;border-radius:20px;font-weight:500;flex-shrink:0}
 /* sidebar */
 .sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
 .sb::-webkit-scrollbar{width:3px}.sb::-webkit-scrollbar-thumb{background:var(--bg4)}
 .role-banner{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
-.role-avatar{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.role-avatar{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
 .role-banner-info{flex:1;min-width:0}
-.role-banner-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.2}
-.role-banner-sub{font-size:10px;color:var(--text3)}
+.role-banner-name{font-size:15px;font-weight:500;color:var(--text);line-height:1.2}
+.role-banner-sub{font-size:12px;color:var(--text3)}
 .sb-top{padding:8px 14px;border-bottom:1px solid var(--border)}
-.sb-overview{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:5px;border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:12px;font-family:'DM Sans',sans-serif;width:100%;transition:all .12s}
+.sb-overview{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:5px;border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:15px;font-family:'DM Sans',sans-serif;width:100%;transition:all .12s}
 .sb-overview:hover,.sb-overview.on{background:var(--accent-bg);color:var(--accent)}
 .sb-overview svg{width:12px;height:12px;flex-shrink:0}
 .sb-sec{border-bottom:1px solid var(--border)}
 .sb-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 6px;cursor:pointer;user-select:none}
 .sb-sec-hdr:hover{background:var(--bg3)}
-.sb-sec-code{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.sb-sec-attr{font-size:10px;color:var(--text3);font-style:italic;margin-top:1px}
+.sb-sec-code{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.sb-sec-attr{font-size:12px;color:var(--text3);font-style:italic;margin-top:1px}
 .sb-sec-right{display:flex;align-items:center;gap:5px}
-.sb-cnt{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500}
-.sb-chev{font-size:10px;color:var(--text3);transition:transform .15s}
+.sb-cnt{font-size:12px;padding:1px 6px;border-radius:10px;font-weight:500}
+.sb-chev{font-size:12px;color:var(--text3);transition:transform .15s}
 .sb-chev.open{transform:rotate(0)}.sb-chev.closed{transform:rotate(-90deg)}
 .sb-item{display:flex;align-items:center;padding:5px 14px 5px 12px;cursor:pointer;gap:8px;border-left:2px solid transparent;transition:all .12s}
 .sb-item:hover{background:var(--bg3)}
 .sb-item.on{background:var(--accent-bg);border-left-color:var(--accent)}
 .sb-item-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .sb-item-body{flex:1;min-width:0}
-.sb-item-label{font-size:11px;color:var(--text2);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item-label{font-size:14px;color:var(--text2);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-item.on .sb-item-label{color:var(--text)}
-.sb-item-sub{font-size:11px;color:var(--text2)}
-.perm-pill{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0}
+.sb-item-sub{font-size:14px;color:var(--text2)}
+.perm-pill{font-size:12px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0}
 /* main */
 .main{overflow-y:auto;background:var(--bg)}
 .main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--bg4)}
@@ -85,114 +85,114 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .dash{padding:24px 28px}
 .dash-hdr{margin-bottom:22px}
 .dash-role-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.dash-avatar{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;flex-shrink:0}
-.dash-role-name{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);line-height:1.2}
-.dash-role-scope{font-size:13px;color:var(--text2);line-height:1.6;max-width:520px}
+.dash-avatar{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;flex-shrink:0}
+.dash-role-name{font-family:'Space Grotesk',sans-serif;font-size:30px;color:var(--text);line-height:1.2}
+.dash-role-scope{font-size:16px;color:var(--text2);line-height:1.6;max-width:520px}
 .dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px}
-.stat-num{font-size:22px;font-weight:500;margin-bottom:2px}
-.stat-lbl{font-size:11px;color:var(--text3)}
+.stat-num{font-size:28px;font-weight:500;margin-bottom:2px}
+.stat-lbl{font-size:14px;color:var(--text3)}
 .dash-section{margin-bottom:22px}
 .dash-sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:11px}
-.dash-sec-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--text3)}
+.dash-sec-lbl{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--text3)}
 .dash-sec-line{flex:1;height:1px;background:var(--border)}
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 14px;cursor:pointer;transition:all .14s}
 .dash-card:hover{background:var(--bg3);border-color:var(--border2);transform:translateY(-1px)}
 .dash-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:6px}
-.dash-card-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
-.dash-card-asset{font-size:10px;color:var(--text3);line-height:1.3}
-.dash-card-stage{font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600;flex-shrink:0;letter-spacing:.3px}
+.dash-card-name{font-size:15px;font-weight:500;color:var(--text);line-height:1.3}
+.dash-card-asset{font-size:12px;color:var(--text3);line-height:1.3}
+.dash-card-stage{font-size:11px;padding:2px 6px;border-radius:3px;font-weight:600;flex-shrink:0;letter-spacing:.3px}
 .ref-card{opacity:.7}
 .ref-card:hover{opacity:1}
 /* overview */
 .ov{padding:24px 28px}
-.ov-ey{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);font-weight:500;margin-bottom:6px}
-.ov-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);line-height:1.2;margin-bottom:8px}
-.ov-sub{font-size:13px;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:24px}
+.ov-ey{font-size:14px;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);font-weight:500;margin-bottom:6px}
+.ov-title{font-family:'Space Grotesk',sans-serif;font-size:32px;color:var(--text);line-height:1.2;margin-bottom:8px}
+.ov-sub{font-size:16px;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:24px}
 .pip{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:26px}
 .pip-item{flex:1;min-width:84px;padding:11px 12px;border-radius:5px;border:1px solid}
-.pip-code{font-size:10px;font-weight:600;letter-spacing:.8px;margin-bottom:3px;opacity:.7}
-.pip-name{font-size:11px;font-weight:500;margin-bottom:2px}
-.pip-cnt{font-size:10px;opacity:.5;margin-bottom:2px}
-.pip-attr{font-size:10px;opacity:.4;line-height:1.3}
+.pip-code{font-size:12px;font-weight:600;letter-spacing:.8px;margin-bottom:3px;opacity:.7}
+.pip-name{font-size:14px;font-weight:500;margin-bottom:2px}
+.pip-cnt{font-size:12px;opacity:.5;margin-bottom:2px}
+.pip-attr{font-size:12px;opacity:.4;line-height:1.3}
 .sec-div{display:flex;align-items:center;gap:9px;margin-bottom:11px}
-.sec-div-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:500;white-space:nowrap}
+.sec-div-lbl{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:500;white-space:nowrap}
 .sec-div-line{flex:1;height:1px;background:var(--border)}
-.sec-div-cnt{font-size:10px;color:var(--text3);white-space:nowrap}
+.sec-div-cnt{font-size:12px;color:var(--text3);white-space:nowrap}
 .tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:8px;margin-bottom:22px}
 .tc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;cursor:pointer;transition:all .14s}
 .tc:hover{background:var(--bg3);border-color:var(--border2);transform:translateY(-1px)}
 .tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:6px}
-.tc-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
-.tc-asset{font-size:11px;color:var(--text3)}
+.tc-name{font-size:15px;font-weight:500;color:var(--text);line-height:1.3}
+.tc-asset{font-size:14px;color:var(--text3)}
 /* detail */
 .det{padding:24px 28px;max-width:740px}
-.bc{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:11px;color:var(--text3)}
-.bc-btn{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);padding:0}
+.bc{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:14px;color:var(--text3)}
+.bc-btn{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text3);padding:0}
 .bc-btn:hover{color:var(--text2)}
 .perm-banner{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:6px;margin-bottom:16px;border:1px solid}
-.perm-banner-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px}
-.perm-banner-desc{font-size:12px;line-height:1.5}
-.det-ey{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:6px}
-.det-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);line-height:1.25;margin-bottom:12px}
+.perm-banner-pill{font-size:14px;font-weight:700;padding:3px 10px;border-radius:4px}
+.perm-banner-desc{font-size:15px;line-height:1.5}
+.det-ey{font-size:12px;text-transform:uppercase;letter-spacing:1px;font-weight:500;margin-bottom:6px}
+.det-title{font-family:'Space Grotesk',sans-serif;font-size:30px;color:var(--text);line-height:1.25;margin-bottom:12px}
 .det-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.bgo{font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid var(--border2);color:var(--text2);background:transparent}
+.bgo{font-size:14px;padding:3px 9px;border-radius:4px;border:1px solid var(--border2);color:var(--text2);background:transparent}
 .det-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px}
 .det-blk{border-radius:9px;padding:13px 15px}
-.det-blk-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:500;margin-bottom:4px;opacity:.7}
-.det-blk-val{font-size:12px;line-height:1.5}
+.det-blk-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;font-weight:500;margin-bottom:4px;opacity:.7}
+.det-blk-val{font-size:15px;line-height:1.5}
 .det-rat{border-top:1px solid var(--border);padding-top:16px;margin-bottom:22px}
-.det-rat-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:8px}
-.det-rat-txt{font-size:13px;color:var(--text2);line-height:1.8}
+.det-rat-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:8px}
+.det-rat-txt{font-size:16px;color:var(--text2);line-height:1.8}
 .ws-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px}
-.ws-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:12px}
+.ws-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:12px}
 /* workspace */
 .tabs{display:flex;gap:1px;border-bottom:1px solid var(--border);margin-bottom:13px}
-.tab{padding:6px 13px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;transition:all .12s;margin-bottom:-1px}
+.tab{padding:6px 13px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .12s;margin-bottom:-1px}
 .tab.on{color:var(--accent);border-bottom-color:var(--accent)}
 .tab:hover:not(.on){color:var(--text2)}
 .fg{margin-bottom:12px}
-.fl{font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
-.fi{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border .15s;resize:vertical}
+.fl{font-size:14px;color:var(--text3);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border .15s;resize:vertical}
 .fi:focus{border-color:var(--accent2)}
 .fi::placeholder{color:var(--text3)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.wbtn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:5px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:all .14s;margin-top:2px}
+.wbtn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:5px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;transition:all .14s;margin-top:2px}
 .wbtn:hover{background:#d4a84e}
 .wbtn-o{background:transparent;color:var(--text2);border:1px solid var(--border2)}
 .wbtn-o:hover{background:var(--bg3);color:var(--text)}
 .wdiv{height:1px;background:var(--border);margin:11px 0}
-.notice{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:5px;margin-bottom:12px;font-size:11px;line-height:1.6}
+.notice{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:5px;margin-bottom:12px;font-size:14px;line-height:1.6}
 .ni{background:var(--str-bg);border:1px solid var(--str-b);color:var(--str)}
 .nw{background:var(--qal-bg);border:1px solid var(--qal-b);color:var(--qal)}
-.gbl{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;font-size:10px;font-weight:700;flex-shrink:0}
+.gbl{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;font-size:12px;font-weight:700;flex-shrink:0}
 .g1b{background:var(--out-bg);color:var(--out);border:1px solid var(--out-b)}
 .g2b{background:var(--str-bg);color:var(--str);border:1px solid var(--str-b)}
 .g3b{background:var(--sal-bg);color:var(--sal);border:1px solid var(--sal-b)}
 .g4b{background:var(--ofr-bg);color:var(--ofr);border:1px solid var(--ofr-b)}
 .gb-block{background:var(--bg3);border-radius:9px;padding:10px 13px;margin-bottom:12px;border-left:3px solid}
-.gb-title{font-size:11px;font-weight:500;margin-bottom:2px}
-.gb-sub{font-size:10px;color:var(--text2);line-height:1.5}
+.gb-title{font-size:14px;font-weight:500;margin-bottom:2px}
+.gb-sub{font-size:12px;color:var(--text2);line-height:1.5}
 .chk-list{display:flex;flex-direction:column;gap:6px}
 .chk{display:flex;align-items:flex-start;gap:8px;cursor:pointer}
 .chk-box{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);background:var(--bg3);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .12s}
 .chk-box.ck{background:var(--out);border-color:var(--out)}
-.chk-box.ck::after{content:'✓';font-size:8px;color:#fff}
-.chk-txt{font-size:12px;color:var(--text2);line-height:1.3}
-.chk-desc{font-size:11px;color:var(--text3);margin-top:1px}
+.chk-box.ck::after{content:'✓';font-size:10px;color:#fff}
+.chk-txt{font-size:15px;color:var(--text2);line-height:1.3}
+.chk-desc{font-size:14px;color:var(--text3);margin-top:1px}
 .chk-txt.ck{color:var(--text3);text-decoration:line-through}
 .cf-wrap{margin-bottom:12px}
-.cf-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:4px}
-.cf-val{font-size:12px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:4px;padding:8px 12px;border-left:2px solid;white-space:pre-wrap}
-.cf-gl{display:inline-flex;margin-top:4px;border-radius:3px;padding:2px 7px;font-size:10px;font-weight:600}
+.cf-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:4px}
+.cf-val{font-size:15px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:4px;padding:8px 12px;border-left:2px solid;white-space:pre-wrap}
+.cf-gl{display:inline-flex;margin-top:4px;border-radius:3px;padding:2px 7px;font-size:12px;font-weight:600}
 .done-badge{display:flex;align-items:center;gap:6px;padding:6px 11px;background:var(--out-bg);border:1px solid var(--out-b);border-radius:4px;margin-bottom:13px}
 /* asset view */
 .av{padding:24px 28px}
 .av-stage{margin-bottom:26px}
 .av-stage-hdr{display:flex;align-items:center;gap:9px;margin-bottom:11px;padding-bottom:9px;border-bottom:1px solid var(--border)}
-.av-stage-name{font-size:13px;font-weight:500;color:var(--text)}
-.av-stage-attr{font-size:11px;color:var(--text3);font-style:italic;margin-left:auto}
+.av-stage-name{font-size:16px;font-weight:500;color:var(--text)}
+.av-stage-attr{font-size:14px;color:var(--text3);font-style:italic;margin-left:auto}
 .av-list{display:flex;flex-direction:column;gap:1px}
 .av-row{display:flex;align-items:stretch;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .12s}
 .av-row:first-child{border-radius:9px 9px 0 0}
@@ -203,80 +203,80 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .av-row.on{background:var(--accent-bg);border-color:var(--accent2)50}
 .av-bar{width:3px;border-radius:2px 0 0 2px;flex-shrink:0}
 .av-body{flex:1;padding:10px 13px;min-width:0}
-.av-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.av-name{font-size:15px;font-weight:500;color:var(--text);margin-bottom:2px}
 .av-row.on .av-name{color:var(--accent)}
-.av-ref{font-size:11px;color:var(--text2)}
+.av-ref{font-size:14px;color:var(--text2)}
 .av-right{display:flex;align-items:center;gap:6px;margin-right:13px;flex-shrink:0}
-.av-sec{font-size:10px;color:var(--text3);background:var(--bg4);border-radius:3px;padding:1px 5px;white-space:nowrap}
+.av-sec{font-size:12px;color:var(--text3);background:var(--bg4);border-radius:3px;padding:1px 5px;white-space:nowrap}
 /* asset detail */
 .avd{padding:24px 28px;max-width:740px}
-.avd-back{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
+.avd-back{display:flex;align-items:center;gap:5px;margin-bottom:16px;font-size:14px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
 .avd-back:hover{color:var(--text2)}
 .avd-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px}
 /* tooltips — positioned via JS portal, no CSS hover */
 .tip{display:inline;cursor:help;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;text-decoration-thickness:1px;text-decoration-color:inherit}
 .avd-hdr{padding:16px 20px 14px;border-bottom:1px solid var(--border)}
-.avd-stage-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.8}
-.avd-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text);margin-bottom:9px}
+.avd-stage-lbl{font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.8}
+.avd-title{font-family:'Space Grotesk',sans-serif;font-size:24px;color:var(--text);margin-bottom:9px}
 .avd-meta{display:flex;gap:6px;flex-wrap:wrap}
 .avd-body{padding:16px 20px}
-.avd-desc{font-size:13px;color:var(--text2);line-height:1.8}
+.avd-desc{font-size:16px;color:var(--text2);line-height:1.8}
 .avd-div{height:1px;background:var(--border);margin:14px 0}
 .avd-row{display:flex;gap:6px;margin-bottom:7px}
-.avd-key{font-size:11px;color:var(--text2);min-width:95px;flex-shrink:0;padding-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
-.avd-val{font-size:12px;color:var(--text2);line-height:1.5}
-.avd-rat{font-size:12px;color:var(--text2);line-height:1.7;font-style:italic}
+.avd-key{font-size:14px;color:var(--text2);min-width:95px;flex-shrink:0;padding-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.avd-val{font-size:15px;color:var(--text2);line-height:1.5}
+.avd-rat{font-size:15px;color:var(--text2);line-height:1.7;font-style:italic}
 /* view-only overlay */
 .view-only{background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:14px 18px;margin-top:4px}
-.view-only-msg{font-size:12px;color:var(--text3);line-height:1.7}
+.view-only-msg{font-size:15px;color:var(--text3);line-height:1.7}
 /* dua blocks */
 .dua-block{margin:0;border-top:1px solid var(--border);background:transparent}
 .dua-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
 .dua-toggle:hover{background:var(--bg3)}
-.dua-glyph{font-size:10px;flex-shrink:0;opacity:.55}
+.dua-glyph{font-size:12px;flex-shrink:0;opacity:.55}
 .dua-label{flex:1;min-width:0}
-.dua-kind{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;display:block;line-height:1.2}
-.dua-title-txt{font-size:11px;color:var(--text2);line-height:1.3}
-.dua-chev{font-size:11px;color:var(--text3);flex-shrink:0;transition:transform .15s}
+.dua-kind{font-size:12px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;display:block;line-height:1.2}
+.dua-title-txt{font-size:14px;color:var(--text2);line-height:1.3}
+.dua-chev{font-size:14px;color:var(--text3);flex-shrink:0;transition:transform .15s}
 .dua-chev.open{transform:rotate(0)}.dua-chev.closed{transform:rotate(-90deg)}
 .dua-body{padding:2px 14px 12px}
-.dua-arabic{font-size:15px;line-height:1.9;color:var(--text);text-align:right;direction:rtl;letter-spacing:.02em;margin-bottom:8px;font-family:'DM Serif Display',serif}
-.dua-trans{font-size:12px;color:var(--text2);font-style:italic;line-height:1.5;margin-bottom:4px}
-.dua-meaning{font-size:11px;color:var(--text);line-height:1.6;margin-bottom:4px}
-.dua-source{font-size:11px;color:var(--text2);opacity:.6}
+.dua-arabic{font-size:19px;line-height:1.9;color:var(--text);text-align:right;direction:rtl;letter-spacing:.02em;margin-bottom:8px}
+.dua-trans{font-size:15px;color:var(--text2);font-style:italic;line-height:1.5;margin-bottom:4px}
+.dua-meaning{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:4px}
+.dua-source{font-size:14px;color:var(--text2);opacity:.6}
 /* Annotation block inside dua body */
 .dua-annotations{margin-top:12px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:10px}
 .dua-ann-card{background:var(--bg3);border-radius:5px;padding:8px 10px}
-.dua-ann-attr{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
-.dua-ann-text{font-size:11px;color:var(--text2);line-height:1.65}
+.dua-ann-attr{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
+.dua-ann-text{font-size:14px;color:var(--text2);line-height:1.65}
 /* Governing Attributes block */
 .sb-attr-block{border-top:1px solid var(--border);background:transparent}
 .sb-attr-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
 .sb-attr-toggle:hover{background:var(--bg3)}
-.sb-attr-icon{font-size:10px;flex-shrink:0;opacity:.4;color:var(--text2)}
+.sb-attr-icon{font-size:12px;flex-shrink:0;opacity:.4;color:var(--text2)}
 .sb-attr-label{flex:1;min-width:0}
-.sb-attr-kind{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--text3);display:block;line-height:1.2}
-.sb-attr-names{font-size:10px;color:var(--text3);line-height:1.3}
+.sb-attr-kind{font-size:12px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--text3);display:block;line-height:1.2}
+.sb-attr-names{font-size:12px;color:var(--text3);line-height:1.3}
 .sb-attr-body{padding:0 10px 10px}
 .sb-attr-card{background:var(--bg3);border-radius:5px;padding:9px 11px;margin-bottom:6px}
 .sb-attr-card:last-child{margin-bottom:0}
-.sb-attr-card-name{font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:5px}
-.sb-attr-card-text{font-size:11px;color:var(--text2);line-height:1.65}
+.sb-attr-card-name{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:5px}
+.sb-attr-card-text{font-size:14px;color:var(--text2);line-height:1.65}
 /* Readiness & Reflection blocks */
 .sb-readiness-block,.sb-reflect-block{border-top:1px solid var(--border);background:transparent}
 .sb-readiness-toggle,.sb-reflect-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
 .sb-readiness-toggle:hover,.sb-reflect-toggle:hover{background:var(--bg3)}
-.sb-rr-icon{font-size:11px;flex-shrink:0;opacity:.4;color:var(--text2)}
+.sb-rr-icon{font-size:14px;flex-shrink:0;opacity:.4;color:var(--text2)}
 .sb-rr-label{flex:1;min-width:0}
-.sb-rr-kind{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--text3);display:block;line-height:1.2}
-.sb-rr-sub{font-size:10px;color:var(--text3);line-height:1.3}
+.sb-rr-kind{font-size:12px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--text3);display:block;line-height:1.2}
+.sb-rr-sub{font-size:12px;color:var(--text3);line-height:1.3}
 .sb-rr-body{padding:0 10px 12px}
-.sb-rr-frame{font-size:11px;color:var(--text2);font-style:italic;line-height:1.6;padding:0 4px 10px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.sb-rr-frame{font-size:14px;color:var(--text2);font-style:italic;line-height:1.6;padding:0 4px 10px;border-bottom:1px solid var(--border);margin-bottom:10px}
 .sb-rr-table{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .sb-rr-col{background:var(--bg3);border-radius:5px;padding:8px 9px}
-.sb-rr-col-hdr{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:7px;opacity:.7}
+.sb-rr-col-hdr{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:7px;opacity:.7}
 .sb-rr-col-hdr.yes{color:#4ade80}.sb-rr-col-hdr.not{color:var(--text3)}
-.sb-rr-item{font-size:11px;color:var(--text2);line-height:1.55;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sb-rr-item{font-size:14px;color:var(--text2);line-height:1.55;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .sb-rr-item:last-child{border-bottom:none;padding-bottom:0}
 </style>
 </head>
@@ -301,14 +301,14 @@ const ROLES = [
 
 const STAGES = {
   INT:{code:'01',key:'INT',name:'Standing',       attr:'Al-Awwal · Ash-Shahid',  c:'var(--int)',bg:'var(--int-bg)',b:'var(--int-b)'},
-  QAL:{code:'02',key:'QAL',name:'Qualification',attr:'Al-Haqq · Al-Khabir',   c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
+  QAL:{code:'02',key:'QAL',name:'Truth',attr:'Al-Haqq · Al-Khabir',   c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
   STR:{code:'03',key:'STR',name:'Strategy',     attr:'Al-Basir',                  c:'var(--str)',bg:'var(--str-bg)',b:'var(--str-b)'},
   OFR:{code:'04',key:'OFR',name:'Offer',        attr:'Al-Adl · Al-Muqsit',    c:'var(--ofr)',bg:'var(--ofr-bg)',b:'var(--ofr-b)'},
   OUT:{code:'05',key:'OUT',name:'Outreach',     attr:'Ar-Razzaq · As-Sittir', c:'var(--out)',bg:'var(--out-bg)',b:'var(--out-b)'},
   SAL:{code:'06',key:'SAL',name:'Sales',        attr:'Ar-Razzaq · Al-Latif',  c:'var(--sal)',bg:'var(--sal-bg)',b:'var(--sal-b)'},
-  FUL:{code:'07',key:'FUL',name:'Fulfillment',  attr:'Al-Muhsin · Al-Wali',   c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
+  FUL:{code:'07',key:'FUL',name:'Fulfill',  attr:'Al-Muhsin · Al-Wali',   c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
   RET:{code:'08',key:'RET',name:'Retention',    attr:'Ash-Shakur',                c:'var(--ret)',bg:'var(--ret-bg)',b:'var(--ret-b)'},
-  OPT:{code:'09',key:'OPT',name:'Optimization', attr:'Al-Hasib · Al-Quddus',  c:'var(--opt)',bg:'var(--opt-bg)',b:'var(--opt-b)'},
+  OPT:{code:'09',key:'OPT',name:'Optimize', attr:'Al-Hasib · Al-Quddus',  c:'var(--opt)',bg:'var(--opt-bg)',b:'var(--opt-b)'},
 };
 
 const PHASES = {
@@ -2728,7 +2728,7 @@ function Tip({term, def, children}){
       fontStyle: 'normal',
       fontWeight: 400,
     }}>
-      <span style={{display:'block',fontSize:10,fontWeight:600,color:'var(--text)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:5}}>{label}</span>
+      <span style={{display:'block',fontSize:12,fontWeight:600,color:'var(--text)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:5}}>{label}</span>
       {desc}
     </div>,
     document.body
@@ -2796,17 +2796,17 @@ function DocRenderer({content,stageColor}){
   const elems=[];
   let liGroup=[];
   const flushLi=()=>{
-    if(liGroup.length){elems.push(<ul key={elems.length} style={{paddingLeft:18,marginBottom:12}}>{liGroup.map((t,i)=><li key={i} style={{fontSize:13,color:'var(--text2)',lineHeight:1.75,marginBottom:3}}>{tipify(t,`li${i}`)}</li>)}</ul>);liGroup=[];}
+    if(liGroup.length){elems.push(<ul key={elems.length} style={{paddingLeft:18,marginBottom:12}}>{liGroup.map((t,i)=><li key={i} style={{fontSize:16,color:'var(--text2)',lineHeight:1.75,marginBottom:3}}>{tipify(t,`li${i}`)}</li>)}</ul>);liGroup=[];}
   };
   blocks.forEach((b,i)=>{
     if(b.type==='li'){liGroup.push(b.text);return;}
     flushLi();
-    if(b.type==='h2') elems.push(<div key={i} style={{fontSize:16,fontWeight:500,color:'var(--text)',marginTop:20,marginBottom:8,paddingBottom:8,borderBottom:`1px solid ${ac}40`}}>{b.text}</div>);
-    else if(b.type==='h3') elems.push(<div key={i} style={{fontSize:13,fontWeight:500,color:ac,marginTop:16,marginBottom:6,textTransform:'uppercase',letterSpacing:'.6px'}}>{tipify(b.text,`h3${i}`)}</div>);
-    else if(b.type==='callout') elems.push(<div key={i} style={{background:'var(--bg3)',borderLeft:`2px solid ${ac}`,borderRadius:'0 5px 5px 0',padding:'9px 13px',marginBottom:12,fontSize:12,color:'var(--text3)',lineHeight:1.7,fontStyle:'italic'}}>{tipify(b.text,`co${i}`)}</div>);
-    else if(b.type==='bold') elems.push(<div key={i} style={{fontSize:13,fontWeight:500,color:'var(--text)',marginBottom:4,marginTop:8}}>{tipify(b.text,`bo${i}`)}</div>);
+    if(b.type==='h2') elems.push(<div key={i} style={{fontSize:20,fontWeight:500,color:'var(--text)',marginTop:20,marginBottom:8,paddingBottom:8,borderBottom:`1px solid ${ac}40`}}>{b.text}</div>);
+    else if(b.type==='h3') elems.push(<div key={i} style={{fontSize:16,fontWeight:500,color:ac,marginTop:16,marginBottom:6,textTransform:'uppercase',letterSpacing:'.6px'}}>{tipify(b.text,`h3${i}`)}</div>);
+    else if(b.type==='callout') elems.push(<div key={i} style={{background:'var(--bg3)',borderLeft:`2px solid ${ac}`,borderRadius:'0 5px 5px 0',padding:'9px 13px',marginBottom:12,fontSize:15,color:'var(--text3)',lineHeight:1.7,fontStyle:'italic'}}>{tipify(b.text,`co${i}`)}</div>);
+    else if(b.type==='bold') elems.push(<div key={i} style={{fontSize:16,fontWeight:500,color:'var(--text)',marginBottom:4,marginTop:8}}>{tipify(b.text,`bo${i}`)}</div>);
     else if(b.type==='hr') elems.push(<div key={i} style={{height:1,background:'var(--border)',margin:'16px 0'}}/>);
-    else if(b.type==='p') elems.push(<p key={i} style={{fontSize:13,color:'var(--text2)',lineHeight:1.8,marginBottom:12}}>{tipify(b.text,`p${i}`)}</p>);
+    else if(b.type==='p') elems.push(<p key={i} style={{fontSize:16,color:'var(--text2)',lineHeight:1.8,marginBottom:12}}>{tipify(b.text,`p${i}`)}</p>);
   });
   flushLi();
   return <div style={{paddingTop:4}}>{elems}</div>;
@@ -2820,8 +2820,8 @@ function CF({label,value,accent,mono,gl,glc}){
 }
 function DoneBadge(){
   return <div className="done-badge">
-    <span style={{fontSize:11,color:'var(--out)',fontWeight:500}}>&#10003; Stage complete</span>
-    <span style={{fontSize:10,color:'var(--out)',opacity:.7,marginLeft:3}}>The Clarity Practice · Cycle 1</span>
+    <span style={{fontSize:14,color:'var(--out)',fontWeight:500}}>&#10003; Stage complete</span>
+    <span style={{fontSize:12,color:'var(--out)',opacity:.7,marginLeft:3}}>The Clarity Practice · Cycle 1</span>
   </div>;
 }
 function WsValidation({sample}){
@@ -2839,10 +2839,10 @@ function WsValidation({sample}){
   return <>
     {sample&&<DoneBadge/>}
     <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:'9px',border:'1px solid var(--border)'}}>
-      <div style={{fontSize:24,fontWeight:500,color:score===6?'var(--out)':score>=4?'var(--qal)':'var(--sal)'}}>{score}/6</div>
+      <div style={{fontSize:30,fontWeight:500,color:score===6?'var(--out)':score>=4?'var(--qal)':'var(--sal)'}}>{score}/6</div>
       <div>
-        <div style={{fontSize:12,fontWeight:500,color:'var(--text)',marginBottom:1}}>{score===6?'Amanah Gate Cleared':'Amanah Gate Pending'}</div>
-        <div style={{fontSize:10,color:'var(--text3)'}}>{6-score} screen{6-score!==1?'s':''} remaining before STR can begin</div>
+        <div style={{fontSize:15,fontWeight:500,color:'var(--text)',marginBottom:1}}>{score===6?'Amanah Gate Cleared':'Amanah Gate Pending'}</div>
+        <div style={{fontSize:12,color:'var(--text3)'}}>{6-score} screen{6-score!==1?'s':''} remaining before STR can begin</div>
       </div>
     </div>
     <div className="chk-list">
@@ -2895,11 +2895,11 @@ function WsPains({sample}){
   if(sample) return <>
     <DoneBadge/>
     <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim fears</div>
-      {[S.fear1,S.fear2,S.fear3].map((f,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><Tip term={`F${i+1}`}><span className="gbl g3b">F{i+1}</span></Tip><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--sal)',fontStyle:'italic'}}>{f}</div></div>)}
+      {[S.fear1,S.fear2,S.fear3].map((f,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><Tip term={`F${i+1}`}><span className="gbl g3b">F{i+1}</span></Tip><div style={{fontSize:15,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--sal)',fontStyle:'italic'}}>{f}</div></div>)}
     </div>
     <div className="wdiv"/>
     <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim desires</div>
-      {[S.desire1,S.desire2,S.desire3].map((d,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><Tip term={`D${i+1}`}><span className="gbl g4b">D{i+1}</span></Tip><div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--ofr)',fontStyle:'italic'}}>{d}</div></div>)}
+      {[S.desire1,S.desire2,S.desire3].map((d,i)=><div key={i} style={{display:'flex',gap:8,marginBottom:7}}><Tip term={`D${i+1}`}><span className="gbl g4b">D{i+1}</span></Tip><div style={{fontSize:15,color:'var(--text2)',lineHeight:1.7,background:'var(--bg3)',borderRadius:4,padding:'7px 11px',flex:1,borderLeft:'2px solid var(--ofr)',fontStyle:'italic'}}>{d}</div></div>)}
     </div>
     <div className="wdiv"/>
     <CF label="Enemy Narrative" value={S.enemy} accent="var(--str)"/>
@@ -2968,7 +2968,7 @@ function WsGeneric({tool,sample}){
     <CF label="Working notes" value={notesTxt} accent={s.c}/>
     <div style={{marginBottom:12}}>
       <div className="fl" style={{marginBottom:7}}>G-label for primary output</div>
-      <Tip term={gl}><span style={{display:'inline-flex',background:glc+'22',color:glc,border:`1px solid ${glc}44`,borderRadius:4,padding:'3px 12px',fontSize:11,fontWeight:600}}>{gl}</span></Tip>
+      <Tip term={gl}><span style={{display:'inline-flex',background:glc+'22',color:glc,border:`1px solid ${glc}44`,borderRadius:4,padding:'3px 12px',fontSize:14,fontWeight:600}}>{gl}</span></Tip>
     </div>
     <CF label="Stage gate decision" value={gateTxt} accent="var(--out)"/>
   </>;
@@ -3008,13 +3008,13 @@ function WsQC({sample}){
   function Gate({label,items,score,color}){
     return <div style={{marginBottom:18}}>
       <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
-        <div style={{fontSize:10,fontWeight:600,textTransform:'uppercase',letterSpacing:'.8px',color:color}}>{label}</div>
-        <span style={{fontSize:11,fontWeight:600,color:score===5?'var(--out)':'var(--sal)',background:score===5?'var(--out-bg)':'var(--sal-bg)',border:`1px solid ${score===5?'var(--out-b)':'var(--sal-b)'}`,borderRadius:4,padding:'1px 8px'}}>{score}/5 {score===5?'passed':'pending'}</span>
+        <div style={{fontSize:12,fontWeight:600,textTransform:'uppercase',letterSpacing:'.8px',color:color}}>{label}</div>
+        <span style={{fontSize:14,fontWeight:600,color:score===5?'var(--out)':'var(--sal)',background:score===5?'var(--out-bg)':'var(--sal-bg)',border:`1px solid ${score===5?'var(--out-b)':'var(--sal-b)'}`,borderRadius:4,padding:'1px 8px'}}>{score}/5 {score===5?'passed':'pending'}</span>
       </div>
       <div className="chk-list">
         {items.map(item=><div key={item.k} className="chk" onClick={()=>toggle(item.k)}>
           <div className={`chk-box${passed[item.k]?' ck':''}`}/>
-          <div className="chk-txt" style={{fontSize:11,color:passed[item.k]?'var(--text3)':'var(--text2)',textDecoration:passed[item.k]?'line-through':'none'}}>{item.label}</div>
+          <div className="chk-txt" style={{fontSize:14,color:passed[item.k]?'var(--text3)':'var(--text2)',textDecoration:passed[item.k]?'line-through':'none'}}>{item.label}</div>
         </div>)}
       </div>
     </div>;
@@ -3023,12 +3023,12 @@ function WsQC({sample}){
     {sample&&<DoneBadge/>}
     <div style={{display:'flex',gap:8,marginBottom:16}}>
       <div style={{flex:1,background:'var(--bg3)',border:`1px solid ${allPass?'var(--out-b)':'var(--border)'}`,borderRadius:8,padding:'10px 14px',textAlign:'center'}}>
-        <div style={{fontSize:20,fontWeight:500,color:allPass?'var(--out)':'var(--text3)',marginBottom:2}}>{oScore+fScore}/10</div>
-        <div style={{fontSize:10,color:'var(--text3)'}}>Total checks passed</div>
+        <div style={{fontSize:25,fontWeight:500,color:allPass?'var(--out)':'var(--text3)',marginBottom:2}}>{oScore+fScore}/10</div>
+        <div style={{fontSize:12,color:'var(--text3)'}}>Total checks passed</div>
       </div>
       <div style={{flex:1,background:allPass?'var(--out-bg)':'var(--bg3)',border:`1px solid ${allPass?'var(--out-b)':'var(--border)'}`,borderRadius:8,padding:'10px 14px',textAlign:'center'}}>
-        <div style={{fontSize:13,fontWeight:500,color:allPass?'var(--out)':'var(--text2)',marginBottom:2}}>{allPass?'Gates cleared':'Gates pending'}</div>
-        <div style={{fontSize:10,color:'var(--text3)'}}>Delivery may not begin until cleared</div>
+        <div style={{fontSize:16,fontWeight:500,color:allPass?'var(--out)':'var(--text2)',marginBottom:2}}>{allPass?'Gates cleared':'Gates pending'}</div>
+        <div style={{fontSize:12,color:'var(--text3)'}}>Delivery may not begin until cleared</div>
       </div>
     </div>
     <Gate label="IC-OFR — Offer document" items={icofr} score={oScore} color="var(--ofr)"/>
@@ -3051,14 +3051,14 @@ function WsMilestones({sample}){
   return <>
     {sample&&<DoneBadge/>}
     <div style={{display:'flex',gap:3,marginBottom:16}}>
-      {ms.map(x=><button key={x.n} onClick={()=>setActive(x.n)} style={{flex:1,padding:'6px 4px',border:`1px solid ${active===x.n?'var(--ful-b)':'var(--border)'}`,borderRadius:5,background:active===x.n?'var(--ful-bg)':'var(--bg3)',color:active===x.n?'var(--ful)':'var(--text3)',fontSize:10,fontWeight:600,cursor:'pointer'}}>M{x.n}</button>)}
+      {ms.map(x=><button key={x.n} onClick={()=>setActive(x.n)} style={{flex:1,padding:'6px 4px',border:`1px solid ${active===x.n?'var(--ful-b)':'var(--border)'}`,borderRadius:5,background:active===x.n?'var(--ful-bg)':'var(--bg3)',color:active===x.n?'var(--ful)':'var(--text3)',fontSize:12,fontWeight:600,cursor:'pointer'}}>M{x.n}</button>)}
     </div>
     <div style={{background:'var(--bg3)',borderRadius:8,padding:'14px 16px',marginBottom:12,borderLeft:'2px solid var(--ful)'}}>
-      <div style={{fontSize:10,color:'var(--ful)',fontWeight:500,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:6}}>Milestone {m.n} · {m.session}</div>
-      <div style={{fontSize:13,color:'var(--text)',lineHeight:1.65,fontStyle:'italic',marginBottom:10}}>"{m.statement}"</div>
-      <div style={{fontSize:10,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:5}}>Message template</div>
-      <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,background:'var(--bg4)',borderRadius:5,padding:'9px 12px'}}>{m.msg}</div>
-      {m.proof&&<div style={{marginTop:9,display:'inline-flex',alignItems:'center',gap:5,fontSize:10,color:'var(--out)',background:'var(--out-bg)',border:'1px solid var(--out-b)',borderRadius:4,padding:'2px 9px'}}>Proof Capture initiated at this milestone</div>}
+      <div style={{fontSize:12,color:'var(--ful)',fontWeight:500,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:6}}>Milestone {m.n} · {m.session}</div>
+      <div style={{fontSize:16,color:'var(--text)',lineHeight:1.65,fontStyle:'italic',marginBottom:10}}>"{m.statement}"</div>
+      <div style={{fontSize:12,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:5}}>Message template</div>
+      <div style={{fontSize:15,color:'var(--text2)',lineHeight:1.7,background:'var(--bg4)',borderRadius:5,padding:'9px 12px'}}>{m.msg}</div>
+      {m.proof&&<div style={{marginTop:9,display:'inline-flex',alignItems:'center',gap:5,fontSize:12,color:'var(--out)',background:'var(--out-bg)',border:'1px solid var(--out-b)',borderRadius:4,padding:'2px 9px'}}>Proof Capture initiated at this milestone</div>}
     </div>
     {!sample&&<>
       <div className="fg"><div className="fl">Milestone statement</div><textarea className="fi" rows={2} placeholder="In the client's own language — what do they now have or know?"/></div>
@@ -3092,7 +3092,7 @@ function RoleDashboard({role, onSelect}){
         <div className="dash-avatar" style={{background:role.bg,color:role.color}}>{role.initials}</div>
         <div>
           <div className="dash-role-name">{role.label}</div>
-          <div style={{fontSize:11,color:'var(--text3)'}}>{role.sub}</div>
+          <div style={{fontSize:14,color:'var(--text3)'}}>{role.sub}</div>
         </div>
       </div>
       <div className="dash-role-scope">{role.scope}</div>
@@ -3124,7 +3124,7 @@ function RoleDashboard({role, onSelect}){
     </>}
     {views.length>0&&<>
       <div className="dash-section">
-        <div className="dash-sec-hdr"><div className="dash-sec-lbl">For reference</div><div className="dash-sec-line"/><div style={{fontSize:10,color:'var(--text3)',whiteSpace:'nowrap'}}>View only</div></div>
+        <div className="dash-sec-hdr"><div className="dash-sec-lbl">For reference</div><div className="dash-sec-line"/><div style={{fontSize:12,color:'var(--text3)',whiteSpace:'nowrap'}}>View only</div></div>
         <div className="dash-grid">
           {views.map(t=>{
             const sg=STAGES[t.stage];
@@ -3158,19 +3158,19 @@ function ScopeGate({tool, role}){
     <div style={{
       width:48, height:48, borderRadius:10, background:'var(--bg3)',
       border:'1px solid var(--border2)', display:'flex', alignItems:'center',
-      justifyContent:'center', fontSize:22, color:'var(--text3)', opacity:.5
+      justifyContent:'center', fontSize:28, color:'var(--text3)', opacity:.5
     }}>⊘</div>
     <div style={{maxWidth:340}}>
       <div style={{
-        fontSize:11, fontWeight:700, letterSpacing:'1px', textTransform:'uppercase',
+        fontSize:14, fontWeight:700, letterSpacing:'1px', textTransform:'uppercase',
         color:'var(--text3)', marginBottom:10
       }}>Outside Your Scope</div>
-      <div style={{fontSize:13, color:'var(--text2)', lineHeight:1.7}}>
+      <div style={{fontSize:16, color:'var(--text2)', lineHeight:1.7}}>
         The <strong style={{color:'var(--text)'}}>{role.label}</strong> role does not have access to <strong style={{color:'var(--text)'}}>{tool.label}</strong>.
       </div>
     </div>
     {rolesWithAccess.length>0&&<div style={{
-      fontSize:11, color:'var(--text3)', background:'var(--bg3)',
+      fontSize:14, color:'var(--text3)', background:'var(--bg3)',
       border:'1px solid var(--border)', borderRadius:7,
       padding:'10px 16px', maxWidth:340, lineHeight:1.7
     }}>
@@ -3195,8 +3195,8 @@ function ToolDetail({tool,onBack,sample,role}){
       <span className="perm-banner-desc" style={{color:permColor(p)}}>{PERM_DESCS[p]}</span>
     </div>}
     {sample&&<div style={{display:'flex',alignItems:'center',gap:7,padding:'7px 12px',background:'var(--out-bg)',border:'1px solid var(--out-b)',borderRadius:5,marginBottom:14}}>
-      <span style={{fontSize:11,color:'var(--out)',fontWeight:500}}>Sample ICP</span>
-      <span style={{fontSize:11,color:'var(--text3)'}}>The Clarity Practice · Cycle 1</span>
+      <span style={{fontSize:14,color:'var(--out)',fontWeight:500}}>Sample ICP</span>
+      <span style={{fontSize:14,color:'var(--text3)'}}>The Clarity Practice · Cycle 1</span>
     </div>}
     <div className="det-ey" style={{color:s.c}}>{tool.sec}</div>
     <div className="det-title">{tool.label}</div>
@@ -3225,7 +3225,7 @@ function ToolDetail({tool,onBack,sample,role}){
         ? <Workspace tool={tool} sample={sample}/>
         : <div className="view-only"><div className="view-only-msg">This asset is outside your edit scope as {role.label}. You have View access — use the completed data above for context when building your own assets.{p==='-'&&` This tool is not part of the ${role.label} workflow.`}</div></div>
       }
-      {(!canEdit && sample) && <div style={{marginTop:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:6,border:'1px solid var(--border)',fontSize:11,color:'var(--text3)'}}>Read-only in {role.label} role — completed data shown for reference.</div>}
+      {(!canEdit && sample) && <div style={{marginTop:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:6,border:'1px solid var(--border)',fontSize:14,color:'var(--text3)'}}>Read-only in {role.label} role — completed data shown for reference.</div>}
     </div>
   </div>;
 }
@@ -3250,8 +3250,8 @@ function AssetDetail({tool,onBack,role,sample}){
         <div className="avd-stage-lbl" style={{color:s.c}}>Stage {s.code} {s.key} · {s.name}</div>
         <div className="avd-title">{tool.label}</div>
         <div className="avd-meta">
-          <SLabel v={tool.asset} style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'2px 8px',fontSize:9,fontWeight:600}}/>
-          <span style={{fontSize:9,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,padding:'2px 8px'}}>{tool.sec}</span>
+          <SLabel v={tool.asset} style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'2px 8px',fontSize:11,fontWeight:600}}/>
+          <span style={{fontSize:11,color:'var(--text3)',background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,padding:'2px 8px'}}>{tool.sec}</span>
         </div>
       </div>
       <div className="avd-body">
@@ -3288,7 +3288,7 @@ function AssetView({selId,setSelId,role,sample}){
       if(!items.length) return null;
       return <div key={s.key} className="av-stage">
         <div className="av-stage-hdr">
-          <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:3,padding:'2px 8px',fontSize:9,fontWeight:600}}>{s.code} {s.key}</span>
+          <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:3,padding:'2px 8px',fontSize:11,fontWeight:600}}>{s.code} {s.key}</span>
           <span className="av-stage-name">{s.name}</span>
           <span className="av-stage-attr">{s.attr}</span>
         </div>
@@ -3349,8 +3349,8 @@ function Overview({onSelect, role, sample}){
           <div className="pip-cnt">{cnt} tools</div>
           <div className="pip-attr">{s.attr}</div>
           <div style={{marginTop:6,display:'inline-flex',alignItems:'center',gap:4,padding:'2px 7px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
-            <span style={{fontSize:8,color:sm.color}}>{sm.dot}</span>
-            <span style={{fontSize:8,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
+            <span style={{fontSize:10,color:sm.color}}>{sm.dot}</span>
+            <span style={{fontSize:10,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
           </div>
         </div>;
       })}
@@ -3369,22 +3369,22 @@ function Overview({onSelect, role, sample}){
         lastPhase=phase;
         return <div key={s.key}>
           {showDivider&&<div style={{display:'flex',alignItems:'center',gap:10,margin:'28px 0 16px'}}>
-            <span style={{fontSize:9,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'var(--text3)',whiteSpace:'nowrap'}}>{phase}</span>
+            <span style={{fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'var(--text3)',whiteSpace:'nowrap'}}>{phase}</span>
             <span style={{flex:1,height:1,background:'var(--border)'}}/>
           </div>}
           {/* Stage header */}
           <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:12,gap:12}}>
             <div style={{display:'flex',alignItems:'center',gap:10}}>
-              <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'3px 9px',fontSize:9,fontWeight:700,letterSpacing:'.5px',flexShrink:0}}>
+              <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'3px 9px',fontSize:11,fontWeight:700,letterSpacing:'.5px',flexShrink:0}}>
                 {s.code} · {s.name.toUpperCase()}
               </span>
-              <span style={{fontSize:11,color:'var(--text3)',fontStyle:'italic'}}>{s.attr}</span>
+              <span style={{fontSize:14,color:'var(--text3)',fontStyle:'italic'}}>{s.attr}</span>
             </div>
             <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-              <span style={{fontSize:9,color:'var(--text3)'}}>{phase}</span>
+              <span style={{fontSize:11,color:'var(--text3)'}}>{phase}</span>
               <span style={{display:'inline-flex',alignItems:'center',gap:4,padding:'3px 9px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
-                <span style={{fontSize:9,color:sm.color}}>{sm.dot}</span>
-                <span style={{fontSize:9,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
+                <span style={{fontSize:11,color:sm.color}}>{sm.dot}</span>
+                <span style={{fontSize:11,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
               </span>
             </div>
           </div>
@@ -3396,7 +3396,7 @@ function Overview({onSelect, role, sample}){
                 <div className="tc-top">
                   <div className="tc-name">{t.label}</div>
                   {sample&&<span style={{
-                    fontSize:8,padding:'2px 7px',borderRadius:20,flexShrink:0,fontWeight:600,letterSpacing:'.3px',
+                    fontSize:10,padding:'2px 7px',borderRadius:20,flexShrink:0,fontWeight:600,letterSpacing:'.3px',
                     background:filled?'rgba(74,222,128,.12)':'var(--bg3)',
                     color:filled?'#4ade80':'var(--text3)',
                     border:filled?'1px solid rgba(74,222,128,.25)':'1px solid var(--border)',
@@ -3433,8 +3433,8 @@ function DuaBlock({dua, kind, stageColor, stageKey}){
       {annotations&&annotations.length>0&&<>
         <div style={{height:1,background:'var(--border)',margin:'10px 0'}}/>
         {annotations.map((a,i)=><div key={i} style={i>0?{marginTop:10,paddingTop:10,borderTop:'1px solid var(--border)'}:{}}>
-          <div style={{fontSize:9,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:4}}>⧁ {a.attr}</div>
-          <div style={{fontSize:11,color:'var(--text3)',lineHeight:1.65,fontStyle:'italic'}}>{a.text}</div>
+          <div style={{fontSize:11,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:4}}>⧁ {a.attr}</div>
+          <div style={{fontSize:14,color:'var(--text3)',lineHeight:1.65,fontStyle:'italic'}}>{a.text}</div>
         </div>)}
       </>}
     </div>}
@@ -3457,8 +3457,8 @@ function AttributeBlock({stageKey, stageColor}){
     </button>
     {open&&<div className="dua-body">
       {d.annotations.map((a,i)=><div key={i} style={i>0?{marginTop:12,paddingTop:12,borderTop:'1px solid var(--border)'}:{}}>
-        <div style={{fontSize:10,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:5}}>⧁ {a.attr}</div>
-        <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.7,fontStyle:'italic'}}>{a.text}</div>
+        <div style={{fontSize:12,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:5}}>⧁ {a.attr}</div>
+        <div style={{fontSize:15,color:'var(--text2)',lineHeight:1.7,fontStyle:'italic'}}>{a.text}</div>
       </div>)}
     </div>}
   </div>;
@@ -3471,7 +3471,7 @@ function ReadinessBlock({stageKey, stageColor}){
   const [open,setOpen]=useState(false);
   return <div className="dua-block">
     <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
-      <span className="dua-glyph" style={{color:stageColor,fontSize:9,lineHeight:1}}>▣</span>
+      <span className="dua-glyph" style={{color:stageColor,fontSize:11,lineHeight:1}}>▣</span>
       <span className="dua-label">
         <span className="dua-kind" style={{color:stageColor}}>Opening Readiness Check</span>
         <span className="dua-title-txt">Before you begin</span>
@@ -3479,15 +3479,15 @@ function ReadinessBlock({stageKey, stageColor}){
       <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
     </button>
     {open&&<div className="dua-body">
-      <div style={{fontSize:11,color:'var(--text3)',fontStyle:'italic',lineHeight:1.65,marginBottom:10,paddingBottom:10,borderBottom:'1px solid var(--border)'}}>{r.frame}</div>
+      <div style={{fontSize:14,color:'var(--text3)',fontStyle:'italic',lineHeight:1.65,marginBottom:10,paddingBottom:10,borderBottom:'1px solid var(--border)'}}>{r.frame}</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
         <div>
-          <div style={{fontSize:9,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Governing when</div>
-          {r.governing.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text2)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:`2px solid ${stageColor}55`}}>{s}</div>)}
+          <div style={{fontSize:11,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Governing when</div>
+          {r.governing.map((s,i)=><div key={i} style={{fontSize:14,color:'var(--text2)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:`2px solid ${stageColor}55`}}>{s}</div>)}
         </div>
         <div>
-          <div style={{fontSize:9,fontWeight:600,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Not yet rested in when</div>
-          {r.notYet.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text3)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:'2px solid var(--border2)'}}>{s}</div>)}
+          <div style={{fontSize:11,fontWeight:600,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Not yet rested in when</div>
+          {r.notYet.map((s,i)=><div key={i} style={{fontSize:14,color:'var(--text3)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:'2px solid var(--border2)'}}>{s}</div>)}
         </div>
       </div>
     </div>}
@@ -3501,7 +3501,7 @@ function ReflectionBlock({stageKey, stageColor}){
   const [open,setOpen]=useState(false);
   return <div className="dua-block">
     <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
-      <span className="dua-glyph" style={{color:stageColor,fontSize:9,lineHeight:1}}>◈</span>
+      <span className="dua-glyph" style={{color:stageColor,fontSize:11,lineHeight:1}}>◈</span>
       <span className="dua-label">
         <span className="dua-kind" style={{color:stageColor}}>Closing Reflection</span>
         <span className="dua-title-txt">Before you close this stage</span>
@@ -3509,15 +3509,15 @@ function ReflectionBlock({stageKey, stageColor}){
       <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
     </button>
     {open&&<div className="dua-body">
-      <div style={{fontSize:11,color:'var(--text3)',fontStyle:'italic',lineHeight:1.65,marginBottom:10,paddingBottom:10,borderBottom:'1px solid var(--border)'}}>{r.frame}</div>
+      <div style={{fontSize:14,color:'var(--text3)',fontStyle:'italic',lineHeight:1.65,marginBottom:10,paddingBottom:10,borderBottom:'1px solid var(--border)'}}>{r.frame}</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
         <div>
-          <div style={{fontSize:9,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Were governing when</div>
-          {r.governing.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text2)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:`2px solid ${stageColor}55`}}>{s}</div>)}
+          <div style={{fontSize:11,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Were governing when</div>
+          {r.governing.map((s,i)=><div key={i} style={{fontSize:14,color:'var(--text2)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:`2px solid ${stageColor}55`}}>{s}</div>)}
         </div>
         <div>
-          <div style={{fontSize:9,fontWeight:600,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Present but not yet rested in when</div>
-          {r.notYet.map((s,i)=><div key={i} style={{fontSize:11,color:'var(--text3)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:'2px solid var(--border2)'}}>{s}</div>)}
+          <div style={{fontSize:11,fontWeight:600,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:7}}>Present but not yet rested in when</div>
+          {r.notYet.map((s,i)=><div key={i} style={{fontSize:14,color:'var(--text3)',lineHeight:1.65,marginBottom:7,paddingLeft:8,borderLeft:'2px solid var(--border2)'}}>{s}</div>)}
         </div>
       </div>
     </div>}
@@ -3526,13 +3526,26 @@ function ReflectionBlock({stageKey, stageColor}){
 
 function App(){
   const [selId,setSelId]=useState(null);
-  const [collapsed,setCol]=useState({});
+  const [collapsed,setCol]=useState(()=>{
+    try{
+      const saved=localStorage.getItem('bbos_collapsed');
+      if(saved) return JSON.parse(saved);
+    }catch(e){}
+    // Default: all stages collapsed
+    const init={};
+    Object.keys(STAGES).forEach(k=>{init[k]=true;});
+    return init;
+  });
   const [view,setView]=useState('pipeline');
   const [sample,setSample]=useState(false);
   const [roleId,setRoleId]=useState('all');
   const role=ROLES.find(r=>r.id===roleId)||ROLES[0];
   const selTool=TOOLS.find(t=>t.id===selId);
-  const toggleCol=k=>setCol(c=>({...c,[k]:!c[k]}));
+  const toggleCol=k=>setCol(c=>{
+    const next={...c,[k]:!c[k]};
+    try{localStorage.setItem('bbos_collapsed',JSON.stringify(next));}catch(e){}
+    return next;
+  });
   const switchView=v=>setView(v);
   const switchRole=id=>{ setRoleId(id); };
   const switchSample=v=>{ setSample(v); };
@@ -3555,8 +3568,8 @@ function App(){
     {/* TOPBAR */}
     <div className="tb">
       <div className="tb-logo">
-        <div className="tb-mark" style={{fontSize:15,fontWeight:700,letterSpacing:0}}>⧁</div>
-        <span className="tb-name">Barakah Business Operating System</span>
+        <div className="tb-mark" style={{fontSize:19,fontWeight:700,letterSpacing:0}}>⧁</div>
+        <span className="tb-name">BBOS</span>
       </div>
       <div className="tb-divider"/>
       <div className="role-sel-wrap">
