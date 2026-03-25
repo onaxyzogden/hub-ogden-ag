@@ -278,6 +278,44 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sb-rr-col-hdr.yes{color:#4ade80}.sb-rr-col-hdr.not{color:var(--text3)}
 .sb-rr-item{font-size:14px;color:var(--text2);line-height:1.55;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .sb-rr-item:last-child{border-bottom:none;padding-bottom:0}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .app{grid-template-columns:52px 1fr}
+  .app.sb-open{grid-template-columns:272px 1fr}
+  .role-sel-wrap{display:none}
+  .tb-badge{display:none}
+  .tb-name{font-size:15px}
+  .sb-strip{display:flex}
+  .sb-full{display:none}
+  .app.sb-open .sb-strip{display:none}
+  .app.sb-open .sb-full{display:flex}
+  .sb-close-btn{display:flex !important}
+  .sb-backdrop{display:block}
+}
+@media(min-width:769px){
+  .sb-strip{display:none}
+  .role-mob{display:none}
+  .sb-expand-btn{display:none}
+}
+/* Strip sidebar */
+.sb-strip{flex-direction:column;align-items:center;padding:8px 0;gap:4px;width:52px;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;overflow-x:hidden}
+.sb-strip-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border-radius:6px;border:none;background:transparent;cursor:pointer;width:44px;transition:background .12s}
+.sb-strip-btn:hover{background:var(--bg3)}
+.sb-strip-btn.active{background:var(--bg3)}
+.sb-strip-code{font-size:11px;font-weight:700;letter-spacing:.5px}
+.sb-strip-dot{width:6px;height:6px;border-radius:50%}
+.sb-expand-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:6px;line-height:1;margin-top:auto;margin-bottom:8px}
+/* Backdrop */
+.sb-backdrop{display:none;position:fixed;inset:0;background:#00000055;z-index:50;top:52px}
+/* Mobile role selector */
+.role-mob{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);height:32px}
+.role-mob-chev{color:var(--text3);font-size:11px}
+.role-drop{position:fixed;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;box-shadow:0 8px 32px #00000066;z-index:200;min-width:200px;max-height:70vh;overflow-y:auto;overflow-x:hidden}
+.role-drop-item{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text2);transition:background .1s}
+.role-drop-item:hover{background:var(--bg3)}
+.role-drop-item.on{background:var(--bg3);color:var(--text)}
+.role-drop-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -578,23 +616,23 @@ const CLOSING_DUA = {
 
 const TOOLS = [
   // ── INT TOOLS ──
-  {id:'intake_packet',    label:'Standing Declarations Packet',        sec:'Foundation', stage:'INT', asset:'INT — Standing Declarations',    bsec:'Standing Foundation', ws:'intake_packet',
+  {id:'intake_packet',    label:'Standing Declarations Packet',        sec:'Foundation', stage:'INT', asset:'01 — Standing Declarations',    bsec:'Standing Foundation', ws:'intake_packet',
    desc:'The operator\'s six-field honest self-declaration: Capital (Financial Stewardship Horizon), Skills & Competencies, Proof/Integrity Proof Links, Work Aversions & Fixed Constraints, Geography, and Regulatory Pre-Check.',
    rat:'Every stage from QAL onward is built on what is declared here. A distortion in the intake propagates structurally through every stage above it.',
    perms:['O','V','-','-','-','-','-']},
-  {id:'fsh',              label:'Financial Stewardship Horizon',   sec:'Foundation', stage:'INT', asset:'INT — Financial Runway',         bsec:'Standing Foundation', ws:'fsh',
+  {id:'fsh',              label:'Financial Stewardship Horizon',   sec:'Foundation', stage:'INT', asset:'01 — Financial Runway',         bsec:'Standing Foundation', ws:'fsh',
    desc:'The actual documented runway figure — not a best-case projection. The number that is honestly true at the time of declaration.',
    rat:'The FSH is the most consequential single number in the intake. An inflated figure produces a QAL gate decision that does not reflect actual operating conditions.',
    perms:['O','-','-','-','-','-','-']},
-  {id:'gap_check',        label:'Gap Check',                        sec:'Foundation', stage:'INT', asset:'INT — Completeness Audit',       bsec:'Standing Foundation', ws:'gap_check',
+  {id:'gap_check',        label:'Gap Check',                        sec:'Foundation', stage:'INT', asset:'01 — Completeness Audit',       bsec:'Standing Foundation', ws:'gap_check',
    desc:'Review of each intake field for completeness, ambiguity, and verifiability. Identifies which competency claims lack verifiable proof links before routing to QAL.',
    rat:'Gaps identified at INT carry forward into QAL with their restrictions intact. Naming them here prevents charitable inference from substituting for honest assessment.',
    perms:['O','V','-','-','-','-','-']},
-  {id:'routing_decision', label:'Routing Decision Record',          sec:'Foundation', stage:'INT', asset:'INT — Stage Routing',            bsec:'Standing Foundation', ws:'routing_decision',
+  {id:'routing_decision', label:'Routing Decision Record',          sec:'Foundation', stage:'INT', asset:'01 — Stage Routing',            bsec:'Standing Foundation', ws:'routing_decision',
    desc:'The documented basis for routing: Stage 02 QAL (proceed) or Stage 01.1 Rejection. States which intake fields are complete, which gaps exist, and the honest basis for the decision.',
    rat:'Al-Awwal governs this decision. A routing made from optimism rather than honest assessment is a foundational compromise — everything built above it will eventually reveal the distortion.',
    perms:['O','V','-','-','-','-','-']},
-  {id:'ifb',              label:'IFB — Standing Form Build',          sec:'Foundation', stage:'INT', asset:'INT — Standing Instrument',         bsec:'Standing Foundation', ws:'ifb',
+  {id:'ifb',              label:'IFB — Standing Form Build',          sec:'Foundation', stage:'INT', asset:'01 — Standing Instrument',         bsec:'Standing Foundation', ws:'ifb',
    desc:'Stage 01.1: the Google Form instrument built 1:1 from the BBOS questionnaire template. Includes field validation rules, conditional logic, and disqualifier triggers.',
    rat:'The intake form is not a data collection tool — it is an instrument of invitation toward honest self-disclosure before Ash-Shahid. Form design that leads respondents toward preferred answers undermines the foundation from the first question.',
    perms:['O','V','-','-','-','-','-']},
@@ -3539,6 +3577,11 @@ function App(){
   const [view,setView]=useState('pipeline');
   const [sample,setSample]=useState(false);
   const [roleId,setRoleId]=useState('all');
+  const [sbOpen,setSbOpen]=useState(()=>{
+    try{return localStorage.getItem('bbos_sb_open')==='1';}catch(e){return false;}
+  });
+  const [roleDropOpen,setRoleDropOpen]=useState(false);
+  const roleDropRef=useRef(null);
   const role=ROLES.find(r=>r.id===roleId)||ROLES[0];
   const selTool=TOOLS.find(t=>t.id===selId);
   const toggleCol=k=>setCol(c=>{
@@ -3564,7 +3607,29 @@ function App(){
     return <Overview onSelect={setSelId} role={role} sample={sample}/>;
   }
 
-  return <div className="app">
+  const toggleSb=()=>setSbOpen(o=>{
+    const next=!o;
+    try{localStorage.setItem('bbos_sb_open',next?'1':'0');}catch(e){}
+    return next;
+  });
+
+  const stages=Object.values(STAGES);
+
+  // Mobile role dropdown portal
+  const roleDrop = roleDropOpen ? ReactDOM.createPortal(
+    <div>
+      <div style={{position:'fixed',inset:0,zIndex:199}} onClick={()=>setRoleDropOpen(false)}/>
+      <div className="role-drop" ref={roleDropRef} style={{top:56,left:80,zIndex:200}}>
+        {ROLES.map(r=><button key={r.id} className={`role-drop-item${roleId===r.id?' on':''}`}
+          onClick={()=>{switchRole(r.id);setRoleDropOpen(false);}}>
+          <span className="role-drop-dot" style={{background:r.color}}/>
+          {r.id==='all'?'All Roles':r.label}
+        </button>)}
+      </div>
+    </div>, document.body
+  ) : null;
+
+  return <div className={`app${sbOpen?' sb-open':''}`}>
     {/* TOPBAR */}
     <div className="tb">
       <div className="tb-logo">
@@ -3572,6 +3637,7 @@ function App(){
         <span className="tb-name">BBOS</span>
       </div>
       <div className="tb-divider"/>
+      {/* Desktop role selector */}
       <div className="role-sel-wrap">
         <span className="role-sel-lbl">Role</span>
         <div className="role-sel">
@@ -3580,6 +3646,13 @@ function App(){
             onClick={()=>switchRole(r.id)}>{r.id==='all'?'All':r.label}</button>)}
         </div>
       </div>
+      {/* Mobile role dropdown trigger */}
+      <button className="role-mob" onClick={()=>setRoleDropOpen(o=>!o)}>
+        <span className="role-drop-dot" style={{background:role.color,width:8,height:8,borderRadius:'50%',flexShrink:0}}/>
+        {role.id==='all'?'All Roles':role.label}
+        <span className="role-mob-chev">▾</span>
+      </button>
+      {roleDrop}
       <div className="tb-right">
         <div className="seg">
           <button className={`sg-btn${view==='pipeline'?' on':''}`} onClick={()=>switchView('pipeline')}>Pipeline</button>
@@ -3593,8 +3666,38 @@ function App(){
       </div>
     </div>
 
-    {/* SIDEBAR */}
-    <div className="sb">
+    {/* MOBILE BACKDROP */}
+    {sbOpen&&<div className="sb-backdrop" onClick={toggleSb}/>}
+
+    {/* NARROW STRIP — mobile only, always visible */}
+    <div className="sb-strip">
+      <button className="sb-strip-btn" style={{marginBottom:4}} onClick={toggleSb} title="Expand">
+        <span style={{fontSize:16,color:'var(--accent)'}}>☰</span>
+      </button>
+      {stages.map(s=>{
+        const cnt=(toolsByStage[s.key]||[]).length;
+        if(!cnt) return null;
+        return <button key={s.key} className={`sb-strip-btn${collapsed[s.key]===false?' active':''}`}
+          onClick={()=>{toggleSb();}}
+          title={`${s.code} — ${s.name}`}
+          style={{}}>
+          <span className="sb-strip-dot" style={{background:s.c}}/>
+          <span className="sb-strip-code" style={{color:s.c}}>{s.code}</span>
+        </button>;
+      })}
+    </div>
+
+    {/* FULL SIDEBAR */}
+    <div className="sb sb-full">
+      {/* Mobile close button */}
+      <button onClick={toggleSb} style={{
+        display:'none', alignItems:'center', gap:6, padding:'10px 14px',
+        background:'transparent', border:'none', borderBottom:'1px solid var(--border)',
+        cursor:'pointer', color:'var(--text3)', fontSize:13, fontFamily:'inherit',
+        textAlign:'left', width:'100%'
+      }} className="sb-close-btn">
+        ‹ Collapse
+      </button>
       {roleId!=='all'&&<div className="role-banner">
         <div className="role-avatar" style={{background:role.bg,color:role.color}}>{role.initials}</div>
         <div className="role-banner-info">
@@ -3646,7 +3749,7 @@ function App(){
     </div>
 
     {/* MAIN */}
-    <div className="main">{mainContent()}</div>
+    <div className="main" onClick={sbOpen?toggleSb:undefined}>{mainContent()}</div>
   </div>;
 }
 
