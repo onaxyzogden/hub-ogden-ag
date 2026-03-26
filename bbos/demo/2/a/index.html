@@ -21,6 +21,7 @@
   --int:#b8a96a;--int-bg:#b8a96a15;--int-b:#b8a96a40;
   --ret:#d4a55a;--ret-bg:#d4a55a15;--ret-b:#d4a55a40;
   --opt:#7b6fa0;--opt-bg:#7b6fa015;--opt-b:#7b6fa040;
+  --dlr:#4ab8a8;--dvr-bg:#4ab8a815;--dvr-b:#4ab8a840;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.6;overflow:hidden}
 .app{display:grid;grid-template-columns:272px 1fr;grid-template-rows:52px 1fr;height:100vh}
@@ -328,35 +329,35 @@ const {useState, useRef} = React;
 
 const ROLES = [
   {id:'all',    label:'All',        sub:'All roles',                   color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'',   scope:'Full pipeline view — all tools across all 9 stages.'},
-  {id:'owner',  label:'Owner',      sub:'Business Owner',              color:'var(--int)',     bg:'var(--int-bg)',     initials:'OW', scope:'Full access to all 9 stages including INT (Standing Declarations) and OPT (Optimization). The only role with access to the Financial Stewardship Horizon, Covenant Integrity Audit, and Restoration Mandate. All sensitive declarations and cycle-end reckonings are Owner-only.'},
-  {id:'strat',  label:'Strategist', sub:'Pipeline Manager',            color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'ST', scope:'View access to INT intake declarations. Full ownership of QAL through FUL and RET. Does not access OPT — the Covenant Integrity Audit and system reckoning remain with the Owner.'},
+  {id:'owner',  label:'Owner',      sub:'Business Owner',              color:'var(--int)',     bg:'var(--int-bg)',     initials:'OW', scope:'Full access to all 9 stages including SDC (Standing Declarations) and OPT (Optimization). The only role with access to the Financial Stewardship Horizon, Covenant Integrity Audit, and Restoration Mandate. All sensitive declarations and cycle-end reckonings are Owner-only.'},
+  {id:'strat',  label:'Strategist', sub:'Pipeline Manager',            color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'ST', scope:'View access to SDC intake declarations. Full ownership of TRU through DEL and RET. Does not access OPT — the Covenant Integrity Audit and system reckoning remain with the Owner.'},
   {id:'copy',   label:'Copywriter', sub:'Content & Copy',              color:'var(--str)',     bg:'var(--str-bg)',     initials:'CW', scope:'Edits all messaging and creative assets — ads, pages, sequences, scripts, letters. Views research outputs as source material. Does not touch platform infrastructure or strategy.'},
   {id:'media',  label:'Media Buyer',sub:'Paid & Distribution',         color:'var(--out)',     bg:'var(--out-bg)',     initials:'MB', scope:'Edits all paid and distribution infrastructure — ad platforms, pixel, launch, social channels, website deployment. Views creative and research as context. Does not write copy.'},
   {id:'setter', label:'Setter',     sub:'Appointment Setting',         color:'var(--qal)',     bg:'var(--qal-bg)',     initials:'SE', scope:'Edits the setting script and intake form. Views ICP and sales script for call context. Does not access research, offer design, or media infrastructure.'},
   {id:'closer', label:'Closer',     sub:'Sales',                       color:'var(--sal)',     bg:'var(--sal-bg)',     initials:'CL', scope:'Edits the sales script and presentation. Views the full offer, ICP, nurture sequences, and VSL. Does not access research outputs or launch infrastructure.'},
-  {id:'fulfil', label:'Fulfillment',sub:'Delivery & Client Success',   color:'var(--ful)',     bg:'var(--ful-bg)',     initials:'FU', scope:'Edits all 8 FUL stage assets — Onboarding Checklist, Client Intake Form, Execution SOP, QC Checklist, Client Success Milestones, Proof Capture Protocol, Offboarding Sequence, and CRM setup. Views ICP, Offer Covenant, and Pricing so delivery matches exactly what was sold.'},
+  {id:'fulfil', label:'Fulfillment',sub:'Delivery & Client Success',   color:'var(--ful)',     bg:'var(--ful-bg)',     initials:'FU', scope:'Edits all 8 DEL stage assets — Onboarding Checklist, Client Intake Form, Execution SOP, QC Checklist, Client Success Milestones, Proof Capture Protocol, Offboarding Sequence, and CRM setup. Views ICP, Offer Covenant, and Pricing so delivery matches exactly what was sold.'},
 ];
 
 const STAGES = {
-  INT:{code:'01',key:'INT',name:'Standing',       attr:'Al-Awwal · Ash-Shahid',  c:'var(--int)',bg:'var(--int-bg)',b:'var(--int-b)'},
-  QAL:{code:'02',key:'QAL',name:'Truth',attr:'Al-Haqq · Al-Khabir',   c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
+  SDC:{code:'01',key:'SDC',name:'Standing',       attr:'Al-Awwal · Ash-Shahid',  c:'var(--int)',bg:'var(--int-bg)',b:'var(--int-b)'},
+  TRU:{code:'02',key:'TRU',name:'Truth',attr:'Al-Haqq · Al-Khabir',   c:'var(--qal)',bg:'var(--qal-bg)',b:'var(--qal-b)'},
   STR:{code:'03',key:'STR',name:'Strategy',     attr:'Al-Basir',                  c:'var(--str)',bg:'var(--str-bg)',b:'var(--str-b)'},
   OFR:{code:'04',key:'OFR',name:'Offer',        attr:'Al-Adl · Al-Muqsit',    c:'var(--ofr)',bg:'var(--ofr-bg)',b:'var(--ofr-b)'},
   OUT:{code:'05',key:'OUT',name:'Outreach',     attr:'Ar-Razzaq · As-Sittir', c:'var(--out)',bg:'var(--out-bg)',b:'var(--out-b)'},
   SAL:{code:'06',key:'SAL',name:'Sales',        attr:'Ar-Razzaq · Al-Latif',  c:'var(--sal)',bg:'var(--sal-bg)',b:'var(--sal-b)'},
-  FUL:{code:'07',key:'FUL',name:'Fulfill',  attr:'Al-Muhsin · Al-Wali',   c:'var(--ful)',bg:'var(--ful-bg)',b:'var(--ful-b)'},
+  DLR:{code:'07',key:'DLR',name:'Delivery',  attr:'Al-Muhsin · Al-Wali',   c:'var(--dlr)',bg:'var(--dlr-bg)',b:'var(--dlr-b)'},
   RET:{code:'08',key:'RET',name:'Retention',    attr:'Ash-Shakur',                c:'var(--ret)',bg:'var(--ret-bg)',b:'var(--ret-b)'},
   OPT:{code:'09',key:'OPT',name:'Optimize', attr:'Al-Hasib · Al-Quddus',  c:'var(--opt)',bg:'var(--opt-bg)',b:'var(--opt-b)'},
 };
 
 const PHASES = {
-  INT:'Foundation',
-  QAL:'Foundation',
+  SDC:'Foundation',
+  TRU:'Foundation',
   STR:'Foundation',
   OFR:'Build',
   OUT:'Launch',
   SAL:'Launch',
-  FUL:'Deliver',
+  DEL:'Deliver',
   RET:'Deliver',
   OPT:'Sustain',
 };
@@ -371,8 +372,8 @@ const STATUS_META = {
 
 // Sample-mode gate status per stage (blank = all Not Started)
 const SAMPLE_STAGE_STATUS = {
-  INT:'Complete', QAL:'Complete', STR:'Complete', OFR:'Complete',
-  OUT:'Complete', SAL:'Active',   FUL:'Active',
+  SDC:'Complete', TRU:'Complete', STR:'Complete', OFR:'Complete',
+  OUT:'Complete', SAL:'Active',   DEL:'Active',
   RET:'Active',   OPT:'Not Started',
 };
 
@@ -397,7 +398,7 @@ const ATTRS = {
 };
 
 const DUAS = {
-  INT:{
+  SDC:{
     title:'Honest Standing · Truthful Declaration',
     arabic:'اللَّهُمَّ أَرِنَا الْحَقَّ حَقًّا وَارْزُقْنَا اتِّبَاعَهُ، وَأَرِنَا الْبَاطِلَ بَاطِلًا وَارْزُقْنَا اجْتِنَابَهُ',
     trans:"Allāhumma arinā l-ḥaqqa ḥaqqan wa-rzuqnā ttibā'ah, wa arinā l-bāṭila bāṭilan wa-rzuqnā jtinābah",
@@ -418,7 +419,7 @@ const DUAS = {
       notYet:['There is at least one answer you knew was optimistic when you wrote it and left it because the honest version felt like a door closing.','The Financial Stewardship Horizon reflects what you hope is true rather than what the evidence currently supports.'],
     },
   },
-  QAL:{
+  TRU:{
     title:'Truth & Discernment · The Amanah Gate',
     arabic:'\u0631\u064e\u0628\u0650\u0651 \u0627\u0634\u0652\u0631\u064e\u062d\u0652 \u0644\u0650\u064a \u0635\u064e\u062f\u0652\u0631\u0650\u064a \u0648\u064e\u064a\u064e\u0633\u0650\u0651\u0631\u0652 \u0644\u0650\u064a \u0623\u064e\u0645\u0652\u0631\u0650\u064a \u0648\u064e\u0627\u062d\u0652\u0644\u064f\u0644\u0652 \u0639\u064f\u0642\u0652\u062f\u064e\u0629\u064b \u0645\u0650\u0651\u0646 \u0644\u0650\u0651\u0633\u064e\u0627\u0646\u0650\u064a \u064a\u064e\u0641\u0652\u0642\u064e\u0647\u064f\u0648\u0627 \u0642\u064e\u0648\u0652\u0644\u0650\u064a',
     trans:"Rabbi shraḥ lī ṣadrī wa yassir lī amrī wa-ḥlul 'uqdatan min lisānī yafqahū qawlī",
@@ -530,7 +531,7 @@ const DUAS = {
       notYet:['At least one objection response redirected the concern rather than resolved it.','A limitation in the offer was not named on a call because naming it felt like it would cost the close.'],
     },
   },
-  FUL:{
+  DLR:{
     title:'Delivery as Worship · Iḥsān in Action',
     arabic:'\u0627\u0644\u0644\u0651\u064e\u0647\u064f\u0645\u0651\u064e \u0623\u064e\u0639\u0650\u0646\u0650\u0651\u064a \u0639\u064e\u0644\u064e\u0649 \u0625\u0650\u062a\u0652\u0645\u064e\u0627\u0645\u0650 \u0645\u064e\u0627 \u062a\u064e\u0648\u064e\u0644\u0651\u064e\u064a\u0652\u062a\u064f\u0647\u064f \u0628\u0650\u0625\u0650\u062d\u0652\u0633\u064e\u0627\u0646\u064d\u060c \u0648\u064e\u0627\u062c\u0652\u0639\u064e\u0644\u0652\u0647\u064f \u062e\u064e\u0627\u0644\u0650\u0635\u064b\u0627 \u0644\u0650\u0648\u064e\u062c\u0652\u0647\u0650\u0643\u064e \u0627\u0644\u0652\u0643\u064e\u0631\u0650\u064a\u0645\u0650',
     trans:"Allāhumma a'innī 'alā itmāmi mā tawallaytuhu bi-iḥsān, wa j'alhu khāliṣan li-wajhika l-karīm",
@@ -615,24 +616,24 @@ const CLOSING_DUA = {
 };
 
 const TOOLS = [
-  // ── INT TOOLS ──
-  {id:'intake_packet',    label:'Standing Declarations Packet',        sec:'Foundation', stage:'INT', asset:'01 — Standing Declarations',    bsec:'Standing Foundation', ws:'intake_packet',
+  // ── SDC TOOLS ──
+  {id:'intake_packet',    label:'Standing Declarations Packet',        sec:'Foundation', stage:'SDC', asset:'01 — Standing Declarations',    bsec:'Standing Foundation', ws:'intake_packet',
    desc:'The operator\'s six-field honest self-declaration: Capital (Financial Stewardship Horizon), Skills & Competencies, Proof/Integrity Proof Links, Work Aversions & Fixed Constraints, Geography, and Regulatory Pre-Check.',
-   rat:'Every stage from QAL onward is built on what is declared here. A distortion in the intake propagates structurally through every stage above it.',
+   rat:'Every stage from TRU onward is built on what is declared here. A distortion in the intake propagates structurally through every stage above it.',
    perms:['O','V','-','-','-','-','-']},
-  {id:'fsh',              label:'Financial Stewardship Horizon',   sec:'Foundation', stage:'INT', asset:'01 — Financial Runway',         bsec:'Standing Foundation', ws:'fsh',
+  {id:'fsh',              label:'Financial Stewardship Horizon',   sec:'Foundation', stage:'SDC', asset:'01 — Financial Runway',         bsec:'Standing Foundation', ws:'fsh',
    desc:'The actual documented runway figure — not a best-case projection. The number that is honestly true at the time of declaration.',
-   rat:'The FSH is the most consequential single number in the intake. An inflated figure produces a QAL gate decision that does not reflect actual operating conditions.',
+   rat:'The FSH is the most consequential single number in the intake. An inflated figure produces a TRU gate decision that does not reflect actual operating conditions.',
    perms:['O','-','-','-','-','-','-']},
-  {id:'gap_check',        label:'Gap Check',                        sec:'Foundation', stage:'INT', asset:'01 — Completeness Audit',       bsec:'Standing Foundation', ws:'gap_check',
-   desc:'Review of each intake field for completeness, ambiguity, and verifiability. Identifies which competency claims lack verifiable proof links before routing to QAL.',
-   rat:'Gaps identified at INT carry forward into QAL with their restrictions intact. Naming them here prevents charitable inference from substituting for honest assessment.',
+  {id:'gap_check',        label:'Gap Check',                        sec:'Foundation', stage:'SDC', asset:'01 — Completeness Audit',       bsec:'Standing Foundation', ws:'gap_check',
+   desc:'Review of each intake field for completeness, ambiguity, and verifiability. Identifies which competency claims lack verifiable proof links before routing to TRU.',
+   rat:'Gaps identified at SDC carry forward into TRU with their restrictions intact. Naming them here prevents charitable inference from substituting for honest assessment.',
    perms:['O','V','-','-','-','-','-']},
-  {id:'routing_decision', label:'Routing Decision Record',          sec:'Foundation', stage:'INT', asset:'01 — Stage Routing',            bsec:'Standing Foundation', ws:'routing_decision',
-   desc:'The documented basis for routing: Stage 02 QAL (proceed) or Stage 01.1 Rejection. States which intake fields are complete, which gaps exist, and the honest basis for the decision.',
+  {id:'routing_decision', label:'Routing Decision Record',          sec:'Foundation', stage:'SDC', asset:'01 — Stage Routing',            bsec:'Standing Foundation', ws:'routing_decision',
+   desc:'The documented basis for routing: Stage 02 TRU (proceed) or Stage 01.1 Rejection. States which intake fields are complete, which gaps exist, and the honest basis for the decision.',
    rat:'Al-Awwal governs this decision. A routing made from optimism rather than honest assessment is a foundational compromise — everything built above it will eventually reveal the distortion.',
    perms:['O','V','-','-','-','-','-']},
-  {id:'ifb',              label:'IFB — Standing Form Build',          sec:'Foundation', stage:'INT', asset:'01 — Standing Instrument',         bsec:'Standing Foundation', ws:'ifb',
+  {id:'ifb',              label:'IFB — Standing Form Build',          sec:'Foundation', stage:'SDC', asset:'01 — Standing Instrument',         bsec:'Standing Foundation', ws:'ifb',
    desc:'Stage 01.1: the Google Form instrument built 1:1 from the BBOS questionnaire template. Includes field validation rules, conditional logic, and disqualifier triggers.',
    rat:'The intake form is not a data collection tool — it is an instrument of invitation toward honest self-disclosure before Ash-Shahid. Form design that leads respondents toward preferred answers undermines the foundation from the first question.',
    perms:['O','V','-','-','-','-','-']},
@@ -678,11 +679,11 @@ const TOOLS = [
    perms:['O','-','-','-','-','-','-']},
   {id:'proof_refresh',    label:'Proof Plan Refresh',               sec:'Optimization', stage:'OPT', asset:'OPT — Proof Plan Update',      bsec:'Cycle Reckoning', ws:'proof_refresh',
    desc:'Asset 8 updated. PROOF PENDING items resolved or carried forward with honest status. New proof assets added from the delivery cycle.',
-   rat:'PROOF PENDING restrictions carry forward until they are resolved. A claim that was PROOF PENDING at QAL and was not resolved by OPT enters the next cycle still restricted — and must be treated as such.',
+   rat:'PROOF PENDING restrictions carry forward until they are resolved. A claim that was PROOF PENDING at TRU and was not resolved by OPT enters the next cycle still restricted — and must be treated as such.',
    perms:['O','-','-','-','-','-','-']},
   {id:'constraint_map',   label:'Constraint Evolution Map',         sec:'Optimization', stage:'OPT', asset:'OPT — Constraint History',     bsec:'Cycle Reckoning', ws:'constraint_map',
-   desc:'How each Stage 01 INT constraint evolved through the cycle. New constraints identified during delivery documented. The record of what was designed around and what was overridden.',
-   rat:'Work Aversions declared at INT are structural constraints — not preferences. The Constraint Evolution Map documents whether they were honoured, and if not, what the override cost.',
+   desc:'How each Stage 01 SDC constraint evolved through the cycle. New constraints identified during delivery documented. The record of what was designed around and what was overridden.',
+   rat:'Work Aversions declared at SDC are structural constraints — not preferences. The Constraint Evolution Map documents whether they were honoured, and if not, what the override cost.',
    perms:['O','-','-','-','-','-','-']},
   {id:'restoration',      label:'Restoration Mandate (G7.2)',       sec:'Optimization', stage:'OPT', asset:'OPT — Restoration Mandate',    bsec:'Cycle Reckoning', ws:'restoration',
    desc:'Every structural weakness identified in the reckoning with its repair requirement or documented accepted risk. Al-Quddus does not permit carrying unnamed weaknesses into the next cycle.',
@@ -692,7 +693,7 @@ const TOOLS = [
    desc:'Honest evaluation of the volume the system can sustain without degrading covenant integrity at any stage. Names the specific stage and mechanism of degradation if scaling would compromise integrity.',
    rat:'The system is either ready to scale or it is not. Naming the latter honestly is the highest form of stewardship. A Scaling Readiness Assessment that reflects desired volume rather than honest capacity is a distortion that the next intake cycle will expose.',
    perms:['O','-','-','-','-','-','-']},
-  {id:'validation', label:'Expert Validation Score',   sec:'Research',      stage:'QAL', asset:'Amanah Gate — S1–6',              bsec:'Research Factory', ws:'validation',
+  {id:'validation', label:'Expert Validation Score',   sec:'Research',      stage:'TRU', asset:'Amanah Gate — S1–6',              bsec:'Research Factory', ws:'validation',
    desc:'Screen the operator\'s core competency, market viability, and capacity to build with integrity.',
    rat:'The Amanah Gate must be passed before STR research begins. A failed gate routes to Stage 01.1 Rejection.',
    perms:['O','O','-','-','-','-','-']},
@@ -812,35 +813,35 @@ const TOOLS = [
    desc:'Deploy the intake form as the first ICP filter in the Sales stage.',
    rat:'Questions must qualify against the ICP from OFR Asset 2. A form that doesn\'t qualify is a list.',
    perms:['O','O','-','V','E','-','-']},
-  {id:'onboarding',  label:'Onboarding Checklist',          sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix A — Onboarding Checklist',        bsec:'Asset Factory', ws:'generic',
+  {id:'onboarding',  label:'Onboarding Checklist',          sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix A — Onboarding Checklist',        bsec:'Asset Factory', ws:'generic',
    desc:'Payment-to-work-start steps with communication triggers, timeline, and client success framed in the same language as the Promise.',
    rat:'The onboarding checklist is where the covenant transitions from document to experience. Every step with an ambiguous "what," "when," or "to whom" is a gap the client will fill with their own assumption.',
    perms:['O','O','E','-','V','V','E']},
-  {id:'clientintake', label:'Client Intake Form',             sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix B — Client Intake Form',            bsec:'Asset Factory', ws:'generic',
+  {id:'clientintake', label:'Client Intake Form',             sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix B — Client Intake Form',            bsec:'Asset Factory', ws:'generic',
    desc:'Capture client constraints, access requirements, communication preferences, and their own definition of success before delivery begins.',
    rat:'Intake data that is collected but not used is a covenant violation in miniature. Every field must feed directly into the Execution SOP or it should not be asked.',
    perms:['O','O','V','-','-','V','E']},
-  {id:'executionsop', label:'Execution SOP',                  sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix C — Execution SOP',                 bsec:'Asset Factory', ws:'generic',
+  {id:'executionsop', label:'Execution SOP',                  sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix C — Execution SOP',                 bsec:'Asset Factory', ws:'generic',
    desc:'Step-by-step delivery process mapped directly to the OFR Scope Map, with owner and timing for every step.',
    rat:'The SOP is the Scope Map in operational form. Any step required for delivery that does not appear in the Scope Map is either a scope gap or an Ihsan addition — both must be named explicitly.',
    perms:['O','O','-','-','-','V','E']},
-  {id:'qcchecklist',  label:'Quality Control Checklist',      sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix D — QC Checklist + IC-OFR/IC-FUL', bsec:'Asset Factory', ws:'qc',
-   desc:'QC checks aligned to OFR outcome and guarantee trigger conditions. Includes IC-OFR and IC-FUL Ihsan Baseline gates — mandatory pre-ship review before delivery begins.',
+  {id:'qcchecklist',  label:'Quality Control Checklist',      sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix D — QC Checklist + IC-OFR/IC-DEL', bsec:'Asset Factory', ws:'qc',
+   desc:'QC checks aligned to OFR outcome and guarantee trigger conditions. Includes IC-OFR and IC-DEL Ihsan Baseline gates — mandatory pre-ship review before delivery begins.',
    rat:'The QC checklist is an act of Al-Wali — standing between the client and a gap they do not yet know exists. It is not a compliance gate; it is proactive protection built before the client needs to ask.',
    perms:['O','O','-','-','-','-','E']},
-  {id:'milestones',   label:'Client Success Milestones',      sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix E — Client Success Milestones',     bsec:'Asset Factory', ws:'milestones',
+  {id:'milestones',   label:'Client Success Milestones',      sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix E — Client Success Milestones',     bsec:'Asset Factory', ws:'milestones',
    desc:'3–5 delivery checkpoints with message templates. Each milestone framed in the same language used in the Promise so the client has a continuous, unbroken understanding of what winning looks like.',
    rat:'Al-Muhsin asks not only "Did we hit the checkpoint?" but "Did the client experience it as a moment of genuine progress?" The milestone message templates are where that distinction becomes operational.',
    perms:['O','O','E','-','-','V','E']},
-  {id:'proofcapture', label:'Proof Capture Protocol',         sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix F — Proof Capture Protocol',        bsec:'Asset Factory', ws:'generic',
+  {id:'proofcapture', label:'Proof Capture Protocol',         sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix F — Proof Capture Protocol',        bsec:'Asset Factory', ws:'generic',
    desc:'What to capture, at which milestone, in what format, and with what consent language — built into delivery from the start, not left to the end.',
    rat:'Proof capture that happens after the engagement feels like extraction. Built into the milestones, with consent obtained before any collection begins, it is documentation of a shared outcome.',
    perms:['O','O','V','-','-','-','E']},
-  {id:'offboarding',  label:'Offboarding Sequence',           sec:'Fulfillment', stage:'FUL', asset:'FUL Appendix G — Offboarding Sequence',          bsec:'Asset Factory', ws:'generic',
+  {id:'offboarding',  label:'Offboarding Sequence',           sec:'Fulfillment', stage:'DLR', asset:'DEL Appendix G — Offboarding Sequence',          bsec:'Asset Factory', ws:'generic',
    desc:'Close, retention seed, and Stage 08 RET handoff. The retention seed must be written from genuine gratitude before any next-step framing.',
    rat:'Ash-Shakur requires that the seed follow the gratitude — not precede it. A retention seed written before the gratitude is felt carries only strategy. The offboarding sequence is the beginning of the retention relationship, not the end of the delivery relationship.',
    perms:['O','O','E','-','-','V','E']},
-  {id:'ghl',          label:'Connect GHL',                    sec:'Fulfillment', stage:'FUL', asset:'FUL — CRM Infrastructure',                       bsec:'Stage Entry',   ws:'generic',
+  {id:'ghl',          label:'Connect GHL',                    sec:'Fulfillment', stage:'DLR', asset:'DEL — CRM Infrastructure',                       bsec:'Stage Entry',   ws:'generic',
    desc:'Configure the CRM to carry Scope Map terms, Guarantee conditions, and milestone triggers into the live delivery layer.',
    rat:'A Scope Map that is not accessible at the point of delivery is a covenant waiting to be breached. GHL is the infrastructure that makes the covenant present in every client interaction.',
    perms:['O','O','-','-','V','V','E']},
@@ -948,8 +949,8 @@ const S = {
     settingscript:'12-min qualification call. Filters: Muslim female, solo service, 3+ yrs, $60k+, no existing offer. No-fit script included.',
     form:'8 qualification questions. Disqualifier logic: product/e-commerce route to "not currently a fit" page. All paths tested.',
     ghl:'GHL pipeline: 5 stages. Scope Map + Guarantee pinned on every contact record. Onboarding: Day 0 welcome + Scope Map PDF, Day 1 session link. All 6 session reminders automated. Milestone triggers set at Sessions 2, 3, 5, and 6. Proof Capture consent flag on contact record.',
-    onboarding:'Onboarding Checklist — The Clarity Practice:\n\nDay 0 (contract signed + invoice paid):\n· Welcome email sent: subject "Your Clarity Practice begins — here is everything you need"\n· Email includes: Scope Map PDF, Voxer access link, session booking link, pre-work for Session 1\n· GHL contact record updated: client name, offer, start date, session 1 date\n· Calendar invite sent for all 6 sessions\n\nDay 1 (client action):\n· Session 1 booked within 48 hours of welcome email\n· If not booked within 48 hours: follow-up message sent via Voxer\n\nDay 2 (operator action):\n· Confirm Session 1 in calendar with Zoom link\n· Pre-work reminder sent: "Session 1 pre-work is attached — 20 minutes, due 24 hours before our call"\n\nBefore Session 1 (operator check):\n· Pre-work received and reviewed\n· Client Intake Form completed\n· IC-FUL gate run on onboarding communication ✓\n\nClient success framed as: "By Session 6, you will have a written positioning statement, a price you can state without apologising, and a 90-day plan you can begin the day after our final session."',
-    clientintake:'Client Intake Form — The Clarity Practice:\n\nSection 1 — Business Overview:\n· Current services and delivery format (1:1, group, retainer, project)\n· Current pricing (exact figures, not ranges)\n· Current client load and weekly available hours for client-facing work\n· Revenue range over the past 12 months\n\nSection 2 — Constraints and Access:\n· Time zone and preferred session window (morning / afternoon / evening)\n· Communication preference (async Voxer vs sync check-ins)\n· Any scheduled absences during the 6-week container\n· Tech stack: does the client have Zoom? Voxer?\n\nSection 3 — Client Definition of Success:\n· "In your own words, what would it mean for this engagement to have worked?"\n· "What has already been tried to solve this positioning/pricing problem?"\n· "What would you need to see or have in your hands by Session 6 to consider this a success?"\n\nSection 4 — Constraints feeding directly into Execution SOP:\n· Session time → all Zoom links pre-built at client\'s stated window\n· Absence dates → container calendar adjusted before Session 1\n· Stated definition of success → becomes Milestone 4 language verbatim\n\nIC-FUL-2 confirmation: all intake data feeds directly into the Execution SOP. No field collected without downstream use.',
+    onboarding:'Onboarding Checklist — The Clarity Practice:\n\nDay 0 (contract signed + invoice paid):\n· Welcome email sent: subject "Your Clarity Practice begins — here is everything you need"\n· Email includes: Scope Map PDF, Voxer access link, session booking link, pre-work for Session 1\n· GHL contact record updated: client name, offer, start date, session 1 date\n· Calendar invite sent for all 6 sessions\n\nDay 1 (client action):\n· Session 1 booked within 48 hours of welcome email\n· If not booked within 48 hours: follow-up message sent via Voxer\n\nDay 2 (operator action):\n· Confirm Session 1 in calendar with Zoom link\n· Pre-work reminder sent: "Session 1 pre-work is attached — 20 minutes, due 24 hours before our call"\n\nBefore Session 1 (operator check):\n· Pre-work received and reviewed\n· Client Intake Form completed\n· IC-DEL gate run on onboarding communication ✓\n\nClient success framed as: "By Session 6, you will have a written positioning statement, a price you can state without apologising, and a 90-day plan you can begin the day after our final session."',
+    clientintake:'Client Intake Form — The Clarity Practice:\n\nSection 1 — Business Overview:\n· Current services and delivery format (1:1, group, retainer, project)\n· Current pricing (exact figures, not ranges)\n· Current client load and weekly available hours for client-facing work\n· Revenue range over the past 12 months\n\nSection 2 — Constraints and Access:\n· Time zone and preferred session window (morning / afternoon / evening)\n· Communication preference (async Voxer vs sync check-ins)\n· Any scheduled absences during the 6-week container\n· Tech stack: does the client have Zoom? Voxer?\n\nSection 3 — Client Definition of Success:\n· "In your own words, what would it mean for this engagement to have worked?"\n· "What has already been tried to solve this positioning/pricing problem?"\n· "What would you need to see or have in your hands by Session 6 to consider this a success?"\n\nSection 4 — Constraints feeding directly into Execution SOP:\n· Session time → all Zoom links pre-built at client\'s stated window\n· Absence dates → container calendar adjusted before Session 1\n· Stated definition of success → becomes Milestone 4 language verbatim\n\nIC-DEL-2 confirmation: all intake data feeds directly into the Execution SOP. No field collected without downstream use.',
     executionsop:'Execution SOP — The Clarity Practice (mapped to OFR Scope Map):\n\nSession 1 — Enemy Identification (Week 1)\nOwner: Operator | Duration: 90 min\nDeliverables: VoC audit of client\'s current language patterns; Credibility Gap System named in the client\'s specific context; 3 fears and 3 desires identified verbatim\nQC check: Can the client name the specific forces working against their pricing confidence — not "mindset" or "confidence," but the structural causes?\n\nSession 2 — Audience Crystallisation (Week 2)\nOwner: Operator | Duration: 90 min\nDeliverables: ICP narrowed from current description to specific, qualifiable profile\nMilestone 1 triggered: "I can name the forces working against my pricing confidence"\n\nSession 3 — Positioning Statement (Week 3)\nOwner: Operator | Duration: 90 min\nDeliverables: Written positioning statement — first draft → reviewed → finalised in session\nMilestone 2 triggered: "I have a written statement that describes exactly who I serve"\nQC check: Does the statement pass the IC-OFR-1 test from the client\'s perspective?\n\nSession 4 — Offer One-Pager (Week 4)\nOwner: Operator | Duration: 90 min\nDeliverables: Offer one-pager template completed; Promise and Scope Map in client\'s language\n\nSession 5 — Price Anchoring (Week 5)\nOwner: Operator | Duration: 90 min\nDeliverables: Pricing calculator completed; price stated aloud at end of session; proof of value anchor built\nMilestone 3 triggered: "I have a price I can state and justify"\n\nSession 6 — 90-Day Plan (Week 6)\nOwner: Operator | Duration: 90 min\nDeliverables: 90-day plan written with specific weekly actions\nMilestone 4 triggered: "I have a 90-day plan I can begin tomorrow"\nGuarantee check: Can the client produce a specific audience statement, defensible price point, and written 90-day plan?\n\nWeek 8 Check-in (Async via Voxer)\nOwner: Operator | Duration: Async\nMilestone 5 triggered: "I have used the plan and have a result to report"\nProof Capture initiated at this milestone.',
     milestones:'Client Success Milestones — The Clarity Practice (5 checkpoints):\n\nMilestone 1 — Session 2 completion\nStatement: "I can name the forces working against my pricing confidence — not as a personal failing, but as a structural reality I can now see clearly."\nMessage template: "Something shifted in today\'s session — you named what\'s actually been happening. That\'s not a small thing. Before next week: [pre-work instruction]. Looking forward to Session 3."\n\nMilestone 2 — Session 3 completion (Positioning Statement finalised)\nStatement: "I have a written statement that describes exactly who I serve and what changes for them."\nMessage template: "You now have your positioning statement in writing. Read it aloud to yourself tonight — not to the mirror, just to yourself. [Statement attached as PDF.] See you for Session 4."\n\nMilestone 3 — Session 5 completion (Price confirmed)\nStatement: "I have a price I can state without apologising — and I can explain why it is right."\nMessage template: "You said the number out loud today and held it. That was the moment. [Pricing calculator attached.] One more session to build your plan."\n\nMilestone 4 — Session 6 completion (90-Day Plan complete)\nStatement: "I have a 90-day client acquisition plan with specific weekly actions I can begin tomorrow."\nMessage template: "Everything you came here for is now in writing. [Positioning statement, offer one-pager, pricing calculator, and 90-day plan attached.] The plan starts Monday. I will check in with you in Week 8."\n\nMilestone 5 — Week 8 check-in (Async)\nStatement: "I have used the plan and have a result to report."\nMessage template (sent by operator): "Week 8. How is the plan moving? Even a small action counts — I want to hear it. And if something stalled, that\'s worth talking about too. Voice note when you can."',
     proofcapture:'Proof Capture Protocol — The Clarity Practice:\n\nCapture Point 1 — Session 3 (Positioning Statement finalised)\nWhat to capture: Written reflection from client on the positioning statement — in their own words, what changed when they saw it in writing.\nFormat: Voxer voice note (preferred) or written message\nConsent: covered in Client Intake Form Section 4, agreed before Session 1\nUse: internal record; may become testimonial with explicit written approval\n\nCapture Point 2 — Session 6 (90-Day Plan complete)\nWhat to capture: Client\'s verbal response at end of session — "What does it mean for you to have this in writing?"\nFormat: Zoom recording clip (already recorded per Scope Map)\nConsent: confirmed in Client Intake Form; Zoom recording consent given at intake\nUse: may become a VSL or case study clip with written approval\n\nCapture Point 3 — Week 8 check-in (Primary proof point)\nWhat to capture: Outcome data — what action was taken, what result occurred, what price was quoted and held\nFormat: written case study questionnaire (5 questions, sent via Voxer with written follow-up)\nConsent language: "I\'d love to document your progress as a case study. This would mean sharing your before/after pricing and a brief description of the process — no personal details unless you specifically approve them. Are you open to that?"\nUse: Proof Plan Asset 8 update; case study for next cycle\n\nConsent rule: consent language appears in Client Intake Form before Session 1, before any proof is collected. No proof is captured without prior written confirmation of consent.',
@@ -987,17 +988,17 @@ const S = {
     settingscript:'Proceed. Disqualifiers operational. No-fit script included.',
     form:'Proceed. All ICP qualifier questions mapped. Disqualifier logic tested.',
     ghl:'Proceed. Scope Map and Guarantee on every contact record. Milestone triggers configured. Proof Capture consent flag active. Onboarding automation tested end-to-end.',
-    onboarding:'Proceed. IC-FUL gate passed — all onboarding communications define success in the same language as the Promise. All next-step instructions include what, when, and how. Pre-work delivery triggered and confirmed received.',
+    onboarding:'Proceed. IC-DEL gate passed — all onboarding communications define success in the same language as the Promise. All next-step instructions include what, when, and how. Pre-work delivery triggered and confirmed received.',
     clientintake:'Proceed. All intake fields feed directly into the Execution SOP — no data collected without downstream use. Client constraints reflected in session calendar. Client definition of success documented and used as Milestone 4 language.',
     executionsop:'Proceed. Every delivery step traces directly to the OFR Scope Map. No step required for delivery that is not named in the Scope Map or explicitly designated as an Ihsan addition. Owner and timing confirmed for all 6 sessions.',
-    qcchecklist:'Proceed. IC-OFR gate: all 5 checks passed. IC-FUL gate: all 5 checks passed. No asset required revision before use. QC Checklist will be run before each session delivery — not only at the start and close.',
+    qcchecklist:'Proceed. IC-OFR gate: all 5 checks passed. IC-DEL gate: all 5 checks passed. No asset required revision before use. QC Checklist will be run before each session delivery — not only at the start and close.',
     milestones:'Proceed. 5 milestones defined. Each uses the language of the Promise verbatim at the relevant checkpoint. Message templates written. Milestone 5 (Week 8 check-in) triggers primary proof capture. Al-Muhsin test applied: each milestone was designed for the client\'s experience of progress, not only for the operator\'s record.',
     proofcapture:'Proceed. Consent obtained in Client Intake Form before Session 1 — before any proof is collected. Three capture points defined at Milestones 1, 4, and 5. Week 8 case study questionnaire prepared. PROOF PENDING restriction on outcome metrics now has a documented resolution pathway.',
     offboarding:'Proceed. Offboarding sequence complete. Gratitude written before the retention seed — in that order. Stage 08 RET handoff note prepared. Delivery summary confirmed: all 4 deliverables in client\'s hands before Session 6 closes.',
   }
 };
 
-/* ── FULL ASSET DOCUMENTS ── */
+/* ── DELL ASSET DOCUMENTS ── */
 /* Markup: ## heading  ### subheading  > callout  · list item  --- divider  blank line = paragraph break */
 const DOC = {
 validation:`## Amanah Gate — S1 through S6
@@ -2164,11 +2165,11 @@ social:`## Social Content Calendar — The Clarity Practice
 **Post 3 (Text):** "The most common thing I hear after the programme: 'I said the number. And I waited. That had never happened before.' That's not a personality shift. That's a positioning statement doing its job."`,
 
 onboarding:`## Onboarding Checklist — The Clarity Practice
-### Stage 07 FUL Appendix A
+### Stage 07 DEL Appendix A
 
 ---
 
-> IC-FUL-1 confirmed: all onboarding communications define success in the same language as the Promise. IC-FUL-4 confirmed: all next-step instructions name what to do, when, and how.
+> IC-DEL-1 confirmed: all onboarding communications define success in the same language as the Promise. IC-DEL-4 confirmed: all next-step instructions name what to do, when, and how.
 
 ---
 
@@ -2209,7 +2210,7 @@ onboarding:`## Onboarding Checklist — The Clarity Practice
 
 · Pre-work received and reviewed
 · Client Intake Form completed (if not completed: send reminder 48 hours before session)
-· IC-FUL gate run on all onboarding communications — confirm all checks passed
+· IC-DEL gate run on all onboarding communications — confirm all checks passed
 · GHL contact record up to date
 
 ---
@@ -2230,11 +2231,11 @@ onboarding:`## Onboarding Checklist — The Clarity Practice
 · Async Voxer channel is active and client has used it at least once`,
 
 clientintake:`## Client Intake Form — The Clarity Practice
-### Stage 07 FUL Appendix B
+### Stage 07 DEL Appendix B
 
 ---
 
-> IC-FUL-2 confirmed: all intake data feeds directly into the Execution SOP. No field is collected without a downstream use.
+> IC-DEL-2 confirmed: all intake data feeds directly into the Execution SOP. No field is collected without a downstream use.
 
 ---
 
@@ -2307,7 +2308,7 @@ clientintake:`## Client Intake Form — The Clarity Practice
 · Q7 absences reflected in session calendar before Session 1`,
 
 executionsop:`## Execution SOP — The Clarity Practice
-### Stage 07 FUL Appendix C
+### Stage 07 DEL Appendix C
 
 ---
 
@@ -2322,7 +2323,7 @@ Before Session 1, confirm:
 · Promise confirmed: positioning statement, defensible price, 90-day plan — all three in writing by Session 6
 · Guarantee conditions reviewed: 6 sessions, pre-work submitted within 48 hours, all three deliverables produced
 · Client Intake Form complete
-· IC-OFR and IC-FUL gates passed
+· IC-OFR and IC-DEL gates passed
 
 ---
 
@@ -2445,7 +2446,7 @@ Send Milestone 4 message with all 4 deliverables attached within 24 hours.
 Initiate primary proof capture conversation at this point.`,
 
 proofcapture:`## Proof Capture Protocol — The Clarity Practice
-### Stage 07 FUL Appendix F
+### Stage 07 DEL Appendix F
 
 ---
 
@@ -2517,7 +2518,7 @@ Upon receiving Week 8 case study:
 · Confirm update in GHL and Pipeline Integrity Ledger`,
 
 offboarding:`## Offboarding Sequence — The Clarity Practice
-### Stage 07 FUL Appendix G
+### Stage 07 DEL Appendix G
 
 ---
 
@@ -2607,7 +2608,7 @@ I hope the work is continuing to move."
 · Any open items from the programme that warrant follow-up`,
 
 ghl:`## CRM Configuration — The Clarity Practice
-### Stage 07 FUL — GHL Infrastructure
+### Stage 07 DEL — GHL Infrastructure
 
 ---
 
@@ -2683,7 +2684,7 @@ const GLOSSARY = {
   'PMV':    ['Perceived Monetary Value','The honest monetary value assigned to each component of the Value Stack. Used to justify the final price relative to the total stack — not to inflate it.'],
   'VSL':    ['Video Sales Letter','A pre-call video that frames the problem in VoC language, introduces the Mechanism, and states the Promise at G2. Delivered before the sales call, not as a replacement for it.'],
   'CRM':    ['Customer Relationship Management','The system that carries Scope Map terms, Guarantee conditions, and milestone triggers into the live delivery layer. A Scope Map not in the CRM is a covenant waiting to be breached.'],
-  'GHL':    ['GoHighLevel','The CRM platform used to configure pipeline stages, onboarding automations, and milestone triggers for FUL stage delivery.'],
+  'GHL':    ['GoHighLevel','The CRM platform used to configure pipeline stages, onboarding automations, and milestone triggers for DEL stage delivery.'],
   'QC':     ['Quality Control','Checks aligned to the OFR outcome and guarantee trigger conditions. The QC checklist is an act of Al-Wali — standing between the client and a gap they do not yet know exists.'],
   'G1':     ['G-Label: Verified','Proven, documented, independently verifiable. The highest confidence level. Used only when specific evidence exists and a neutral reviewer would assign the same label.'],
   'G2':     ['G-Label: Substantiated','Strong evidence available but not independently verified at G1 level. Most offer Promises and case study outcomes operate at G2.'],
@@ -2696,17 +2697,17 @@ const GLOSSARY = {
   'D2':     ['Verbatim Desire 2','The second verbatim desire from VoC extraction. The gap between stated desires (D-labels) and actual behaviour is often where the most powerful messaging lives.'],
   'D3':     ['Verbatim Desire 3','The third verbatim desire from VoC extraction.'],
   'IC-OFR': ['Ihsan Checklist — Offer Document','5 checks that must pass before delivery begins. Ensures the Promise is G1/G2, the Scope Map exclusions are explicit, and the Guarantee has all 4 required elements.'],
-  'IC-FUL': ['Ihsan Checklist — Onboarding','5 checks that must pass before the client is onboarded. Ensures success is defined in the language of the Promise, and all next-step instructions are actionable without a follow-up question.'],
-  'QAL':    ['Stage 02 — Qualification','The Amanah Gate stage. Tests whether the operator\'s core competency is real, their market is viable, and they can build with integrity. Must be cleared before Strategy begins.'],
+  'IC-DEL': ['Ihsan Checklist — Onboarding','5 checks that must pass before the client is onboarded. Ensures success is defined in the language of the Promise, and all next-step instructions are actionable without a follow-up question.'],
+  'TRU':    ['Stage 02 — Qualification','The Amanah Gate stage. Tests whether the operator\'s core competency is real, their market is viable, and they can build with integrity. Must be cleared before Strategy begins.'],
   'STR':    ['Stage 03 — Strategy','Research Factory stage. Produces Market Definition, VoC Buying Language Bank, Emotional Triggers, Enemy Narrative, and Truth-Gate Advisory. Governing quality: Al-Basir.'],
   'OFR':    ['Stage 04 — Offer','The offer-as-covenant stage. Produces Promise, ICP, Mechanism, Scope Map, Value Stack, Guarantee, and Pricing. Governing quality: Al-Adl · Al-Muqsit.'],
   'OUT':    ['Stage 05 — Outreach','Where the GTM strategy and all outreach assets are built and deployed. Governing quality: Ar-Razzaq · As-Sittir.'],
   'SAL':    ['Stage 06 — Sales','Where qualification infrastructure, call scripts, nurture sequences, and conversion assets operate. Governing quality: Ar-Razzaq · Al-Latif.'],
-  'FUL':    ['Stage 07 — Fulfillment','Where the Promise is delivered. Produces Onboarding, Execution SOP, QC Checklist, Milestones, Proof Capture, and Offboarding. Governing quality: Al-Muhsin · Al-Wali · Ash-Shakur.'],
+  'DLR':    ['Stage 07 — Fulfillment','Where the Promise is delivered. Produces Onboarding, Execution SOP, QC Checklist, Milestones, Proof Capture, and Offboarding. Governing quality: Al-Muhsin · Al-Wali · Ash-Shakur.'],
   'RET':    ['Stage 08 — Retention','The ongoing relationship after delivery. Where the retention seed planted in the Offboarding Sequence is cultivated. Governing quality: Ash-Shakur · Al-Wadud.'],
   'OPT':    ['Stage 09 — Optimization','The honest reckoning of the full cycle. Produces the G-Label Accuracy Report, Covenant Integrity Audit, and Cycle Memory Card for the next cycle. Governing quality: Al-Hasib.'],
-  'INT':    ['Stage 01 — Standing Declarations','The operator\'s standing honest picture — capabilities, constraints, runway, and aversions. Revisited each cycle. Everything the pipeline builds rests on what is declared here.'],
-  'Ihsan':  ['Ihsan — Excellence','Doing more than the bare minimum; perfecting what you give as an act of worship. The Prophet ﷺ said: "Allah has prescribed Ihsan in all things." In BBOS, Ihsan is the standard against which FUL delivery is measured.'],
+  'SDC':    ['Stage 01 — Standing Declarations','The operator\'s standing honest picture — capabilities, constraints, runway, and aversions. Revisited each cycle. Everything the pipeline builds rests on what is declared here.'],
+  'Ihsan':  ['Ihsan — Excellence','Doing more than the bare minimum; perfecting what you give as an act of worship. The Prophet ﷺ said: "Allah has prescribed Ihsan in all things." In BBOS, Ihsan is the standard against which DEL delivery is measured.'],
   'Amanah': ['Amanah — Trustworthiness','The ethical foundation of the BBOS system. A business conducted with Amanah treats every promise as a covenant — something that carries weight before God, not merely a commercial transaction.'],
   'Tawakkul':['Tawakkul — Trust in God','Genuine reliance on Allah for outcomes while doing the honest work. In BBOS, the operator who holds qualification criteria honestly — even when the pipeline is thin — is practising Tawakkul.'],
   'Barakah':['Barakah — Divine Blessing','Increase that comes from God. In BBOS, strategy built on verbatim human reality carries Barakah; strategy built on assumption does not. Barakah is not manufactured — it is the natural result of honest, covenant-based work.'],
@@ -3070,8 +3071,8 @@ function WsQC({sample}){
       </div>
     </div>
     <Gate label="IC-OFR — Offer document" items={icofr} score={oScore} color="var(--ofr)"/>
-    <Gate label="IC-FUL — Onboarding communication" items={icful} score={fScore} color="var(--ful)"/>
-    {sample&&<CF label="Stage gate decision" value="Proceed. IC-OFR gate: all 5 checks passed. IC-FUL gate: all 5 checks passed. No asset required revision before use." accent="var(--out)"/>}
+    <Gate label="IC-DEL — Onboarding communication" items={icful} score={fScore} color="var(--ful)"/>
+    {sample&&<CF label="Stage gate decision" value="Proceed. IC-OFR gate: all 5 checks passed. IC-DEL gate: all 5 checks passed. No asset required revision before use." accent="var(--out)"/>}
     {!sample&&<button className="wbtn">Record Gate Result</button>}
   </>;
 }
@@ -3687,7 +3688,7 @@ function App(){
       })}
     </div>
 
-    {/* FULL SIDEBAR */}
+    {/* DELL SIDEBAR */}
     <div className="sb sb-full">
       {/* Mobile close button */}
       <button onClick={toggleSb} style={{
