@@ -50,14 +50,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sg-btn:hover:not(.on){color:var(--text2)}
 .tb-badge{font-size:12px;padding:3px 9px;border-radius:20px;font-weight:500;flex-shrink:0}
 /* sidebar */
-.sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+.sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;position:relative}
+.sb-drag{position:absolute;right:0;top:0;width:4px;height:100%;cursor:col-resize;z-index:10}
+.sb-drag:hover{background:rgba(99,102,241,.25)}
 .sb::-webkit-scrollbar{width:3px}.sb::-webkit-scrollbar-thumb{background:var(--bg4)}
 .role-banner{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
 .role-avatar{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
 .role-banner-info{flex:1;min-width:0}
 .role-banner-name{font-size:15px;font-weight:500;color:var(--text);line-height:1.2}
 .role-banner-sub{font-size:12px;color:var(--text3)}
-.sb-top{padding:8px 14px;border-bottom:1px solid var(--border)}
+.sb-top{padding:8px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;background:var(--bg2)}
 .sb-overview{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:5px;border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:15px;font-family:'DM Sans',sans-serif;width:100%;transition:all .12s}
 .sb-overview:hover,.sb-overview.on{background:var(--accent-bg);color:var(--accent)}
 .sb-overview svg{width:12px;height:12px;flex-shrink:0}
@@ -148,6 +150,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .det-rat-txt{font-size:16px;color:var(--text2);line-height:1.8}
 .ws-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px}
 .ws-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:12px}
+/* Source reference panel */
+.src-panel{margin-bottom:14px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);overflow:hidden}
+.src-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;user-select:none}
+.src-header:hover{background:var(--bg3)}
+.src-lbl{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);font-weight:500}
+.src-toggle{font-size:11px;color:var(--text3)}
+.src-body{padding:0 12px 10px}
+.src-item{padding:8px 10px;margin-bottom:6px;background:var(--bg3);border-radius:5px;border-left:3px solid var(--accent2)}
+.src-item-lbl{font-size:12px;color:var(--accent);font-weight:500;margin-bottom:3px}
+.src-item-content{font-size:14px;color:var(--text2);line-height:1.5;white-space:pre-wrap}
+.src-item-empty{font-size:13px;color:var(--sal);font-style:italic}
 /* workspace */
 .tabs{display:flex;gap:1px;border-bottom:1px solid var(--border);margin-bottom:13px}
 .tab{padding:6px 13px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .12s;margin-bottom:-1px}
@@ -317,6 +330,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .role-drop-item:hover{background:var(--bg3)}
 .role-drop-item.on{background:var(--bg3);color:var(--text)}
 .role-drop-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* Welcome / segment selection modal */
+.wlc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center}
+.wlc-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;max-width:680px;width:90%;padding:36px 32px;box-shadow:0 12px 48px #00000066}
+.wlc-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:6px}
+.wlc-sub{font-size:15px;color:var(--text3);line-height:1.6;margin-bottom:28px}
+.wlc-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.wlc-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px 16px;cursor:pointer;transition:border-color .15s,background .15s;text-align:left}
+.wlc-card:hover{border-color:var(--accent2);background:var(--bg4)}
+.wlc-card-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.wlc-card-title{font-size:16px;font-weight:500;color:var(--text);margin-bottom:8px}
+.wlc-card-desc{font-size:13px;color:var(--text3);line-height:1.55}
+@media(max-width:700px){.wlc-cards{grid-template-columns:1fr}}
+/* Layer dividers (Think / Execute / Reckon) */
+.layer-div{display:flex;align-items:center;gap:12px;margin:36px 0 8px;padding:10px 0}
+.layer-lbl{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap}
+.layer-sub{font-size:12px;color:var(--text3);white-space:nowrap}
+.layer-line{flex:1;height:2px}
 </style>
 </head>
 <body>
@@ -364,6 +394,17 @@ const PHASES = {
 
 const PHASE_ORDER = ['Foundation','Build','Launch','Deliver','Sustain'];
 
+const LAYERS = {
+  SDC:'Think', TRU:'Think', STR:'Think', OFR:'Think',
+  OUT:'Execute', SAL:'Execute', DLR:'Execute',
+  RET:'Reckon', OPT:'Reckon',
+};
+const LAYER_META = {
+  Think:   {color:'var(--str)',  label:'Think',   sub:'Strategy · Qualification · Offer Design'},
+  Execute: {color:'var(--out)',  label:'Execute',  sub:'Outreach · Sales · Delivery'},
+  Reckon:  {color:'var(--opt)',  label:'Reckon',   sub:'Retention · Optimization'},
+};
+
 const STATUS_META = {
   'Not Started': {color:'var(--text2)',bg:'rgba(255,255,255,.06)',border:'rgba(255,255,255,.15)',dot:'○'},
   'Active':      {color:'#f59e0b',   bg:'rgba(245,158,11,.1)',border:'rgba(245,158,11,.25)',dot:'◉'},
@@ -394,7 +435,7 @@ const ATTRS = {
   'Ash-Shahid': 'The Witness — who sees every declaration and every withholding with perfect completeness. The intake form is filled before Ash-Shahid. Every answer written before Ash-Shahid is either honest or it is not — and what is witnessed here becomes the foundation on which everything else is built.',
   'Al-Hasib':   'The Reckoner — who accounts for everything with perfect precision. Al-Hasib asks whether the operator is willing to look at the whole system honestly: not just the parts that performed well, but the dimensions where the covenant was present in language but not in practice.',
   'As-Subbuh':  'The Most Glorious — the One whose glory purifies what it touches. The system that passes through the Al-Hasib reckoning honestly is purified by the process. The Restoration Mandate exists because Barakah cannot flow through a channel that has not been honestly examined.',
-  'Al-Quddus':  'The Most Holy — free from every deficiency. The standard Al-Quddus sets is not perfection but purity of intention: the system entering the next cycle must be free of known, unaddressed structural weaknesses. Al-Quddus does not permit scaling what has not been honestly examined.',
+  'Al-Quddus':  'The Most Holy — free from every deficiency. The standard Al-Quddus sets is not perfection but purity of intention: the system entering the next cycle must be free of known, unaddressed structural weaknesses. Al-Quddus does not permit expanding what has not been honestly examined.',
 };
 
 const DUAS = {
@@ -592,7 +633,7 @@ const DUAS = {
     reflection:{
       frame:'Al-Hasib has witnessed the full cycle. As-Subbuh and Al-Quddus hold the standard the system is measured against. This reflection is the final honest accounting before the next cycle begins.',
       governing:['The Covenant Integrity Audit named at least one stage where the governing quality was present in language but not in practice — and you documented it specifically.','The Restoration Mandate is complete: every structural weakness is either scheduled for repair or accepted as a named, documented risk.'],
-      notYet:['The weakest-performing dimension is still named as “areas for growth” rather than as a specific, named failure with a root cause.','The Scaling Readiness Assessment reflects the volume you want rather than the volume the current system can sustain with covenant integrity intact.'],
+      notYet:['The weakest-performing dimension is still named as “areas for growth” rather than as a specific, named failure with a root cause.','The Capacity Readiness Assessment reflects the volume you want rather than the volume the current system can sustain with covenant integrity intact.'],
     },
   },
 };
@@ -620,230 +661,374 @@ const TOOLS = [
   {id:'intake_packet',    label:'Standing Declarations Packet',        sec:'Foundation', stage:'SDC', asset:'01 — Standing Declarations',    bsec:'Standing Foundation', ws:'intake_packet',
    desc:'The operator\'s six-field honest self-declaration: Capital (Financial Stewardship Horizon), Skills & Competencies, Proof/Integrity Proof Links, Work Aversions & Fixed Constraints, Geography, and Regulatory Pre-Check.',
    rat:'Every stage from TRU onward is built on what is declared here. A distortion in the intake propagates structurally through every stage above it.',
+   rat_u:'Every stage from TRU onward is built on what is declared here. A distortion in the intake propagates structurally through every stage above it.',
    perms:['O','V','-','-','-','-','-']},
   {id:'fsh',              label:'Financial Stewardship Horizon',   sec:'Foundation', stage:'SDC', asset:'01 — Financial Runway',         bsec:'Standing Foundation', ws:'fsh',
    desc:'The actual documented runway figure — not a best-case projection. The number that is honestly true at the time of declaration.',
    rat:'The FSH is the most consequential single number in the intake. An inflated figure produces a TRU gate decision that does not reflect actual operating conditions.',
+   rat_u:'The FSH is the most consequential single number in the intake. An inflated figure produces a TRU gate decision that does not reflect actual operating conditions.',
    perms:['O','-','-','-','-','-','-']},
   {id:'gap_check',        label:'Gap Check',                        sec:'Foundation', stage:'SDC', asset:'01 — Completeness Audit',       bsec:'Standing Foundation', ws:'gap_check',
    desc:'Review of each intake field for completeness, ambiguity, and verifiability. Identifies which competency claims lack verifiable proof links before routing to TRU.',
    rat:'Gaps identified at SDC carry forward into TRU with their restrictions intact. Naming them here prevents charitable inference from substituting for honest assessment.',
+   rat_u:'Gaps identified at SDC carry forward into TRU with their restrictions intact. Naming them here prevents charitable inference from substituting for honest assessment.',
    perms:['O','V','-','-','-','-','-']},
   {id:'routing_decision', label:'Routing Decision Record',          sec:'Foundation', stage:'SDC', asset:'01 — Stage Routing',            bsec:'Standing Foundation', ws:'routing_decision',
    desc:'The documented basis for routing: Stage 02 TRU (proceed) or Stage 01.1 Rejection. States which intake fields are complete, which gaps exist, and the honest basis for the decision.',
    rat:'Al-Awwal governs this decision. A routing made from optimism rather than honest assessment is a foundational compromise — everything built above it will eventually reveal the distortion.',
+   rat_u:'Integrity of Beginnings governs this decision. A routing made from optimism rather than honest assessment is a foundational compromise — everything built above it will eventually reveal the distortion.',
    perms:['O','V','-','-','-','-','-']},
   {id:'ifb',              label:'IFB — Standing Form Build',          sec:'Foundation', stage:'SDC', asset:'01 — Standing Instrument',         bsec:'Standing Foundation', ws:'ifb',
    desc:'Stage 01.1: the Google Form instrument built 1:1 from the BBOS questionnaire template. Includes field validation rules, conditional logic, and disqualifier triggers.',
    rat:'The intake form is not a data collection tool — it is an instrument of invitation toward honest self-disclosure before Ash-Shahid. Form design that leads respondents toward preferred answers undermines the foundation from the first question.',
+   rat_u:'The intake form is not a data collection tool — it is an instrument of invitation toward honest self-disclosure before Transparent Documentation. Form design that leads respondents toward preferred answers undermines the foundation from the first question.',
    perms:['O','V','-','-','-','-','-']},
 
   // ── RET TOOLS ──
   {id:'nurture_past',     label:'Past-Client Nurture Sequence',     sec:'Retention',  stage:'RET', asset:'RET — Past-Client Nurture',      bsec:'Retention Infrastructure', ws:'nurture_past',
    desc:'Re-engagement messaging for past clients — warming rather than pushing. Timed to genuine relationship moments, not pipeline triggers.',
    rat:'Ash-Shakur governs every message in this sequence. The nurture that follows from real appreciation carries Barakah. The one that follows from pipeline need carries only strategy.',
+   rat_u:'Reciprocal Value governs every message in this sequence. The nurture that follows from real appreciation carries lasting value. The one that follows from pipeline need carries only strategy.',
    perms:['O','O','E','-','-','-','V']},
   {id:'reengage_cold',    label:'Cold-Lead Re-engagement',          sec:'Retention',  stage:'RET', asset:'RET — Cold Re-engagement',        bsec:'Retention Infrastructure', ws:'reengage_cold',
-   desc:'Re-engagement framework for leads who did not convert. Structured to serve the prospect\'s situation rather than the operator\'s pipeline.',
+   desc:'Re-engagement framework for leads who did not proceed. Structured to serve the prospect\'s situation rather than the operator\'s pipeline.',
    rat:'As-Sittir governs how doors were closed at SAL. How they are re-approached must honour the same dignity. A cold lead is a person whose situation may have changed — not a pipeline unit to be activated.',
+   rat_u:'Dignified Protection governs how doors were closed at SAL. How they are re-approached must honour the same dignity. A cold lead is a person whose situation may have changed — not a pipeline unit to be activated.',
+   perms:['O','O','E','-','-','V','-']},
+  {id:'reactivation',     label:'Re-Activation Campaign',           sec:'Retention',   stage:'RET', asset:'RET — 60-Day Re-engagement',     bsec:'Retention Infrastructure', ws:'reactivation',
+   desc:'Two-week re-engagement plan for leads and clients who have gone silent for 60+ days. Distinct from cold lead re-engagement — the relationship existed. The posture is reconnection, not introduction.',
+   rat:'A contact who went silent after genuine engagement is not a cold lead. They gave something — attention, time, or trust — and then stopped. Ash-Shakur governs the re-approach: begin from appreciation for what was given, not from a calculation of what might still be extracted.',
+   rat_u:'A contact who went silent after genuine engagement is not a cold lead. They gave something — attention, time, or trust — and then stopped. Reciprocal Value governs the re-approach: begin from appreciation for what was given, not from a calculation of what might still be extracted.',
    perms:['O','O','E','-','-','V','-']},
   {id:'upsell_framework', label:'Upsell Framework',                 sec:'Retention',  stage:'RET', asset:'RET — Expanded Offering',         bsec:'Retention Infrastructure', ws:'upsell_framework',
    desc:'The documented path to an expanded engagement for clients who have completed delivery. Requires a genuine next step that serves the client — not a premature commercial path.',
    rat:'The upsell path built before the nurture relationship is established is a pipeline tool, not a service. Al-Adl applies: the expanded offer must serve the client\'s actual next step.',
+   rat_u:'The upsell path built before the nurture relationship is established is a pipeline tool, not a service. Structural Fairness applies: the expanded offer must serve the client\'s actual next step.',
    perms:['O','O','-','-','-','-','-']},
   {id:'referral_script',  label:'Referral Request Script',          sec:'Retention',  stage:'RET', asset:'RET — Referral Request',          bsec:'Retention Infrastructure', ws:'referral_script',
    desc:'A referral invitation timed to a moment of natural client satisfaction — not a pipeline trigger. Structured as an invitation, not a request.',
    rat:'CM-4 referrals (the highest-quality referrals) only come from genuine satisfaction. A referral request timed to pipeline need rather than client joy is structurally disrespectful — and produces CM-1 quality leads regardless of the copy.',
+   rat_u:'CM-4 referrals (the highest-quality referrals) only come from genuine satisfaction. A referral request timed to pipeline need rather than client joy is structurally disrespectful — and produces CM-1 quality leads regardless of the copy.',
+   sources:[{stage:'DLR',tool:'milestones',label:'DLR — Client Success Milestones'}],
    perms:['O','O','-','-','-','V','-']},
   {id:'testimonial_proto',label:'Testimonial Collection Protocol',  sec:'Retention',  stage:'RET', asset:'RET — Testimonial Collection',    bsec:'Retention Infrastructure', ws:'testimonial_proto',
    desc:'The process for collecting client stories and proof assets. Centres the client\'s experience and obtains consent before the collection conversation begins.',
    rat:'The proof belongs to the person who gave it before it belongs to the business. Ash-Shahid witnesses consent as much as it witnesses claims. Proof collected without honest consent is structurally compromised before it is ever deployed.',
+   rat_u:'The proof belongs to the person who gave it before it belongs to the business. Transparent Documentation witnesses consent as much as it witnesses claims. Proof collected without honest consent is structurally compromised before it is ever deployed.',
+   sources:[{stage:'DLR',tool:'milestones',label:'DLR — Client Success Milestones'}],
    perms:['O','O','V','-','-','-','E']},
   {id:'proof_deploy',     label:'Proof Asset Deployment Map',       sec:'Retention',  stage:'RET', asset:'RET — Proof Deployment',          bsec:'Retention Infrastructure', ws:'proof_deploy',
    desc:'Catalogue of every proof asset with its consent status and the contexts in which it may be deployed. Proof assets may only be used within their consented context.',
    rat:'Every proof asset in this map carries the G-label it earned at capture. Deploying a G2 outcome in a G1 context is a claim inflation — and the Deployment Map is the system\'s enforcement mechanism against that drift.',
+   rat_u:'Every proof asset in this map carries the G-label it earned at capture. Deploying a G2 outcome in a G1 context is a claim inflation — and the Deployment Map is the system\'s enforcement mechanism against that drift.',
+   sources:[{stage:'DLR',tool:'proofcapture',label:'DLR — Proof Capture Protocol'}],
    perms:['O','O','V','-','-','-','E']},
 
   // ── OPT TOOLS ──
   {id:'perf_reckoning',   label:'Performance Reckoning',            sec:'Optimization', stage:'OPT', asset:'OPT — Planned vs Actual',      bsec:'Cycle Reckoning', ws:'perf_reckoning',
    desc:'Planned vs actual outcomes for every stage. Variance analysis with root causes. The single weakest link in the cycle identified by tracing the largest drop-off to a specific stage and asset.',
    rat:'Al-Hasib requires that the reckoning begin from what the evidence actually shows — not from the band that feels most comfortable. The weakest link is the most valuable finding.',
+   rat_u:'Principled Accountability requires that the reckoning begin from what the evidence actually shows — not from the band that feels most comfortable. The weakest link is the most valuable finding.',
    perms:['O','-','-','-','-','-','-']},
   {id:'covenant_audit',   label:'Covenant Integrity Audit',         sec:'Optimization', stage:'OPT', asset:'OPT — Covenant Integrity',     bsec:'Cycle Reckoning', ws:'covenant_audit',
    desc:'Each stage\'s governing quality assessed against actual operator behaviour. Documents where the attribute was genuinely carried and where it was present in language but not in practice.',
    rat:'This is the most spiritually consequential section of the entire cycle. Al-Hasib does not distinguish between the covenant that was broken publicly and the one that was broken quietly.',
+   rat_u:'This is the most consequential section of the entire cycle. Principled Accountability does not distinguish between the covenant that was broken publicly and the one that was broken quietly.',
    perms:['O','-','-','-','-','-','-']},
   {id:'glabel_accuracy',  label:'G-Label Accuracy Report',          sec:'Optimization', stage:'OPT', asset:'OPT — G-Label Reckoning',      bsec:'Cycle Reckoning', ws:'glabel_accuracy',
    desc:'Every G1/G2 claim from the cycle assessed against actual outcomes. Label corrections documented. The system\'s end-of-cycle audit of whether claims matched what was actually delivered.',
    rat:'A G-label assigned one level too high is not a minor error — it is a structural claim that was made to clients and prospects. The accuracy report is the honest accounting that allows the next cycle to begin with integrity.',
+   rat_u:'A G-label assigned one level too high is not a minor error — it is a structural claim that was made to clients and prospects. The accuracy report is the honest accounting that allows the next cycle to begin with integrity.',
    perms:['O','-','-','-','-','-','-']},
   {id:'proof_refresh',    label:'Proof Plan Refresh',               sec:'Optimization', stage:'OPT', asset:'OPT — Proof Plan Update',      bsec:'Cycle Reckoning', ws:'proof_refresh',
    desc:'Asset 8 updated. PROOF PENDING items resolved or carried forward with honest status. New proof assets added from the delivery cycle.',
    rat:'PROOF PENDING restrictions carry forward until they are resolved. A claim that was PROOF PENDING at TRU and was not resolved by OPT enters the next cycle still restricted — and must be treated as such.',
+   rat_u:'PROOF PENDING restrictions carry forward until they are resolved. A claim that was PROOF PENDING at TRU and was not resolved by OPT enters the next cycle still restricted — and must be treated as such.',
    perms:['O','-','-','-','-','-','-']},
   {id:'constraint_map',   label:'Constraint Evolution Map',         sec:'Optimization', stage:'OPT', asset:'OPT — Constraint History',     bsec:'Cycle Reckoning', ws:'constraint_map',
    desc:'How each Stage 01 SDC constraint evolved through the cycle. New constraints identified during delivery documented. The record of what was designed around and what was overridden.',
    rat:'Work Aversions declared at SDC are structural constraints — not preferences. The Constraint Evolution Map documents whether they were honoured, and if not, what the override cost.',
+   rat_u:'Work Aversions declared at SDC are structural constraints — not preferences. The Constraint Evolution Map documents whether they were honoured, and if not, what the override cost.',
    perms:['O','-','-','-','-','-','-']},
   {id:'restoration',      label:'Restoration Mandate (G7.2)',       sec:'Optimization', stage:'OPT', asset:'OPT — Restoration Mandate',    bsec:'Cycle Reckoning', ws:'restoration',
    desc:'Every structural weakness identified in the reckoning with its repair requirement or documented accepted risk. Al-Quddus does not permit carrying unnamed weaknesses into the next cycle.',
-   rat:'The Restoration Mandate is the most important decision the OPT cycle produces. A system that enters the next cycle with a known, unaddressed structural weakness is not ready to scale — it is ready to break at higher volume.',
+   rat:'The Restoration Mandate is the most important decision the OPT cycle produces. A system that enters the next cycle with a known, unaddressed structural weakness is not ready to expand — it is ready to break at higher volume.',
+   rat_u:'The Restoration Mandate is the most important decision the OPT cycle produces. A system that enters the next cycle with a known, unaddressed structural weakness is not ready to expand — it is ready to break at higher volume.',
    perms:['O','-','-','-','-','-','-']},
-  {id:'scaling_readiness',label:'Scaling Readiness Assessment',     sec:'Optimization', stage:'OPT', asset:'OPT — Scaling Readiness',      bsec:'Cycle Reckoning', ws:'scaling_readiness',
-   desc:'Honest evaluation of the volume the system can sustain without degrading covenant integrity at any stage. Names the specific stage and mechanism of degradation if scaling would compromise integrity.',
-   rat:'The system is either ready to scale or it is not. Naming the latter honestly is the highest form of stewardship. A Scaling Readiness Assessment that reflects desired volume rather than honest capacity is a distortion that the next intake cycle will expose.',
+  {id:'scaling_readiness',label:'Capacity Readiness Assessment',    sec:'Optimization', stage:'OPT', asset:'OPT — Capacity Readiness',     bsec:'Cycle Reckoning', ws:'scaling_readiness',
+   desc:'Honest evaluation of the volume the system can sustain without degrading covenant integrity at any stage. Names the specific stage and mechanism of degradation if expansion would compromise integrity.',
+   rat:'The system is either ready to expand or it is not. Naming the latter honestly is the highest form of stewardship. A Capacity Readiness Assessment that reflects desired volume rather than honest capacity is a distortion that the next intake cycle will expose.',
+   rat_u:'The system is either ready to expand or it is not. Naming the latter honestly is the highest form of stewardship. A Capacity Readiness Assessment that reflects desired volume rather than honest capacity is a distortion that the next intake cycle will expose.',
    perms:['O','-','-','-','-','-','-']},
+  {id:'next_cycle_recs',  label:'Next-Cycle Recommendations',       sec:'Optimization',stage:'OPT', asset:'OPT — Cycle Improvements',       bsec:'Cycle Reckoning',          ws:'next_cycle_recs',
+   desc:'Specific, actionable improvements for each stage based on the reckoning findings. One recommendation per stage minimum. Each names the stage, the gap identified, and the concrete change for the next cycle.',
+   rat:'A reckoning that produces findings without producing commitments is muhasaba without tawba — honest self-accounting that stops short of the change it was meant to generate. The Next-Cycle Recommendations close the loop.',
+   rat_u:'A reckoning that produces findings without producing commitments is self-accounting without course correction — honest self-accounting that stops short of the change it was meant to generate. The Next-Cycle Recommendations close the loop.',
+   perms:['O','-','-','-','-','-','-']},
+  {id:'proof_architecture',label:'Proof Architecture',               sec:'Optimization',stage:'OPT', asset:'OPT — Proof Architecture',       bsec:'Meta-Verification',        ws:'generic',
+   desc:'Self-referential proof that BBOS was built using BBOS. Traces each architectural decision to its originating stage output. The system\'s own proof chain — demonstrating that the methodology works by showing it was used to build the methodology.',
+   rat:'A system that cannot demonstrate its own methodology applied to itself asks operators to trust what it has not tested. The Proof Architecture is the honest answer to: did you use this?',
+   rat_u:'A system that cannot demonstrate its own methodology applied to itself asks operators to trust what it has not tested. The Proof Architecture is the honest answer to: did you use this?',
+   perms:['O','O','-','-','-','-','-']},
+  // ── TRU RESEARCH FACTORY ──
+  {id:'core_competency',  label:'Core Competency',                  sec:'Research',    stage:'TRU', asset:'TRU — S1 Core Competency',       bsec:'Research Factory',    ws:'core_competency',
+   desc:'The operator\'s highest-leverage skill defined with precision and backed by verifiable evidence. The singular capability that forms the foundation of the business model.',
+   rat:'Al-Khabir knows the real constraint — including the competency the operator has but has not yet named with precision, and the one they claim but cannot demonstrate. S1 is the honest answer to: what can you actually deliver?',
+   rat_u:'Honest Self-Knowledge knows the real constraint — including the competency the operator has but has not yet named with precision, and the one they claim but cannot demonstrate. S1 is the honest answer to: what can you actually deliver?',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'advantage_reg',    label:'Advantage Register',               sec:'Research',    stage:'TRU', asset:'TRU — S2 Advantage Register',     bsec:'Research Factory',    ws:'advantage_reg',
+   desc:'The operator\'s sustainable, principle-driven competitive position. The integrity moat — what makes this operator\'s approach genuinely difficult to replicate.',
+   rat:'An advantage that depends on concealing how it works is not an advantage — it is a vulnerability. The Advantage Register names only what survives full disclosure.',
+   rat_u:'An advantage that depends on concealing how it works is not an advantage — it is a vulnerability. The Advantage Register names only what survives full disclosure.',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'proof_audit_tru',  label:'Proof Audit',                      sec:'Research',    stage:'TRU', asset:'TRU — S3 Proof Audit',            bsec:'Research Factory',    ws:'proof_audit_tru',
+   desc:'Objective assessment of every proof link from intake. Each claim categorised by evidence strength: E1 (independent external), E2 (solicited external), E3 (self-authored), E4 (none). Gaps documented for downstream G-label implications.',
+   rat:'Every G-label assigned in STR, OFR, and OUT is built on what is established here. Weak proof documented honestly at S3 is an asset. Weak proof papered over at S3 is a liability that compounds through every stage that follows.',
+   rat_u:'Every G-label assigned in STR, OFR, and OUT is built on what is established here. Weak proof documented honestly at S3 is an asset. Weak proof papered over at S3 is a liability that compounds through every stage that follows.',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'energy_profile',   label:'Energy Profile',                   sec:'Research',    stage:'TRU', asset:'TRU — S4 Energy Profile',         bsec:'Research Factory',    ws:'energy_profile',
+   desc:'Map of which activities generate operational energy and which deplete it. Designed for operator longevity. Work Aversions from intake are the hard constraints this profile is built around.',
+   rat:'Al-Khabir knows the exhaustion the operator did not declare at intake. The Energy Profile is the structured invitation to name it honestly before the business is designed around aspirational capacity.',
+   rat_u:'Honest Self-Knowledge knows the exhaustion the operator did not declare at intake. The Energy Profile is the structured invitation to name it honestly before the business is designed around aspirational capacity.',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'constraint_map_tru',label:'Constraint Map',                  sec:'Research',    stage:'TRU', asset:'TRU — S5 Constraint Map',         bsec:'Research Factory',    ws:'constraint_map_tru',
+   desc:'All significant limitations documented: financial runway, proof gaps, capacity, regulatory hurdles, resource dependencies. Every item is a fact to design around — not a problem to resolve before proceeding.',
+   rat:'The constraint declared honestly at S5 shapes every stage that follows. The constraint concealed at S5 surfaces at a stage where it is significantly more expensive to name.',
+   rat_u:'The constraint declared honestly at S5 shapes every stage that follows. The constraint concealed at S5 surfaces at a stage where it is significantly more expensive to name.',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'reg_baseline',     label:'Regulatory Baseline',              sec:'Research',    stage:'TRU', asset:'TRU — S6 Regulatory Baseline',    bsec:'Research Factory',    ws:'reg_baseline',
+   desc:'Required permits, licences, zoning approvals, and compliance standards for the target geography. A Regulatory Hard Stop is a non-negotiable pause — not a negotiable obstacle.',
+   rat:'Building past a Regulatory Hard Stop does not eliminate it. It defers the cost until the moment of naming it is significantly more expensive. Al-Haqq does not bend to timeline pressure.',
+   rat_u:'Building past a Regulatory Hard Stop does not eliminate it. It defers the cost until the moment of naming it is significantly more expensive. Structural Honesty does not bend to timeline pressure.',
+   perms:['O','O','-','-','-','-','-']},
+
+  // ── TRU VIABILITY PRE-CHECK ──
+  {id:'viability_gate',   label:'Viability Gate Results',           sec:'Research',    stage:'TRU', asset:'TRU — V1 Viability Gate',         bsec:'Viability Pre-Check', ws:'viability_gate',
+   desc:'Gates A–D pass/fail table for each niche candidate: Regulatory Clearance, Addressable Market Fit, Competence Proof, Proven Demand. Candidates that do not clear all four gates do not proceed to scoring.',
+   rat:'Integrity first, opportunity second. A candidate scored before clearing Gates A–D has not been qualified — it has been wished through the gate. The gate exists because Al-Haqq does not negotiate with pipeline anxiety.',
+   rat_u:'Integrity first, opportunity second. A candidate scored before clearing Gates A–D has not been qualified — it has been wished through the gate. The gate exists because Structural Honesty does not negotiate with pipeline anxiety.',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'removed_niche_log',label:'Removed Niche Log',                sec:'Research',    stage:'TRU', asset:'TRU — V2 Removed Niche Log',      bsec:'Viability Pre-Check', ws:'removed_niche_log',
+   desc:'Every niche candidate removed at the Viability Gate, with the specific basis for each removal. This is not a failure log — it is evidence that the gate was applied honestly.',
+   rat:'A Removed Niche Log with no entries signals either a pipeline where every candidate was viable — statistically unlikely — or a gate that was not honestly applied. Its existence is a system integrity indicator.',
+   rat_u:'A Removed Niche Log with no entries signals either a pipeline where every candidate was viable — statistically unlikely — or a gate that was not honestly applied. Its existence is a system integrity indicator.',
+   perms:['O','O','-','-','-','-','-']},
+
+  {id:'cleared_handoff',  label:'Cleared Candidate Handoff',        sec:'Research',    stage:'TRU', asset:'TRU — V3 Amanah Gate Handoff',    bsec:'Viability Pre-Check', ws:'cleared_handoff',
+   desc:'The final qualified niche candidates with scoring and the basis for the Amanah Gate decision. These are the candidates the Expert Validation Score evaluates for Go/No-Go.',
+   rat:'The Cleared Candidate Handoff is the honest answer to: given everything this operator actually has, what can they build that is genuinely viable and ethically sound? Not the most ambitious answer. The honest one.',
+   rat_u:'The Cleared Candidate Handoff is the honest answer to: given everything this operator actually has, what can they build that is genuinely viable and ethically sound? Not the most ambitious answer. The honest one.',
+   perms:['O','O','-','-','-','-','-']},
+
   {id:'validation', label:'Expert Validation Score',   sec:'Research',      stage:'TRU', asset:'Amanah Gate — S1–6',              bsec:'Research Factory', ws:'validation',
    desc:'Screen the operator\'s core competency, market viability, and capacity to build with integrity.',
    rat:'The Amanah Gate must be passed before STR research begins. A failed gate routes to Stage 01.1 Rejection.',
+   rat_u:'The stewardship Gate must be passed before STR research begins. A failed gate routes to Stage 01.1 Rejection.',
    perms:['O','O','-','-','-','-','-']},
   {id:'market',     label:'Find Your Market',           sec:'Research',      stage:'STR', asset:'S1 — Market Definition',           bsec:'Research Factory', ws:'market',
    desc:'Define the target buyer\'s current situation and operating context.',
    rat:'No Enemy Narrative, VoC Bank, or Amanah Content Engine can begin without a grounded Market Definition.',
+   rat_u:'No Enemy Narrative, VoC Bank, or Amanah Content Engine can begin without a grounded Market Definition.',
    perms:['O','O','V','-','-','-','-']},
   {id:'pains',      label:'Find Bleeding-Neck Pains',   sec:'Research',      stage:'STR', asset:'S3 — Emotional Triggers',          bsec:'Research Factory', ws:'pains',
    desc:'Extract verbatim fears and desires. Name the Enemy as a convergent system of forces.',
    rat:'The Enemy is named as convergent cultural, economic, or systemic forces — not the prospect\'s character.',
+   rat_u:'The Enemy is named as convergent cultural, economic, or systemic forces — not the prospect\'s character.',
    perms:['O','O','V','V','-','V','-']},
   {id:'avatar',     label:'Avatar Intake',              sec:'Offer Builder', stage:'STR', asset:'S2 — VoC Buying Language Bank',    bsec:'Research Factory', ws:'generic',
    desc:'Build the avatar from 15+ verbatim phrases extracted from source material.',
    rat:'Strategy built on actual human language carries what strategy built on summary cannot.',
+   rat_u:'Strategy built on actual human language carries what strategy built on summary cannot.',
    perms:['O','O','V','V','-','V','-']},
   {id:'competitor', label:'Competitor Search',          sec:'Research',      stage:'STR', asset:'S4 — Advantage Register',          bsec:'Research Factory', ws:'generic',
    desc:'Identify the specific gap no existing offer is filling. Build the Advantage Register.',
    rat:'Competitors are defeated by naming what they cannot honestly name.',
+   rat_u:'Competitors are defeated by naming what they cannot honestly name.',
    perms:['O','O','V','V','-','-','-']},
   {id:'adspy',      label:'Ad Spy',                     sec:'Offer Builder', stage:'STR', asset:'S4 — Competitive Landscape',       bsec:'Research Factory', ws:'generic',
    desc:'Gather competitive ad intelligence to feed the Advantage Register.',
    rat:'What gaps competitors leave in their messaging is where positioning is built.',
+   rat_u:'What gaps competitors leave in their messaging is where positioning is built.',
    perms:['O','O','V','E','-','-','-']},
   {id:'contentspy', label:'Content Spy',                sec:'Offer Builder', stage:'STR', asset:'S4 — Amanah Content Engine',       bsec:'Research Factory', ws:'generic',
    desc:'Map competitive content to identify the 6 Amanah Content Engine angles.',
    rat:'Each angle must address a specific Fear or Desire from S3 — not a general topic.',
+   rat_u:'Each angle must address a specific Fear or Desire from S3 — not a general topic.',
    perms:['O','O','V','V','-','-','-']},
   {id:'solution',   label:'Build Your Solution',        sec:'Research',      stage:'OFR', asset:'Asset 3 — Mechanism',              bsec:'Asset Factory',    ws:'generic',
    desc:'Define the specific ethical process that reliably produces the promised result.',
    rat:'A G3 Mechanism cannot anchor a G1 Promise. The Mechanism is what makes the offer honest.',
+   rat_u:'A G3 Mechanism cannot anchor a G1 Promise. The Mechanism is what makes the offer honest.',
+   sources:[{stage:'TRU',tool:'constraint_map_tru',label:'TRU — S5 Constraint Map'}],
    perms:['O','O','-','-','-','-','-']},
   {id:'icp',        label:'ICP Segmentation',           sec:'Research',      stage:'OFR', asset:'Asset 2 — Ideal Customer Profile', bsec:'Asset Factory',    ws:'generic',
    desc:'Build the ICP specific enough to qualify or disqualify a prospect at the Sales stage.',
    rat:'An ICP built from assumption rather than VoC data produces SAL stage failures.',
+   rat_u:'An ICP built from assumption rather than VoC data produces SAL stage failures.',
    perms:['O','O','V','-','V','V','V']},
   {id:'offer',      label:'Offer Creation',             sec:'Research',      stage:'OFR', asset:'Assets 1–7 — Offer Covenant',      bsec:'Asset Factory',    ws:'offer',
    desc:'Design the offer as a covenant: Promise, Mechanism, Scope Map, Value Stack, Guarantee, Pricing.',
    rat:'The offer is a public covenant. A covenant missing any element leaves the client carrying risk.',
+   rat_u:'The offer is a public covenant. A covenant missing any element leaves the client carrying risk.',
+   sources:[{stage:'TRU',tool:'constraint_map_tru',label:'TRU — S5 Constraint Map'}],
    perms:['O','O','V','-','-','V','V']},
   {id:'pricing',    label:'Pricing',                    sec:'Research',      stage:'OFR', asset:'Asset 7 — Pricing Structure',      bsec:'Asset Factory',    ws:'generic',
    desc:'Reflect honest valuation against the Value Stack — not what the market might bear.',
    rat:'Al-Muqsit is present at pricing when the number reflects what is genuinely being exchanged.',
+   rat_u:'Fair Exchange is present at pricing when the number reflects what is genuinely being exchanged.',
+   sources:[{stage:'TRU',tool:'constraint_map_tru',label:'TRU — S5 Constraint Map'}],
    perms:['O','O','-','-','-','-','V']},
   {id:'gtm',        label:'Proven GTM',                 sec:'Research',      stage:'OUT', asset:'Stage 04 — Outreach Strategy',     bsec:'Stage Entry',      ws:'generic',
    desc:'Build the GTM downstream of the STR Positioning Statement and Truth-Gate Advisory.',
    rat:'A GTM built before the Truth-Gate is cleared produces outreach that cannot be substantiated.',
+   rat_u:'A GTM built before the Truth-Gate is cleared produces outreach that cannot be substantiated.',
+   sources:[{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'},{stage:'OFR',tool:'pricing',label:'OFR — Pricing (Asset 7)'}],
    perms:['O','O','V','E','-','-','-']},
   {id:'attention',  label:'Attention',                  sec:'Offer Builder', stage:'OUT', asset:'Outreach — Hook Library',          bsec:'Asset Factory',    ws:'generic',
    desc:'Build attention hooks from the 3 Truth-Gate Advisory phrases cleared for headline use.',
    rat:'These must be earned from verbatim VoC data. Uncleared phrases need a Proof Anchor.',
+   rat_u:'These must be earned from verbatim VoC data. Uncleared phrases need a Proof Anchor.',
+   sources:[{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'},{stage:'STR',tool:'avatar',label:'STR — VoC Bank (S2)'}],
    perms:['O','O','E','V','-','-','-']},
   {id:'creative',   label:'Creative & Ads',             sec:'Offer Builder', stage:'OUT', asset:'Outreach — Ad Creative',           bsec:'Asset Factory',    ws:'generic',
    desc:'Produce ad creative within G-label boundaries from the Hook Library.',
    rat:'No G3 or G4 claim may be presented at G1 or G2 level. Every claim must appear in the Proof Plan.',
+   rat_u:'No G3 or G4 claim may be presented at G1 or G2 level. Every claim must appear in the Proof Plan.',
+   sources:[{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'}],
    perms:['O','O','E','V','-','-','-']},
   {id:'generateads',label:'Generate Ads',               sec:'Offer Builder', stage:'OUT', asset:'Outreach — Ad Production',         bsec:'Asset Factory',    ws:'generic',
    desc:'Produce live ad copy with G-label confirmation on every claim.',
    rat:'A PROOF PENDING item cannot appear in a live ad at G1 or G2 level.',
+   rat_u:'A PROOF PENDING item cannot appear in a live ad at G1 or G2 level.',
    perms:['O','O','E','V','-','-','-']},
   {id:'logo',       label:'Generate Logo',              sec:'Offer Builder', stage:'OUT', asset:'Outreach — Brand Identity',        bsec:'Asset Factory',    ws:'generic',
    desc:'Produce brand identity assets grounded in the offer covenant.',
    rat:'Aspiration that has not been substantiated is not brand identity — it is misrepresentation.',
+   rat_u:'Aspiration that has not been substantiated is not brand identity — it is misrepresentation.',
    perms:['O','O','E','V','-','-','-']},
   {id:'landing',    label:'Landing Page',               sec:'Offer Builder', stage:'OUT', asset:'Outreach — Landing Page',          bsec:'Asset Factory',    ws:'generic',
    desc:'Build the landing page with every claim mapped to the Proof Plan.',
    rat:'Every claim must appear in the Proof Plan. PROOF PENDING items cannot appear at G1 or G2.',
+   rat_u:'Every claim must appear in the Proof Plan. PROOF PENDING items cannot appear at G1 or G2.',
+   sources:[{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'},{stage:'OFR',tool:'solution',label:'OFR — Mechanism (Asset 3)'}],
    perms:['O','O','E','V','-','-','-']},
   {id:'salesletter',label:'Sales Letter',               sec:'Offer Builder', stage:'OUT', asset:'Outreach — Sales Letter',          bsec:'Asset Factory',    ws:'generic',
    desc:'Build long-form persuasion anchored in verbatim VoC language and the Enemy Narrative.',
    rat:'The Enemy Narrative provides the structural arc. VoC language must be preserved verbatim.',
+   rat_u:'The Enemy Narrative provides the structural arc. VoC language must be preserved verbatim.',
+   sources:[{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'},{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'}],
    perms:['O','O','E','-','-','V','-']},
   {id:'social',     label:'Social Assets',              sec:'Offer Builder', stage:'OUT', asset:'Outreach — Social Content',        bsec:'Asset Factory',    ws:'generic',
    desc:'Produce social content from the 6 Amanah Content Engine angles.',
    rat:'Content that drifts from VoC language loses the quality that verbatim research carries.',
+   rat_u:'Content that drifts from VoC language loses the quality that verbatim research carries.',
+   sources:[{stage:'STR',tool:'avatar',label:'STR — VoC Bank (S2)'},{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'}],
    perms:['O','O','E','V','-','-','-']},
   {id:'meta',       label:'Connect Meta',               sec:'Launch',        stage:'OUT', asset:'Outreach — Ad Platform',           bsec:'Stage Entry',      ws:'generic',
    desc:'Configure Meta as the distribution infrastructure for Outreach stage assets.',
    rat:'Pixel data feeds the OPT G-Label Accuracy Report. Connection is a traceability decision.',
+   rat_u:'Pixel data feeds the OPT G-Label Accuracy Report. Connection is a traceability decision.',
    perms:['O','O','-','E','-','-','-']},
   {id:'pixel',      label:'Install Pixel',              sec:'Launch',        stage:'OUT', asset:'Outreach — Tracking Infrastructure',bsec:'Stage Entry',     ws:'generic',
    desc:'Install tracking to capture the evidence base for the next cycle\'s G-label claims.',
    rat:'Tracking is not optional — it is the evidence base for future claims.',
+   rat_u:'Tracking is not optional — it is the evidence base for future claims.',
    perms:['O','O','-','E','-','-','-']},
   {id:'launchads',  label:'Launch Ads',                 sec:'Launch',        stage:'OUT', asset:'Outreach — Live Campaign',         bsec:'Stage Entry',      ws:'generic',
    desc:'Deploy the final Outreach campaign with all G-label checks complete.',
    rat:'All G-label checks must be complete before ads go live. No PROOF PENDING item may appear.',
+   rat_u:'All G-label checks must be complete before ads go live. No PROOF PENDING item may appear.',
    perms:['O','O','-','E','-','-','-']},
   {id:'socials',    label:'Connect Socials',            sec:'Launch',        stage:'OUT', asset:'Outreach — Channel Distribution',  bsec:'Stage Entry',      ws:'generic',
    desc:'Connect social channels as distribution infrastructure.',
    rat:'All deployed content must have passed the Truth-Gate Advisory and had its G-label confirmed.',
+   rat_u:'All deployed content must have passed the Truth-Gate Advisory and had its G-label confirmed.',
    perms:['O','O','-','E','-','-','-']},
   {id:'website',    label:'Deploy Website',             sec:'Launch',        stage:'OUT', asset:'Outreach — Live Asset',            bsec:'Stage Entry',      ws:'generic',
    desc:'Deploy the live website with all claims mapped to the Proof Plan.',
    rat:'A live site with a PROOF PENDING claim violates the covenant.',
+   rat_u:'A live site with a PROOF PENDING claim violates the covenant.',
    perms:['O','O','V','E','-','-','-']},
   {id:'salespreso', label:'Sales Presentation',         sec:'Offer Builder', stage:'SAL', asset:'Sales — Presentation Deck',        bsec:'Asset Factory',    ws:'generic',
    desc:'Carry the Offer Promise, Mechanism, and Scope Map forward verbatim into the presentation.',
    rat:'No new unsubstantiated claims are introduced. The presentation is delivery of the covenant.',
+   rat_u:'No new unsubstantiated claims are introduced. The presentation is delivery of the covenant.',
    perms:['O','O','E','-','-','V','-']},
   {id:'nurture',    label:'Nurture Sequences',          sec:'Offer Builder', stage:'SAL', asset:'Sales — Nurture Engine',           bsec:'Asset Factory',    ws:'generic',
    desc:'Build sequences from the 6 Amanah Content Engine angles within G-label boundaries.',
    rat:'Nurture is not a second funnel — it is an extension of the same covenant conversation.',
+   rat_u:'Nurture is not a second funnel — it is an extension of the same covenant conversation.',
    perms:['O','O','E','-','-','V','-']},
   {id:'vsl',        label:'Pre-Call VSL',               sec:'Offer Builder', stage:'SAL', asset:'Sales — Pre-Call VSL',             bsec:'Asset Factory',    ws:'generic',
    desc:'Frame the problem in VoC language and introduce the Mechanism before the call.',
    rat:'The VSL does not make claims beyond what the Truth-Gate Advisory and Proof Plan support.',
+   rat_u:'The VSL does not make claims beyond what the Truth-Gate Advisory and Proof Plan support.',
    perms:['O','O','E','-','-','V','-']},
   {id:'salesscript',label:'Sales Script',               sec:'Offer Builder', stage:'SAL', asset:'Sales — Call Script',              bsec:'Asset Factory',    ws:'generic',
    desc:'Walk the prospect through the Offer Promise, Scope Map, and Guarantee on the call.',
    rat:'The script is the covenant read aloud. Objection responses must resolve, not redirect.',
+   rat_u:'The script is the covenant read aloud. Objection responses must resolve, not redirect.',
+   sources:[{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'},{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'}],
    perms:['O','O','E','-','V','E','-']},
   {id:'settingscript',label:'Setting Script',           sec:'Offer Builder', stage:'SAL', asset:'Sales — Setter Script',            bsec:'Asset Factory',    ws:'generic',
    desc:'Qualify the prospect against the ICP before the sales call.',
    rat:'Disqualifying a prospect before the call is As-Sittir — protecting them from a bad fit.',
+   rat_u:'Disqualifying a prospect before the call is Dignified Protection — protecting them from a bad fit.',
+   sources:[{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'},{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'}],
    perms:['O','O','E','-','E','V','-']},
   {id:'form',       label:'Add Form & Test',            sec:'Launch',        stage:'SAL', asset:'Sales — Lead Qualification Gate',  bsec:'Stage Entry',      ws:'generic',
    desc:'Deploy the intake form as the first ICP filter in the Sales stage.',
    rat:'Questions must qualify against the ICP from OFR Asset 2. A form that doesn\'t qualify is a list.',
+   rat_u:'Questions must qualify against the ICP from OFR Asset 2. A form that doesn\'t qualify is a list.',
+   sources:[{stage:'OFR',tool:'icp',label:'OFR — ICP (Asset 2)'}],
    perms:['O','O','-','V','E','-','-']},
   {id:'onboarding',  label:'Onboarding Checklist',          sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix A — Onboarding Checklist',        bsec:'Asset Factory', ws:'generic',
    desc:'Payment-to-work-start steps with communication triggers, timeline, and client success framed in the same language as the Promise.',
    rat:'The onboarding checklist is where the covenant transitions from document to experience. Every step with an ambiguous "what," "when," or "to whom" is a gap the client will fill with their own assumption.',
+   rat_u:'The onboarding checklist is where the covenant transitions from document to experience. Every step with an ambiguous "what," "when," or "to whom" is a gap the client will fill with their own assumption.',
    perms:['O','O','E','-','V','V','E']},
   {id:'clientintake', label:'Client Intake Form',             sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix B — Client Intake Form',            bsec:'Asset Factory', ws:'generic',
    desc:'Capture client constraints, access requirements, communication preferences, and their own definition of success before delivery begins.',
    rat:'Intake data that is collected but not used is a covenant violation in miniature. Every field must feed directly into the Execution SOP or it should not be asked.',
+   rat_u:'Intake data that is collected but not used is a covenant violation in miniature. Every field must feed directly into the Execution SOP or it should not be asked.',
    perms:['O','O','V','-','-','V','E']},
   {id:'executionsop', label:'Execution SOP',                  sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix C — Execution SOP',                 bsec:'Asset Factory', ws:'generic',
    desc:'Step-by-step delivery process mapped directly to the OFR Scope Map, with owner and timing for every step.',
    rat:'The SOP is the Scope Map in operational form. Any step required for delivery that does not appear in the Scope Map is either a scope gap or an Ihsan addition — both must be named explicitly.',
+   rat_u:'The SOP is the Scope Map in operational form. Any step required for delivery that does not appear in the Scope Map is either a scope gap or an excellence addition — both must be named explicitly.',
+   sources:[{stage:'OFR',tool:'offer',label:'OFR — Scope Map (Asset 4)'}],
    perms:['O','O','-','-','-','V','E']},
   {id:'qcchecklist',  label:'Quality Control Checklist',      sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix D — QC Checklist + IC-OFR/IC-DLR', bsec:'Asset Factory', ws:'qc',
    desc:'QC checks aligned to OFR outcome and guarantee trigger conditions. Includes IC-OFR and IC-DEL Ihsan Baseline gates — mandatory pre-ship review before delivery begins.',
    rat:'The QC checklist is an act of Al-Wali — standing between the client and a gap they do not yet know exists. It is not a compliance gate; it is proactive protection built before the client needs to ask.',
+   rat_u:'The QC checklist is an act of Proactive Stewardship — standing between the client and a gap they do not yet know exists. It is not a compliance gate; it is proactive protection built before the client needs to ask.',
+   sources:[{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'}],
    perms:['O','O','-','-','-','-','E']},
   {id:'milestones',   label:'Client Success Milestones',      sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix E — Client Success Milestones',     bsec:'Asset Factory', ws:'milestones',
    desc:'3–5 delivery checkpoints with message templates. Each milestone framed in the same language used in the Promise so the client has a continuous, unbroken understanding of what winning looks like.',
    rat:'Al-Muhsin asks not only "Did we hit the checkpoint?" but "Did the client experience it as a moment of genuine progress?" The milestone message templates are where that distinction becomes operational.',
+   rat_u:'Excellence as Standard asks not only "Did we hit the checkpoint?" but "Did the client experience it as a moment of genuine progress?" The milestone message templates are where that distinction becomes operational.',
    perms:['O','O','E','-','-','V','E']},
   {id:'proofcapture', label:'Proof Capture Protocol',         sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix F — Proof Capture Protocol',        bsec:'Asset Factory', ws:'generic',
    desc:'What to capture, at which milestone, in what format, and with what consent language — built into delivery from the start, not left to the end.',
    rat:'Proof capture that happens after the engagement feels like extraction. Built into the milestones, with consent obtained before any collection begins, it is documentation of a shared outcome.',
+   rat_u:'Proof capture that happens after the engagement feels like extraction. Built into the milestones, with consent obtained before any collection begins, it is documentation of a shared outcome.',
    perms:['O','O','V','-','-','-','E']},
   {id:'offboarding',  label:'Offboarding Sequence',           sec:'Fulfillment', stage:'DLR', asset:'DLR Appendix G — Offboarding Sequence',          bsec:'Asset Factory', ws:'generic',
    desc:'Close, retention seed, and Stage 08 RET handoff. The retention seed must be written from genuine gratitude before any next-step framing.',
    rat:'Ash-Shakur requires that the seed follow the gratitude — not precede it. A retention seed written before the gratitude is felt carries only strategy. The offboarding sequence is the beginning of the retention relationship, not the end of the delivery relationship.',
+   rat_u:'Reciprocal Value requires that the seed follow the gratitude — not precede it. A retention seed written before the gratitude is felt carries only strategy. The offboarding sequence is the beginning of the retention relationship, not the end of the delivery relationship.',
    perms:['O','O','E','-','-','V','E']},
   {id:'ghl',          label:'Connect GHL',                    sec:'Fulfillment', stage:'DLR', asset:'DLR — CRM Infrastructure',                       bsec:'Stage Entry',   ws:'generic',
    desc:'Configure the CRM to carry Scope Map terms, Guarantee conditions, and milestone triggers into the live delivery layer.',
    rat:'A Scope Map that is not accessible at the point of delivery is a covenant waiting to be breached. GHL is the infrastructure that makes the covenant present in every client interaction.',
+   rat_u:'A Scope Map that is not accessible at the point of delivery is a covenant waiting to be breached. GHL is the infrastructure that makes the covenant present in every client interaction.',
    perms:['O','O','-','-','V','V','E']},
 ];
 
@@ -1089,7 +1274,7 @@ Establish a positioned offer with a specific audience, a price point they can st
 
 ### Journey Stage
 
-Post-first-success, pre-scale. The model works. The results are real. The ceiling is not a competence problem — it is a positioning and pricing problem that has compounded over years of undercharging.
+Post-first-success, pre-expansion. The model works. The results are real. The ceiling is not a competence problem — it is a positioning and pricing problem that has compounded over years of undercharging.
 
 ### What Has Already Been Tried
 
@@ -2672,6 +2857,40 @@ At programme completion (Stage 5):
 · Record Stage 08 handoff note: last contact date, Milestone 5 status, proof capture status, retention seed sent/not sent, client temperature
 · Move contact to RET pipeline
 · Set follow-up task: Week 10–12 depending on client temperature`,
+
+proof_architecture:`## Proof Architecture — BBOS Built Using BBOS
+
+> This document traces each BBOS architectural decision to its originating stage output. It is the system's own proof chain — demonstrating that the methodology works by showing it was used to build the methodology.
+
+### Proof Chain Map
+
+| BBOS Stage Used | Decision It Governed | Evidence |
+|---|---|---|
+| STR Research Factory | Three ICP segments defined, enemy narratives for each, VoC language banks | STR Full Output document — 3 segments × 5 sections each |
+| TRU Constraint Map | Bounded launch scope: solopreneur-only, no team features, web-app-only, Islamic architecture first | Documented constraints shaped what BBOS could honestly promise |
+| OFR Offer Design | Nine-stage pipeline IS the offer, designed using OFR Asset 1–7 framework | Self Asset Pack v1.0 — 7 assets with G-labels |
+| OFR Scope Map | Defined INCLUDES and EXCLUDES for BBOS itself | Asset 4 in Self Asset Pack |
+| G-Label System | Applied to BBOS's own claims in External Positioning Plan | Every claim in the plan carries a G-label |
+| SourcePanel Architecture | Inter-stage connections made BBOS's coherence verifiable | Internal Optimization Plan implemented in truthmarket_bbos.html |
+
+### Self-Application Evidence Log
+
+· **INT → TRU:** BBOS's creator completed the intake assessment, declaring capabilities and constraints before designing the system
+· **TRU → STR:** Constraints from TRU bounded the STR research scope — only segments addressable within honest capacity were researched
+· **STR → OFR:** VoC language from STR S2 directly informs BBOS's own messaging — no paraphrasing permitted
+· **OFR → OUT:** The Stitching Cost Argument in the External Positioning Plan is an OFR output, not an independent marketing claim
+· **G-Label System → All Stages:** Every claim in the External Positioning Plan carries a G-label at its honest evidence level
+
+### G-Label Audit Summary
+
+· Promise (Asset 1): G4 until Cycle 1 closes
+· ICP Profiles (Asset 2): G1 — sourced from public VoC data
+· Mechanism (Asset 3): G2 — architecture documented, not yet operator-tested
+· Scope Map (Asset 4): G2 — documented capabilities
+· Guarantees (Asset 5): G2–G4 per individual guarantee
+· Stitching Cost Argument: G4 until traced through one complete cycle
+
+> Full Self Asset Pack: BBOS_Self_Asset_Pack_v1_0.md`,
 };
 
 /* ── GLOSSARY ── */
@@ -2913,8 +3132,8 @@ function WsMarket({sample}){
     {tab==='definition'&&<>
       <div className="notice ni"><span>&#9672;</span><span>Al-Basir — genuine seeing, not confirmation of what you already believe.</span></div>
       <div className="fg"><div className="fl">Buyer context</div><textarea className="fi" rows={3} placeholder="e.g. Muslim women running solo service businesses..."/></div>
-      <div className="fg"><div className="fl">Specific goal they're trying to accomplish</div><textarea className="fi" rows={2} placeholder="e.g. Scale past the revenue ceiling..."/></div>
-      <div className="fg"><div className="fl">What stage of the journey are they at?</div><input className="fi" type="text" placeholder="e.g. Post-first-success, pre-scale..."/></div>
+      <div className="fg"><div className="fl">Specific goal they're trying to accomplish</div><textarea className="fi" rows={2} placeholder="e.g. Expand past the revenue ceiling..."/></div>
+      <div className="fg"><div className="fl">What stage of the journey are they at?</div><input className="fi" type="text" placeholder="e.g. Post-first-success, pre-expansion..."/></div>
       <button className="wbtn">Save Market Definition</button>
     </>}
     {tab==='audience'&&<>
@@ -2954,10 +3173,11 @@ function WsPains({sample}){
     <button className="wbtn">Save Emotional Triggers</button>
   </>;
 }
-function WsOffer({sample}){
+function WsOffer({tool,sample}){
   const [tab,setTab]=useState('promise');
   if(sample) return <>
     <DoneBadge/>
+    {tool&&<SourcePanel tool={tool}/>}
     <div className="tabs">{['promise','scope','guarantee','pricing'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}</div>
     {tab==='promise'&&<><CF label="Promise statement" value={S.promise} accent="var(--ofr)" gl="G2" glc="var(--out)"/><CF label="Proof anchor" value={S.proof} accent="var(--out)"/></>}
     {tab==='scope'&&<><CF label="Included" value={S.scope_in} accent="var(--out)" mono/><div className="wdiv"/><CF label="Excluded" value={S.scope_ex} accent="var(--sal)" mono/></>}
@@ -2966,6 +3186,7 @@ function WsOffer({sample}){
     <CF label="Stage gate decision" value={S.gate.offer} accent="var(--out)"/>
   </>;
   return <>
+    {tool&&<SourcePanel tool={tool}/>}
     <div className="tabs">{['promise','scope','guarantee','pricing'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}</div>
     {tab==='promise'&&<>
       <div className="notice ni"><span>&#9672;</span><span>The Promise must be G1 or G2 only. Could a client use it as an acceptance test?</span></div>
@@ -2992,6 +3213,31 @@ function WsOffer({sample}){
     </>}
   </>;
 }
+function SourcePanel({tool}){
+  if(!tool.sources||!tool.sources.length) return null;
+  const [open,setOpen]=useState(true);
+  return <div className="src-panel">
+    <div className="src-header" onClick={()=>setOpen(!open)}>
+      <span className="src-lbl">Upstream Sources</span>
+      <span className="src-toggle">{open?'▲ Collapse':'▼ Expand'}</span>
+    </div>
+    {open&&<div className="src-body">
+      {tool.sources.map((src,i)=>{
+        const key='bbos_notes_'+src.tool;
+        let content='';
+        try{content=localStorage.getItem(key)||'';}catch(ex){}
+        const st=STAGES[src.stage];
+        return <div key={i} className="src-item" style={{borderLeftColor:st?st.c:'var(--accent2)'}}>
+          <div className="src-item-lbl" style={{color:st?st.c:'var(--accent)'}}>{src.label}</div>
+          {content
+            ? <div className="src-item-content">{content.length>300?content.slice(0,300)+'…':content}</div>
+            : <div className="src-item-empty">Source not yet completed — {src.stage} {src.label.split(' — ')[1]||src.tool} must be filled before this tool.</div>
+          }
+        </div>;
+      })}
+    </div>}
+  </div>;
+}
 function WsGeneric({tool,sample}){
   const s=STAGES[tool.stage];
   const glMap={competitor:'G1',avatar:'G1',adspy:'G2',contentspy:'G2',attention:'G2',creative:'G2',generateads:'G2',logo:'G1',landing:'G2',salesletter:'G2',social:'G2',meta:'G1',pixel:'G1',launchads:'G2',socials:'G1',website:'G2',salespreso:'G2',nurture:'G2',vsl:'G2',salesscript:'G1',settingscript:'G1',form:'G1',ghl:'G1',solution:'G2',icp:'G2',pricing:'G2',gtm:'G2',onboarding:'G1',clientintake:'G1',executionsop:'G1',qcchecklist:'G1',milestones:'G2',proofcapture:'G1',offboarding:'G2'};
@@ -3006,6 +3252,7 @@ function WsGeneric({tool,sample}){
   const pickGl=g=>{const v=selGl===g?'':g;setSelGl(v);try{localStorage.setItem(glStorageKey,v);}catch(e){}};
   if(sample&&notesTxt) return <>
     <DoneBadge/>
+    <SourcePanel tool={tool}/>
     <div className="gb-block" style={{borderLeftColor:s.c,background:s.bg}}>
       <div className="gb-title" style={{color:s.c}}>Stage {s.code} {s.key} — {s.name}</div>
       <div className="gb-sub">{s.attr} · {tool.bsec} · {tool.asset}</div>
@@ -3018,6 +3265,7 @@ function WsGeneric({tool,sample}){
     <CF label="Stage gate decision" value={gateTxt} accent="var(--out)"/>
   </>;
   return <>
+    <SourcePanel tool={tool}/>
     <div className="gb-block" style={{borderLeftColor:s.c,background:s.bg}}>
       <div className="gb-title" style={{color:s.c}}>Stage {s.code} {s.key} — {s.name}</div>
       <div className="gb-sub">{s.attr} · {tool.bsec} · {tool.asset}</div>
@@ -3028,7 +3276,7 @@ function WsGeneric({tool,sample}){
     <button className="wbtn">Save Work</button>
   </>;
 }
-function WsQC({sample}){
+function WsQC({tool,sample}){
   const icofr=[
     {k:'o1',label:'Does the Promise state a specific, deliverable-grounded outcome at G1 or G2 — written so a client could use it as a binary acceptance test?'},
     {k:'o2',label:'Is every EXCLUDED item in the Scope Map explicit enough that no client could reasonably claim they expected it?'},
@@ -3066,6 +3314,7 @@ function WsQC({sample}){
   }
   return <>
     {sample&&<DoneBadge/>}
+    {tool&&<SourcePanel tool={tool}/>}
     <div style={{display:'flex',gap:8,marginBottom:16}}>
       <div style={{flex:1,background:'var(--bg3)',border:`1px solid ${allPass?'var(--out-b)':'var(--border)'}`,borderRadius:8,padding:'10px 14px',textAlign:'center'}}>
         <div style={{fontSize:25,fontWeight:500,color:allPass?'var(--out)':'var(--text3)',marginBottom:2}}>{oScore+fScore}/10</div>
@@ -3117,8 +3366,8 @@ function Workspace({tool,sample}){
   if(tool.ws==='validation') return <WsValidation sample={sample}/>;
   if(tool.ws==='market')     return <WsMarket sample={sample}/>;
   if(tool.ws==='pains')      return <WsPains sample={sample}/>;
-  if(tool.ws==='offer')      return <WsOffer sample={sample}/>;
-  if(tool.ws==='qc')         return <WsQC sample={sample}/>;
+  if(tool.ws==='offer')      return <WsOffer tool={tool} sample={sample}/>;
+  if(tool.ws==='qc')         return <WsQC tool={tool} sample={sample}/>;
   if(tool.ws==='milestones') return <WsMilestones sample={sample}/>;
   return <WsGeneric tool={tool} sample={sample}/>;
 }
@@ -3224,7 +3473,7 @@ function ScopeGate({tool, role}){
   </div>;
 }
 
-function ToolDetail({tool,onBack,sample,role}){
+function ToolDetail({tool,onBack,sample,role,getRat}){
   const s=STAGES[tool.stage];
   const p = role.id==='all' ? 'O' : rolePerm(tool,role.id);
   const canEdit = p==='O'||p==='E';
@@ -3262,7 +3511,7 @@ function ToolDetail({tool,onBack,sample,role}){
     </div>
     <div className="det-rat">
       <div className="det-rat-lbl">Mapping rationale</div>
-      <div className="det-rat-txt">{tool.rat}</div>
+      <div className="det-rat-txt">{getRat(tool)}</div>
     </div>
     <div className="ws-card">
       <div className="ws-lbl">{sample?`Completed workspace — The Clarity Practice`:'Workspace'}</div>
@@ -3276,7 +3525,7 @@ function ToolDetail({tool,onBack,sample,role}){
 }
 
 /* ── ASSET VIEW ── */
-function AssetDetail({tool,onBack,role,sample}){
+function AssetDetail({tool,onBack,role,sample,getRat}){
   const s=STAGES[tool.stage];
   const p=role.id==='all'?'O':rolePerm(tool,role.id);
   const doc = sample
@@ -3307,7 +3556,7 @@ function AssetDetail({tool,onBack,role,sample}){
         <div className="avd-row"><span className="avd-key">Asset</span><span className="avd-val"><SLabel v={tool.asset}/></span></div>
         <div className="avd-row"><span className="avd-key">Governs</span><span className="avd-val" style={{color:s.c}}>{s.attr}</span></div>
         <div className="avd-div"/>
-        <p className="avd-rat">{tool.rat}</p>
+        <p className="avd-rat">{getRat(tool)}</p>
         {/* Full asset content — shown in sample mode when available */}
         {doc&&<>
           <div className="avd-div"/>
@@ -3318,9 +3567,9 @@ function AssetDetail({tool,onBack,role,sample}){
   </div>;
 }
 
-function AssetView({selId,setSelId,role,sample}){
+function AssetView({selId,setSelId,role,sample,getRat}){
   const tool=TOOLS.find(t=>t.id===selId);
-  if(tool) return <AssetDetail tool={tool} onBack={()=>setSelId(null)} role={role} sample={sample}/>;
+  if(tool) return <AssetDetail tool={tool} onBack={()=>setSelId(null)} role={role} sample={sample} getRat={getRat}/>;
   const byStage={};
   Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
   TOOLS.forEach(t=>{
@@ -3360,6 +3609,51 @@ function AssetView({selId,setSelId,role,sample}){
             </div>;
           })}
         </div>
+      </div>;
+    })}
+  </div>;
+}
+
+/* ── LAYERS VIEW ── */
+function LayersView({onSelect, role, sample}){
+  const byStage={};
+  Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
+  TOOLS.forEach(t=>{
+    if(!byStage[t.stage]) return;
+    if(role.id==='all'||rolePerm(t,role.id)!=='-') byStage[t.stage].push(t);
+  });
+  function stageStatus(key){ return !sample?'Not Started':SAMPLE_STAGE_STATUS[key]||'Not Started'; }
+  const layerOrder=['Think','Execute','Reckon'];
+  const layerStages={Think:[],Execute:[],Reckon:[]};
+  Object.values(STAGES).forEach(s=>{const l=LAYERS[s.key];if(l)layerStages[l].push(s);});
+  return <div style={{padding:'32px 40px',maxWidth:900}}>
+    <div style={{fontSize:11,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--accent)',marginBottom:6}}>BARAKAH BUSINESS OPERATING SYSTEM</div>
+    <h1 style={{fontSize:28,fontWeight:300,color:'var(--text)',margin:'0 0 8px'}}>Layer Architecture</h1>
+    <p style={{color:'var(--text3)',fontSize:15,lineHeight:1.7,marginBottom:32,maxWidth:640}}>Three layers replace the stitched stack: Think (strategy tools), Execute (pipeline tools), and Reckon (retention & optimization tools).</p>
+    {layerOrder.map(layer=>{
+      const lm=LAYER_META[layer];
+      const stgs=layerStages[layer];
+      return <div key={layer} style={{marginBottom:32}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
+          <span style={{fontSize:14,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:lm.color}}>{lm.label}</span>
+          <span style={{fontSize:13,color:'var(--text3)'}}>{lm.sub}</span>
+          <span style={{flex:1,height:2,background:lm.color+'30'}}/>
+        </div>
+        {stgs.map(s=>{
+          const items=byStage[s.key]||[];
+          if(!items.length) return null;
+          const st=stageStatus(s.key);
+          const sm=STATUS_META[st];
+          return <div key={s.key} onClick={()=>{const first=items[0];if(first)onSelect(first.id);}}
+            style={{display:'flex',alignItems:'center',gap:14,padding:'10px 16px',marginBottom:4,borderRadius:6,cursor:'pointer',border:'1px solid var(--border)',background:'var(--bg3)',transition:'all .12s'}}
+            onMouseEnter={e=>e.currentTarget.style.borderColor=s.c+'60'}
+            onMouseLeave={e=>e.currentTarget.style.borderColor='var(--border)'}>
+            <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:4,padding:'3px 9px',fontSize:11,fontWeight:700,letterSpacing:'.5px',flexShrink:0}}>{s.code} · {s.name.toUpperCase()}</span>
+            <span style={{fontSize:13,color:'var(--text3)',fontStyle:'italic',flex:1}}>{s.attr}</span>
+            <span style={{fontSize:12,color:'var(--text3)'}}>{items.length} tools</span>
+            <span style={{fontSize:11,color:sm.color,background:sm.bg,border:`1px solid ${sm.border}`,borderRadius:10,padding:'2px 8px'}}>{sm.dot} {st}</span>
+          </div>;
+        })}
       </div>;
     })}
   </div>;
@@ -3414,15 +3708,25 @@ function Overview({onSelect, role, sample}){
     {/* STAGE BLOCKS — grouped with phase dividers */}
     {(()=>{
       let lastPhase=null;
+      let lastLayer=null;
       return stages.map(s=>{
         const items=byStage[s.key]||[];
         if(!items.length) return null;
         const phase=PHASES[s.key];
+        const layer=LAYERS[s.key];
         const st=stageStatus(s.key);
         const sm=STATUS_META[st];
+        const showLayer = layer!==lastLayer;
+        if(showLayer) lastLayer=layer;
         const showDivider = phase!==lastPhase;
         lastPhase=phase;
+        const lm=showLayer?LAYER_META[layer]:null;
         return <div key={s.key}>
+          {showLayer&&<div className="layer-div">
+            <span className="layer-lbl" style={{color:lm.color}}>{lm.label}</span>
+            <span className="layer-sub">{lm.sub}</span>
+            <span className="layer-line" style={{background:lm.color+'40'}}/>
+          </div>}
           {showDivider&&<div style={{display:'flex',alignItems:'center',gap:10,margin:'28px 0 16px'}}>
             <span style={{fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'var(--text3)',whiteSpace:'nowrap'}}>{phase}</span>
             <span style={{flex:1,height:1,background:'var(--border)'}}/>
@@ -3472,7 +3776,6 @@ function Overview({onSelect, role, sample}){
 function DuaBlock({dua, kind, stageColor, stageKey}){
   const [open,setOpen]=useState(false);
   const isClosing = kind==='closing';
-  const annotations = (!isClosing && stageKey && DUAS[stageKey]) ? DUAS[stageKey].annotations : null;
   return <div className="dua-block">
     <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
       <span className="dua-glyph" style={{color:stageColor}}>⧁</span>
@@ -3487,13 +3790,6 @@ function DuaBlock({dua, kind, stageColor, stageKey}){
       <div className="dua-trans">{dua.trans}</div>
       <div className="dua-meaning">{dua.meaning}</div>
       <div className="dua-source">{dua.source}</div>
-      {annotations&&annotations.length>0&&<>
-        <div style={{height:1,background:'var(--border)',margin:'10px 0'}}/>
-        {annotations.map((a,i)=><div key={i} style={i>0?{marginTop:10,paddingTop:10,borderTop:'1px solid var(--border)'}:{}}>
-          <div style={{fontSize:11,fontWeight:600,color:stageColor,textTransform:'uppercase',letterSpacing:'.8px',marginBottom:4}}>⧁ {a.attr}</div>
-          <div style={{fontSize:14,color:'var(--text3)',lineHeight:1.65,fontStyle:'italic'}}>{a.text}</div>
-        </div>)}
-      </>}
     </div>}
   </div>;
 }
@@ -3599,12 +3895,33 @@ function App(){
   const [sbOpen,setSbOpen]=useState(()=>{
     try{return localStorage.getItem('bbos_sb_open')==='1';}catch(e){return false;}
   });
+  const [valuesLayer,setValuesLayer]=useState(()=>{try{return localStorage.getItem('bbos_values_layer')||'islamic';}catch(e){return 'islamic';}});
+  const switchValues=v=>{setValuesLayer(v);try{localStorage.setItem('bbos_values_layer',v);}catch(e){}};
+  const getRat=tool=>valuesLayer==='universal'&&tool.rat_u?tool.rat_u:tool.rat;
+  const [segment,setSegment]=useState(()=>{try{return localStorage.getItem('bbos_segment')||'';}catch(e){return '';}});
+  const [showWelcome,setShowWelcome]=useState(()=>{try{return !localStorage.getItem('bbos_segment');}catch(e){return true;}});
+  const pickSegment=seg=>{
+    setSegment(seg);
+    setShowWelcome(false);
+    try{localStorage.setItem('bbos_segment',seg);}catch(e){}
+    if(seg==='A') switchValues('islamic');
+    else switchValues('universal');
+  };
   const [roleDropOpen,setRoleDropOpen]=useState(false);
   const roleDropRef=useRef(null);
+  const sbTopRef=useRef(null);
+  const [sbTopH,setSbTopH]=useState(46);
+  const [sbWidth,setSbWidth]=useState(()=>parseInt(localStorage.getItem('bbos_sb_width')||'272'));
+  const dragRef=useRef({active:false,startX:0,startW:0});
+  const [mapView,setMapView]=useState(()=>{try{return localStorage.getItem('bbos_map_view')||'pipeline';}catch(e){return 'pipeline';}});
+  const switchMapView=v=>{setMapView(v);try{localStorage.setItem('bbos_map_view',v);}catch(e){}};
   const role=ROLES.find(r=>r.id===roleId)||ROLES[0];
   const selTool=TOOLS.find(t=>t.id===selId);
   const toggleCol=k=>setCol(c=>{
-    const next={...c,[k]:!c[k]};
+    const isOpening = c[k];
+    const next = {};
+    Object.keys(c).forEach(key=>{ next[key] = true; });
+    if(isOpening) next[k] = false;
     try{localStorage.setItem('bbos_collapsed',JSON.stringify(next));}catch(e){}
     return next;
   });
@@ -3621,8 +3938,9 @@ function App(){
   sidebarTools.forEach(t=>{toolsByStage[t.stage]&&toolsByStage[t.stage].push(t);});
 
   function mainContent(){
-    if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role} sample={sample}/>;
-    if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role}/>;
+    if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role} sample={sample} getRat={getRat}/>;
+    if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role} getRat={getRat}/>;
+    if(mapView==='layers') return <LayersView onSelect={setSelId} role={role} sample={sample}/>;
     return <Overview onSelect={setSelId} role={role} sample={sample}/>;
   }
 
@@ -3633,6 +3951,35 @@ function App(){
   });
 
   const stages=Object.values(STAGES);
+
+  // Measure .sb-top height for sticky stage headers
+  const {useEffect}=React;
+  useEffect(()=>{
+    const measure=()=>{if(sbTopRef.current)setSbTopH(sbTopRef.current.getBoundingClientRect().height);};
+    measure();
+    window.addEventListener('resize',measure);
+    return ()=>window.removeEventListener('resize',measure);
+  },[]);
+
+  // Sidebar drag-to-resize
+  const onDragStart=e=>{
+    e.preventDefault();
+    dragRef.current={active:true,startX:e.clientX,startW:sbWidth};
+    const onDrag=e2=>{
+      if(!dragRef.current.active)return;
+      const w=Math.min(480,Math.max(180,dragRef.current.startW+(e2.clientX-dragRef.current.startX)));
+      setSbWidth(w);
+    };
+    const onDragEnd=()=>{
+      dragRef.current.active=false;
+      document.removeEventListener('mousemove',onDrag);
+      document.removeEventListener('mouseup',onDragEnd);
+    };
+    document.addEventListener('mousemove',onDrag);
+    document.addEventListener('mouseup',onDragEnd);
+  };
+  // Persist sidebar width when it changes
+  useEffect(()=>{try{localStorage.setItem('bbos_sb_width',String(sbWidth));}catch(e){}},[sbWidth]);
 
   // Mobile role dropdown portal
   const roleDrop = roleDropOpen ? ReactDOM.createPortal(
@@ -3648,7 +3995,31 @@ function App(){
     </div>, document.body
   ) : null;
 
-  return <div className={`app${sbOpen?' sb-open':''}`}>
+  return <div className={`app${sbOpen?' sb-open':''}`} style={{gridTemplateColumns:`${sbWidth}px 1fr`}}>
+    {/* WELCOME / SEGMENT SELECTION MODAL */}
+    {showWelcome&&<div className="wlc-overlay">
+      <div className="wlc-modal">
+        <div className="wlc-title">Welcome to BBOS</div>
+        <div className="wlc-sub">The Barakah Business Operating System is a nine-stage pipeline where every stage receives documented inputs from the stage before it. Select the framing that fits your context — you can change this anytime.</div>
+        <div className="wlc-cards">
+          <div className="wlc-card" onClick={()=>pickSegment('A')} style={{borderTop:'3px solid var(--tru)'}}>
+            <div className="wlc-card-tag" style={{color:'var(--tru)'}}>Segment A</div>
+            <div className="wlc-card-title">Muslim Entrepreneur</div>
+            <div className="wlc-card-desc">Full Islamic architecture with Asma ul-Husna rationale layer, Amanah Gate ethical screening, and stewardship scoring designed from its foundations for your theological reality.</div>
+          </div>
+          <div className="wlc-card" onClick={()=>pickSegment('B')} style={{borderTop:'3px solid var(--str)'}}>
+            <div className="wlc-card-tag" style={{color:'var(--str)'}}>Segment B</div>
+            <div className="wlc-card-title">Faith-Conscious Professional</div>
+            <div className="wlc-card-desc">Universal values framing — the same structural integrity and ethical guardrails expressed through principles of stewardship, honesty, and excellence that resonate across faith traditions.</div>
+          </div>
+          <div className="wlc-card" onClick={()=>pickSegment('C')} style={{borderTop:'3px solid var(--out)'}}>
+            <div className="wlc-card-tag" style={{color:'var(--out)'}}>Segment C</div>
+            <div className="wlc-card-title">Values-Driven Solopreneur</div>
+            <div className="wlc-card-desc">Operational principles only — no theological framing. The same system architecture where manipulation is structurally impossible and every claim traces back to documented evidence.</div>
+          </div>
+        </div>
+      </div>
+    </div>}
     {/* TOPBAR */}
     <div className="tb">
       <div className="tb-logo">
@@ -3674,12 +4045,17 @@ function App(){
       {roleDrop}
       <div className="tb-right">
         <div className="seg">
-          <button className={`sg-btn${view==='pipeline'?' on':''}`} onClick={()=>switchView('pipeline')}>Pipeline</button>
+          <button className={`sg-btn${view==='pipeline'&&mapView==='pipeline'?' on':''}`} onClick={()=>{switchView('pipeline');switchMapView('pipeline');}}>Pipeline</button>
+          <button className={`sg-btn${view==='pipeline'&&mapView==='layers'?' on':''}`} onClick={()=>{switchView('pipeline');switchMapView('layers');}}>Layers</button>
           <button className={`sg-btn${view==='asset'?' on':''}`} onClick={()=>switchView('asset')}>Assets</button>
         </div>
         <div className="seg">
           <button className={`sg-btn${!sample?' on':''}`} onClick={()=>switchSample(false)}>Blank</button>
           <button className={`sg-btn${sample?' on':''}`} onClick={()=>switchSample(true)}>Sample ✦</button>
+        </div>
+        <div className="seg">
+          <button className={`sg-btn${valuesLayer==='islamic'?' on':''}`} onClick={()=>switchValues('islamic')} title="Islamic rationale framing (Asma ul-Husna)">Islamic</button>
+          <button className={`sg-btn${valuesLayer==='universal'?' on':''}`} onClick={()=>switchValues('universal')} title="Universal values framing">Universal</button>
         </div>
         {sample&&<span className="tb-badge" style={{background:'var(--out-bg)',color:'var(--out)',border:'1px solid var(--out-b)'}}>The Clarity Practice</span>}
       </div>
@@ -3724,7 +4100,7 @@ function App(){
           <div className="role-banner-sub">{sidebarTools.length} tools in scope</div>
         </div>
       </div>}
-      <div className="sb-top">
+      <div className="sb-top" ref={sbTopRef}>
         <button className={`sb-overview${!selId?' on':''}`} onClick={()=>setSelId(null)}>
           <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
           {roleId!=='all'?role.label+' Dashboard':view==='asset'?'All Assets':'Pipeline Overview'}
@@ -3735,7 +4111,7 @@ function App(){
         if(!items.length) return null;
         const open=!collapsed[s.key];
         return <div key={s.key} className="sb-sec">
-          <div className="sb-sec-hdr" onClick={()=>toggleCol(s.key)} style={{borderLeft:`2px solid ${s.c}40`}}>
+          <div className="sb-sec-hdr" onClick={()=>toggleCol(s.key)} style={{borderLeft:`2px solid ${s.c}40`,position:'sticky',top:sbTopH,zIndex:4,background:'var(--bg2)'}}>
             <div>
               <div className="sb-sec-code" style={{color:s.c}}><Tip term={s.key}>{s.code} — {s.name}</Tip></div>
               <div className="sb-sec-attr">{s.attr}</div>
@@ -3765,6 +4141,7 @@ function App(){
           </>}
         </div>;
       })}
+      <div className="sb-drag" onMouseDown={onDragStart}/>
     </div>
 
     {/* MAIN */}
