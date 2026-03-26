@@ -21,7 +21,7 @@
   --int:#b8a96a;--int-bg:#b8a96a15;--int-b:#b8a96a40;
   --ret:#d4a55a;--ret-bg:#d4a55a15;--ret-b:#d4a55a40;
   --opt:#7b6fa0;--opt-bg:#7b6fa015;--opt-b:#7b6fa040;
-  --dlr:#4ab8a8;--dvr-bg:#4ab8a815;--dvr-b:#4ab8a840;
+  --dlr:#4ab8a8;--dlr-bg:#4ab8a815;--dlr-b:#4ab8a840;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.6;overflow:hidden}
 .app{display:grid;grid-template-columns:272px 1fr;grid-template-rows:52px 1fr;height:100vh}
@@ -112,7 +112,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ov-title{font-family:'Space Grotesk',sans-serif;font-size:32px;color:var(--text);line-height:1.2;margin-bottom:8px}
 .ov-sub{font-size:16px;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:24px}
 .pip{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:26px}
-.pip-item{flex:1;min-width:84px;padding:11px 12px;border-radius:5px;border:1px solid}
+.pip-item{flex:1;min-width:84px;padding:11px 12px;border-radius:5px;border:1px solid;display:flex;flex-direction:column}
 .pip-code{font-size:12px;font-weight:600;letter-spacing:.8px;margin-bottom:3px;opacity:.7}
 .pip-name{font-size:14px;font-weight:500;margin-bottom:2px}
 .pip-cnt{font-size:12px;opacity:.5;margin-bottom:2px}
@@ -365,7 +365,7 @@ const PHASES = {
 const PHASE_ORDER = ['Foundation','Build','Launch','Deliver','Sustain'];
 
 const STATUS_META = {
-  'Not Started': {color:'var(--text3)',bg:'var(--bg3)',border:'var(--border2)',dot:'○'},
+  'Not Started': {color:'var(--text2)',bg:'rgba(255,255,255,.06)',border:'rgba(255,255,255,.15)',dot:'○'},
   'Active':      {color:'#f59e0b',   bg:'rgba(245,158,11,.1)',border:'rgba(245,158,11,.25)',dot:'◉'},
   'Complete':    {color:'#4ade80',   bg:'rgba(74,222,128,.1)',border:'rgba(74,222,128,.25)',dot:'●'},
 };
@@ -2998,6 +2998,12 @@ function WsGeneric({tool,sample}){
   const glcMap={G1:'var(--out)',G2:'var(--str)',G3:'var(--sal)',G4:'var(--ofr)'};
   const gl=glMap[tool.ws]||'G2';const glc=glcMap[gl];
   const notesTxt=S.notes[tool.id]||'';const gateTxt=S.gate[tool.id]||'';
+  const storageKey='bbos_notes_'+tool.id;
+  const [notes,setNotes]=useState(()=>{try{return localStorage.getItem(storageKey)||'';}catch(e){return '';}});
+  const saveNotes=v=>{setNotes(v);try{localStorage.setItem(storageKey,v);}catch(e){}};
+  const glStorageKey='bbos_gl_'+tool.id;
+  const [selGl,setSelGl]=useState(()=>{try{return localStorage.getItem(glStorageKey)||'';}catch(e){return '';}});
+  const pickGl=g=>{const v=selGl===g?'':g;setSelGl(v);try{localStorage.setItem(glStorageKey,v);}catch(e){}};
   if(sample&&notesTxt) return <>
     <DoneBadge/>
     <div className="gb-block" style={{borderLeftColor:s.c,background:s.bg}}>
@@ -3016,8 +3022,8 @@ function WsGeneric({tool,sample}){
       <div className="gb-title" style={{color:s.c}}>Stage {s.code} {s.key} — {s.name}</div>
       <div className="gb-sub">{s.attr} · {tool.bsec} · {tool.asset}</div>
     </div>
-    <div className="fg"><div className="fl">Working notes</div><textarea className="fi" rows={4} placeholder="Begin your work here..."/></div>
-    <div className="fg"><div className="fl">G-label for primary output</div><div style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=><Tip key={g} term={g}><button className="wbtn wbtn-o" style={{padding:'3px 11px'}}>{g}</button></Tip>)}</div></div>
+    <div className="fg"><div className="fl">Working notes</div><textarea className="fi" rows={4} placeholder="Begin your work here..." value={notes} onChange={e=>saveNotes(e.target.value)}/></div>
+    <div className="fg"><div className="fl">G-label for primary output</div><div style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=>{const gc=glcMap[g];return <Tip key={g} term={g}><button onClick={()=>pickGl(g)} className="wbtn" style={{padding:'3px 11px',background:selGl===g?gc+'33':'transparent',color:selGl===g?gc:'var(--text2)',border:`1px solid ${selGl===g?gc:'rgba(255,255,255,.25)'}`}}>{g}</button></Tip>;})}</div></div>
     <div className="fg"><div className="fl">Stage gate check</div><textarea className="fi" rows={2} placeholder="Document any ASSUMPTION items, PROOF PENDING items, or conditions..."/></div>
     <button className="wbtn">Save Work</button>
   </>;
@@ -3261,7 +3267,7 @@ function ToolDetail({tool,onBack,sample,role}){
     <div className="ws-card">
       <div className="ws-lbl">{sample?`Completed workspace — The Clarity Practice`:'Workspace'}</div>
       {(canEdit || sample)
-        ? <Workspace tool={tool} sample={sample}/>
+        ? <Workspace key={tool.id} tool={tool} sample={sample}/>
         : <div className="view-only"><div className="view-only-msg">This asset is outside your edit scope as {role.label}. You have View access — use the completed data above for context when building your own assets.{p==='-'&&` This tool is not part of the ${role.label} workflow.`}</div></div>
       }
       {(!canEdit && sample) && <div style={{marginTop:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:6,border:'1px solid var(--border)',fontSize:14,color:'var(--text3)'}}>Read-only in {role.label} role — completed data shown for reference.</div>}
@@ -3321,15 +3327,22 @@ function AssetView({selId,setSelId,role,sample}){
     if(!byStage[t.stage]) return;
     if(role.id==='all'||rolePerm(t,role.id)!=='-') byStage[t.stage].push(t);
   });
+  function stageStatus(key){ return !sample?'Not Started':SAMPLE_STAGE_STATUS[key]||'Not Started'; }
   return <div className="av">
     {Object.values(STAGES).map(s=>{
       const items=byStage[s.key]||[];
       if(!items.length) return null;
+      const st=stageStatus(s.key);
+      const sm=STATUS_META[st];
       return <div key={s.key} className="av-stage">
         <div className="av-stage-hdr">
           <span style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`,borderRadius:3,padding:'2px 8px',fontSize:11,fontWeight:600}}>{s.code} {s.key}</span>
           <span className="av-stage-name">{s.name}</span>
           <span className="av-stage-attr">{s.attr}</span>
+          <span style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:4,padding:'3px 9px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`,flexShrink:0}}>
+            <span style={{fontSize:10,color:sm.color}}>{sm.dot}</span>
+            <span style={{fontSize:10,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
+          </span>
         </div>
         <div className="av-list">
           {items.map(t=>{
@@ -3365,8 +3378,11 @@ function Overview({onSelect, role, sample}){
     if(!sample) return 'Not Started';
     return SAMPLE_STAGE_STATUS[key]||'Not Started';
   }
-  function toolFilled(t){
-    return sample && !!(DOC[t.id]||S.notes[t.id]);
+  function toolState(t){
+    if(!sample) return 'Empty';
+    if(DOC[t.id]) return 'Filled';
+    if(S.notes[t.id]) return 'Active';
+    return 'Empty';
   }
 
   const stages = Object.values(STAGES);
@@ -3387,7 +3403,7 @@ function Overview({onSelect, role, sample}){
           <div className="pip-name">{s.name}</div>
           <div className="pip-cnt">{cnt} tools</div>
           <div className="pip-attr">{s.attr}</div>
-          <div style={{marginTop:6,display:'inline-flex',alignItems:'center',gap:4,padding:'2px 7px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
+          <div style={{marginTop:'auto',alignSelf:'flex-start',display:'inline-flex',alignItems:'center',gap:4,padding:'2px 7px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
             <span style={{fontSize:10,color:sm.color}}>{sm.dot}</span>
             <span style={{fontSize:10,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
           </div>
@@ -3420,7 +3436,6 @@ function Overview({onSelect, role, sample}){
               <span style={{fontSize:14,color:'var(--text3)',fontStyle:'italic'}}>{s.attr}</span>
             </div>
             <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-              <span style={{fontSize:11,color:'var(--text3)'}}>{phase}</span>
               <span style={{display:'inline-flex',alignItems:'center',gap:4,padding:'3px 9px',borderRadius:20,background:sm.bg,border:`1px solid ${sm.border}`}}>
                 <span style={{fontSize:11,color:sm.color}}>{sm.dot}</span>
                 <span style={{fontSize:11,fontWeight:600,color:sm.color,letterSpacing:'.4px'}}>{st}</span>
@@ -3430,16 +3445,19 @@ function Overview({onSelect, role, sample}){
           {/* Tool cards */}
           <div className="tc-grid" style={{marginBottom:8}}>
             {items.map(t=>{
-              const filled=toolFilled(t);
+              const ts=toolState(t);
+              const toolBadge = {
+                'Filled': {bg:'rgba(74,222,128,.12)', color:'#4ade80',   border:'1px solid rgba(74,222,128,.25)', dot:'●'},
+                'Active': {bg:'rgba(245,158,11,.1)',  color:'#f59e0b',   border:'1px solid rgba(245,158,11,.25)', dot:'◉'},
+                'Empty':  {bg:'rgba(255,255,255,.06)',color:'var(--text2)',border:'1px solid rgba(255,255,255,.15)',dot:'○'},
+              }[ts];
               return <div key={t.id} className="tc" onClick={()=>onSelect(t.id)}>
                 <div className="tc-top">
                   <div className="tc-name">{t.label}</div>
-                  {sample&&<span style={{
+                  <span style={{
                     fontSize:10,padding:'2px 7px',borderRadius:20,flexShrink:0,fontWeight:600,letterSpacing:'.3px',
-                    background:filled?'rgba(74,222,128,.12)':'var(--bg3)',
-                    color:filled?'#4ade80':'var(--text3)',
-                    border:filled?'1px solid rgba(74,222,128,.25)':'1px solid var(--border)',
-                  }}>{filled?'● Filled':'○ Empty'}</span>}
+                    background:toolBadge.bg,color:toolBadge.color,border:toolBadge.border,
+                  }}>{toolBadge.dot} {ts}</span>
                 </div>
                 <div className="tc-asset"><SLabel v={t.asset}/></div>
               </div>;
