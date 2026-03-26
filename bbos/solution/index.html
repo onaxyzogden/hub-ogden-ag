@@ -444,7 +444,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
         <div class="stage-list" role="list" aria-label="Nine pipeline stages">
 
           <button class="stage-row" role="listitem" data-stage="int">
-            <span class="stage-code">01 · INT</span>
+            <span class="stage-code">01 · SDC</span>
             <div class="stage-info">
               <div class="stage-name">Intake</div>
               <div class="stage-attr">Al-Awwal · Ash-Shahīd</div>
@@ -452,7 +452,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
             <span class="stage-marker done" aria-label="Complete"></span>
           </button>
           <button class="stage-row" role="listitem" data-stage="qal">
-            <span class="stage-code">02 · QAL</span>
+            <span class="stage-code">02 · TRU</span>
             <div class="stage-info">
               <div class="stage-name">Qualification &amp; Alignment</div>
               <div class="stage-attr">Al-Ḥaqq · Al-Khabīr</div>
@@ -492,9 +492,9 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
             <span class="stage-marker" aria-label="Pending"></span>
           </button>
           <button class="stage-row" role="listitem" data-stage="ful">
-            <span class="stage-code">07 · FUL</span>
+            <span class="stage-code">07 · DLR</span>
             <div class="stage-info">
-              <div class="stage-name">Fulfillment</div>
+              <div class="stage-name">Delivery</div>
               <div class="stage-attr">Al-Muḥsin · Al-Walī</div>
             </div>
             <span class="stage-marker" aria-label="Pending"></span>
@@ -591,7 +591,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
     <div class="attr-grid" role="list">
       <button class="attr-cell" role="listitem" data-stage="int" tabindex="0" aria-label="Stage 01 Intake — view anatomy">
         <span class="attr-cell-hint">View anatomy →</span>
-        <div class="attr-stage">Stage 01 · INT</div>
+        <div class="attr-stage">Stage 01 · SDC</div>
         <div class="attr-name">Al-Awwal · Ash-Shahīd</div>
         <div class="attr-translation">The First · The Witness</div>
         <div class="attr-arabic" lang="ar" dir="rtl">الأوّل · الشهيد</div>
@@ -599,7 +599,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
       </button>
       <button class="attr-cell" role="listitem" data-stage="qal" tabindex="0" aria-label="Stage 02 Qualification — view anatomy">
         <span class="attr-cell-hint">View anatomy →</span>
-        <div class="attr-stage">Stage 02 · QAL</div>
+        <div class="attr-stage">Stage 02 · TRU</div>
         <div class="attr-name">Al-Ḥaqq · Al-Khabīr</div>
         <div class="attr-translation">The Truth / The Real · The All-Aware</div>
         <div class="attr-arabic" lang="ar" dir="rtl">الحقّ · الخبير</div>
@@ -637,9 +637,9 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
         <div class="attr-arabic" lang="ar" dir="rtl">اللطيف · الستّير</div>
         <div class="attr-meaning">The Fit Call as discernment, not closing. Gentle precision in the sales conversation.</div>
       </button>
-      <button class="attr-cell" role="listitem" data-stage="ful" tabindex="0" aria-label="Stage 07 Fulfillment — view anatomy">
+      <button class="attr-cell" role="listitem" data-stage="ful" tabindex="0" aria-label="Stage 07 Delivery — view anatomy">
         <span class="attr-cell-hint">View anatomy →</span>
-        <div class="attr-stage">Stage 07 · FUL</div>
+        <div class="attr-stage">Stage 07 · DLR</div>
         <div class="attr-name">Al-Muḥsin · Al-Walī</div>
         <div class="attr-translation">The Doer of Good · The Protector</div>
         <div class="attr-arabic" lang="ar" dir="rtl">المحسن · الولي</div>
@@ -801,7 +801,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 // ── STAGE ANATOMY DATA ──
 const stages = {
   int: {
-    code: '01 · INT', name: 'Intake', attrs: 'Al-Awwal · Ash-Shahīd',
+    code: '01 · SDC', name: 'Intake', attrs: 'Al-Awwal · Ash-Shahīd',
     openingDua: { arabic: 'اللَّهُمَّ أَرِنَا الْحَقَّ حَقًّا وَارْزُقْنَا اتِّبَاعَهُ وَأَرِنَا الْبَاطِلَ بَاطِلًا وَارْزُقْنَا اجْتِنَابَهُ', trans: 'Allāhumma arinā l-ḥaqqa ḥaqqan wa-rzuqnā ttibā\'ahu, wa arinā l-bāṭila bāṭilan wa-rzuqnā jtinābahu', meaning: '"O Allah, show us the truth as truth and grant us the ability to follow it, and show us falsehood as falsehood and grant us the ability to avoid it."', source: 'Transmitted from the supplications of the Prophet ﷺ · Grade: Hasan' },
     covenant: { attrs: 'Al-Awwal · Ash-Shahīd', text: 'Al-Awwal governs the integrity of beginnings. A system built on honest intake carries a different structural quality from one built on aspiration dressed as fact. Ash-Shahīd reminds the operator that the accurate version of their declaration is already known — this is not an application to be optimised, it is a declaration to be made honestly.' },
     readiness: [['You are completing the intake with the same standard you would apply if Allah SWT were reviewing it in full detail.', 'You are completing the intake with the answer that protects the pipeline rather than the answer that is fully true.'], ['The constraints you are naming are the ones that will actually govern the work.', 'The financial runway you are declaring is the public-facing figure rather than the one Al-Khabīr already knows.']],
@@ -809,7 +809,7 @@ const stages = {
     closingDua: { arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', trans: 'Subḥānaka Allāhumma wa biḥamdik, ashhadu an lā ilāha illā ant, astaghfiruka wa atūbu ilayk', meaning: '"Glory be to You, O Allah, and praise be to You. I bear witness there is no god but You. I seek Your forgiveness and turn to You in repentance."', source: 'Kafārat al-Majlis — the supplication that closes a gathering' }
   },
   qal: {
-    code: '02 · QAL', name: 'Qualification & Alignment', attrs: 'Al-Ḥaqq · Al-Khabīr',
+    code: '02 · TRU', name: 'Qualification & Alignment', attrs: 'Al-Ḥaqq · Al-Khabīr',
     openingDua: { arabic: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي', trans: 'Rabbi shraḥ lī ṣadrī wa yassir lī amrī wa-ḥlul \'uqdatan min lisānī yafqahū qawlī', meaning: '"My Lord, expand for me my chest, ease for me my task, and untie the knot from my tongue that they may understand my speech."', source: 'Qur\'an · Tā-Hā 20:25–28' },
     covenant: { attrs: 'Al-Ḥaqq · Al-Khabīr', text: 'Al-Ḥaqq is the unchanging standard against which every claim is measured. A business whose foundation overstates capacity, conceals constraints, or decorates its qualification with what it hopes to become rather than what it is carries that distortion into everything that follows. Al-Khabīr is the One who knows the inner reality — including the exhaustion behind the confident answer and the financial runway shorter than stated.' },
     readiness: [['You are applying the disqualification criteria to yourself with the same rigour you would apply to someone else\'s intake.', 'You are looking for a path through the Amanah Gate rather than honestly assessing whether you should enter.'], ['The constraints you identified in Stage 01 are arriving at this stage intact — not renegotiated for convenience.', 'The S4 Energy Profile reflects your public-facing capacity rather than what Al-Khabīr already knows is actually there.']],
@@ -852,7 +852,7 @@ const stages = {
     closingDua: { arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', trans: 'Subḥānaka Allāhumma wa biḥamdik...', meaning: '"Glory be to You, O Allah. I seek Your forgiveness."', source: 'Kafārat al-Majlis' }
   },
   ful: {
-    code: '07 · FUL', name: 'Fulfillment', attrs: 'Al-Muḥsin · Al-Walī · Ash-Shakūr',
+    code: '07 · DLR', name: 'Delivery', attrs: 'Al-Muḥsin · Al-Walī · Ash-Shakūr',
     openingDua: { arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ', trans: 'Allāhumma a\'innī \'alā dhikrika wa shukrika wa ḥusni \'ibādatika', meaning: '"O Allah, help me to remember You, to thank You, and to worship You in the best manner."', source: 'Sunan Abī Dāwūd · Narrated by Mu\'ādh ibn Jabal RA · Grade: Ṣaḥīḥ' },
     covenant: { attrs: 'Al-Muḥsin · Al-Walī · Ash-Shakūr', text: 'Al-Muḥsin governs iḥsān in delivery — doing more than the contract requires, because Allah sees. Al-Walī governs the operator as a steward of the client relationship. Ash-Shakūr governs gratitude for the opportunity to serve — the orientation that prevents delivery from becoming mechanical.' },
     readiness: [['The delivery plan honours every commitment made in the OFR Scope Map without exception.', 'The delivery scope is being quietly expanded or quietly reduced from what was agreed.'], ['Every milestone in the delivery plan has a specific completion criterion, not a vague sense of done.', 'Guarantee trigger risks have been identified and are being actively managed.']],
