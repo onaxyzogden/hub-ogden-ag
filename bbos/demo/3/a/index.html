@@ -54,7 +54,7 @@
   --draft-bg:rgba(217,119,6,.08);--draft-border:rgba(217,119,6,.25);
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.6;overflow:hidden}
-.app{display:grid;grid-template-columns:272px 1fr;grid-template-rows:52px 1fr;height:100vh}
+.app{display:grid;grid-template-columns:var(--sb-w,272px) 1fr;grid-template-rows:52px 1fr;height:100vh}
 /* topbar */
 .tb{grid-column:1/-1;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--border);background:var(--bg2);gap:10px;z-index:10;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden}
 .tb::-webkit-scrollbar{height:2px}.tb::-webkit-scrollbar-thumb{background:var(--bg4)}
@@ -340,17 +340,24 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
 /* ── MOBILE ── */
 @media(max-width:768px){
-  .app{grid-template-columns:52px 1fr}
-  .app.sb-open{grid-template-columns:272px 1fr}
-  .role-sel-wrap{display:none}
+  .app{--sb-w:0px !important;grid-template-columns:1fr !important}
+  .app.sb-open{grid-template-columns:1fr !important}
+  .sb-strip{display:flex;position:fixed;left:0;top:52px;bottom:0;z-index:55;width:42px;background:var(--bg2);border-right:1px solid var(--border);grid-column:1;grid-row:2}
+  .sb{display:none;position:fixed;left:0;top:52px;bottom:0;width:280px;z-index:60;background:var(--bg2);border-right:1px solid var(--border);box-shadow:4px 0 24px rgba(0,0,0,.4);grid-column:1;grid-row:2}
+  .app.sb-open .sb{display:flex}
+  .app.sb-open .sb-strip{display:none}
+  .main{padding-left:46px;grid-column:1;grid-row:2;position:relative;z-index:1}
+  .app.sb-open .main{padding-left:0}
+  .sb-backdrop{display:block;grid-column:1;grid-row:2}
+  .sb-full{display:none}
+  .app.sb-open .sb-full{display:flex}
+  .role-sel-wrap{flex-shrink:0}
   .tb-badge{display:none}
   .tb-name{font-size:15px}
-  .sb-strip{display:flex}
-  .sb-full{display:none}
-  .app.sb-open .sb-strip{display:none}
-  .app.sb-open .sb-full{display:flex}
+  .ov{padding:16px 12px}
+  .det{padding:16px 12px}
+  .av{padding:16px 12px}
   .sb-close-btn{display:flex !important}
-  .sb-backdrop{display:block}
 }
 @media(min-width:769px){
   .sb-strip{display:none}
@@ -420,7 +427,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script src="BBOS_Factory_Prompts.js"></script>
 <script type="text/babel">
-const {useState, useRef} = React;
+const {useState, useEffect, useRef} = React;
 
 const ROLES = [
   {id:'all',    label:'All',        sub:'All roles',                   color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'',   scope:'Full pipeline view — all tools across all 9 stages.', tip:'Full pipeline view showing all tools across all 9 stages. Use this view for system-wide oversight, cross-stage dependency tracking, and holistic pipeline health monitoring.'},
@@ -4495,7 +4502,7 @@ function LayersView({onSelect, role, sample}){
 }
 
 /* ── OVERVIEW ── */
-function Overview({onSelect, role, sample, genStates, generateStage}){
+function Overview({onSelect, role, sample, genStates, genResults, generateStage}){
   const byStage={};
   Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
   TOOLS.forEach(t=>{
@@ -5025,7 +5032,7 @@ function App(){
     if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role} sample={sample} getRat={getRat}/>;
     if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role} getRat={getRat}/>;
     if(mapView==='layers') return <LayersView onSelect={setSelId} role={role} sample={sample}/>;
-    return <Overview onSelect={setSelId} role={role} sample={sample} genStates={genStates} generateStage={generateStage}/>;
+    return <Overview onSelect={setSelId} role={role} sample={sample} genStates={genStates} genResults={genResults} generateStage={generateStage}/>;
   }
 
   const toggleSb=()=>setSbOpen(o=>{
@@ -5085,7 +5092,7 @@ function App(){
     </div>, document.body
   ) : null;
 
-  return <div className={`app${sbOpen?' sb-open':''}`} style={{gridTemplateColumns:`${sbWidth}px 1fr`}}>
+  return <div className={`app${sbOpen?' sb-open':''}`} style={{'--sb-w':sbWidth+'px'}}>
     {/* WELCOME / SEGMENT SELECTION MODAL */}
     {showWelcome&&<div className="wlc-overlay" onKeyDown={e=>{if(e.key==='Escape')setShowWelcome(false);}} tabIndex={-1} ref={el=>{if(el)el.focus();}}>
       <div className="wlc-modal" role="dialog" aria-label="Welcome to BBOS">
