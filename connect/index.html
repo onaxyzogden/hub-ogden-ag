@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Follow the Journey — OGDEN</title>
+<meta name="description" content="Stay close to what OGDEN is building. Express interest in BBOS, Atlas, or Moontrance and follow the journey.">
+<meta property="og:title" content="Follow the Journey — OGDEN">
+<meta property="og:description" content="Stay close to what OGDEN is building. Express interest in BBOS, Atlas, or Moontrance and follow the journey.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -166,7 +170,6 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
 }
 
 /* ── PAGE TRANSITION VEIL ── */
-}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
 body{animation:body-fade-in 0.5s ease 0.05s both;}
 </style>
@@ -206,7 +209,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
   <h1 id="opening-h">Three things being<br>built from <em>honest ground.</em></h1>
 
   <p class="opening-sub">
-    The OGDEN Atlas. The Barakah Business Operating System. The Moontrance Collective.
+    The Barakah Business Operating System. The OGDEN Atlas. The Moontrance Collective.
     Each one is at a different stage.
     <strong>Each one is real.</strong>
     If one of them has pulled at you — this is where you stay close.
@@ -386,20 +389,33 @@ function handleSubmit(thread) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
-  }).catch(() => {}); // fail silently — show success regardless
-
-  // Show success state
-  if (thread === 'broad') {
-    const btn = document.querySelector('.broad-btn');
-    btn.textContent = 'Received ✓';
-    btn.style.borderColor = 'rgba(184,144,80,0.4)';
-    btn.style.color = 'var(--gold-light)';
-    btn.disabled = true;
-    document.getElementById('broad-email').disabled = true;
-  } else {
-    document.getElementById(`${thread}-form`).style.display    = 'none';
-    document.getElementById(`${thread}-success`).style.display = 'block';
-  }
+  }).then(res => {
+    if (!res.ok) throw new Error('Server error');
+    if (thread === 'broad') {
+      const btn = document.querySelector('.broad-btn');
+      btn.textContent = 'Received \u2713';
+      btn.style.borderColor = 'rgba(184,144,80,0.4)';
+      btn.style.color = 'var(--gold-light)';
+      btn.disabled = true;
+      document.getElementById('broad-email').disabled = true;
+    } else {
+      document.getElementById(`${thread}-form`).style.display    = 'none';
+      document.getElementById(`${thread}-success`).style.display = 'block';
+    }
+  }).catch(() => {
+    emailEl.style.borderColor = 'rgba(138,58,26,0.6)';
+    const btn = thread === 'broad'
+      ? document.querySelector('.broad-btn')
+      : document.querySelector(`#${thread}-form .thread-btn`);
+    const orig = btn.textContent;
+    btn.textContent = 'Something went wrong \u2014 please try again';
+    btn.style.color = 'rgba(138,58,26,0.8)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.color = '';
+      emailEl.style.borderColor = '';
+    }, 10000);
+  });
 }
 
 // Select element placeholder colour fix
