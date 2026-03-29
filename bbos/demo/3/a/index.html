@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Barakah Business Operating System</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Space+Grotesk:wght@500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -21,7 +21,7 @@
   --int:#b8a96a;--int-bg:#b8a96a15;--int-b:#b8a96a40;
   --ret:#d4a55a;--ret-bg:#d4a55a15;--ret-b:#d4a55a40;
   --opt:#7b6fa0;--opt-bg:#7b6fa015;--opt-b:#7b6fa040;
-  --dlr:#4ab8a8;--dlr-bg:#4ab8a815;--dlr-b:#4ab8a840;
+  --dlr:#4a9db8;--dlr-bg:#4a9db815;--dlr-b:#4a9db840;
   --success:#4ade80;--success-bg:rgba(74,222,128,.12);--success-b:rgba(74,222,128,.25);--success-b2:rgba(74,222,128,.4);
   --warning:#f59e0b;--warning-bg:rgba(245,158,11,.1);--warning-b:rgba(245,158,11,.25);--warning-bg2:rgba(245,158,11,.15);--warning-b2:rgba(245,158,11,.35);
   --danger:#ef4444;--danger-bg:rgba(239,68,68,.08);--danger-b:rgba(239,68,68,.2);
@@ -44,7 +44,7 @@
   --int-bg:#b8a96a20;--int-b:#b8a96a50;
   --ret-bg:#d4a55a20;--ret-b:#d4a55a50;
   --opt-bg:#7b6fa020;--opt-b:#7b6fa050;
-  --dlr-bg:#4ab8a820;--dlr-b:#4ab8a850;
+  --dlr-bg:#4a9db820;--dlr-b:#4a9db850;
   --success:#16a34a;--success-bg:rgba(22,163,74,.1);--success-b:rgba(22,163,74,.3);--success-b2:rgba(22,163,74,.45);
   --warning:#d97706;--warning-bg:rgba(217,119,6,.1);--warning-b:rgba(217,119,6,.3);--warning-bg2:rgba(217,119,6,.15);--warning-b2:rgba(217,119,6,.4);
   --danger:#dc2626;--danger-bg:rgba(220,38,38,.08);--danger-b:rgba(220,38,38,.25);
@@ -54,9 +54,9 @@
   --draft-bg:rgba(217,119,6,.08);--draft-border:rgba(217,119,6,.25);
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.6;overflow:hidden}
-.app{display:grid;grid-template-columns:var(--sb-w,272px) 1fr;grid-template-rows:52px 1fr;height:100vh}
+.app{display:grid;grid-template-columns:248px 28px 1fr;grid-template-rows:52px 1fr;height:100vh;transition:grid-template-columns .22s ease}
 /* topbar */
-.tb{grid-column:1/-1;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--border);background:var(--bg2);gap:10px;z-index:10;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden}
+.tb{grid-column:1/-1;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--border);background:var(--bg2);gap:10px;z-index:10;position:relative;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--bg4) transparent}
 .tb::-webkit-scrollbar{height:2px}.tb::-webkit-scrollbar-thumb{background:var(--bg4)}
 /* mobile breakpoint handled at line 342+ */
 .tb-logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
@@ -79,6 +79,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .role-toggle-icon{background:none;border:none;cursor:pointer;font-size:14px;padding:2px 4px;line-height:1;flex-shrink:0}
 .role-toggle-icon.flash{animation:role-flash 1.5s ease-in-out infinite;color:var(--text3)}
 .role-toggle-icon.static{color:var(--text3);opacity:.6}
+.role-toggle-icon.closed{color:var(--text3);opacity:.25}
 .role-toggle-icon:hover{opacity:1!important;color:var(--text)}
 /* view seg */
 .seg{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px;gap:1px}
@@ -87,16 +88,125 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sg-btn:hover:not(.on){color:var(--text2)}
 .tb-badge{font-size:12px;padding:3px 9px;border-radius:20px;font-weight:500;flex-shrink:0}
 /* sidebar */
-.sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;position:relative}
-.sb-drag{position:absolute;right:0;top:0;width:4px;height:100%;cursor:col-resize;z-index:10}
-.sb-drag:hover{background:var(--drag-hover)}
+.sb{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;position:relative;scrollbar-width:thin;scrollbar-color:var(--bg4) transparent}
+.sb-drag{display:none}
 .sb::-webkit-scrollbar{width:3px}.sb::-webkit-scrollbar-thumb{background:var(--bg4)}
+/* ── ISLAMIC LAYER COLUMN ── */
+.il{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;position:relative;scrollbar-width:thin;scrollbar-color:var(--bg4) transparent}
+.il::-webkit-scrollbar{width:3px}.il::-webkit-scrollbar-thumb{background:var(--bg4)}
+.il-hdr{padding:8px 12px 7px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;background:var(--bg2)}
+.il-eyebrow{font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);opacity:.75;margin-bottom:2px}
+.il-stage{font-size:12px;color:var(--text3);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.il-empty{padding:22px 14px;color:var(--text3);font-size:12px;line-height:1.75;text-align:center}
+.il-empty-glyph{font-size:18px;color:var(--accent);opacity:.4;margin-bottom:10px}
+.il-section-divider{height:1px;background:var(--border);margin:2px 0}
+.il-drag{display:none}
+@keyframes il-fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.il-content{animation:il-fade-in .18s ease-out}
+/* Dense overrides for IL column — narrower container needs tighter spacing */
+.il .dua-toggle{padding:6px 10px}
+.il .dua-body{padding:2px 10px 10px}
+.il .dua-arabic{font-size:16px;line-height:1.8}
+.il .dua-trans,.il .dua-meaning{font-size:13px}
+.il .dua-source{font-size:12px}
+.il .dua-kind{font-size:11px;letter-spacing:.6px}
+.il .dua-title-txt{font-size:12px}
+.il .dua-ann-text{font-size:13px}
+.il .sb-attr-toggle,.il .sb-readiness-toggle,.il .sb-reflect-toggle{padding:6px 10px}
+.il .sb-attr-body,.il .sb-rr-body{padding:0 8px 10px}
+.il .sb-attr-card-text,.il .sb-rr-item,.il .sb-rr-frame{font-size:13px}
+.il .sb-rr-table{grid-template-columns:1fr}
+.il .sb-attr-kind,.il .sb-rr-kind{font-size:11px}
+.il .sb-attr-names,.il .sb-rr-sub{font-size:11px}
+/* Column collapse toggle — exact same pattern as .role-toggle-icon in topbar */
+/* Sidebar edge toggle — grid column between sidebar and main */
+.sb-edge-toggle{grid-row:2;grid-column:2;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0;cursor:pointer;transition:background .15s;user-select:none;min-width:0}
+.sb-edge-toggle:hover{background:var(--bg4)}
+.sb-edge-toggle::after{content:'';display:block;width:3px;height:40px;border-radius:2px;background:var(--border2);transition:background .15s}
+.sb-edge-toggle:hover::after{background:var(--accent)}
+/* flash-btn: vstrip icon button that pulses when unlocked (column closed, inviting hover) */
+.flash-btn{animation:role-flash 1.5s ease-in-out infinite}
+/* Vertical collapsed strips */
+.il-vstrip,.sb-vstrip{display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:3px;width:40px;overflow:hidden;flex-shrink:0}
+.vstrip-icon-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0;border-radius:6px;border:none;background:transparent;cursor:pointer;width:36px;transition:background .12s;color:var(--text3)}
+.vstrip-icon-btn:hover{background:var(--bg3);color:var(--text)}
+.vstrip-code{font-size:9px;font-weight:700;letter-spacing:.5px;color:inherit}
+.vstrip-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.vstrip-divider{width:18px;height:1px;background:var(--border);margin:2px 0}
+/* ── THRESHOLD MODALS ── */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.thr-overlay{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);animation:fadeIn .3s ease}
+.thr-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;width:min(640px,92vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(201,168,76,.08)}
+.thr-hdr{padding:20px 24px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.thr-eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.thr-title{font-size:17px;font-weight:600;color:var(--text);font-family:'Space Grotesk',sans-serif}
+.thr-close{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;flex-shrink:0}
+.thr-close:hover{color:var(--text)}
+.thr-step-bar{display:flex;justify-content:center;gap:8px;margin:12px 0 4px}
+.thr-step-dot{height:8px;border-radius:4px;transition:all .38s ease}
+.thr-step-lbl{text-align:center;font-size:11px;color:var(--text3);letter-spacing:.06em}
+.thr-body{flex:1;overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--bg4) transparent;transition:opacity .28s ease,transform .28s ease}
+.thr-body::-webkit-scrollbar{width:4px}.thr-body::-webkit-scrollbar-thumb{background:var(--bg4)}
+.thr-ftr{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:10px}
+.thr-dua{background:linear-gradient(135deg,var(--accent-bg),transparent);border:1px solid rgba(201,168,76,.18);border-radius:12px;padding:28px 22px;text-align:center}
+.thr-dua-eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.thr-dua-attr{font-size:12px;color:var(--text3);margin-bottom:20px}
+.thr-arabic{font-family:'Amiri','Traditional Arabic',serif;font-size:26px;line-height:1.8;direction:rtl;color:var(--text);margin-bottom:14px;padding:0 8px}
+.thr-transliteration{font-size:13px;color:var(--text2);font-style:italic;line-height:1.6;margin-bottom:10px}
+.thr-translation{font-size:15px;color:var(--text);line-height:1.65;font-style:italic;margin-bottom:12px;padding:0 12px}
+.thr-source{font-size:11px;color:var(--text3);margin-top:4px}
+.thr-readiness-note{text-align:center;font-style:italic;font-size:13px;color:var(--text3);margin-top:20px;line-height:1.6}
+.thr-attr-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:11px}
+.thr-attr-glyph{font-size:12px;color:var(--accent);margin-bottom:4px}
+.thr-attr-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:3px}
+.thr-attr-title{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:12px}
+.thr-attr-body{font-size:13px;color:var(--text2);line-height:1.75}
+.thr-frame{font-size:13px;font-style:italic;color:var(--text2);line-height:1.7;margin-bottom:18px;padding:14px 16px;background:var(--accent-bg);border-radius:7px;border-left:2px solid var(--accent2)}
+.thr-signs{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:13px;line-height:1.65}
+.thr-signs-th-l{background:var(--success-bg);color:var(--success);padding:11px 14px;text-align:left;font-weight:500;font-size:11px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);width:50%}
+.thr-signs-th-r{background:var(--danger-bg);color:var(--danger);padding:11px 14px;text-align:left;font-weight:500;font-size:11px;border-bottom:1px solid var(--border);width:50%}
+.thr-signs-td-l{padding:11px 13px;color:var(--text2);border-right:1px solid var(--border);vertical-align:top;border-bottom:1px solid var(--border)}
+.thr-signs-td-r{padding:11px 13px;color:var(--text2);vertical-align:top;border-bottom:1px solid var(--border)}
+.thr-signs-tr-last td{border-bottom:none}
+.thr-declaration{margin-top:22px;padding:18px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)}
+.thr-decl-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.thr-decl-note{font-size:12px;font-style:italic;color:var(--text3);line-height:1.6;margin-bottom:16px}
+.thr-check{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border:1px solid var(--border);border-radius:7px;cursor:pointer;margin-bottom:9px;transition:all .2s;user-select:none}
+.thr-check.on{background:var(--accent-bg);border-color:rgba(201,168,76,.28)}
+.thr-check-box{width:19px;height:19px;min-width:19px;border-radius:4px;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px;flex-shrink:0}
+.thr-check-box.on{background:var(--accent);border-color:var(--accent)}
+.thr-check-lbl{font-size:13px;color:var(--text2);line-height:1.6;transition:color .2s}
+.thr-check.on .thr-check-lbl{color:var(--text)}
+.thr-decl-footer{font-size:11px;font-style:italic;color:var(--text3);line-height:1.6;margin-top:6px}
+.thr-btn{padding:11px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;letter-spacing:.02em}
+.thr-btn-primary{background:var(--accent);color:var(--bg);border:none}
+.thr-btn-primary:hover:not(:disabled){background:var(--wbtn-hover)}
+.thr-btn-primary:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;opacity:.55}
+.thr-btn-ghost{background:transparent;color:var(--text3);border:1px solid var(--border2)}
+.thr-btn-ghost:hover{color:var(--text2)}
+.thr-notes{width:100%;min-height:76px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:13px;line-height:1.6;resize:vertical;outline:none;font-family:inherit;box-sizing:border-box;margin-top:8px}
+.thr-notes:focus{border-color:var(--accent2)}
+.thr-notes::placeholder{color:var(--text3)}
+/* Stage threshold buttons in Col 2 header */
+.stg-thr-btn{font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.4px;transition:all .12s;white-space:nowrap;flex-shrink:0}
+.stg-begin{background:transparent;border:1px solid var(--border2);color:var(--text3)}
+.stg-begin:hover{color:var(--text);border-color:var(--text3)}
+.stg-opened{background:var(--success-bg);border:1px solid var(--success-b);color:var(--success);cursor:default}
+.stg-close{background:transparent;border:1px solid var(--border2);color:var(--text3)}
+.stg-close:hover{color:var(--text);border-color:var(--text3)}
+.stg-closed{background:var(--bg4);border:1px solid var(--border);color:var(--text3);cursor:default}
+.tool-locked{opacity:.4;pointer-events:none}
 .role-banner{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
 .role-avatar{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
 .role-banner-info{flex:1;min-width:0}
 .role-banner-name{font-size:15px;font-weight:500;color:var(--text);line-height:1.2}
 .role-banner-sub{font-size:12px;color:var(--text3)}
-.sb-top{padding:8px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;background:var(--bg2)}
+.sb-top{padding:8px 14px;position:sticky;top:0;z-index:5;background:var(--bg2);transition:box-shadow .3s}
+.sb-top.scrolled{box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.sb-top.scrolled::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:8px;background:linear-gradient(to bottom,rgba(201,160,90,.25),transparent);pointer-events:none;z-index:4}
+/* Bottom scroll indicator — fixed position, outside scroll container */
+.sb-bottom-fade{display:none;position:fixed;bottom:0;left:0;height:32px;pointer-events:none;z-index:8;background:linear-gradient(to top,rgba(201,160,90,.25) 0%,rgba(201,160,90,.08) 40%,transparent 100%)}
+.sb-bottom-fade.active{display:block}
 .sb-overview{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:5px;border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:15px;font-family:'DM Sans',sans-serif;width:100%;transition:all .12s}
 .sb-overview:hover,.sb-overview.on{background:var(--accent-bg);color:var(--accent)}
 .sb-overview svg{width:12px;height:12px;flex-shrink:0}
@@ -119,7 +229,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sb-item-sub{font-size:14px;color:var(--text2)}
 .perm-pill{font-size:12px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0}
 /* main */
-.main{overflow-y:auto;background:var(--bg)}
+.main{overflow-y:auto;background:var(--bg);scrollbar-width:thin;scrollbar-color:var(--bg4) transparent}
 .main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--bg4)}
 /* role dashboard */
 .dash{padding:24px 28px}
@@ -196,7 +306,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ws-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px}
 .ws-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:12px}
 /* Source reference panel */
-.src-panel{margin-bottom:14px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);overflow:hidden;position:sticky;top:0;z-index:5}
+.src-panel{margin-bottom:14px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);overflow:hidden;position:sticky;top:0;z-index:5;max-height:40vh;overflow-y:auto}
 .src-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;user-select:none}
 .src-header:hover{background:var(--bg3)}
 .src-lbl{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);font-weight:500}
@@ -204,7 +314,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .src-body{padding:0 12px 10px}
 .src-item{padding:8px 10px;margin-bottom:6px;background:var(--bg3);border-radius:5px;border-left:3px solid var(--accent2)}
 .src-item-lbl{font-size:12px;color:var(--accent);font-weight:500;margin-bottom:3px}
-.src-item-content{font-size:14px;color:var(--text2);line-height:1.5;white-space:pre-wrap}
+.src-item-content{font-size:14px;color:var(--text2);line-height:1.5;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word}
 .src-item-empty{font-size:13px;color:var(--sal);font-style:italic}
 /* workspace */
 .tabs{display:flex;gap:1px;border-bottom:1px solid var(--border);margin-bottom:13px}
@@ -212,7 +322,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .tab.on{color:var(--accent);border-bottom-color:var(--accent)}
 .tab:hover:not(.on){color:var(--text2)}
 .fg{margin-bottom:12px}
-.fl{font-size:14px;color:var(--text3);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.fl{display:block;font-size:14px;color:var(--text3);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
 .fi{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border .15s;resize:vertical}
 .fi:focus{border-color:var(--accent2)}
 .fi::placeholder{color:var(--text3)}
@@ -243,7 +353,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .chk-txt.ck{color:var(--text3);text-decoration:line-through}
 .cf-wrap{margin-bottom:12px}
 .cf-lbl{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:4px}
-.cf-val{font-size:15px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:4px;padding:8px 12px;border-left:2px solid;white-space:pre-wrap}
+.cf-val{font-size:15px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:4px;padding:8px 12px;border-left:2px solid;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word}
 .cf-gl{display:inline-flex;margin-top:4px;border-radius:3px;padding:2px 7px;font-size:12px;font-weight:600}
 .done-badge{display:flex;align-items:center;gap:6px;padding:6px 11px;background:var(--out-bg);border:1px solid var(--out-b);border-radius:4px;margin-bottom:13px}
 /* asset view */
@@ -258,8 +368,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .av-row:last-child{border-radius:0 0 9px 9px}
 .av-row:only-child{border-radius:9px}
 .av-row:not(:last-child){border-bottom-color:transparent}
-.av-row:hover{background:var(--bg3);border-color:var(--border2);z-index:1}
-.av-row.on{background:var(--accent-bg);border-color:var(--accent2)50}
+.av-row:hover{background:var(--bg3);border-color:var(--border2);position:relative;z-index:1}
+.av-row.on{background:var(--accent-bg);border-color:color-mix(in srgb, var(--accent2) 50%, transparent)}
 .av-bar{width:3px;border-radius:2px 0 0 2px;flex-shrink:0}
 .av-body{flex:1;padding:10px 13px;min-width:0}
 .av-name{font-size:15px;font-weight:500;color:var(--text);margin-bottom:2px}
@@ -292,6 +402,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .dua-block{margin:0;border-top:1px solid var(--border);background:transparent}
 .dua-toggle{width:100%;background:none;border:none;cursor:pointer;padding:7px 14px;display:flex;align-items:center;gap:7px;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s}
 .dua-toggle:hover{background:var(--bg3)}
+.dua-expand-btn{background:none;border:1px solid var(--border2);border-radius:4px;cursor:pointer;color:var(--text3);font-size:11px;padding:2px 6px;margin-left:auto;flex-shrink:0;transition:color .12s,border-color .12s,background .12s;font-family:inherit}
+.dua-expand-btn:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-bg)}
 .dua-glyph{font-size:12px;flex-shrink:0;opacity:.55}
 .dua-label{flex:1;min-width:0}
 .dua-kind{font-size:12px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;display:block;line-height:1.2}
@@ -338,10 +450,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sb-rr-item{font-size:14px;color:var(--text2);line-height:1.55;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .sb-rr-item:last-child{border-bottom:none;padding-bottom:0}
 
+.sb-close-btn{display:none;background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:6px;line-height:1;flex-shrink:0}
 /* ── MOBILE ── */
 @media(max-width:768px){
   .app{--sb-w:0px !important;grid-template-columns:1fr !important}
   .app.sb-open{grid-template-columns:1fr !important}
+  .sb-edge-toggle{display:none!important}
+  .mob-panel-tabs{display:flex}
   .sb-strip{display:flex;position:fixed;left:0;top:52px;bottom:0;z-index:55;width:42px;background:var(--bg2);border-right:1px solid var(--border);grid-column:1;grid-row:2}
   .sb{display:none;position:fixed;left:0;top:52px;bottom:0;width:280px;z-index:60;background:var(--bg2);border-right:1px solid var(--border);box-shadow:4px 0 24px rgba(0,0,0,.4);grid-column:1;grid-row:2}
   .app.sb-open .sb{display:flex}
@@ -358,6 +473,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   .det{padding:16px 12px}
   .av{padding:16px 12px}
   .sb-close-btn{display:flex !important}
+  .dash-stats{grid-template-columns:1fr}
+  .dash-grid{grid-template-columns:1fr}
+  .tc-grid{grid-template-columns:1fr}
+  .det-grid{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .dash-role-name{font-size:22px}
+  .ov-title{font-size:24px}
+  .det-title{font-size:22px}
+  .wlc-modal{padding:24px 16px}
+  .api-modal{padding:16px 12px}
+  .draft-content{max-height:150px}
 }
 @media(min-width:769px){
   .sb-strip{display:none}
@@ -372,6 +498,22 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sb-strip-code{font-size:11px;font-weight:700;letter-spacing:.5px}
 .sb-strip-dot{width:6px;height:6px;border-radius:50%}
 .sb-expand-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:6px;line-height:1;margin-top:auto;margin-bottom:8px}
+
+/* ── MOBILE PANEL TABS ── */
+/* ── MOBILE DUAL-STICKY PANEL LAYOUT ── */
+/* Islamic Layer tab — always sticky at top (inside .sb scroll container) */
+.mob-il-tab{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:var(--bg2);border:none;border-bottom:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;text-align:left;position:sticky;top:0;z-index:7;transition:color .12s}
+.mob-il-tab.on{color:var(--accent);background:var(--bg2)}
+.mob-il-tab:hover{color:var(--text2)}
+/* Pipeline tab — sticky below IL tab (top:41px) when Pipeline active, or bottom-anchored when Islamic active */
+.mob-pipe-tab{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:var(--bg2);border:none;border-bottom:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;text-align:left;transition:color .12s}
+.mob-pipe-tab.pipeline-mode{position:sticky;top:38px;z-index:6}
+.mob-pipe-tab.islamic-mode{position:sticky;bottom:0;border-bottom:none;border-top:1px solid var(--border);z-index:65;margin-top:auto}
+.mob-pipe-tab.on{color:var(--accent);background:var(--bg2)}
+.mob-pipe-tab:hover{color:var(--text2)}
+/* Tabs always visible — no mobile-only override needed */
+.mob-tab-glyph{font-size:14px;opacity:.7}
+.mob-tab-chevron{margin-left:auto;font-size:11px;color:var(--text3)}
 /* Backdrop */
 .sb-backdrop{display:none;position:fixed;inset:0;background:var(--overlay);z-index:50;top:52px}
 /* Mobile role selector */
@@ -418,16 +560,34 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .api-btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .api-btn:hover{opacity:.85}
 .api-status{font-size:12px;color:var(--text3);margin-top:8px}
+/* ── Accessibility ── */
+.rs-btn:focus-visible,.sg-btn:focus-visible,.wbtn:focus-visible,.draft-btn:focus-visible,.api-btn:focus-visible,.dua-toggle:focus-visible,.sb-attr-toggle:focus-visible,.sb-readiness-toggle:focus-visible,.sb-reflect-toggle:focus-visible,.sb-strip-btn:focus-visible,.tab:focus-visible,.sb-item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
 </style>
 </head>
 <body>
 <div id="root"></div>
+<!-- React -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script>window.React||document.write('<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"><\/script>')</script>
+<script>window.React||document.write('<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"><\/script>')</script>
+<!-- ReactDOM -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>window.ReactDOM||document.write('<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"><\/script>')</script>
+<script>window.ReactDOM||document.write('<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"><\/script>')</script>
+<!-- Babel -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<script>window.Babel||document.write('<script src="https://unpkg.com/@babel/standalone@7.23.2/babel.min.js"><\/script>')</script>
+<script>window.Babel||document.write('<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.2/babel.min.js"><\/script>')</script>
+<!-- CDN error guard -->
+<script>
+if(!window.React||!window.ReactDOM){
+  document.getElementById('root').innerHTML='<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0d0f11;color:#9e9690;font-family:system-ui,sans-serif"><div style="text-align:center;max-width:420px;padding:40px"><div style="font-size:28px;color:#c9a05a;margin-bottom:16px">BBOS</div><div style="font-size:16px;margin-bottom:20px">Required libraries failed to load. Please check your internet connection.</div><button onclick="location.reload()" style="padding:10px 24px;background:#c9a05a;color:#0d0f11;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:600">Retry</button></div></div>';
+}
+</script>
 <script src="BBOS_Factory_Prompts.js"></script>
 <script type="text/babel">
-const {useState, useEffect, useRef} = React;
+const {useState, useEffect, useRef, useCallback} = React;
 
 const ROLES = [
   {id:'all',    label:'All',        sub:'All roles',                   color:'var(--accent)',  bg:'var(--accent-bg)',  initials:'',   scope:'Full pipeline view — all tools across all 9 stages.', tip:'Full pipeline view showing all tools across all 9 stages. Use this view for system-wide oversight, cross-stage dependency tracking, and holistic pipeline health monitoring.'},
@@ -737,6 +897,99 @@ const CLOSING_DUA = {
   meaning:'"Our Lord, accept this from us. Indeed You are the All-Hearing, the All-Knowing."',
   source:'Al-Baqarah 2:127',
 };
+
+const ONGOING_DUA = {
+  title:'Tawakkul During Work',
+  arabic:'حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
+  trans:"Ḥasbiya Allāhu lā ilāha illā hū, ʿalayhi tawakkaltu wa huwa rabbu l-ʿarshi l-ʿaẓīm",
+  meaning:'"Allah is sufficient for me; there is no deity except Him. Upon Him I have relied, and He is the Lord of the Great Throne."',
+  source:'At-Tawbah 9:129',
+};
+
+
+/* ── THRESHOLD META — richer data merged from spiritual thresholds prototype ── */
+const THRESHOLD_META = {
+  FND:{
+    attributesFull:[
+      {name:'Al-Awwal',title:'The First · The One Who Precedes',body:'Allah is Al-Awwal — the First, whose precedence has no beginning. To begin any act of stewardship rightly is to acknowledge what precedes it: God first, then the real constraints of what has actually been entrusted, then the work. The Intake stage exists to establish this ordering in concrete form — to name what is actually present before anything is built on top of it. A system begun on an honest foundation carries a different quality from one begun on aspiration dressed as fact. Al-Awwal governs not the chronology of the work but the integrity of its starting point.'},
+      {name:'Ash-Shahid',title:'The Witness · The Ever-Present Observer',body:"Allah is Ash-Shahid — the One who witnesses every act, every declaration, every withholding, with perfect completeness and without the need for any external report. The intake form is filled out before Ash-Shahid. The operator who writes a number that is more comfortable than true, or omits a constraint that would complicate the picture, is not successfully managing how the system perceives them. They are choosing, in the presence of the One who already knows, to write something other than the truth. Ash-Shahid does not judge in this moment — but Ash-Shahid witnesses. And what is witnessed here becomes the foundation on which everything else is built."},
+    ],
+    signHeaders:{left:'Al-Awwal · Ash-Shahid are governing this beginning when…',right:'Al-Awwal · Ash-Shahid are present but not yet rested in when…'},
+    closingDua:{arabic:'رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',trans:"Rabbanā taqabbal minnā, innaka anta s-samī'u l-'alīm",meaning:'"Our Lord, accept this from us. Indeed You are the All-Hearing, the All-Knowing."',source:'Al-Baqarah 2:127'},
+  },
+  TRU:{
+    attributesFull:[
+      {name:'Al-Haqq',title:'The Truth · The Real',body:"Allah is Al-Haqq — the Truth that does not shift based on the observer's preference or the commercial pressure of the moment. The Qualification stage exists to test whether what was declared at Intake can bear weight. Al-Haqq governs the gate decision: the operator who enters this stage is being asked whether what they claimed is actually true — not aspirationally true, not true under ideal conditions, but true now, before Al-Haqq, who already knows."},
+      {name:'Al-Khabir',title:'The All-Aware · The Acquainted with All',body:"Allah is Al-Khabir — the One whose awareness extends to the inner reality of things, not merely their outward presentation. The Amanah Gate screening is conducted before Al-Khabir. The operator who presents a polished version of their capabilities while knowing the unpolished version is more accurate is not managing perception — they are choosing, before the One who already knows the inner state, to present the outer one. Al-Khabir sees through the polish."},
+    ],
+    signHeaders:{left:'Al-Haqq · Al-Khabir are governing this qualification when…',right:'Al-Haqq · Al-Khabir are present but not yet rested in when…'},
+    closingDua:{arabic:'رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ',trans:"Rabbanā lā tuzigh qulūbanā ba'da idh hadaytanā wa hab lanā min ladunka raḥmah, innaka anta l-wahhāb",meaning:'"Our Lord, do not let our hearts deviate after You have guided us, and grant us from Yourself mercy. Indeed, You are the Bestower."',source:"Āl 'Imrān 3:8"},
+  },
+  STR:{
+    attributesFull:[
+      {name:'Al-Basir',title:'The All-Seeing · The One Who Sees Clearly',body:"Allah is Al-Basir — the One whose sight penetrates to the reality of things, undistorted by desire, expectation, or prior belief. The Strategy stage is where the operator encounters the market as it actually is — through voice-of-customer research, competitive analysis, and honest assessment of positioning. Al-Basir governs this encounter: the strategy must be built from what was genuinely seen, not from what was already believed. A strategy built on confirmation bias carries no Barakah, regardless of how sophisticated the framework."},
+    ],
+    signHeaders:{left:'Al-Basir is governing this strategy when…',right:'Al-Basir is present but not yet rested in when…'},
+    closingDua:{arabic:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الضَّلَالَةِ وَالزَّلَلِ وَسُوءِ الرَّأْيِ',trans:"Allāhumma innī a'ūdhu bika min aḍ-ḍalālati wa z-zalali wa sū' ir-ra'y",meaning:'"O Allah, I seek refuge in You from misguidance, stumbling, and poor judgment."',source:'Adapted from prophetic supplications'},
+  },
+  OFR:{
+    attributesFull:[
+      {name:'Al-Adl',title:'The Just · The Embodiment of Justice',body:"Allah is Al-Adl — whose justice does not adjust for commercial pressure, personal need, or the desire to close. The Offer stage is where the operator builds the covenant that will bind them to their client. Al-Adl governs the terms: a client reading this offer six months from now must find that what was delivered matched what was understood at signing — no ambiguity exploited, no surprises engineered in either direction."},
+      {name:'Al-Muqsit',title:'The Equitable · The One Who Acts with Equity',body:"Allah is Al-Muqsit — the One who establishes balance not merely in the letter but in the spirit. Where Al-Adl governs the structure, Al-Muqsit governs the felt experience of the exchange. A pricing structure that is technically fair but designed to obscure what the client is actually paying — through hidden terms, bundled complexity, or scope ambiguity — may satisfy Al-Adl but not Al-Muqsit. The offer must be equitable in both structure and experience."},
+    ],
+    signHeaders:{left:'Al-Adl · Al-Muqsit are governing this offer when…',right:'Al-Adl · Al-Muqsit are present but not yet rested in when…'},
+    closingDua:{arabic:'رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا',trans:"Rabbanā hab lanā min azwājinā wa dhurriyyātinā qurrata a'yunin wa j'alnā lil-muttaqīna imāmā",meaning:'"Our Lord, grant us from among our spouses and offspring comfort to our eyes, and make us a leader for the righteous."',source:'Al-Furqān 25:74'},
+  },
+  OUT:{
+    attributesFull:[
+      {name:'Ar-Razzaq',title:'The Provider · The Sustainer',body:"Allah is Ar-Razzaq — the One whose provision is not altered by the campaign's results. Outreach conducted from tawakkul in Ar-Razzaq carries a qualitatively different energy from outreach conducted from scarcity anxiety. The operator who sends the next message because they trust that provision comes from God, not from this particular prospect, is operating under a different quality than the operator who sends it because they need the close."},
+      {name:'As-Sittir',title:'The One Who Covers · The Concealer of Faults',body:"Allah is As-Sittir — the One who covers and protects dignity. In outreach, As-Sittir governs the moment of disqualification. When a prospect is not a fit, the operator who practices As-Sittir closes that door in a way that preserves the prospect's dignity completely — no embarrassment, no residue. The disqualification email is as carefully crafted as the sales page."},
+    ],
+    signHeaders:{left:'Ar-Razzaq · As-Sittir are governing this outreach when…',right:'Ar-Razzaq · As-Sittir are present but not yet rested in when…'},
+    closingDua:{arabic:'اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ',trans:"Allāhumma kfinī biḥalālika 'an ḥarāmika, wa aghninī bifaḍlika 'amman siwāk",meaning:'"O Allah, suffice me with what is lawful, turning me away from what is unlawful, and make me independent of all others through Your bounty."',source:"Narrated by Ali ibn Abi Talib RA · Grade: Hasan"},
+  },
+  SAL:{
+    attributesFull:[
+      {name:'Ar-Razzaq',title:'The Provider · The Sustainer',body:"Allah is Ar-Razzaq — provision was not altered by how this call ended. The sales conversation is not a mechanism for securing what God has already decreed. It is a moment of clarity — for both the operator and the prospect — about whether this particular service is the right vehicle for this particular need."},
+      {name:'Al-Latif',title:'The Subtle · The Gentle Perceiver',body:"Allah is Al-Latif — the One who perceives what is subtle, hidden, and unspoken. In the sales conversation, Al-Latif governs the operator's capacity to hear what the prospect is actually saying — not just the words, but the hesitations, the unnamed concerns, the gap between what is spoken and what is felt. Discernment over closing."},
+      {name:'As-Sittir',title:'The One Who Covers · The Concealer of Faults',body:"Allah is As-Sittir — the door that closes, whether a no-fit or a no-decision, must close in a way that leaves the prospect's dignity completely intact. The operator who practices As-Sittir does not treat a 'no' as a failure to be overcome but as information to be honoured."},
+    ],
+    signHeaders:{left:'Ar-Razzaq · Al-Latif · As-Sittir are governing this conversation when…',right:'Ar-Razzaq · Al-Latif · As-Sittir are present but not yet rested in when…'},
+    closingDua:{arabic:'رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ',trans:"Rabbi innī limā anzalta ilayya min khayrin faqīr",meaning:'"My Lord, I am in absolute need of whatever good You send my way."',source:'Al-Qaṣaṣ 28:24'},
+  },
+  DLR:{
+    attributesFull:[
+      {name:'Al-Muhsin',title:'The One Who Acts with Excellence',body:"Allah is Al-Muhsin — the source of Ihsan, excellence that extends even to what is unseen. In Fulfillment, Al-Muhsin governs the quality of delivery: the operator is called to complete every element to the standard that the quality itself demands, not merely to the level the client would notice. Excellence in the unseen parts is where the worship resides."},
+      {name:'Al-Wali',title:'The Protective Guardian · The Ally',body:"Allah is Al-Wali — the One who protects and guards those in His care. The client is entrusted to the operator for the duration of this engagement. Al-Wali governs the protective quality of delivery: the client should not need to chase, clarify, or wonder whether things are on track. They are under the operator's guardianship."},
+      {name:'Ash-Shakur',title:'The Most Appreciative · The Recogniser of Good',body:"Allah is Ash-Shakur — the One who recognises every act of genuine effort and returns it multiplied. In Fulfillment, Ash-Shakur governs the offboarding moment: the operator honours what the client entrusted, not as a closing sequence, but as genuine recognition of the trust that was given."},
+    ],
+    signHeaders:{left:'Al-Muhsin · Al-Wali · Ash-Shakur are governing this delivery when…',right:'Al-Muhsin · Al-Wali · Ash-Shakur are present but not yet rested in when…'},
+    closingDua:{arabic:'اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا، وَاجْعَلْ عَمَلَنَا شَاهِدًا لَنَا لَا عَلَيْنَا',trans:"Allāhumma bārik lanā fīmā razaqtanā, wa j'al 'amalanā shāhidan lanā lā 'alaynā",meaning:'"O Allah, bless us in what You have provided for us, and make our work a witness for us, not against us."',source:'Inspired by prophetic tradition on barakah in provision'},
+  },
+  RET:{
+    attributesFull:[
+      {name:'Ash-Shakur',title:'The Most Appreciative · The Recogniser of Good',body:"Allah is Ash-Shakur — the One who recognises and rewards the smallest act of genuine care. In the Retention stage, Ash-Shakur governs the operator's posture: the relationships maintained here exist because someone trusted you. Retention is not a mechanism for maximizing what can be drawn from existing relationships — it is a practice of honouring what those relationships already gave."},
+      {name:'Al-Wadud',title:'The Loving · The Source of Love',body:"Allah is Al-Wadud — the One whose love is not transactional, not conditional on return, and not diminished by time. In Retention, Al-Wadud governs the quality of ongoing care: a re-engagement message that carries genuine value even from someone the client never works with again. The unprompted referral rate (CM-4) is a Barakah indicator whose source is the quality of relationship, not the sophistication of the sequence."},
+    ],
+    signHeaders:{left:'Ash-Shakur · Al-Wadud are governing this retention when…',right:'Ash-Shakur · Al-Wadud are present but not yet rested in when…'},
+    closingDua:{arabic:'اللَّهُمَّ اجْعَلْنِي شَكُورًا، وَاجْعَلْنِي صَبُورًا، وَاجْعَلْنِي فِي عَيْنِي صَغِيرًا وَفِي أَعْيُنِ النَّاسِ كَبِيرًا',trans:"Allāhumma j'alnī shakūran, wa j'alnī ṣabūran, wa j'alnī fī 'aynī ṣaghīran wa fī a'yun in-nāsi kabīrā",meaning:'"O Allah, make me grateful, make me patient, and make me small in my own eyes and honoured in the eyes of people."',source:'Narrated by Ibn Abbas RA'},
+  },
+  OPT:{
+    attributesFull:[
+      {name:'Al-Hasib',title:'The Reckoner · The One Who Takes Account',body:"Allah is Al-Hasib — the One who holds the full account of this cycle, every output and every interior state that produced it. The Optimization stage is where the operator faces the reckoning: not just what the metrics say, but what was present in you beneath them. Al-Hasib does not require performance — Al-Hasib requires honesty about what actually happened."},
+      {name:'As-Subbuh',title:'The Most Glorious · The One Free from All Deficiency',body:"Allah is As-Subbuh — glory and transcendence beyond all imperfection. In the Optimization stage, As-Subbuh represents the standard toward which the system is being purified. The operator is not expected to be free of deficiency — the operator is expected to name the deficiency honestly and orient the next cycle toward something higher."},
+      {name:'Al-Quddus',title:'The Most Holy · The Pure One',body:"Allah is Al-Quddus — purity and holiness that is the condition for Barakah. The Optimization stage exists to purify: to separate what carried genuine integrity from what carried compromise, and to begin the next cycle from the purified state. The Restoration Mandate, if triggered, is understood as purification rather than punishment."},
+    ],
+    signHeaders:{left:'Al-Hasib · As-Subbuh · Al-Quddus are governing this reckoning when…',right:'Al-Hasib · As-Subbuh · Al-Quddus are present but not yet rested in when…'},
+    closingDua:{arabic:'سُبُّوحٌ قُدُّوسٌ رَبُّ الْمَلَائِكَةِ وَالرُّوحِ · اللَّهُمَّ طَهِّرْ قَلْبِي وَعَمَلِي مِمَّا يُخَالِفُ رِضَاكَ',trans:"Subbūḥun quddūsun rabbu l-malā'ikati wa r-rūḥ · Allāhumma ṭahhir qalbī wa 'amalī mimmā yukhālif riḍāk",meaning:'"All Glory, All Holiness, Lord of the Angels and the Spirit. O Allah, purify my heart and my work from whatever contradicts Your pleasure."',source:"Narrated by Ā'ishah RA · Sahih Muslim"},
+  },
+};
+
+function getThr(stageKey){
+  const d=DUAS[stageKey]||{};
+  const m=THRESHOLD_META[stageKey]||{};
+  return {...d,...m};
+}
 
 const TOOLS = [
   // ── FND TOOLS ──
@@ -1119,12 +1372,14 @@ const TOOLS = [
    rat:'No Enemy Narrative, VoC Bank, or Amanah Content Engine can begin without a grounded Market Definition.',
    rat_u:'No Enemy Narrative, VoC Bank, or Amanah Content Engine can begin without a grounded Market Definition.',
    sources:[{stage:'TRU',tool:'cleared_handoff',label:'TRU — V3 Cleared Candidate Handoff'}],
+   fields:[{key:'buyer_context',label:'Buyer Context',placeholder:'',rows:2},{key:'primary_segment',label:'Primary Segment',placeholder:'',rows:2},{key:'goal',label:'Goal',placeholder:'',rows:2}],
    perms:['O','O','V','-','-','-','-']},
   {id:'pains',      label:'Find Bleeding-Neck Pains',   sec:'Research',      stage:'STR', asset:'S3 — Emotional Triggers',          bsec:'Research Factory', ws:'pains',
    desc:'Extract verbatim fears and desires. Name the Enemy as a convergent system of forces.',
    rat:'The Enemy is named as convergent cultural, economic, or systemic forces — not the prospect\'s character.',
    rat_u:'The Enemy is named as convergent cultural, economic, or systemic forces — not the prospect\'s character.',
    sources:[{stage:'TRU',tool:'cleared_handoff',label:'TRU — V3 Cleared Candidate Handoff'}],
+   fields:[{key:'fear1',label:'Fear 1',placeholder:'',rows:2},{key:'desire1',label:'Desire 1',placeholder:'',rows:2},{key:'enemy',label:'Enemy',placeholder:'',rows:2}],
    perms:['O','O','V','V','-','V','-']},
   {id:'avatar',     label:'Avatar Intake',              sec:'Offer Builder', stage:'STR', asset:'S2 — VoC Buying Language Bank',    bsec:'Research Factory', ws:'generic',
    desc:'Build the avatar from 15+ verbatim phrases extracted from source material.',
@@ -1208,6 +1463,7 @@ const TOOLS = [
    rat:'The offer is a public covenant. A covenant missing any element leaves the client carrying risk.',
    rat_u:'The offer is a public covenant. A covenant missing any element leaves the client carrying risk.',
    sources:[{stage:'TRU',tool:'constraint_map_tru',label:'TRU — S5 Constraint Map'}],
+   fields:[{key:'promise',label:'Promise',placeholder:'',rows:2},{key:'price',label:'Price',placeholder:'',rows:2},{key:'guar_t',label:'Guarantee Type',placeholder:'',rows:2}],
    perms:['O','O','V','-','-','V','V']},
   {id:'pricing',    label:'Pricing',                    sec:'Research',      stage:'OFR', asset:'Asset 7 — Pricing Structure',      bsec:'Asset Factory',    ws:'generic',
    desc:'Reflect honest valuation against the Value Stack — not what the market might bear.',
@@ -1491,6 +1747,7 @@ const TOOLS = [
    rat:'Al-Muhsin asks not only "Did we hit the checkpoint?" but "Did the client experience it as a moment of genuine progress?" The milestone message templates are where that distinction becomes operational.',
    rat_u:'Excellence as Standard asks not only "Did we hit the checkpoint?" but "Did the client experience it as a moment of genuine progress?" The milestone message templates are where that distinction becomes operational.',
    sources:[{stage:'OFR',tool:'offer',label:'OFR — Offer Covenant (Assets 1–7)'}],
+   fields:[{key:'m1_statement',label:'Milestone 1',placeholder:'',rows:2},{key:'m1_msg',label:'Milestone 1 Message',placeholder:'',rows:2}],
    perms:['O','O','E','-','-','V','E']},
   {id:'proofcapture', label:'Proof Capture Protocol',         sec:'Delivery', stage:'DLR', asset:'DLR Appendix F — Proof Capture Protocol',        bsec:'Asset Factory', ws:'generic',
    desc:'What to capture, at which milestone, in what format, and with what consent language — built into delivery from the start, not left to the end.',
@@ -1725,7 +1982,7 @@ async function callLLM(systemPrompt,userMessage,options={}){
     const text=provider.parseResponse(data);
     let jsonStr=text.trim();
     if(jsonStr.startsWith('```')) jsonStr=jsonStr.replace(/^```(?:json)?\n?/,'').replace(/\n?```$/,'');
-    return JSON.parse(jsonStr);
+    try{return JSON.parse(jsonStr);}catch(parseErr){throw new Error('LLM returned invalid JSON: '+jsonStr.slice(0,120));}
   }catch(e){
     clearTimeout(timeout);
     if(e.name==='AbortError') throw new Error('Request timed out after '+(options.timeout||120000)/1000+'s');
@@ -1764,6 +2021,8 @@ function synthesizeAssets(payload){
     }
 
     if(asset.g_label) safeSet('bbos_gl_'+toolId,asset.g_label);
+    if(asset.gate) safeSet('bbos_gate_'+toolId,asset.gate);
+    if(asset.complete) safeSet('bbos_complete_'+toolId,'1');
 
     if(isDraft){
       safeSet('bbos_draft_meta_'+toolId,JSON.stringify({
@@ -1831,6 +2090,27 @@ function permBorder(p){
   if(p==='O') return 'var(--accent2)40';
   if(p==='E') return 'var(--str-b)';
   return 'var(--border)';
+}
+
+// Tool status helper — usable anywhere
+function getToolState(t){
+  if(localStorage.getItem('bbos_draft_notes_'+t.id)||localStorage.getItem('bbos_draft_meta_'+t.id)) return 'Draft';
+  const hasData=(t.fields&&t.fields.some(f=>localStorage.getItem('bbos_field_'+t.id+'_'+f.key)))||!!localStorage.getItem('bbos_notes_'+t.id);
+  if(hasData){
+    const allFieldsFilled=!t.fields||t.fields.every(f=>{const v=localStorage.getItem('bbos_field_'+t.id+'_'+f.key);return v&&v.trim();});
+    return (localStorage.getItem('bbos_complete_'+t.id)&&allFieldsFilled)?'Complete':'In Progress';
+  }
+  return 'Empty';
+}
+const TOOL_BADGE={
+  'Complete':    {bg:'var(--success-bg)', color:'var(--success)',   border:'1px solid var(--success-b)', dot:'●'},
+  'In Progress': {bg:'var(--warning-bg)',  color:'var(--warning)',   border:'1px solid var(--warning-b)', dot:'◉'},
+  'Draft':       {bg:'var(--warning-bg2)', color:'var(--warning)',   border:'1px solid var(--warning-b2)', dot:'⚠'},
+  'Empty':       {bg:'var(--bg4)',color:'var(--text3)',border:'1px solid var(--border2)',dot:'○'},
+};
+function StatusPill({status}){
+  const b=TOOL_BADGE[status]||TOOL_BADGE['Empty'];
+  return <span style={{fontSize:8,padding:'1px 5px',borderRadius:10,fontWeight:600,letterSpacing:'.3px',whiteSpace:'nowrap',background:b.bg,color:b.color,border:b.border,flexShrink:0}}>{b.dot} {status}</span>;
 }
 
 function PermPill({p, size}){
@@ -3882,8 +4162,12 @@ function WsValidation({sample}){
     {sample&&<CF label="Stage gate decision" value={S.gate.validation} accent="var(--out)"/>}
   </>;
 }
-function WsMarket({sample}){
+function WsMarket({tool,sample}){
   const [tab,setTab]=useState('definition');
+  const k=tool?.id||'market';
+  const fields=['buyer_context','goal','journey_stage','primary_segment','age_range','tried','secondary_segment','maturity','market_size','market_size_gl'];
+  const [f,setF]=useState(()=>{const init={};fields.forEach(fk=>{try{init[fk]=localStorage.getItem('bbos_field_'+k+'_'+fk)||'';}catch(e){console.warn('localStorage op failed:',e);init[fk]='';}});return init;});
+  const upd=(fk,v)=>{if(sample)return;setF(p=>({...p,[fk]:v}));safeSet('bbos_field_'+k+'_'+fk,v)};
   if(sample) return <>
     <DoneBadge/>
     <div className="tabs">
@@ -3900,25 +4184,29 @@ function WsMarket({sample}){
     </div>
     {tab==='definition'&&<>
       <div className="notice ni"><span>&#9672;</span><span>Al-Basir — genuine seeing, not confirmation of what you already believe.</span></div>
-      <div className="fg"><div className="fl">Buyer context</div><textarea className="fi" rows={3} placeholder="e.g. Muslim women running solo service businesses..."/></div>
-      <div className="fg"><div className="fl">Specific goal they're trying to accomplish</div><textarea className="fi" rows={2} placeholder="e.g. Expand past the revenue ceiling..."/></div>
-      <div className="fg"><div className="fl">What stage of the journey are they at?</div><input className="fi" type="text" placeholder="e.g. Post-first-success, pre-expansion..."/></div>
-      <button className="wbtn">Save Market Definition</button>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-buyer_context"}>Buyer context</label><textarea id={"bbos-"+k+"-buyer_context"} className="fi" rows={3} placeholder="e.g. Muslim women running solo service businesses..." value={f.buyer_context} onChange={e=>upd('buyer_context',e.target.value)}/></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-goal"}>Specific goal they're trying to accomplish</label><textarea id={"bbos-"+k+"-goal"} className="fi" rows={2} placeholder="e.g. Expand past the revenue ceiling..." value={f.goal} onChange={e=>upd('goal',e.target.value)}/></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-journey_stage"}>What stage of the journey are they at?</label><input id={"bbos-"+k+"-journey_stage"} className="fi" type="text" placeholder="e.g. Post-first-success, pre-expansion..." value={f.journey_stage} onChange={e=>upd('journey_stage',e.target.value)}/></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Market Definition</button>
     </>}
     {tab==='audience'&&<>
-      <div className="frow"><div className="fg"><div className="fl">Primary segment</div><input className="fi" type="text"/></div><div className="fg"><div className="fl">Age range</div><input className="fi" type="text"/></div></div>
-      <div className="fg"><div className="fl">What have they already tried?</div><textarea className="fi" rows={2} placeholder="Courses, coaches, software..."/></div>
-      <div className="fg"><div className="fl">Secondary segment</div><input className="fi" type="text"/></div>
-      <button className="wbtn">Save Audience Profile</button>
+      <div className="frow"><div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-primary_segment"}>Primary segment</label><input id={"bbos-"+k+"-primary_segment"} className="fi" type="text" value={f.primary_segment} onChange={e=>upd('primary_segment',e.target.value)}/></div><div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-age_range"}>Age range</label><input id={"bbos-"+k+"-age_range"} className="fi" type="text" value={f.age_range} onChange={e=>upd('age_range',e.target.value)}/></div></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-tried"}>What have they already tried?</label><textarea id={"bbos-"+k+"-tried"} className="fi" rows={2} placeholder="Courses, coaches, software..." value={f.tried} onChange={e=>upd('tried',e.target.value)}/></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-secondary_segment"}>Secondary segment</label><input id={"bbos-"+k+"-secondary_segment"} className="fi" type="text" value={f.secondary_segment} onChange={e=>upd('secondary_segment',e.target.value)}/></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Audience Profile</button>
     </>}
     {tab==='context'&&<>
-      <div className="fg"><div className="fl">Market maturity level</div><select className="fi"><option value="">Select...</option><option>Level 1 — Problem unaware</option><option>Level 2 — Problem aware, solution unaware</option><option>Level 3 — Solution aware, product unaware</option><option>Level 4 — Product aware, not yet convinced</option><option>Level 5 — Most aware</option></select></div>
-      <div className="fg"><div className="fl">Market size estimate</div><div style={{display:'flex',gap:8}}><input className="fi" type="text" placeholder="~50,000 qualified prospects..."/><select className="fi" style={{width:68,flex:'none'}}><option>G3</option><option>G2</option><option>G1</option><option>G4</option></select></div></div>
-      <button className="wbtn">Save Context</button>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-maturity"}>Market maturity level</label><select id={"bbos-"+k+"-maturity"} className="fi" value={f.maturity} onChange={e=>upd('maturity',e.target.value)}><option value="">Select...</option><option>Level 1 — Problem unaware</option><option>Level 2 — Problem aware, solution unaware</option><option>Level 3 — Solution aware, product unaware</option><option>Level 4 — Product aware, not yet convinced</option><option>Level 5 — Most aware</option></select></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-market_size"}>Market size estimate</label><div style={{display:'flex',gap:8}}><input id={"bbos-"+k+"-market_size"} className="fi" type="text" placeholder="~50,000 qualified prospects..." value={f.market_size} onChange={e=>upd('market_size',e.target.value)}/><select className="fi" aria-label="Market size G-label" style={{width:68,flex:'none'}} value={f.market_size_gl||'G3'} onChange={e=>upd('market_size_gl',e.target.value)}><option>G3</option><option>G2</option><option>G1</option><option>G4</option></select></div></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Context</button>
     </>}
   </>;
 }
-function WsPains({sample}){
+function WsPains({tool,sample}){
+  const k=tool?.id||'pains';
+  const fields=['fear1','fear2','fear3','desire1','desire2','desire3','enemy'];
+  const [f,setF]=useState(()=>{const init={};fields.forEach(fk=>{try{init[fk]=localStorage.getItem('bbos_field_'+k+'_'+fk)||'';}catch(e){console.warn('localStorage op failed:',e);init[fk]='';}});return init;});
+  const upd=(fk,v)=>{if(sample)return;setF(p=>({...p,[fk]:v}));safeSet('bbos_field_'+k+'_'+fk,v)};
   if(sample) return <>
     <DoneBadge/>
     <div className="fg"><div className="fl" style={{marginBottom:7}}>Top 3 verbatim fears</div>
@@ -3934,18 +4222,22 @@ function WsPains({sample}){
   </>;
   return <>
     <div className="notice nw"><span>&#9673;</span><span>The Enemy is a convergent system — not the client's character, choices, or mindset.</span></div>
-    <div className="fg"><div className="fl">Top 3 verbatim fears</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><Tip term={`F${i}`}><span className="gbl g3b">F{i}</span></Tip><input className="fi" type="text" placeholder={`Fear ${i} — exact quote...`}/></div>)}</div>
+    <div className="fg"><div className="fl">Top 3 verbatim fears</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><Tip term={`F${i}`}><span className="gbl g3b">F{i}</span></Tip><input className="fi" type="text" aria-label={"Fear "+i} placeholder={`Fear ${i} — exact quote...`} value={f['fear'+i]} onChange={e=>upd('fear'+i,e.target.value)}/></div>)}</div>
     <div className="wdiv"/>
-    <div className="fg"><div className="fl">Top 3 verbatim desires</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><Tip term={`D${i}`}><span className="gbl g4b">D{i}</span></Tip><input className="fi" type="text" placeholder={`Desire ${i} — exact quote...`}/></div>)}</div>
+    <div className="fg"><div className="fl">Top 3 verbatim desires</div>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:7,marginBottom:7}}><Tip term={`D${i}`}><span className="gbl g4b">D{i}</span></Tip><input className="fi" type="text" aria-label={"Desire "+i} placeholder={`Desire ${i} — exact quote...`} value={f['desire'+i]} onChange={e=>upd('desire'+i,e.target.value)}/></div>)}</div>
     <div className="wdiv"/>
-    <div className="fg"><div className="fl">Enemy Narrative</div><textarea className="fi" rows={4} placeholder="The Enemy is not [client's character]. The Enemy is the convergent set of [forces]..."/></div>
-    <button className="wbtn">Save Emotional Triggers</button>
+    <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-enemy"}>Enemy Narrative</label><textarea id={"bbos-"+k+"-enemy"} className="fi" rows={4} placeholder="The Enemy is not [client's character]. The Enemy is the convergent set of [forces]..." value={f.enemy} onChange={e=>upd('enemy',e.target.value)}/></div>
+    <button className="wbtn" onClick={showSaveToast}>Save Emotional Triggers</button>
   </>;
 }
-function getAttr(s,wrap){let lang='en';try{lang=localStorage.getItem('bbos_attr_lang')||'en';}catch(e){}const isAr=lang==='ar'&&s.attr_ar;const text=isAr?s.attr_ar:s.attr;if(wrap===false)return text;return isAr?React.createElement('span',{lang:'ar',dir:'rtl'},text):text;}
+function getAttr(s,wrap){let lang='en';try{lang=localStorage.getItem('bbos_attr_lang')||'en';}catch(e){console.warn('localStorage op failed:',e)}const isAr=lang==='ar'&&s.attr_ar;const text=isAr?s.attr_ar:s.attr;if(wrap===false)return text;return isAr?React.createElement('span',{lang:'ar',dir:'rtl'},text):text;}
 
 function WsOffer({tool,sample}){
   const [tab,setTab]=useState('promise');
+  const k=tool?.id||'offer';
+  const fields=['promise','promise_gl','proof_anchor','scope_in','scope_ex','change_triggers','guar_t','guar_s','guar_r','guar_b','price','payment_terms','value_stack'];
+  const [f,setF]=useState(()=>{const init={};fields.forEach(fk=>{try{init[fk]=localStorage.getItem('bbos_field_'+k+'_'+fk)||'';}catch(e){console.warn('localStorage op failed:',e);init[fk]='';}});return init;});
+  const upd=(fk,v)=>{if(sample)return;setF(p=>({...p,[fk]:v}));safeSet('bbos_field_'+k+'_'+fk,v)};
   if(sample) return <>
     <DoneBadge/>
     {tool&&<SourcePanel tool={tool}/>}
@@ -3961,31 +4253,31 @@ function WsOffer({tool,sample}){
     <div className="tabs">{['promise','scope','guarantee','pricing'].map(t=><button key={t} className={`tab${tab===t?' on':''}`} onClick={()=>setTab(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}</div>
     {tab==='promise'&&<>
       <div className="notice ni"><span>&#9672;</span><span>The Promise must be G1 or G2 only. Could a client use it as an acceptance test?</span></div>
-      <div className="fg"><div className="fl">Promise statement</div><textarea className="fi" rows={3} placeholder="A specific, deliverable-grounded commitment..."/></div>
-      <div className="frow"><div className="fg"><div className="fl">G-label</div><select className="fi"><option>G1 — Verified, proven</option><option>G2 — Substantiated</option></select></div><div className="fg"><div className="fl">Proof anchor</div><input className="fi" type="text" placeholder="Name the specific evidence..."/></div></div>
-      <button className="wbtn">Save Promise</button>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-promise"}>Promise statement</label><textarea id={"bbos-"+k+"-promise"} className="fi" rows={3} placeholder="A specific, deliverable-grounded commitment..." value={f.promise} onChange={e=>upd('promise',e.target.value)}/></div>
+      <div className="frow"><div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-promise_gl"}>G-label</label><select id={"bbos-"+k+"-promise_gl"} className="fi" value={f.promise_gl||''} onChange={e=>upd('promise_gl',e.target.value)}><option value="">Select...</option><option>G1 — Verified, proven</option><option>G2 — Substantiated</option></select></div><div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-proof_anchor"}>Proof anchor</label><input id={"bbos-"+k+"-proof_anchor"} className="fi" type="text" placeholder="Name the specific evidence..." value={f.proof_anchor} onChange={e=>upd('proof_anchor',e.target.value)}/></div></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Promise</button>
     </>}
     {tab==='scope'&&<>
-      <div className="fg"><div className="fl">Included</div><textarea className="fi" rows={3} placeholder="List every deliverable explicitly..."/></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-scope_in"}>Included</label><textarea id={"bbos-"+k+"-scope_in"} className="fi" rows={3} placeholder="List every deliverable explicitly..." value={f.scope_in} onChange={e=>upd('scope_in',e.target.value)}/></div>
       <div className="wdiv"/>
-      <div className="fg"><div className="fl">Excluded</div><textarea className="fi" rows={3} placeholder="Name specific exclusions..."/></div>
-      <div className="fg"><div className="fl">Change-order triggers</div><textarea className="fi" rows={2} placeholder="Conditions requiring renegotiation..."/></div>
-      <button className="wbtn">Save Scope Map</button>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-scope_ex"}>Excluded</label><textarea id={"bbos-"+k+"-scope_ex"} className="fi" rows={3} placeholder="Name specific exclusions..." value={f.scope_ex} onChange={e=>upd('scope_ex',e.target.value)}/></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-change_triggers"}>Change-order triggers</label><textarea id={"bbos-"+k+"-change_triggers"} className="fi" rows={2} placeholder="Conditions requiring renegotiation..." value={f.change_triggers} onChange={e=>upd('change_triggers',e.target.value)}/></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Scope Map</button>
     </>}
     {tab==='guarantee'&&<>
       <div className="notice nw"><span>&#9673;</span><span>All four elements required. Missing any one leaves client carrying risk that belongs to you.</span></div>
-      {[{k:'t',l:'Trigger Condition'},{k:'s',l:'Scope'},{k:'r',l:'Remedy'},{k:'b',l:'Operator-Side Boundaries'}].map(f=><div className="fg" key={f.k}><div className="fl">{f.l}</div><textarea className="fi" rows={2} placeholder={`${f.l}...`}/></div>)}
-      <button className="wbtn">Save Guarantee</button>
+      {[{k:'guar_t',l:'Trigger Condition'},{k:'guar_s',l:'Scope'},{k:'guar_r',l:'Remedy'},{k:'guar_b',l:'Operator-Side Boundaries'}].map(gf=><div className="fg" key={gf.k}><label className="fl" htmlFor={"bbos-"+k+"-"+gf.k}>{gf.l}</label><textarea id={"bbos-"+k+"-"+gf.k} className="fi" rows={2} placeholder={`${gf.l}...`} value={f[gf.k]} onChange={e=>upd(gf.k,e.target.value)}/></div>)}
+      <button className="wbtn" onClick={showSaveToast}>Save Guarantee</button>
     </>}
     {tab==='pricing'&&<>
-      <div className="frow"><div className="fg"><div className="fl">Total price</div><input className="fi" type="text" placeholder="$0.00"/></div><div className="fg"><div className="fl">Payment terms</div><select className="fi"><option>Paid in full</option><option>2-part split</option><option>Monthly retainer</option></select></div></div>
-      <div className="fg"><div className="fl">Value stack (each component + PMV)</div><textarea className="fi" rows={4} placeholder={"Component 1 — PMV: $X\nComponent 2 — PMV: $X\n..."}/></div>
-      <button className="wbtn">Save Pricing Structure</button>
+      <div className="frow"><div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-price"}>Total price</label><input id={"bbos-"+k+"-price"} className="fi" type="text" placeholder="$0.00" value={f.price} onChange={e=>upd('price',e.target.value)}/></div><div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-payment_terms"}>Payment terms</label><select id={"bbos-"+k+"-payment_terms"} className="fi" value={f.payment_terms||'Paid in full'} onChange={e=>upd('payment_terms',e.target.value)}><option>Paid in full</option><option>2-part split</option><option>Monthly retainer</option></select></div></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-"+k+"-value_stack"}>Value stack (each component + PMV)</label><textarea id={"bbos-"+k+"-value_stack"} className="fi" rows={4} placeholder={"Component 1 — PMV: $X\nComponent 2 — PMV: $X\n..."} value={f.value_stack} onChange={e=>upd('value_stack',e.target.value)}/></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Pricing Structure</button>
     </>}
   </>;
 }
 function SourcePanel({tool}){
-  if(!tool.sources||!tool.sources.length) return null;
+  if(!tool.sources||!tool.sources.length) return <div className="fg" style={{color:'var(--text3)',fontSize:13,fontStyle:'italic'}}>No upstream sources configured for this tool.</div>;
   const [open,setOpen]=useState(true);
   return <div className="src-panel">
     <div className="src-header" onClick={()=>setOpen(!open)}>
@@ -4009,7 +4301,7 @@ function SourcePanel({tool}){
     </div>}
   </div>;
 }
-function WsGeneric({tool,sample}){
+function WsGeneric({tool,sample,onGenerate}){
   const s=STAGES[tool.stage];
   const glMap={competitor:'G1',avatar:'G1',adspy:'G2',contentspy:'G2',attention:'G2',creative:'G2',generateads:'G2',logo:'G1',landing:'G2',salesletter:'G2',social:'G2',meta:'G1',pixel:'G1',launchads:'G2',socials:'G1',website:'G2',salespreso:'G2',nurture:'G2',vsl:'G2',salesscript:'G1',settingscript:'G1',form:'G1',ghl:'G1',solution:'G2',icp:'G2',pricing:'G2',gtm:'G2',onboarding:'G1',clientintake:'G1',executionsop:'G1',qcchecklist:'G1',milestones:'G2',proofcapture:'G1',offboarding:'G2'};
   const glcMap={G1:'var(--out)',G2:'var(--str)',G3:'var(--sal)',G4:'var(--ofr)'};
@@ -4017,10 +4309,13 @@ function WsGeneric({tool,sample}){
   const notesTxt=S.notes[tool.id]||'';const gateTxt=S.gate[tool.id]||'';
   const storageKey='bbos_notes_'+tool.id;
   const [notes,setNotes]=useState(()=>{try{return localStorage.getItem(storageKey)||'';}catch(e){return '';}});
-  const saveNotes=v=>{setNotes(v);try{localStorage.setItem(storageKey,v);}catch(e){}};
+  const saveNotes=v=>{setNotes(v);safeSet(storageKey,v);};
   const glStorageKey='bbos_gl_'+tool.id;
   const [selGl,setSelGl]=useState(()=>{try{return localStorage.getItem(glStorageKey)||'';}catch(e){return '';}});
-  const pickGl=g=>{const v=selGl===g?'':g;setSelGl(v);try{localStorage.setItem(glStorageKey,v);}catch(e){}};
+  const pickGl=g=>{const v=selGl===g?'':g;setSelGl(v);safeSet(glStorageKey,v);};
+  const gateKey='bbos_gate_'+tool.id;
+  const [gateNotes,setGateNotes]=useState(()=>{try{return localStorage.getItem(gateKey)||'';}catch(e){return '';}});
+  const saveGate=v=>{setGateNotes(v);safeSet(gateKey,v);};
   // Structured fields support
   const hasFields=tool.fields&&tool.fields.length>0;
   const [fieldValues,setFieldValues]=useState(()=>{
@@ -4031,7 +4326,7 @@ function WsGeneric({tool,sample}){
   });
   const saveField=(key,val)=>{
     setFieldValues(prev=>({...prev,[key]:val}));
-    try{localStorage.setItem('bbos_field_'+tool.id+'_'+key,val);}catch(e){}
+    if(safeSet('bbos_field_'+tool.id+'_'+key,val)) window.dispatchEvent(new Event('bbos-field-updated'));
   };
   if(sample&&notesTxt) return <>
     <DoneBadge/>
@@ -4050,25 +4345,25 @@ function WsGeneric({tool,sample}){
   return <>
     <SourcePanel tool={tool}/>
     <DraftReview toolId={tool.id} tool={tool} onAccept={()=>{setNotes(localStorage.getItem('bbos_notes_'+tool.id)||'');if(tool.fields){const init={};tool.fields.forEach(f=>{try{init[f.key]=localStorage.getItem('bbos_field_'+tool.id+'_'+f.key)||'';}catch(e){init[f.key]='';}});setFieldValues(init);}}} onReject={()=>{}}/>
-    {(()=>{const meta=JSON.parse(localStorage.getItem('bbos_draft_meta_'+tool.id)||'{}');if(!meta.proof_pending?.length) return null;return <div style={{background:'var(--warning-bg)',border:'1px solid var(--warning-b)',borderRadius:8,padding:'10px 14px',marginBottom:12}}><div style={{fontSize:11,fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',color:'var(--warning)',marginBottom:6}}>⚠ Proof Pending</div>{meta.proof_pending.map((pp,i)=><div key={i} style={{fontSize:13,color:'var(--text2)',lineHeight:1.5}}>• {pp}</div>)}</div>;})()}
+    {(()=>{const meta=safeGetJSON('bbos_draft_meta_'+tool.id,{});if(!meta.proof_pending?.length) return null;return <div style={{background:'var(--warning-bg)',border:'1px solid var(--warning-b)',borderRadius:8,padding:'10px 14px',marginBottom:12}}><div style={{fontSize:11,fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',color:'var(--warning)',marginBottom:6}}>⚠ Proof Pending</div>{meta.proof_pending.map((pp,i)=><div key={i} style={{fontSize:13,color:'var(--text2)',lineHeight:1.5}}>• {pp}</div>)}</div>;})()}
     <div className="gb-block" style={{borderLeftColor:s.c,background:s.bg}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <div>
           <div className="gb-title" style={{color:s.c}}>{s.key} — {s.name}</div>
           <div className="gb-sub">{getAttr(s)} · {tool.bsec} · {tool.asset}</div>
         </div>
-        <button className="sg-btn" onClick={()=>window.__bbosGenerateTool&&window.__bbosGenerateTool(tool.id)} style={{fontSize:11,padding:'3px 8px',marginLeft:8,border:'1px solid var(--border2)',borderRadius:4,background:'var(--bg3)'}} title="Generate this tool with AI">
+        <button className="sg-btn" onClick={()=>onGenerate&&onGenerate(tool.id)} style={{fontSize:11,padding:'3px 8px',marginLeft:8,border:'1px solid var(--border2)',borderRadius:4,background:'var(--bg3)'}} title="Generate this tool with AI">
           Generate
         </button>
       </div>
     </div>
     {hasFields
-      ? tool.fields.map(f=><div className="fg" key={f.key}><div className="fl">{f.label}</div><textarea className="fi" rows={f.rows||2} placeholder={f.placeholder||''} value={fieldValues[f.key]||''} onChange={e=>saveField(f.key,e.target.value)}/></div>)
-      : <div className="fg"><div className="fl">Working notes</div><textarea className="fi" rows={4} placeholder="Begin your work here..." value={notes} onChange={e=>saveNotes(e.target.value)}/></div>
+      ? tool.fields.map(f=><div className="fg" key={f.key}><label className="fl" htmlFor={"bbos-"+tool.id+"-"+f.key}>{f.label}</label><textarea id={"bbos-"+tool.id+"-"+f.key} className="fi" rows={f.rows||2} placeholder={f.placeholder||''} value={fieldValues[f.key]||''} onChange={e=>saveField(f.key,e.target.value)}/></div>)
+      : <div className="fg"><label className="fl" htmlFor={"bbos-"+tool.id+"-notes"}>Working notes</label><textarea id={"bbos-"+tool.id+"-notes"} className="fi" rows={4} placeholder="Begin your work here..." value={notes} onChange={e=>saveNotes(e.target.value)}/></div>
     }
-    <div className="fg"><div className="fl">G-label for primary output</div><div style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=>{const gc=glcMap[g];return <Tip key={g} term={g}><button onClick={()=>pickGl(g)} className="wbtn" style={{padding:'3px 11px',background:selGl===g?gc+'33':'transparent',color:selGl===g?gc:'var(--text2)',border:`1px solid ${selGl===g?gc:'var(--btn-border-inactive)'}`}}>{g}</button></Tip>;})}</div></div>
-    <div className="fg"><div className="fl">Stage gate check</div><textarea className="fi" rows={2} placeholder="Document any ASSUMPTION items, PROOF PENDING items, or conditions..."/></div>
-    <button className="wbtn">Save Work</button>
+    <div className="fg"><div className="fl" id={"bbos-"+tool.id+"-gl-label"}>G-label for primary output</div><div role="group" aria-labelledby={"bbos-"+tool.id+"-gl-label"} style={{display:'flex',gap:6}}>{['G1','G2','G3','G4'].map(g=>{const gc=glcMap[g];return <Tip key={g} term={g}><button onClick={()=>pickGl(g)} className="wbtn" style={{padding:'3px 11px',background:selGl===g?gc+'33':'transparent',color:selGl===g?gc:'var(--text2)',border:`1px solid ${selGl===g?gc:'var(--btn-border-inactive)'}`}}>{g}</button></Tip>;})}</div></div>
+    <div className="fg"><label className="fl" htmlFor={"bbos-"+tool.id+"-gate"}>Stage gate check</label><textarea id={"bbos-"+tool.id+"-gate"} className="fi" rows={2} placeholder="Document any ASSUMPTION items, PROOF PENDING items, or conditions..." value={gateNotes} onChange={e=>saveGate(e.target.value)}/></div>
+    <button className="wbtn" onClick={showSaveToast}>Save Work</button>
   </>;
 }
 function WsQC({tool,sample}){
@@ -4127,7 +4422,7 @@ function WsQC({tool,sample}){
   </>;
 }
 
-function WsMilestones({sample}){
+function WsMilestones({tool,sample}){
   const ms=[
     {n:1,session:'Session 2',statement:'I can name the forces working against my pricing confidence — not as a personal failing, but as a structural reality I can now see clearly.',msg:'Something shifted in today\'s session — you named what\'s actually been happening. That\'s not a small thing. Before next week: [pre-work instruction]. Looking forward to Session 3.',proof:false},
     {n:2,session:'Session 3',statement:'I have a written statement that describes exactly who I serve and what changes for them.',msg:'You now have your positioning statement in writing. Read it aloud to yourself tonight — not to the mirror, just to yourself. [Statement attached as PDF.] See you for Session 4.',proof:false},
@@ -4137,6 +4432,9 @@ function WsMilestones({sample}){
   ];
   const [active,setActive]=useState(1);
   const m=ms[active-1];
+  const k=tool?.id||'milestones';
+  const [fms,setFms]=useState(()=>{const init={};ms.forEach(x=>{['statement','msg'].forEach(fk=>{const sk='bbos_field_'+k+'_m'+x.n+'_'+fk;try{init['m'+x.n+'_'+fk]=localStorage.getItem(sk)||'';}catch(e){console.warn('localStorage op failed:',e);init['m'+x.n+'_'+fk]='';}});});return init;});
+  const upd=(fk,v)=>{if(sample)return;setFms(p=>({...p,[fk]:v}));safeSet('bbos_field_'+k+'_'+fk,v)};
   return <>
     {sample&&<DoneBadge/>}
     <div style={{display:'flex',gap:3,marginBottom:16}}>
@@ -4150,21 +4448,21 @@ function WsMilestones({sample}){
       {m.proof&&<div style={{marginTop:9,display:'inline-flex',alignItems:'center',gap:5,fontSize:12,color:'var(--out)',background:'var(--out-bg)',border:'1px solid var(--out-b)',borderRadius:4,padding:'2px 9px'}}>Proof Capture initiated at this milestone</div>}
     </div>
     {!sample&&<>
-      <div className="fg"><div className="fl">Milestone statement</div><textarea className="fi" rows={2} placeholder="In the client's own language — what do they now have or know?"/></div>
-      <div className="fg"><div className="fl">Message template</div><textarea className="fi" rows={3} placeholder="Written in the tone of genuine progress — not celebration, not pressure..."/></div>
-      <button className="wbtn">Save Milestone {active}</button>
+      <div className="fg"><label className="fl" htmlFor={"bbos-milestones-m"+active+"_statement"}>Milestone statement</label><textarea id={"bbos-milestones-m"+active+"_statement"} className="fi" rows={2} placeholder="In the client's own language — what do they now have or know?" value={fms['m'+active+'_statement']} onChange={e=>upd('m'+active+'_statement',e.target.value)}/></div>
+      <div className="fg"><label className="fl" htmlFor={"bbos-milestones-m"+active+"_msg"}>Message template</label><textarea id={"bbos-milestones-m"+active+"_msg"} className="fi" rows={3} placeholder="Written in the tone of genuine progress — not celebration, not pressure..." value={fms['m'+active+'_msg']} onChange={e=>upd('m'+active+'_msg',e.target.value)}/></div>
+      <button className="wbtn" onClick={showSaveToast}>Save Milestone {active}</button>
     </>}
   </>;
 }
 
-function Workspace({tool,sample}){
+function Workspace({tool,sample,onGenerate}){
   if(tool.ws==='validation') return <WsValidation sample={sample}/>;
-  if(tool.ws==='market')     return <WsMarket sample={sample}/>;
-  if(tool.ws==='pains')      return <WsPains sample={sample}/>;
+  if(tool.ws==='market')     return <WsMarket tool={tool} sample={sample}/>;
+  if(tool.ws==='pains')      return <WsPains tool={tool} sample={sample}/>;
   if(tool.ws==='offer')      return <WsOffer tool={tool} sample={sample}/>;
   if(tool.ws==='qc')         return <WsQC tool={tool} sample={sample}/>;
-  if(tool.ws==='milestones') return <WsMilestones sample={sample}/>;
-  return <WsGeneric tool={tool} sample={sample}/>;
+  if(tool.ws==='milestones') return <WsMilestones tool={tool} sample={sample}/>;
+  return <WsGeneric tool={tool} sample={sample} onGenerate={onGenerate}/>;
 }
 
 /* ── ROLE DASHBOARD ── */
@@ -4268,9 +4566,12 @@ function ScopeGate({tool, role}){
   </div>;
 }
 
-function ToolDetail({tool,onBack,sample,role,getRat}){
+function ToolDetail({tool,onBack,sample,role,getRat,onGenerate}){
   const [isComplete,setIsComplete]=useState(()=>!!localStorage.getItem('bbos_complete_'+tool.id));
+  const [,_fUpd]=useState(0);
   useEffect(()=>{setIsComplete(!!localStorage.getItem('bbos_complete_'+tool.id));},[tool.id]);
+  useEffect(()=>{const h=()=>_fUpd(c=>c+1);window.addEventListener('bbos-field-updated',h);return ()=>window.removeEventListener('bbos-field-updated',h);},[]);
+  const allFilled=!tool.fields||tool.fields.every(f=>{const v=localStorage.getItem('bbos_field_'+tool.id+'_'+f.key);return v&&v.trim();});
   const s=STAGES[tool.stage];
   const p = role.id==='all' ? 'O' : rolePerm(tool,role.id);
   const canEdit = p==='O'||p==='E';
@@ -4324,10 +4625,10 @@ function ToolDetail({tool,onBack,sample,role,getRat}){
     <div className="ws-card">
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <div className="ws-lbl">{sample?`Completed workspace — The Clarity Practice`:'Workspace'}</div>
-        {!sample&&canEdit&&<button onClick={()=>{if(isComplete){safeRemove('bbos_complete_'+tool.id);setIsComplete(false);}else{safeSet('bbos_complete_'+tool.id,'1');setIsComplete(true);}}} style={{fontSize:12,padding:'4px 12px',borderRadius:4,border:'1px solid '+(isComplete?'var(--border2)':'var(--success-b2)'),background:isComplete?'var(--bg3)':'var(--success-bg)',color:isComplete?'var(--text3)':'var(--success)',cursor:'pointer',fontWeight:600,fontFamily:'inherit'}}>{isComplete?'Reopen':'Mark Complete ✓'}</button>}
+        {!sample&&canEdit&&<span title={(!isComplete&&!allFilled)?'Fill all fields to mark complete':undefined}><button disabled={!isComplete&&!allFilled} onClick={()=>{if(!isComplete&&!allFilled)return;if(isComplete){if(!confirm('Reopen this completed tool?'))return;safeRemove('bbos_complete_'+tool.id);setIsComplete(false);window.dispatchEvent(new Event('bbos-field-updated'));}else{safeSet('bbos_complete_'+tool.id,'1');setIsComplete(true);window.dispatchEvent(new Event('bbos-field-updated'));}}} style={{fontSize:12,padding:'4px 12px',borderRadius:4,border:'1px solid '+((!isComplete&&!allFilled)?'var(--border)':isComplete?'var(--border2)':'var(--success-b2)'),background:(!isComplete&&!allFilled)?'var(--bg4)':isComplete?'var(--bg3)':'var(--success-bg)',color:(!isComplete&&!allFilled)?'var(--text3)':isComplete?'var(--text3)':'var(--success)',cursor:(!isComplete&&!allFilled)?'not-allowed':'pointer',fontWeight:600,fontFamily:'inherit',opacity:(!isComplete&&!allFilled)?0.5:1}}>{isComplete?'Reopen':'Mark Complete ✓'}</button></span>}
       </div>
       {(canEdit || sample)
-        ? <Workspace key={tool.id} tool={tool} sample={sample}/>
+        ? <Workspace key={tool.id} tool={tool} sample={sample} onGenerate={onGenerate}/>
         : <div className="view-only"><div className="view-only-msg">This asset is outside your edit scope as {role.label}. You have View access — use the completed data above for context when building your own assets.{p==='-'&&` This tool is not part of the ${role.label} workflow.`}</div></div>
       }
       {(!canEdit && sample) && <div style={{marginTop:12,padding:'9px 13px',background:'var(--bg3)',borderRadius:6,border:'1px solid var(--border)',fontSize:14,color:'var(--text3)'}}>Read-only in {role.label} role — completed data shown for reference.</div>}
@@ -4404,10 +4705,8 @@ function AssetView({selId,setSelId,role,sample,getRat}){
     if(sample) return SAMPLE_STAGE_STATUS[key]||'Not Started';
     const st=TOOLS.filter(t=>t.stage===key);
     if(!st.length) return 'Not Started';
-    const hasData=t=>{ if(localStorage.getItem('bbos_draft_notes_'+t.id)||localStorage.getItem('bbos_draft_meta_'+t.id))return true; if(t.fields&&t.fields.some(f=>localStorage.getItem('bbos_field_'+t.id+'_'+f.key)))return true; return !!localStorage.getItem('bbos_notes_'+t.id); };
-    const isComplete=t=>hasData(t)&&!!localStorage.getItem('bbos_complete_'+t.id);
-    if(st.every(isComplete)) return 'Complete';
-    if(st.some(hasData)) return 'Active';
+    if(st.every(toolIsComplete)) return 'Complete';
+    if(st.some(toolHasData)) return 'Active';
     return 'Not Started';
   }
   return <div className="av">
@@ -4459,10 +4758,8 @@ function LayersView({onSelect, role, sample}){
     if(sample) return SAMPLE_STAGE_STATUS[key]||'Not Started';
     const st=TOOLS.filter(t=>t.stage===key);
     if(!st.length) return 'Not Started';
-    const hasData=t=>{ if(localStorage.getItem('bbos_draft_notes_'+t.id)||localStorage.getItem('bbos_draft_meta_'+t.id))return true; if(t.fields&&t.fields.some(f=>localStorage.getItem('bbos_field_'+t.id+'_'+f.key)))return true; return !!localStorage.getItem('bbos_notes_'+t.id); };
-    const isComplete=t=>hasData(t)&&!!localStorage.getItem('bbos_complete_'+t.id);
-    if(st.every(isComplete)) return 'Complete';
-    if(st.some(hasData)) return 'Active';
+    if(st.every(toolIsComplete)) return 'Complete';
+    if(st.some(toolHasData)) return 'Active';
     return 'Not Started';
   }
   const layerOrder=['Think','Execute','Reckon'];
@@ -4502,7 +4799,7 @@ function LayersView({onSelect, role, sample}){
 }
 
 /* ── OVERVIEW ── */
-function Overview({onSelect, role, sample, genStates, genResults, generateStage}){
+function Overview({onSelect, role, sample, genStates, genResults, generateStage, valuesLayer, completedOpening, onBeginStage}){
   const byStage={};
   Object.keys(STAGES).forEach(k=>{byStage[k]=[];});
   TOOLS.forEach(t=>{
@@ -4514,10 +4811,8 @@ function Overview({onSelect, role, sample, genStates, genResults, generateStage}
     if(sample) return SAMPLE_STAGE_STATUS[key]||'Not Started';
     const st=TOOLS.filter(t=>t.stage===key);
     if(!st.length) return 'Not Started';
-    const hasData=t=>{if(localStorage.getItem('bbos_draft_notes_'+t.id)||localStorage.getItem('bbos_draft_meta_'+t.id))return true;if(t.fields&&t.fields.some(f=>localStorage.getItem('bbos_field_'+t.id+'_'+f.key)))return true;return !!localStorage.getItem('bbos_notes_'+t.id);};
-    const isComplete=t=>hasData(t)&&!!localStorage.getItem('bbos_complete_'+t.id);
-    if(st.every(isComplete)) return 'Complete';
-    if(st.some(hasData)) return 'Active';
+    if(st.every(toolIsComplete)) return 'Complete';
+    if(st.some(toolHasData)) return 'Active';
     return 'Not Started';
   }
   function toolState(t){
@@ -4539,13 +4834,14 @@ function Overview({onSelect, role, sample, genStates, genResults, generateStage}
 
   return <div className="ov">
     <div className="ov-ey">Barakah Business Operating System</div>
-    <div className="ov-title">{/* ⚑ NEEDS NAME */}<br/>Pipeline Map</div>
+    <div className="ov-title">Pipeline Map</div>
     <div className="ov-sub">Every tool in this system maps to a BBOS pipeline stage with a governing attribute. No outreach without research. No research without qualification. No offer without honest valuation.</div>
 
     {/* PIP STRIP — now with status badges */}
     <div className="pip">
       {stages.map(s=>{
         const cnt=(byStage[s.key]||[]).length;
+        if(!cnt) return null;
         const st=stageStatus(s.key);
         const sm=STATUS_META[st];
         return <div key={s.key} className="pip-item" style={{background:s.bg,borderColor:s.b,color:s.c,cursor:'pointer'}} onClick={()=>{const el=document.getElementById('stage-'+s.key);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}}>
@@ -4618,7 +4914,11 @@ function Overview({onSelect, role, sample, genStates, genResults, generateStage}
                 'Draft':       {bg:'var(--warning-bg2)', color:'var(--warning)',   border:'1px solid var(--warning-b2)', dot:'⚠'},
                 'Empty':       {bg:'var(--bg4)',color:'var(--text3)',border:'1px solid var(--border2)',dot:'○'},
               }[ts];
-              return <div key={t.id} className="tc" onClick={()=>onSelect(t.id)}>
+              const stageLocked=valuesLayer==='islamic'&&!completedOpening?.[s.key];
+              return <div key={t.id} className={`tc${stageLocked?' tool-locked':''}`} onClick={()=>{
+                if(stageLocked){onBeginStage?.(s.key,t.id);return;}
+                onSelect(t.id);
+              }}>
                 <div className="tc-top">
                   <Tip def={[t.label,t.desc]}><div className="tc-name">{t.label}</div></Tip>
                   {role.id!=='all'&&<PermPill p={rolePerm(t,role.id)} size="sm"/>}
@@ -4637,15 +4937,55 @@ function Overview({onSelect, role, sample, genStates, genResults, generateStage}
   </div>;
 }
 
+function DuaPopup({dua, kind, stageKey, onClose}){
+  const s=STAGES[stageKey];
+  const stageColor=s?.c||'var(--accent)';
+  const kindLabel = kind==='ongoing'?'During Work · Tawakkul':kind==='closing'?'Closing Dua':'Opening Dua';
+  const attr = s ? getAttr(s) : '';
+  return <div className="thr-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+    <div className="thr-modal">
+      <div className="thr-hdr">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10}}>
+          <div>
+            <div className="thr-eyebrow">{kindLabel.toUpperCase()}</div>
+            {s&&<div className="thr-title" style={{color:stageColor}}>Stage {s.code} · {s.key} — {s.name}</div>}
+          </div>
+          <button className="thr-close" onClick={onClose}>✕</button>
+        </div>
+        <ThresholdStepIndicator total={1} current={0}/>
+        <div className="thr-step-lbl" style={{fontStyle:'italic',color:'var(--text3)',lineHeight:1.5}}>Take a moment to make this dua privately.<br/>When you are ready, we will begin.</div>
+      </div>
+      <div className="thr-body">
+        <div className="thr-dua">
+          {attr&&<div className="thr-dua-attr">{attr}</div>}
+          <div className="thr-arabic">{dua.arabic}</div>
+          <div className="thr-transliteration">{dua.trans}</div>
+          <div className="thr-translation">{dua.meaning}</div>
+          <div className="thr-source">{dua.source}</div>
+        </div>
+      </div>
+      <div className="thr-ftr">
+        <div/>
+        <button className="thr-btn thr-btn-primary" onClick={onClose}>Done</button>
+      </div>
+    </div>
+  </div>;
+}
+
 function DuaBlock({dua, kind, stageColor, stageKey}){
   const [open,setOpen]=useState(false);
+  const [popup,setPopup]=useState(false);
   const isClosing = kind==='closing';
+  const isOngoing = kind==='ongoing';
+  const kindLabel = isOngoing ? 'During Work · Tawakkul' : isClosing ? 'Closing Dua' : 'Opening Dua';
   return <div className="dua-block">
+    {popup&&<DuaPopup dua={dua} kind={kind} stageKey={stageKey} onClose={()=>setPopup(false)}/>}
     <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
       <span className="dua-glyph" style={{color:stageColor}}>⧁</span>
       <span className="dua-label">
-        <span className="dua-kind" style={{color:stageColor}}>{isClosing?'Closing Dua':'Opening Dua'}</span>
+        <span className="dua-kind" style={{color:stageColor}}>{kindLabel}</span>
       </span>
+      <button className="dua-expand-btn" onClick={e=>{e.stopPropagation();setPopup(true);}} title="Open dua in focus view" aria-label="Open dua">▸</button>
       <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
     </button>
     {open&&<div className="dua-body">
@@ -4689,8 +5029,8 @@ function ReadinessBlock({stageKey, stageColor}){
     <button className="dua-toggle" onClick={()=>setOpen(o=>!o)}>
       <span className="dua-glyph" style={{color:stageColor,fontSize:11,lineHeight:1}}>▣</span>
       <span className="dua-label">
-        <span className="dua-kind" style={{color:stageColor}}>Opening Readiness Check</span>
-        <span className="dua-title-txt">Before you begin</span>
+        <span className="dua-kind" style={{color:stageColor}}>Readiness Check</span>
+        <span className="dua-title-txt">Opening — useful throughout</span>
       </span>
       <span className={`dua-chev ${open?'open':'closed'}`}>▾</span>
     </button>
@@ -4743,7 +5083,7 @@ function ReflectionBlock({stageKey, stageColor}){
 /* ── DRAFT REVIEW ── */
 function DraftReview({toolId, tool, onAccept, onReject}){
   const draftNotes=localStorage.getItem('bbos_draft_notes_'+toolId)||'';
-  const draftMeta=JSON.parse(localStorage.getItem('bbos_draft_meta_'+toolId)||'{}');
+  const draftMeta=safeGetJSON('bbos_draft_meta_'+toolId,{});
   const existingNotes=localStorage.getItem('bbos_notes_'+toolId)||'';
   const draftFields={};
   if(tool.fields){
@@ -4755,6 +5095,7 @@ function DraftReview({toolId, tool, onAccept, onReject}){
   const hasDraft=draftNotes||Object.keys(draftFields).length>0;
   if(!hasDraft) return null;
   const accept=()=>{
+    if(!confirm('Accept this AI draft? This will replace your current content.'))return;
     if(draftNotes){safeSet('bbos_notes_'+toolId,draftNotes);safeRemove('bbos_draft_notes_'+toolId);}
     if(tool.fields) tool.fields.forEach(f=>{const v=localStorage.getItem('bbos_draft_field_'+toolId+'_'+f.key);if(v){safeSet('bbos_field_'+toolId+'_'+f.key,v);safeRemove('bbos_draft_field_'+toolId+'_'+f.key);}});
     if(draftMeta.g_label) safeSet('bbos_gl_'+toolId,draftMeta.g_label);
@@ -4762,6 +5103,7 @@ function DraftReview({toolId, tool, onAccept, onReject}){
     onAccept&&onAccept();
   };
   const reject=()=>{
+    if(!confirm('Reject this draft? The AI-generated content will be permanently discarded.'))return;
     safeRemove('bbos_draft_notes_'+toolId);
     if(tool.fields) tool.fields.forEach(f=>safeRemove('bbos_draft_field_'+toolId+'_'+f.key));
     safeRemove('bbos_draft_meta_'+toolId);
@@ -4805,23 +5147,24 @@ function ApiKeyModal({open, onClose, onSave}){
     onClose();
   };
   const remove=()=>{
-    localStorage.removeItem('bbos_api_key_'+provider);
-    if(provider==='anthropic') localStorage.removeItem('bbos_api_key');
+    if(!confirm('Remove your '+prov.name+' API key?'))return;
+    safeRemove('bbos_api_key_'+provider);
+    if(provider==='anthropic') safeRemove('bbos_api_key');
     onSave&&onSave();
     onClose();
   };
   return <div className="api-overlay" onClick={onClose}>
     <div className="api-modal" role="dialog" aria-label="LLM Provider Settings" onClick={e=>e.stopPropagation()}>
       <h3>LLM Provider</h3>
-      <select className="api-input" value={provider} onChange={e=>switchProv(e.target.value)} style={{marginBottom:10,fontFamily:'inherit',appearance:'auto',cursor:'pointer'}}>
+      <select className="api-input" aria-label="LLM Provider" value={provider} onChange={e=>switchProv(e.target.value)} style={{marginBottom:10,fontFamily:'inherit',appearance:'auto',cursor:'pointer'}}>
         {Object.entries(LLM_PROVIDERS).map(([k,v])=><option key={k} value={k}>{v.name}</option>)}
       </select>
-      <select className="api-input" value={model} onChange={e=>setModel(e.target.value)} style={{marginBottom:10,fontFamily:'inherit',appearance:'auto',cursor:'pointer'}}>
+      <select className="api-input" aria-label="Model" value={model} onChange={e=>setModel(e.target.value)} style={{marginBottom:10,fontFamily:'inherit',appearance:'auto',cursor:'pointer'}}>
         {prov.models.map(m=><option key={m.id} value={m.id}>{m.label}</option>)}
       </select>
       <p style={{fontSize:13,color:'var(--text3)',marginBottom:10}}>Your key is stored locally and sent only to {prov.privacyDomain}. Never shared with any other service.</p>
       {existing?<div className="api-status">{prov.name} key set: ...{existing.slice(-4)}</div>:null}
-      <input className="api-input" type="password" placeholder={prov.keyPlaceholder} value={key} onChange={e=>setKey(e.target.value)} onKeyDown={e=>e.key==='Enter'&&save()}/>
+      <input className="api-input" aria-label="API Key" type="password" placeholder={prov.keyPlaceholder} value={key} onChange={e=>setKey(e.target.value)} onKeyDown={e=>e.key==='Enter'&&save()}/>
       <div className="api-actions">
         <button className="api-btn primary" onClick={save}>Save</button>
         {existing&&<button className="api-btn" onClick={remove} style={{color:'var(--danger)'}}>Remove Key</button>}
@@ -4833,20 +5176,29 @@ function ApiKeyModal({open, onClose, onSave}){
 
 /* ── export pipeline ── */
 function exportPipeline(){
-  const data={version:'1.0',exported:new Date().toISOString(),tools:{}};
+  const data={version:'1.1',exported:new Date().toISOString(),tools:{},thresholds:{}};
+  // Capture threshold states
+  try{const o=localStorage.getItem('bbos_thr_open');if(o)data.thresholds.opening=JSON.parse(o);}catch(e){}
+  try{const c=localStorage.getItem('bbos_thr_close');if(c)data.thresholds.closing=JSON.parse(c);}catch(e){}
+  // Capture all tool data — scan localStorage for field keys to catch custom workspace fields
+  const fieldPrefix='bbos_field_';
+  const allFieldKeys={};
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(fieldPrefix)){const rest=k.slice(fieldPrefix.length);const toolId=TOOLS.find(t=>rest.startsWith(t.id+'_'))?.id;if(toolId){const fk=rest.slice(toolId.length+1);if(!allFieldKeys[toolId])allFieldKeys[toolId]={};allFieldKeys[toolId][fk]=localStorage.getItem(k);}}}
   TOOLS.forEach(t=>{
     const entry={};
     const notes=localStorage.getItem('bbos_notes_'+t.id);
     if(notes) entry.content=notes;
     const gl=localStorage.getItem('bbos_gl_'+t.id);
     if(gl) entry.g_label=gl;
+    const gate=localStorage.getItem('bbos_gate_'+t.id);
+    if(gate) entry.gate=gate;
     const comp=localStorage.getItem('bbos_complete_'+t.id);
     if(comp) entry.complete=true;
-    if(t.fields){
-      const fields={};
-      t.fields.forEach(f=>{const v=localStorage.getItem('bbos_field_'+t.id+'_'+f.key);if(v)fields[f.key]=v;});
-      if(Object.keys(fields).length) entry.fields=fields;
-    }
+    // Merge fields from TOOLS definition AND any custom workspace fields found in localStorage
+    const fields={};
+    if(t.fields) t.fields.forEach(f=>{const v=localStorage.getItem('bbos_field_'+t.id+'_'+f.key);if(v)fields[f.key]=v;});
+    if(allFieldKeys[t.id]) Object.assign(fields,allFieldKeys[t.id]);
+    if(Object.keys(fields).length) entry.fields=fields;
     if(Object.keys(entry).length) data.tools[t.id]=entry;
   });
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
@@ -4867,13 +5219,291 @@ function safeSet(key,val){
     return false;
   }
 }
-function safeRemove(key){try{localStorage.removeItem(key);}catch(e){}}
+function safeRemove(key){try{localStorage.removeItem(key);}catch(e){console.warn('localStorage op failed:',e)}}
+function safeGetJSON(key,fallback={}){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback;}catch(e){console.warn('Corrupt storage key:',key);return fallback;}}
+function showSaveToast(){const el=document.getElementById('bbos-toast');if(el){el.textContent='\u2713 Saved';el.style.opacity='1';el.style.transform='translateY(0)';clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(12px)';},2000);}}
+
+function toolHasData(t){
+  if(localStorage.getItem('bbos_draft_notes_'+t.id)||localStorage.getItem('bbos_draft_meta_'+t.id))return true;
+  if(t.fields&&t.fields.some(f=>localStorage.getItem('bbos_field_'+t.id+'_'+f.key)))return true;
+  return !!localStorage.getItem('bbos_notes_'+t.id);
+}
+function toolIsComplete(t){return toolHasData(t)&&!!localStorage.getItem('bbos_complete_'+t.id);}
+
+
+/* ── THRESHOLD MODAL COMPONENTS ── */
+function ThresholdStepIndicator({total,current}){
+  return <div className="thr-step-bar">
+    {Array.from({length:total}).map((_,i)=>(
+      <div key={i} className="thr-step-dot" style={{
+        width:i===current?24:8,
+        background:i===current?'var(--accent)':i<current?'var(--success)':'var(--bg4)'
+      }}/>
+    ))}
+  </div>;
+}
+
+function ThresholdDuaCard({dua,stageAttr,type}){
+  return <>
+    <div className="thr-dua">
+      <div className="thr-dua-attr">{stageAttr}</div>
+      <div className="thr-arabic">{dua.arabic}</div>
+      <div className="thr-transliteration">{dua.trans}</div>
+      <div className="thr-translation">{dua.meaning}</div>
+      <div className="thr-source">{dua.source}</div>
+    </div>
+  </>;
+}
+
+function ThresholdAttributeCard({attr}){
+  return <div className="thr-attr-card">
+    <div className="thr-attr-glyph">⧁</div>
+    <div className="thr-attr-name">{attr.name}</div>
+    <div className="thr-attr-title">{attr.title}</div>
+    <div className="thr-attr-body">{attr.body}</div>
+  </div>;
+}
+
+function ThresholdSignsTable({readiness,signHeaders}){
+  const left=readiness?.governing||[];
+  const right=readiness?.notYet||[];
+  const lh=signHeaders?.left||'Governing when…';
+  const rh=signHeaders?.right||'Present but not yet rested in when…';
+  const rows=Math.max(left.length,right.length);
+  return <div style={{overflowX:'auto'}}>
+    <table className="thr-signs">
+      <thead>
+        <tr>
+          <th className="thr-signs-th-l">{lh}</th>
+          <th className="thr-signs-th-r">{rh}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Array.from({length:rows}).map((_,i)=>(
+          <tr key={i} className={i===rows-1?'thr-signs-tr-last':''}>
+            <td className="thr-signs-td-l">{left[i]||''}</td>
+            <td className="thr-signs-td-r">{right[i]||''}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>;
+}
+
+function ThresholdCheck({label,checked,onChange}){
+  return <div className={`thr-check${checked?' on':''}`} onClick={()=>onChange(!checked)}>
+    <div className={`thr-check-box${checked?' on':''}`}>
+      {checked&&<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="var(--bg)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+    </div>
+    <div className="thr-check-lbl">{label}</div>
+  </div>;
+}
+
+function OpeningThreshold({stageKey,onComplete,onClose}){
+  const [step,setStep]=useState(0);
+  const [ck1,setCk1]=useState(false);
+  const [ck2,setCk2]=useState(false);
+  const [vis,setVis]=useState(true);
+  const scrollRef=useRef(null);
+  const d=getThr(stageKey);
+  const s=STAGES[stageKey];
+  const canConfirm=ck1&&ck2;
+
+  const go=next=>{
+    setVis(false);
+    setTimeout(()=>{setStep(next);setVis(true);if(scrollRef.current)scrollRef.current.scrollTop=0;},280);
+  };
+
+  const stepLabels=['Opening Dua','Governing Attributes','Readiness Check'];
+  const firstName=d.attributesFull?.[0]?.name||d.attr||'';
+
+  return <div className="thr-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+    <div className="thr-modal">
+      <div className="thr-hdr">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10}}>
+          <div>
+            <div className="thr-eyebrow">Opening Threshold</div>
+            <div className="thr-title" style={{color:s.c}}>Stage {s.code} · {s.key} — {s.name}</div>
+          </div>
+          <button className="thr-close" onClick={onClose}>✕</button>
+        </div>
+        <ThresholdStepIndicator total={3} current={step}/>
+        {step===0
+          ? <div className="thr-step-lbl" style={{fontStyle:'italic',color:'var(--text3)',lineHeight:1.5}}>Take a moment to make this dua privately.<br/>When you are ready, we will begin.</div>
+          : <div className="thr-step-lbl">{stepLabels[step]}</div>}
+      </div>
+
+      <div ref={scrollRef} className="thr-body" style={{opacity:vis?1:0,transform:vis?'translateY(0)':'translateY(8px)'}}>
+        {step===0&&<ThresholdDuaCard dua={d} stageAttr={d.attr||''} type="opening"/>}
+        {step===1&&<div>
+          {(d.attributesFull||[]).map((a,i)=><ThresholdAttributeCard key={i} attr={a}/>)}
+          {(!d.attributesFull||d.attributesFull.length===0)&&(d.annotations||[]).map((a,i)=><ThresholdAttributeCard key={i} attr={{name:a.attr.split(' · ')[0],title:a.attr,body:a.text}}/>)}
+        </div>}
+        {step===2&&<div>
+          <div className="thr-frame">{d.readiness?.frame||''}</div>
+          <ThresholdSignsTable readiness={d.readiness} signHeaders={d.signHeaders||THRESHOLD_META[stageKey]?.signHeaders}/>
+          <div className="thr-declaration">
+            <div className="thr-decl-title">Declaration of Readiness</div>
+            <div className="thr-decl-note">The signs above describe what the governing quality looks like when present and when present but not yet rested in. Before proceeding, make these declarations honestly — before {d.attr||s.name}.</div>
+            <ThresholdCheck
+              label={`I can name a specific moment where ${firstName} was genuinely active in my work — a decision, a sentence, a conversation where the quality was doing its work.`}
+              checked={ck1} onChange={setCk1}
+            />
+            <ThresholdCheck
+              label={`I am aware of where ${firstName} was present in my intention but was not yet governing the work — and I hold that awareness honestly as I enter this stage.`}
+              checked={ck2} onChange={setCk2}
+            />
+            <div className="thr-decl-footer">If both declarations come easily, the check has done its work. If you can affirm the first but not the second, sit with that asymmetry. For early-cycle operators, the second may not yet be available — this does not prevent you from proceeding.</div>
+          </div>
+        </div>}
+      </div>
+
+      <div className="thr-ftr">
+        {step>0
+          ? <button className="thr-btn thr-btn-ghost" onClick={()=>go(step-1)}>Back</button>
+          : <div/>}
+        {step<2
+          ? <button className="thr-btn thr-btn-primary" onClick={()=>go(step+1)}>{step===0?'I Am Ready':'I Have Reflected'}</button>
+          : <button className="thr-btn thr-btn-primary" onClick={onComplete} disabled={!canConfirm}>Confirm Readiness — Unlock Stage Work</button>
+        }
+      </div>
+    </div>
+  </div>;
+}
+
+function ClosingThreshold({stageKey,onComplete,onClose}){
+  const [step,setStep]=useState(0);
+  const [notes,setNotes]=useState('');
+  const [vis,setVis]=useState(true);
+  const scrollRef=useRef(null);
+  const d=getThr(stageKey);
+  const s=STAGES[stageKey];
+  const closingDua=d.closingDua||CLOSING_DUA;
+  const cr=d.reflection||{frame:'',governing:[],notYet:[]};
+
+  const go=next=>{
+    setVis(false);
+    setTimeout(()=>{setStep(next);setVis(true);if(scrollRef.current)scrollRef.current.scrollTop=0;},280);
+  };
+
+  return <div className="thr-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+    <div className="thr-modal">
+      <div className="thr-hdr">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10}}>
+          <div>
+            <div className="thr-eyebrow">Closing Threshold</div>
+            <div className="thr-title" style={{color:s.c}}>Stage {s.code} · {s.key} — {s.name}</div>
+          </div>
+          <button className="thr-close" onClick={onClose}>✕</button>
+        </div>
+        <ThresholdStepIndicator total={2} current={step}/>
+        {step===1
+          ? <div className="thr-step-lbl" style={{fontStyle:'italic',color:'var(--text3)',lineHeight:1.5}}>Take a moment to make this dua privately.<br/>When you are ready, the stage will close.</div>
+          : <div className="thr-step-lbl">Closing Reflection</div>}
+      </div>
+
+      <div ref={scrollRef} className="thr-body" style={{opacity:vis?1:0,transform:vis?'translateY(0)':'translateY(8px)'}}>
+        {step===0&&<div>
+          <div style={{fontSize:14,fontWeight:600,color:'var(--text)',marginBottom:4}}>Closing Reflection</div>
+          <div style={{fontSize:13,color:'var(--accent)',marginBottom:14}}>{d.attr||''}</div>
+          <div className="thr-frame">{cr.frame}</div>
+          <ThresholdSignsTable
+            readiness={{governing:cr.governing||d.reflection?.governing||[],notYet:cr.notYet||d.reflection?.notYet||[]}}
+            signHeaders={{
+              left:(THRESHOLD_META[stageKey]?.signHeaders?.left||d.attr||'')+(cr.governing?.length?' — were governing':' — were governing'),
+              right:(THRESHOLD_META[stageKey]?.signHeaders?.right||d.attr||'')+(cr.notYet?.length?' — were present but not yet rested in':' — were present but not yet rested in')
+            }}
+          />
+          <div style={{marginTop:16}}>
+            <div style={{fontSize:12,color:'var(--text3)',fontStyle:'italic',marginBottom:4}}>What do you want to name about this stage before closing it? (Optional)</div>
+            <textarea className="thr-notes" value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Any reflection you want to carry forward…"/>
+          </div>
+        </div>}
+        {step===1&&<div>
+          <ThresholdDuaCard dua={closingDua} stageAttr={d.attr||''} type="closing"/>
+        </div>}
+      </div>
+
+      <div className="thr-ftr">
+        {step>0
+          ? <button className="thr-btn thr-btn-ghost" onClick={()=>go(0)}>Back</button>
+          : <div/>}
+        {step===0
+          ? <button className="thr-btn thr-btn-primary" onClick={()=>go(1)}>Proceed to Closing Dua</button>
+          : <button className="thr-btn thr-btn-primary" onClick={onComplete}>Accept and Close Stage</button>
+        }
+      </div>
+    </div>
+  </div>;
+}
+
+
+/* ── ISLAMIC LAYER COLUMN ── */
+function IslamicLayerColumn({focusedStageKey, valuesLayer, onDragStart, isOpen, isLocked, onToggleLock, onHoverChange}){
+  const activeStage = focusedStageKey ? STAGES[focusedStageKey] : null;
+  const dua = focusedStageKey ? DUAS[focusedStageKey] : null;
+  const stageColor = activeStage?.c || 'var(--accent)';
+  const isIslamic = valuesLayer === 'islamic';
+
+  return <div className="il"
+    onMouseEnter={()=>onHoverChange(true)}
+    onMouseLeave={()=>onHoverChange(false)}
+    style={{overflowX:'hidden',overflowY:'auto'}}
+  >
+    {/* ── COLLAPSED STRIP ── */}
+    {!isOpen && <div className="il-vstrip">
+      <button
+        className={`vstrip-icon-btn${!isLocked?' flash-btn':''}`}
+        onClick={onToggleLock}
+        title="Islamic Layer — hover to expand, click to lock open"
+      >
+        <span style={{fontSize:16,color:'var(--accent)'}}>⧁</span>
+      </button>
+      {activeStage && <>
+        <div className="vstrip-divider"/>
+        <div style={{width:3,height:20,borderRadius:2,background:stageColor,margin:'1px auto'}} title={activeStage.key+' · '+activeStage.name}/>
+        <span style={{fontSize:9,fontWeight:700,letterSpacing:.5,color:stageColor,marginTop:2}}>{activeStage.key}</span>
+      </>}
+    </div>}
+
+    {/* ── EXPANDED CONTENT ── */}
+    {isOpen && <>
+      <div className="il-hdr" style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:6}}>
+        <div style={{flex:1,minWidth:0}}>
+          <div className="il-eyebrow">Islamic Layer</div>
+          {activeStage ? <>
+            <div className="il-stage" style={{color:stageColor}}>{activeStage.key} · {activeStage.name}</div>
+            <div style={{fontSize:10,color:'var(--text3)',marginTop:2,lineHeight:1.3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{getAttr(activeStage)}</div>
+          </> : <div className="il-stage">Session Companion</div>}
+        </div>
+      </div>
+
+      {!isIslamic ? <div className="il-empty">
+        <div className="il-empty-glyph" style={{opacity:.3}}>⧁</div>
+        <div>Switch to <strong style={{color:'var(--accent)'}}>Islamic</strong> framing in the topbar to activate this column's spiritual layer.</div>
+      </div> : dua ? <div className="il-content" key={focusedStageKey}>
+        <DuaBlock dua={dua} kind="opening" stageColor={stageColor} stageKey={focusedStageKey}/>
+        <AttributeBlock stageKey={focusedStageKey} stageColor={stageColor}/>
+        <ReadinessBlock stageKey={focusedStageKey} stageColor={stageColor}/>
+        <div className="il-section-divider"/>
+        <DuaBlock dua={ONGOING_DUA} kind="ongoing" stageColor={stageColor} stageKey={focusedStageKey}/>
+        <div className="il-section-divider"/>
+        <ReflectionBlock stageKey={focusedStageKey} stageColor={stageColor}/>
+        <DuaBlock dua={dua.closing||CLOSING_DUA} kind="closing" stageColor={stageColor} stageKey={focusedStageKey}/>
+      </div> : <div className="il-empty">
+        <div className="il-empty-glyph">⧁</div>
+        <div>Expand a stage or select a tool from the stages column to see its Islamic layer.</div>
+      </div>}
+      <div className="il-drag" onMouseDown={onDragStart}/>
+    </>}
+  </div>;
+}
 
 function App(){
   const [selId,setSelId]=useState(null);
   const [collapsed,setCol]=useState(()=>{
     let saved={};
-    try{const s=localStorage.getItem('bbos_collapsed');if(s)saved=JSON.parse(s);}catch(e){}
+    try{const s=localStorage.getItem('bbos_collapsed');if(s)saved=JSON.parse(s);}catch(e){console.warn('localStorage op failed:',e)}
     const init={};
     Object.keys(STAGES).forEach(k=>{init[k]=saved[k]!==undefined?saved[k]:true;});
     return init;
@@ -4881,35 +5511,61 @@ function App(){
   const [view,setView]=useState('pipeline');
   const [sample,setSample]=useState(false);
   const [roleId,setRoleId]=useState('all');
-  const [roleLocked,setRoleLocked]=useState(false);
+  const [roleMode,setRoleMode]=useState('hover');
   const [roleHover,setRoleHover]=useState(false);
-  const roleOpen=roleLocked||roleHover;
+  const roleOpen=roleMode==='open'||(roleMode==='hover'&&roleHover);
+  const cycleMode=m=>m==='hover'?'closed':m==='closed'?'open':'hover';
+  // Threshold state — opening gates stage work; closing wraps it
+  const [completedOpening,setCompletedOpening]=useState(()=>{try{return JSON.parse(localStorage.getItem('bbos_thr_open')||'{}');}catch(e){return {};}});
+  const [completedClosing,setCompletedClosing]=useState(()=>{try{return JSON.parse(localStorage.getItem('bbos_thr_close')||'{}');}catch(e){return {};}});
+  const [openingStageKey,setOpeningStageKey]=useState(null);
+  const [closingStageKey,setClosingStageKey]=useState(null);
+  const [pendingToolId,setPendingToolId]=useState(null);
+  const completeOpening=k=>{const next={...completedOpening,[k]:true};setCompletedOpening(next);safeSet('bbos_thr_open',JSON.stringify(next));setOpeningStageKey(null);if(pendingToolId){setSelId(pendingToolId);setPendingToolId(null);}};
+  const completeClosing=k=>{const next={...completedClosing,[k]:true};setCompletedClosing(next);safeSet('bbos_thr_close',JSON.stringify(next));setClosingStageKey(null);};
   const [sbOpen,setSbOpen]=useState(()=>{
     try{return localStorage.getItem('bbos_sb_open')==='1';}catch(e){return false;}
   });
+  const [mobTab,setMobTab]=useState('pipeline'); // 'pipeline' | 'islamic'
+  const [,_sbStatusTick]=useState(0);
+  useEffect(()=>{const h=()=>_sbStatusTick(c=>c+1);window.addEventListener('bbos-field-updated',h);return ()=>window.removeEventListener('bbos-field-updated',h);},[]);
+  const [isMobile,setIsMobile]=useState(()=>window.innerWidth<=768);
+  useEffect(()=>{
+    const check=()=>setIsMobile(window.innerWidth<=768);
+    window.addEventListener('resize',check);
+    return ()=>window.removeEventListener('resize',check);
+  },[]);
+  // Column 1 (Islamic Layer) collapse state — hover + lock pattern
+  const [ilLocked,setIlLocked]=useState(()=>{try{return localStorage.getItem('bbos_il_locked')!=='0';}catch(e){return true;}});
+  const [ilHov,setIlHov]=useState(false);
+  const ilOpen=ilLocked||ilHov;
+  // Column 2 (Stages) collapse state — same pattern
+  const [sbPanelLocked,setSbPanelLocked]=useState(()=>{try{return localStorage.getItem('bbos_sb_panel_locked')!=='0';}catch(e){return true;}});
+  const [sbPanelHov,setSbPanelHov]=useState(false);
+  const sbPanelOpen=isMobile||sbPanelLocked||sbPanelHov;
   const [valuesLayer,setValuesLayer]=useState(()=>{try{return localStorage.getItem('bbos_values_layer')||'islamic';}catch(e){return 'islamic';}});
-  const switchValues=v=>{setValuesLayer(v);try{localStorage.setItem('bbos_values_layer',v);}catch(e){}};
+  const switchValues=v=>{setValuesLayer(v);safeSet('bbos_values_layer',v)};
   const getRat=tool=>valuesLayer==='universal'&&tool.rat_u?tool.rat_u:tool.rat;
   const [attrLang,setAttrLang]=useState(()=>{try{return localStorage.getItem('bbos_attr_lang')||'en';}catch(e){return 'en';}});
   const [tipsOn,setTipsOn]=useState(()=>{try{return localStorage.getItem('bbos_tips')!=='off';}catch(e){return true;}});
   window.__tipsOff=!tipsOn;
-  const toggleTips=()=>{const next=!tipsOn;setTipsOn(next);window.__tipsOff=!next;try{localStorage.setItem('bbos_tips',next?'on':'off');}catch(e){}};
-  const [viewHov,setViewHov]=useState(false);const [viewLock,setViewLock]=useState(false);const viewExp=viewHov||viewLock;
-  const [valHov,setValHov]=useState(false);const [valLock,setValLock]=useState(false);const valExp=valHov||valLock;
-  const [langHov,setLangHov]=useState(false);const [langLock,setLangLock]=useState(false);const langExp=langHov||langLock;
-  const [tipHov,setTipHov]=useState(false);const [tipLock,setTipLock]=useState(false);const tipExp=tipHov||tipLock;
+  const toggleTips=()=>{const next=!tipsOn;setTipsOn(next);window.__tipsOff=!next;safeSet('bbos_tips',next?'on':'off')};
+  const [viewHov,setViewHov]=useState(false);const [viewMode,setViewMode]=useState('hover');const viewExp=viewMode==='open'||(viewMode==='hover'&&viewHov);
+  const [valHov,setValHov]=useState(false);const [valMode,setValMode]=useState('hover');const valExp=valMode==='open'||(valMode==='hover'&&valHov);
+  const [langHov,setLangHov]=useState(false);const [langMode,setLangMode]=useState('hover');const langExp=langMode==='open'||(langMode==='hover'&&langHov);
+  const [tipHov,setTipHov]=useState(false);const [tipMode,setTipMode]=useState('hover');const tipExp=tipMode==='open'||(tipMode==='hover'&&tipHov);
   const [theme,setTheme]=useState(()=>localStorage.getItem('bbos_theme')||'dark');
-  const switchTheme=t=>{setTheme(t);try{localStorage.setItem('bbos_theme',t);}catch(e){}};
+  const switchTheme=t=>{setTheme(t);safeSet('bbos_theme',t)};
   React.useEffect(()=>{document.documentElement.setAttribute('data-theme',theme);},[theme]);
-  const [themeHov,setThemeHov]=useState(false);const [themeLock,setThemeLock]=useState(false);const themeExp=themeHov||themeLock;
+  const [themeHov,setThemeHov]=useState(false);const [themeMode,setThemeMode]=useState('hover');const themeExp=themeMode==='open'||(themeMode==='hover'&&themeHov);
   const themeRef=useRef(null);
-  const switchAttrLang=v=>{setAttrLang(v);try{localStorage.setItem('bbos_attr_lang',v);}catch(e){}};
+  const switchAttrLang=v=>{setAttrLang(v);safeSet('bbos_attr_lang',v)};
   const [segment,setSegment]=useState(()=>{try{return localStorage.getItem('bbos_segment')||'';}catch(e){return '';}});
   const [showWelcome,setShowWelcome]=useState(()=>{try{return !localStorage.getItem('bbos_segment');}catch(e){return true;}});
   const pickSegment=seg=>{
     setSegment(seg);
     setShowWelcome(false);
-    try{localStorage.setItem('bbos_segment',seg);}catch(e){}
+    safeSet('bbos_segment',seg)
     if(seg==='A') switchValues('islamic');
     else switchValues('universal');
   };
@@ -4943,14 +5599,23 @@ function App(){
   useScrollToActive(tipRef,tipExp,[tipExp,tipsOn]);
   useScrollToActive(themeRef,themeExp,[themeExp,theme]);
   const sbTopRef=useRef(null);
+  const sbScrollRef=useRef(null);
+  const [sbScrolled,setSbScrolled]=useState(false);
+  const [sbScrollEnd,setSbScrollEnd]=useState(false);
   const [sbTopH,setSbTopH]=useState(46);
-  const [sbWidth,setSbWidth]=useState(()=>{const saved=parseInt(localStorage.getItem('bbos_sb_width')||'272');return Math.min(saved,Math.max(180,Math.floor(window.innerWidth*0.4)));});
+  const [sbWidth,setSbWidth]=useState(()=>{const saved=parseInt(localStorage.getItem('bbos_sb_width')||'248');return Math.min(400,Math.max(160,saved));});
+  const [ilWidth,setIlWidth]=useState(()=>{const saved=parseInt(localStorage.getItem('bbos_il_width')||'214');return Math.min(360,Math.max(160,saved));});
   const dragRef=useRef({active:false,startX:0,startW:0});
+  const ilDragRef=useRef({active:false,startX:0,startW:0});
+  const ilHovTimer=useRef(null);
+  const sbHovTimer=useRef(null);
   const [apiKeyOpen,setApiKeyOpen]=useState(false);
   const [apiKeySet,setApiKeySet]=useState(()=>{const p=localStorage.getItem('bbos_provider')||'anthropic';return!!localStorage.getItem('bbos_api_key_'+p);});
   const [genStates,setGenStates]=useState({});
   const [genResults,setGenResults]=useState({});
   const fileRef=useRef(null);
+  const isMounted=useRef(true);
+  useEffect(()=>()=>{isMounted.current=false;},[]);
 
   const generateStage=async(stageKey)=>{
     const _p=localStorage.getItem('bbos_provider')||'anthropic';
@@ -4960,10 +5625,12 @@ function App(){
       const prompt=buildSystemPrompt(stageKey,roleId);
       const userMsg='Generate all assets for Stage '+stageKey+' — '+STAGES[stageKey].name+'. Follow the output schema exactly.';
       const result=await callLLM(prompt,userMsg);
+      if(!isMounted.current) return;
       const synthesis=synthesizeAssets(result);
       setGenResults(r=>({...r,[stageKey]:synthesis}));
       setGenStates(s=>({...s,[stageKey]:synthesis.error?'error':'complete'}));
     }catch(e){
+      if(!isMounted.current) return;
       setGenResults(r=>({...r,[stageKey]:{error:e.message}}));
       setGenStates(s=>({...s,[stageKey]:'error'}));
     }
@@ -4979,23 +5646,48 @@ function App(){
       const prompt=buildSystemPrompt(tool.stage,roleId,{singleTool:toolId});
       const userMsg='Generate content for tool: '+tool.label+' ('+toolId+'). Follow the output schema exactly.';
       const result=await callLLM(prompt,userMsg);
+      if(!isMounted.current) return;
       const synthesis=synthesizeAssets(result);
       setGenResults(r=>({...r,[toolId]:synthesis}));
       setGenStates(s=>({...s,[toolId]:synthesis.error?'error':'complete'}));
     }catch(e){
+      if(!isMounted.current) return;
       setGenResults(r=>({...r,[toolId]:{error:e.message}}));
       setGenStates(s=>({...s,[toolId]:'error'}));
     }
   };
-  window.__bbosGenerateTool=generateTool;
 
   const onFileUpload=async(e)=>{
     const file=e.target.files?.[0];
     if(!file) return;
+    if(!confirm('Import pipeline data from "'+file.name+'"? This may overwrite existing content.'))return;
     try{
-      const result=await handleFileUpload(file);
-      if(result.error) alert('Upload error: '+result.details?.join(', '));
-      else alert('Upload complete: '+result.written.length+' written, '+result.drafted.length+' drafted, '+result.skipped.length+' skipped');
+      const text=await file.text();
+      const json=JSON.parse(text);
+      // Detect export format (v1.0/v1.1) vs AI generation format
+      if(json.version&&json.tools){
+        // Pipeline restore from export
+        let restored=0;
+        Object.entries(json.tools).forEach(([toolId,entry])=>{
+          if(entry.content) safeSet('bbos_notes_'+toolId,entry.content);
+          if(entry.g_label) safeSet('bbos_gl_'+toolId,entry.g_label);
+          if(entry.gate) safeSet('bbos_gate_'+toolId,entry.gate);
+          if(entry.complete) safeSet('bbos_complete_'+toolId,'1');
+          if(entry.fields) Object.entries(entry.fields).forEach(([fk,fv])=>safeSet('bbos_field_'+toolId+'_'+fk,fv));
+          restored++;
+        });
+        if(json.thresholds){
+          if(json.thresholds.opening) safeSet('bbos_thr_open',JSON.stringify(json.thresholds.opening));
+          if(json.thresholds.closing) safeSet('bbos_thr_close',JSON.stringify(json.thresholds.closing));
+        }
+        alert('Restored '+restored+' tools from pipeline backup.');
+        window.dispatchEvent(new Event('bbos-field-updated'));
+      }else{
+        // AI generation format — route through synthesizeAssets
+        const result=await handleFileUpload(file);
+        if(result.error) alert('Upload error: '+result.details?.join(', '));
+        else alert('Upload complete: '+result.written.length+' written, '+result.drafted.length+' drafted, '+result.skipped.length+' skipped');
+      }
     }catch(err){
       alert('Upload failed: '+err.message);
     }
@@ -5003,7 +5695,7 @@ function App(){
   };
 
   const [mapView,setMapView]=useState(()=>{try{return localStorage.getItem('bbos_map_view')||'pipeline';}catch(e){return 'pipeline';}});
-  const switchMapView=v=>{setMapView(v);try{localStorage.setItem('bbos_map_view',v);}catch(e){}};
+  const switchMapView=v=>{setMapView(v);safeSet('bbos_map_view',v)};
   const role=ROLES.find(r=>r.id===roleId)||ROLES[0];
   const selTool=TOOLS.find(t=>t.id===selId);
   const toggleCol=k=>setCol(c=>{
@@ -5011,7 +5703,13 @@ function App(){
     const next = {};
     Object.keys(STAGES).forEach(key=>{ next[key] = true; });
     if(isOpening) next[k] = false;
-    try{localStorage.setItem('bbos_collapsed',JSON.stringify(next));}catch(e){}
+    safeSet('bbos_collapsed',JSON.stringify(next));
+    // If opening a new stage and no tool in that stage is currently selected, clear selection
+    // so the IL column immediately reflects the newly opened stage
+    if(isOpening){
+      const selTool=TOOLS.find(t=>t.id===selId);
+      if(!selTool||selTool.stage!==k) setSelId(null);
+    }
     return next;
   });
   const switchView=v=>setView(v);
@@ -5019,58 +5717,119 @@ function App(){
   const switchSample=v=>{ setSample(v); };
 
   const [sbSearch,setSbSearch]=useState('');
-  const sidebarTools = roleId==='all'
+  const {useMemo}=React;
+  const sidebarTools = useMemo(()=>roleId==='all'
     ? TOOLS
-    : TOOLS.filter(t=>rolePerm(t,roleId)!=='-');
+    : TOOLS.filter(t=>rolePerm(t,roleId)!=='-'),[roleId]);
 
-  const toolsByStage={};
-  Object.keys(STAGES).forEach(k=>{toolsByStage[k]=[];});
-  const searchLc=sbSearch.toLowerCase();
-  sidebarTools.forEach(t=>{if(toolsByStage[t.stage]&&(!searchLc||t.label.toLowerCase().includes(searchLc)||t.asset?.toLowerCase().includes(searchLc)))toolsByStage[t.stage].push(t);});
+  const toolsByStage=useMemo(()=>{
+    const result={};Object.keys(STAGES).forEach(k=>{result[k]=[];});
+    const searchLc=sbSearch.toLowerCase();
+    sidebarTools.forEach(t=>{if(result[t.stage]&&(!searchLc||t.label.toLowerCase().includes(searchLc)||t.asset?.toLowerCase().includes(searchLc)))result[t.stage].push(t);});
+    return result;
+  },[sidebarTools,sbSearch]);
 
   function mainContent(){
     if(view==='asset') return <AssetView selId={selId} setSelId={setSelId} role={role} sample={sample} getRat={getRat}/>;
-    if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role} getRat={getRat}/>;
+    if(selTool) return <ToolDetail tool={selTool} onBack={()=>setSelId(null)} sample={sample} role={role} getRat={getRat} onGenerate={generateTool}/>;
     if(mapView==='layers') return <LayersView onSelect={setSelId} role={role} sample={sample}/>;
-    return <Overview onSelect={setSelId} role={role} sample={sample} genStates={genStates} genResults={genResults} generateStage={generateStage}/>;
+    return <Overview onSelect={setSelId} role={role} sample={sample} genStates={genStates} genResults={genResults} generateStage={generateStage} valuesLayer={valuesLayer} completedOpening={completedOpening} onBeginStage={(k,tid)=>{setPendingToolId(tid);setOpeningStageKey(k);}}/>;
   }
 
   const toggleSb=()=>setSbOpen(o=>{
     const next=!o;
-    try{localStorage.setItem('bbos_sb_open',next?'1':'0');}catch(e){}
+    safeSet('bbos_sb_open',next?'1':'0')
     return next;
   });
 
   const stages=Object.values(STAGES);
 
-  // Measure .sb-top height for sticky stage headers
-  const {useEffect}=React;
+  // Measure .sb-top height for sticky stage headers — re-measure on panel open/close too
   useEffect(()=>{
     const measure=()=>{if(sbTopRef.current)setSbTopH(sbTopRef.current.getBoundingClientRect().height);};
+    let t;const throttled=()=>{clearTimeout(t);t=setTimeout(measure,150);};
     measure();
-    window.addEventListener('resize',measure);
-    return ()=>window.removeEventListener('resize',measure);
+    window.addEventListener('resize',throttled);
+    return ()=>{window.removeEventListener('resize',throttled);clearTimeout(t);};
   },[]);
+  useEffect(()=>{
+    if(sbPanelOpen&&sbTopRef.current){
+      const t=setTimeout(()=>{if(sbTopRef.current)setSbTopH(sbTopRef.current.getBoundingClientRect().height);},50);
+      return ()=>clearTimeout(t);
+    }
+  },[sbPanelOpen]);
+
+  // Detect sidebar scroll — flash edges when tools are hidden behind sticky headers
+  const checkSbScroll=useCallback(()=>{
+    const el=sbScrollRef.current;
+    if(!el) return;
+    setSbScrolled(el.scrollTop>8);
+    setSbScrollEnd(el.scrollTop+el.clientHeight<el.scrollHeight-8);
+  },[]);
+  useEffect(()=>{
+    const el=sbScrollRef.current;
+    if(!el) return;
+    checkSbScroll();
+    el.addEventListener('scroll',checkSbScroll,{passive:true});
+    return ()=>el.removeEventListener('scroll',checkSbScroll);
+  },[checkSbScroll]);
+  // Re-check scroll bounds when tab or content changes
+  useEffect(()=>{const t=setTimeout(checkSbScroll,100);return ()=>clearTimeout(t);},[mobTab,sbPanelOpen,collapsed,checkSbScroll]);
 
   // Sidebar drag-to-resize
   const onDragStart=e=>{
     e.preventDefault();
-    dragRef.current={active:true,startX:e.clientX,startW:sbWidth};
     const onDrag=e2=>{
       if(!dragRef.current.active)return;
-      const w=Math.min(480,Math.max(180,dragRef.current.startW+(e2.clientX-dragRef.current.startX)));
+      const w=Math.min(480,Math.max(160,dragRef.current.startW+(e2.clientX-dragRef.current.startX)));
       setSbWidth(w);
     };
     const onDragEnd=()=>{
       dragRef.current.active=false;
+      dragRef.current.onDrag=null;dragRef.current.onDragEnd=null;
       document.removeEventListener('mousemove',onDrag);
       document.removeEventListener('mouseup',onDragEnd);
     };
+    dragRef.current={active:true,startX:e.clientX,startW:sbWidth,onDrag,onDragEnd};
     document.addEventListener('mousemove',onDrag);
     document.addEventListener('mouseup',onDragEnd);
   };
+  useEffect(()=>()=>{
+    if(dragRef.current?.onDrag){document.removeEventListener('mousemove',dragRef.current.onDrag);document.removeEventListener('mouseup',dragRef.current.onDragEnd);}
+  },[]);
   // Persist sidebar width when it changes
-  useEffect(()=>{try{localStorage.setItem('bbos_sb_width',String(sbWidth));}catch(e){}},[sbWidth]);
+  useEffect(()=>{safeSet('bbos_sb_width',String(sbWidth))},[sbWidth]);
+  useEffect(()=>{safeSet('bbos_il_width',String(ilWidth))},[ilWidth]);
+  useEffect(()=>{safeSet('bbos_il_locked',ilLocked?'1':'0')},[ilLocked]);
+  useEffect(()=>{safeSet('bbos_sb_panel_locked',sbPanelLocked?'1':'0')},[sbPanelLocked]);
+  // threshold state is persisted inline in completeOpening/completeClosing
+
+  // IL drag-to-resize
+  const onIlDragStart=e=>{
+    e.preventDefault();
+    const onDrag=e2=>{
+      if(!ilDragRef.current.active)return;
+      const w=Math.min(360,Math.max(160,ilDragRef.current.startW+(e2.clientX-ilDragRef.current.startX)));
+      setIlWidth(w);
+    };
+    const onDragEnd=()=>{
+      ilDragRef.current.active=false;
+      ilDragRef.current.onDrag=null;ilDragRef.current.onDragEnd=null;
+      document.removeEventListener('mousemove',onDrag);
+      document.removeEventListener('mouseup',onDragEnd);
+    };
+    ilDragRef.current={active:true,startX:e.clientX,startW:ilWidth,onDrag,onDragEnd};
+    document.addEventListener('mousemove',onDrag);
+    document.addEventListener('mouseup',onDragEnd);
+  };
+  useEffect(()=>()=>{
+    if(ilDragRef.current?.onDrag){document.removeEventListener('mousemove',ilDragRef.current.onDrag);document.removeEventListener('mouseup',ilDragRef.current.onDragEnd);}
+  },[]);
+
+  // Derive which stage the Islamic Layer column should focus on:
+  // Priority: (1) selected tool's stage, (2) the single open stage section, (3) null
+  const openStages = Object.keys(collapsed).filter(k=>!collapsed[k]);
+  const focusedStageKey = selTool?.stage || (openStages.length===1 ? openStages[0] : null);
 
   // Mobile role dropdown portal
   const roleDrop = roleDropOpen ? ReactDOM.createPortal(
@@ -5092,7 +5851,9 @@ function App(){
     </div>, document.body
   ) : null;
 
-  return <div className={`app${sbOpen?' sb-open':''}`} style={{'--sb-w':sbWidth+'px'}}>
+  return <div className={`app${sbOpen?' sb-open':''}`} style={{
+    gridTemplateColumns:`${sbPanelOpen?sbWidth:40}px 28px 1fr`,
+  }}>
     {/* WELCOME / SEGMENT SELECTION MODAL */}
     {showWelcome&&<div className="wlc-overlay" onKeyDown={e=>{if(e.key==='Escape')setShowWelcome(false);}} tabIndex={-1} ref={el=>{if(el)el.focus();}}>
       <div className="wlc-modal" role="dialog" aria-label="Welcome to BBOS">
@@ -5126,47 +5887,47 @@ function App(){
       </div>
       <div className="tb-divider"/>
       {/* Accordion role selector — horizontal rollout */}
-      <div className="role-sel-wrap" onMouseEnter={()=>setRoleHover(true)} onMouseLeave={()=>setRoleHover(false)}>
+      <div className="role-sel-wrap" onMouseEnter={()=>{if(roleMode!=='closed')setRoleHover(true);}} onMouseLeave={()=>setRoleHover(false)}>
         <div ref={roleBtnRef} className="role-sel" style={{maxWidth:roleOpen?700:130,transition:'max-width .3s ease',overflow:'hidden'}}>
           {ROLES.map(r=>{
             const active=roleId===r.id;
             const btn=<button className={`rs-btn${active?' on':''}`}
               style={active?{background:r.bg,color:r.color}:{}}
-              onClick={()=>{if(active){setRoleLocked(o=>!o);}else{switchRole(r.id);setRoleLocked(true);}}}>{r.id==='all'?'All Roles':r.label}</button>;
+              onClick={()=>{if(active){setRoleMode(cycleMode);}else{switchRole(r.id);}}}>{r.id==='all'?'All Roles':r.label}</button>;
             return r.tip?<Tip key={r.id} def={[r.label+' \u2014 '+r.sub,r.tip]}>{btn}</Tip>:btn;
           })}
         </div>
-        <button aria-label={roleOpen?'Collapse role selector':'Expand role selector'} className={`role-toggle-icon ${roleOpen?'static':'flash'}`} onClick={()=>setRoleLocked(o=>!o)}>{roleOpen?'\u2039':'\u203A\u203A'}</button>
+        <button aria-label={roleOpen?'Collapse role selector':'Expand role selector'} className={`role-toggle-icon ${roleMode==='open'?'static':roleMode==='closed'?'closed':'flash'}`} onClick={()=>setRoleMode(cycleMode)}>{roleMode==='open'?'\u2039':roleMode==='closed'?'\u2014':'\u203A\u203A'}</button>
       </div>
       <div className="tb-right">
-        {!selId&&<div ref={viewRef} className="seg" style={{maxWidth:viewExp?300:90,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>setViewHov(true)} onMouseLeave={()=>setViewHov(false)}>
+        {!selId&&<div ref={viewRef} className="seg" style={{maxWidth:viewExp?300:90,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>{if(viewMode!=='closed')setViewHov(true);}} onMouseLeave={()=>setViewHov(false)}>
           {[['pipeline','Pipeline',view==='pipeline'&&mapView==='pipeline',()=>{switchView('pipeline');switchMapView('pipeline');}],
             ['layers','Layers',view==='pipeline'&&mapView==='layers',()=>{switchView('pipeline');switchMapView('layers');}],
             ['asset','Assets',view==='asset',()=>switchView('asset')]
           ].map(([k,lbl,active,fn])=>
-            <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setViewLock(o=>!o);}else{fn();setViewLock(true);}}}>{lbl}</button>
+            <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setViewMode(cycleMode);}else{fn();}}}>{lbl}</button>
           )}
         </div>}
-        <div ref={valRef} className="seg" style={{maxWidth:valExp?200:90,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>setValHov(true)} onMouseLeave={()=>setValHov(false)}>
+        <div ref={valRef} className="seg" style={{maxWidth:valExp?200:90,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>{if(valMode!=='closed')setValHov(true);}} onMouseLeave={()=>setValHov(false)}>
           {[['islamic','Islamic'],['universal','Universal']].map(([k,lbl])=>{
             const active=valuesLayer===k;
-            return <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setValLock(o=>!o);}else{switchValues(k);setValLock(true);}}}>{lbl}</button>;
+            return <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setValMode(cycleMode);}else{switchValues(k);}}}>{lbl}</button>;
           })}
         </div>
-        {valuesLayer==='islamic'&&<div ref={langRef} className="seg" style={{maxWidth:langExp?200:90,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>setLangHov(true)} onMouseLeave={()=>setLangHov(false)}>
+        {valuesLayer==='islamic'&&<div ref={langRef} className="seg" style={{maxWidth:langExp?200:90,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>{if(langMode!=='closed')setLangHov(true);}} onMouseLeave={()=>setLangHov(false)}>
           {[['en','English'],['ar','\u0627\u0644\u0639\u0631\u0628\u064A\u0629']].map(([k,lbl])=>{
             const active=attrLang===k;
-            return <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setLangLock(o=>!o);}else{switchAttrLang(k);setLangLock(true);}}}>{lbl}</button>;
+            return <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setLangMode(cycleMode);}else{switchAttrLang(k);}}}>{lbl}</button>;
           })}
         </div>}
-        <div ref={tipRef} className="seg" style={{maxWidth:tipExp?180:80,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>setTipHov(true)} onMouseLeave={()=>setTipHov(false)}>
+        <div ref={tipRef} className="seg" style={{maxWidth:tipExp?180:80,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>{if(tipMode!=='closed')setTipHov(true);}} onMouseLeave={()=>setTipHov(false)}>
           {[['on','Tips On',tipsOn],['off','Tips Off',!tipsOn]].map(([k,lbl,active])=>
-            <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setTipLock(o=>!o);}else{toggleTips();setTipLock(true);}}}>{lbl}</button>
+            <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setTipMode(cycleMode);}else{toggleTips();}}}>{lbl}</button>
           )}
         </div>
-        <div ref={themeRef} className="seg" style={{maxWidth:themeExp?170:70,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>setThemeHov(true)} onMouseLeave={()=>setThemeHov(false)}>
+        <div ref={themeRef} className="seg" style={{maxWidth:themeExp?170:70,transition:'max-width .3s ease',overflow:'hidden'}} onMouseEnter={()=>{if(themeMode!=='closed')setThemeHov(true);}} onMouseLeave={()=>setThemeHov(false)}>
           {[['dark','Dark',theme==='dark'],['light','Light',theme==='light']].map(([k,lbl,active])=>
-            <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setThemeLock(o=>!o);}else{switchTheme(k);setThemeLock(true);}}}>{lbl}</button>
+            <button key={k} className={`sg-btn${active?' on':''}`} onClick={()=>{if(active){setThemeMode(cycleMode);}else{switchTheme(k);}}}>{lbl}</button>
           )}
         </div>
         {sample&&<span className="tb-badge" style={{background:'var(--out-bg)',color:'var(--out)',border:'1px solid var(--out-b)'}}>The Clarity Practice</span>}
@@ -5176,9 +5937,21 @@ function App(){
         <div className="tb-divider"/>
         <button className="sg-btn" onClick={exportPipeline} title="Export pipeline to file" aria-label="Export pipeline">Export</button>
         <button className="sg-btn" onClick={()=>fileRef.current&&fileRef.current.click()} title="Import pipeline from file" aria-label="Import pipeline">Import</button>
+        {(()=>{try{let n=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('bbos_'))n+=k.length+(localStorage.getItem(k)||'').length;}const kb=Math.round(n/1024);const pct=Math.round(n/5242880*100);return <span className="sg-btn" title={kb+'KB used of ~5MB localStorage quota'} style={{cursor:'default',fontSize:10,opacity:0.6,minWidth:0,padding:'2px 6px',color:pct>80?'var(--warning)':'var(--text3)'}}>{pct}%</span>;}catch(e){return null;}})()}
       </div>
     </div>
 
+    {/* THRESHOLD MODALS */}
+    {openingStageKey&&valuesLayer==='islamic'&&<OpeningThreshold
+      stageKey={openingStageKey}
+      onClose={()=>{setOpeningStageKey(null);setPendingToolId(null);}}
+      onComplete={()=>completeOpening(openingStageKey)}
+    />}
+    {closingStageKey&&valuesLayer==='islamic'&&<ClosingThreshold
+      stageKey={closingStageKey}
+      onClose={()=>setClosingStageKey(null)}
+      onComplete={()=>completeClosing(closingStageKey)}
+    />}
     {/* MOBILE BACKDROP */}
     {sbOpen&&<div className="sb-backdrop" onClick={toggleSb}/>}
 
@@ -5200,17 +5973,67 @@ function App(){
       })}
     </div>
 
-    {/* DELL SIDEBAR */}
-    <div className="sb sb-full">
-      {/* Mobile close button */}
-      <button onClick={toggleSb} style={{
-        display:'none', alignItems:'center', gap:6, padding:'10px 14px',
-        background:'transparent', border:'none', borderBottom:'1px solid var(--border)',
-        cursor:'pointer', color:'var(--text3)', fontSize:13, fontFamily:'inherit',
-        textAlign:'left', width:'100%'
-      }} className="sb-close-btn">
-        ‹ Collapse
+    {/* SIDEBAR COLUMN — Islamic Layer + Pipeline tabs */}
+    <div className="sb sb-full" ref={sbScrollRef}
+      onMouseEnter={()=>{clearTimeout(sbHovTimer.current);setSbPanelHov(true);}}
+      onMouseLeave={()=>{sbHovTimer.current=setTimeout(()=>setSbPanelHov(false),120);}}
+      style={{overflowX:'hidden',overflowY:'auto',position:'relative'}}
+    >
+      {/* Collapsed stages strip — shown when sidebar is collapsed */}
+      {!sbPanelOpen && <div className="sb-vstrip">
+        <button
+          className={`vstrip-icon-btn${!sbPanelLocked?' flash-btn':''}`}
+          onClick={()=>setSbPanelLocked(o=>!o)}
+          title="Stages — hover to expand, click to lock open"
+        >
+          <span style={{fontSize:15,color:'var(--accent)'}}>≡</span>
+        </button>
+        <div className="vstrip-divider"/>
+        {stages.map(s=>{
+          const cnt=(toolsByStage[s.key]||[]).length;
+          if(!cnt) return null;
+          return <div key={s.key} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:1,padding:'3px 0'}}>
+            <div className="vstrip-dot" style={{background:s.c}} title={s.key+' — '+s.name}/>
+            <span className="vstrip-code" style={{color:s.c}}>{s.key.slice(0,3)}</span>
+          </div>;
+        })}
+      </div>}
+
+      {/* ── Expanded content: tabs + selected panel ── */}
+      {sbPanelOpen && <>
+      {/* Islamic Layer tab */}
+      {valuesLayer==='islamic'&&<button
+        className={`mob-il-tab${mobTab==='islamic'?' on':''}`}
+        onClick={()=>setMobTab(mobTab==='islamic'?'pipeline':'islamic')}
+      >
+        <span className="mob-tab-glyph">⧁</span>
+        Islamic Layer
+        <span className="mob-tab-chevron">{mobTab==='islamic'?'▾':'▸'}</span>
+      </button>}
+
+      {/* Islamic Layer content */}
+      {mobTab==='islamic'&&valuesLayer==='islamic'&&<IslamicLayerColumn
+        focusedStageKey={focusedStageKey}
+        valuesLayer={valuesLayer}
+        onDragStart={()=>{}}
+        isOpen={true}
+        isLocked={true}
+        onToggleLock={()=>{}}
+        onHoverChange={()=>{}}
+      />}
+
+      {/* Pipeline tab */}
+      <button
+        className={`mob-pipe-tab${mobTab==='pipeline'?' on':''} ${mobTab==='islamic'?'islamic-mode':'pipeline-mode'}`}
+        onClick={()=>setMobTab('pipeline')}
+      >
+        <span className="mob-tab-glyph">≡</span>
+        Pipeline
+        <span className="mob-tab-chevron">{mobTab==='pipeline'?'▾':'▸'}</span>
       </button>
+
+      {/* Pipeline content */}
+      {mobTab==='pipeline' && <>
       {roleId!=='all'&&<div className="role-banner">
         <div className="role-avatar" style={{background:role.bg,color:role.color}}>{role.initials}</div>
         <div className="role-banner-info">
@@ -5218,11 +6041,13 @@ function App(){
           <div className="role-banner-sub">{sidebarTools.length} tools in scope</div>
         </div>
       </div>}
-      <div className="sb-top" ref={sbTopRef}>
-        <button className={`sb-overview${!selId?' on':''}`} onClick={()=>setSelId(null)}>
-          <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
-          {roleId!=='all'?role.label+' Dashboard':view==='asset'?'All Assets':'Pipeline Overview'}
-        </button>
+      <div className={`sb-top${sbScrolled?' scrolled':''}`} ref={sbTopRef} style={{top:valuesLayer==='islamic'?76:38}}>
+        <div style={{display:'flex',alignItems:'center',gap:4}}>
+          <button className={`sb-overview${!selId?' on':''}`} onClick={()=>setSelId(null)} style={{flex:1}}>
+            <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
+            {roleId!=='all'?role.label+' Dashboard':view==='asset'?'All Assets':'Pipeline Overview'}
+          </button>
+        </div>
         <input value={sbSearch} onChange={e=>setSbSearch(e.target.value)} placeholder="Search tools..." aria-label="Search tools" style={{width:'100%',marginTop:6,padding:'5px 9px',fontSize:13,background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:4,color:'var(--text)',fontFamily:'inherit',outline:'none'}}/>
       </div>
       {Object.values(STAGES).map(s=>{
@@ -5230,48 +6055,98 @@ function App(){
         if(!items.length) return null;
         const open=!collapsed[s.key];
         return <div key={s.key} className="sb-sec">
-          <div className="sb-sec-hdr" onClick={()=>toggleCol(s.key)} style={{borderLeft:`2px solid ${s.c}40`,position:'sticky',top:sbTopH,zIndex:4,background:'var(--bg2)'}}>
-            <div>
+          <div className="sb-sec-hdr" style={{borderLeft:`2px solid ${s.c}40`,position:'sticky',top:sbTopH,zIndex:4,background:'var(--bg2)'}}>
+            <div style={{flex:1,cursor:'pointer'}} onClick={()=>toggleCol(s.key)}>
               <div className="sb-sec-code" style={{color:s.c}}><Tip term={s.key}>{s.key} — {s.name}</Tip></div>
               <div className="sb-sec-attr">{getAttr(s)}</div>
             </div>
             <div className="sb-sec-right">
+              {valuesLayer==='islamic'&&(completedOpening[s.key]
+                ? (completedClosing[s.key]
+                    ? <span className="stg-thr-btn stg-closed" title="Stage closed">✓ Closed</span>
+                    : <button className="stg-thr-btn stg-close" onClick={e=>{e.stopPropagation();setClosingStageKey(s.key);}} title="Close this stage">Close Stage</button>
+                  )
+                : <button className="stg-thr-btn stg-begin" onClick={e=>{e.stopPropagation();setOpeningStageKey(s.key);}} title="Open this stage with its spiritual threshold">Begin Stage</button>
+              )}
               <span className="sb-cnt" style={{background:s.bg,color:s.c,border:`1px solid ${s.b}`}}>{items.length}</span>
-              <span className={`sb-chev ${open?'open':'closed'}`}>▾</span>
+              <span className={`sb-chev ${open?'open':'closed'}`} style={{cursor:'pointer'}} onClick={()=>toggleCol(s.key)}>▾</span>
             </div>
           </div>
           {open&&<>
-            {DUAS[s.key]&&<DuaBlock dua={DUAS[s.key]} kind="opening" stageColor={s.c} stageKey={s.key}/>}
-            <AttributeBlock stageKey={s.key} stageColor={s.c}/>
-            <ReadinessBlock stageKey={s.key} stageColor={s.c}/>
             {items.map(t=>{
               const p=roleId==='all'?'O':rolePerm(t,roleId);
               const hasDraft=!!(localStorage.getItem('bbos_draft_notes_'+t.id)||localStorage.getItem('bbos_draft_meta_'+t.id));
-              return <div key={t.id} className={`sb-item${selId===t.id?' on':''}`} onClick={()=>setSelId(t.id)}>
+              const ts=getToolState(t);
+              return <div key={t.id}
+                className={`sb-item${selId===t.id?' on':''}${valuesLayer==='islamic'&&!completedOpening[s.key]?' tool-locked':''}`}
+                title={valuesLayer==='islamic'&&!completedOpening[s.key]?'Complete the Opening Threshold to unlock this stage':undefined}
+                onClick={()=>{
+                  if(valuesLayer==='islamic'&&!completedOpening[s.key]){setPendingToolId(t.id);setOpeningStageKey(s.key);return;}
+                  setSelId(t.id);
+                }}>
                 <div className="sb-item-dot" style={{background:hasDraft?'var(--warning)':s.c+'90'}}/>
                 <div className="sb-item-body">
-                  <div className="sb-item-label">{t.label}{hasDraft&&<span style={{fontSize:10,color:'var(--warning)',marginLeft:6}} title="AI draft pending review">⚠</span>}</div>
-                  <div className="sb-item-sub">{hasDraft?'Draft pending review':t.sec}</div>
+                  <Tip def={[t.label, t.desc]}><div className="sb-item-label">{t.label}</div></Tip>
+                  <div className="sb-item-sub" style={{display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
+                    <StatusPill status={ts}/>
+                    {roleId!=='all'&&<PermPill p={p} size="sm"/>}
+                  </div>
                 </div>
-                {roleId!=='all'&&<PermPill p={p} size="sm"/>}
               </div>;
             })}
-            <ReflectionBlock stageKey={s.key} stageColor={s.c}/>
-            <DuaBlock dua={DUAS[s.key]?.closing||{...CLOSING_DUA,title:'Closing'}} kind="closing" stageColor={s.c}/>
           </>}
         </div>;
       })}
+      {sbSearch&&!Object.values(toolsByStage).some(a=>a.length)&&<div style={{padding:'20px 14px',textAlign:'center',color:'var(--text3)',fontSize:13}}>No tools matching "{sbSearch}"</div>}
       <div className="sb-drag" onMouseDown={onDragStart}/>
+      </>}
+      </>}
     </div>
 
+    {/* Bottom scroll indicator — fixed outside scroll container */}
+    {sbPanelOpen&&<div className={`sb-bottom-fade${sbScrollEnd?' active':''}`} style={{width:isMobile?280:sbWidth}}/>}
+
+    {/* Sidebar edge toggle — click to collapse/expand, drag to resize */}
+    <div className="sb-edge-toggle" style={{cursor:sbPanelOpen&&!isMobile?'col-resize':'pointer'}}
+      onMouseDown={e=>{
+        if(isMobile||!sbPanelOpen) return;
+        const startX=e.clientX;const startW=sbWidth;
+        dragRef.current={active:true,startX,startW,dragged:false};
+        const onMove=e2=>{
+          if(Math.abs(e2.clientX-startX)>4) dragRef.current.dragged=true;
+          if(dragRef.current.dragged){e.preventDefault();const w=Math.min(480,Math.max(160,startW+(e2.clientX-startX)));setSbWidth(w);safeSet('bbos_sb_width',String(w));}
+        };
+        const onUp=()=>{
+          document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);
+          dragRef.current.active=false;
+        };
+        document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
+      }}
+      onClick={()=>{
+        if(dragRef.current?.dragged){dragRef.current.dragged=false;return;}
+        if(isMobile) toggleSb();
+        else setSbPanelLocked(o=>!o);
+      }}
+      title={sbPanelOpen?'Drag to resize · Click to collapse':'Click to expand'} aria-label="Toggle sidebar"
+    />
+
     <input ref={fileRef} type="file" accept=".json,.bbos.json" style={{display:'none'}} onChange={onFileUpload}/>
-    {/* MAIN */}
+    {/* MAIN — col 2 */}
     <div className="main" onClick={sbOpen?toggleSb:undefined}>{mainContent()}</div>
     <div id="bbos-toast" style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%) translateY(12px)',background:'var(--danger)',color:'var(--on-accent)',padding:'10px 20px',borderRadius:8,fontSize:14,fontWeight:500,opacity:0,transition:'opacity .3s,transform .3s',zIndex:100000,pointerEvents:'none',whiteSpace:'nowrap'}}/>
   </div>;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+class ErrorBoundary extends React.Component{
+  constructor(p){super(p);this.state={hasError:false,error:null};}
+  static getDerivedStateFromError(e){return{hasError:true,error:e};}
+  componentDidCatch(e,info){console.error('BBOS Error Boundary caught:',e,info);}
+  render(){if(this.state.hasError)return React.createElement('div',{style:{padding:40,textAlign:'center',color:'#e8e3dc',fontFamily:'DM Sans,sans-serif'}},
+    React.createElement('h2',null,'Something went wrong'),
+    React.createElement('p',{style:{color:'#9e9690',marginTop:12}},this.state.error?.message||'An unexpected error occurred.'),
+    React.createElement('button',{onClick:()=>this.setState({hasError:false,error:null}),style:{marginTop:20,padding:'10px 24px',background:'#c9a05a',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontSize:14}},'Reload App'));return this.props.children;}
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<ErrorBoundary><App/></ErrorBoundary>);
 </script>
 </body>
 </html>
