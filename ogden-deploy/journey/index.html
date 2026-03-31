@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN — The Ecosystem in Motion</title>
+<meta name="description" content="Track the progress of every OGDEN product — BBOS, Atlas, and Moontrance — from current phase to next milestone.">
+<meta property="og:title" content="OGDEN — The Ecosystem in Motion">
+<meta property="og:description" content="Track the progress of every OGDEN product — BBOS, Atlas, and Moontrance — from current phase to next milestone.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #2a2218;--bg-card:rgba(42,34,24,0.80);
+  --parchment:#f0ebe0;--bone:#d8d0bf;--dust:#8a8070;
+  --gold:#b89050;--gold-light:#cca866;--gold-muted:#9d7a40;
+  --gold-dim:rgba(184,144,80,0.15);--line:rgba(240,235,224,0.07);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'DM Mono',monospace;
+  --sans:'Instrument Sans',system-ui,sans-serif;
+
+  /* Product accent colours */
+  --bbos-1:#a87868;--bbos-2:#7888a8;--bbos-3:#7a9e8a;--bbos-4:#b89050;
+  --mt-1:#a87868;--mt-2:#7888a8;--mt-3:#7a9e8a;--mt-4:#b89050;
+  --at-1:#a87868;--at-2:#7888a8;--at-3:#7a9e8a;--at-4:#b89050;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background: var(--bg);color:var(--parchment);font-family:var(--sans);min-height:100vh;padding:3rem 2rem 4rem;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.header{max-width:1200px;margin:0 auto 3.5rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.header-left{}
+.header-eyebrow{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-muted);margin-bottom:0.6rem;}
+.header-title{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;color:var(--parchment);}
+.header-sub{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:var(--dust);margin-top:0.5rem;}
+.header-right{text-align:right;}
+.header-date{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(240,235,224,0.3);}
+.header-status{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:var(--dust);margin-top:0.25rem;}
+.header-status strong{color:var(--bone);font-weight:400;}
+
+/* ── PRODUCT ROWS ── */
+.products{display:flex;flex-direction:column;gap:2.5rem;max-width:1200px;margin:0 auto;}
+
+.product-row{display:grid;grid-template-columns:160px 1fr;gap:0;border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+
+.product-label{display:flex;flex-direction:column;justify-content:space-between;padding:1.75rem 1.5rem;border-right:1px solid var(--line);background:rgba(8,7,4,0.7);flex-shrink:0;}
+.product-symbol{font-size:1.25rem;color:var(--gold-muted);margin-bottom:0.75rem;line-height:1;}
+.product-name{font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--parchment);line-height:1.2;margin-bottom:0.3rem;}
+.product-phase-current{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-muted);}
+.product-progress-wrap{margin-top:auto;padding-top:1.25rem;}
+.product-progress-label{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);margin-bottom:0.4rem;}
+.product-progress-bar{height:2px;background:rgba(240,235,224,0.08);border-radius:2px;overflow:hidden;}
+.product-progress-fill{height:100%;border-radius:2px;transition:width 1.2s ease 0.4s;}
+.bbos-fill{background:var(--bbos-1);}
+.mt-fill{background:var(--mt-2);}
+.at-fill{background:var(--at-1);}
+.product-pct{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.1em;color:var(--dust);margin-top:0.35rem;}
+
+/* ── PHASES IN ROW ── */
+.product-phases{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(240,235,224,0.04);}
+
+.phase-cell{background:rgba(10,9,6,0.5);padding:1.5rem 1.25rem;position:relative;transition:background 0.2s;}
+.phase-cell:hover{background:rgba(16,14,10,0.85);}
+.phase-cell.current{background:rgba(14,12,7,0.92);}
+.phase-cell.future{opacity:0.65;}
+
+.phase-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0.5;transition:opacity 0.2s;}
+.phase-cell:hover::before,.phase-cell.current::before{opacity:1;}
+
+/* BBOS phase colours */
+.bbos .phase-cell[data-p="1"]::before{background:var(--bbos-1);}
+.bbos .phase-cell[data-p="2"]::before{background:var(--bbos-2);}
+.bbos .phase-cell[data-p="3"]::before{background:var(--bbos-3);}
+.bbos .phase-cell[data-p="4"]::before{background:var(--bbos-4);}
+/* Moontrance phase colours */
+.mt .phase-cell[data-p="1"]::before{background:var(--mt-1);}
+.mt .phase-cell[data-p="2"]::before{background:var(--mt-2);}
+.mt .phase-cell[data-p="3"]::before{background:var(--mt-3);}
+.mt .phase-cell[data-p="4"]::before{background:var(--mt-4);}
+/* Atlas phase colours */
+.at .phase-cell[data-p="1"]::before{background:var(--at-1);}
+.at .phase-cell[data-p="2"]::before{background:var(--at-2);}
+.at .phase-cell[data-p="3"]::before{background:var(--at-3);}
+.at .phase-cell[data-p="4"]::before{background:var(--at-4);}
+
+.phase-cell-num{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--dust);margin-bottom:0.5rem;display:flex;align-items:center;justify-content:space-between;}
+.phase-cell.current .phase-cell-num{color:var(--gold-muted);}
+.now-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(184,144,80,0.7);flex-shrink:0;animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+.phase-cell-name{font-family:var(--serif);font-size:1.05rem;font-weight:400;color:var(--parchment);line-height:1.25;margin-bottom:0.5rem;}
+.phase-cell.future .phase-cell-name{color:var(--bone);}
+
+.phase-cell-attr{font-family:var(--sans);font-size:0.8rem;font-weight:300;font-style:italic;color:var(--dust);line-height:1.45;margin-bottom:1rem;}
+
+.phase-milestones{list-style:none;display:flex;flex-direction:column;gap:0.45rem;}
+.pm{display:grid;grid-template-columns:10px 1fr;gap:0.45rem;align-items:baseline;}
+.pm-dot{width:4px;height:4px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.pm.done .pm-dot{opacity:1;}
+.pm:not(.done) .pm-dot{opacity:0.45;}
+.bbos .phase-cell[data-p="1"] .pm-dot{background:var(--bbos-1);}
+.bbos .phase-cell[data-p="2"] .pm-dot{background:var(--bbos-2);}
+.bbos .phase-cell[data-p="3"] .pm-dot{background:var(--bbos-3);}
+.bbos .phase-cell[data-p="4"] .pm-dot{background:var(--bbos-4);}
+.mt .phase-cell[data-p="1"] .pm-dot{background:var(--mt-1);}
+.mt .phase-cell[data-p="2"] .pm-dot{background:var(--mt-2);}
+.mt .phase-cell[data-p="3"] .pm-dot{background:var(--mt-3);}
+.mt .phase-cell[data-p="4"] .pm-dot{background:var(--mt-4);}
+.at .phase-cell[data-p="1"] .pm-dot{background:var(--at-1);}
+.at .phase-cell[data-p="2"] .pm-dot{background:var(--at-2);}
+.at .phase-cell[data-p="3"] .pm-dot{background:var(--at-3);}
+.at .phase-cell[data-p="4"] .pm-dot{background:var(--at-4);}
+.pm-text{font-family:var(--sans);font-size:0.8rem;font-weight:300;color:#9c9c99;line-height:1.5;}
+.phase-cell.current .pm.done .pm-text{color:var(--bone);}
+.phase-cell.current .pm:not(.done) .pm-text{color:#acacaa;}
+
+/* ── FOOTER ── */
+.footer{max-width:1200px;margin:3rem auto 0;padding-top:1.5rem;border-top:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.footer-col{}
+.footer-product{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-muted);margin-bottom:0.3rem;}
+.footer-summary{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:var(--dust);}
+.footer-summary strong{color:var(--bone);font-weight:400;}
+
+.present-btn{position:fixed;bottom:1.5rem;right:1.5rem;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-muted);background:rgba(10,9,6,0.9);border:1px solid rgba(184,144,80,0.25);padding:0.6rem 1rem;border-radius:3px;cursor:pointer;transition:border-color 0.2s,color 0.2s;z-index:100;}
+.present-btn:hover{border-color:rgba(184,144,80,0.5);color:var(--gold-light);}
+
+@media(max-width:900px){
+  .product-row{grid-template-columns:1fr;}
+  .product-label{border-right:none;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;flex-wrap:wrap;gap:1rem;padding:1.25rem 1.5rem;}
+  .product-progress-wrap{margin-top:0;padding-top:0;min-width:120px;}
+  .product-phases{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:580px){
+  .product-phases{grid-template-columns:1fr;}
+  body{padding:2rem 1rem 3rem;}
+  .header-right{text-align:left;}
+}
+@media(prefers-reduced-motion:reduce){.now-dot{animation:none!important;opacity:1;}}
+
+/* ── PAGE TRANSITION VEIL ── */
+@keyframes body-fade-in{from{opacity:0}to{opacity:1}}
+body{animation:body-fade-in 0.5s ease 0.05s both;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <p class="header-eyebrow">OGDEN</p>
+    <h1 class="header-title">The Ecosystem in Motion</h1>
+    <p class="header-sub">Three products. Three journeys. One intention.</p>
+  </div>
+  <div class="header-right">
+    <p class="header-date">March 2026</p>
+    <p class="header-status">All three products <strong>active</strong> · Phase 1 underway across the ecosystem</p>
+  </div>
+</header>
+
+<main class="products">
+
+  <!-- ══ BBOS ══ -->
+  <div class="product-row bbos" aria-label="BBOS journey">
+    <div class="product-label">
+      <div>
+        <div class="product-symbol" aria-hidden="true">⧁</div>
+        <p class="product-name">BBOS</p>
+        <p class="product-phase-current">Development</p>
+      </div>
+      <div class="product-progress-wrap">
+        <p class="product-progress-label">Phase 1</p>
+        <div class="product-progress-bar">
+          <div class="product-progress-fill bbos-fill" style="width:88%"></div>
+        </div>
+        <p class="product-pct">88% complete</p>
+        <a href="/bbos/journey/" style="font-family:var(--mono);font-size:1.0rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(184,144,80,0.5);text-decoration:none;margin-top:0.5rem;display:block;transition:color 0.2s;" onmouseover="this.style.color='rgba(184,144,80,0.9)'" onmouseout="this.style.color='rgba(184,144,80,0.5)'">Full journey →</a>
+      </div>
+    </div>
+    <div class="product-phases">
+      <div class="phase-cell current" data-p="1">
+        <p class="phase-cell-num">01 <span class="now-dot" aria-label="current phase"></span></p>
+        <p class="phase-cell-name">Development</p>
+        <p class="phase-cell-attr">Al-Awwal · Integrity of beginnings</p>
+        <ul class="phase-milestones">
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Nine-stage pipeline documented</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Spiritual architecture mapped</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">G-Label system built</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Amanah Gate &amp; NO-SHIP protocols</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">LLM instruction set complete</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">System Diagnostic conducted</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Market validation initiated</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="2">
+        <p class="phase-cell-num">02</p>
+        <p class="phase-cell-name">Validation</p>
+        <p class="phase-cell-attr">Al-Haqq · Truth before strategy</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">First operator cohort onboarded</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Full pipeline completed by operator</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Amanah Gate rejections documented</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">System refined from feedback</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="3">
+        <p class="phase-cell-num">03</p>
+        <p class="phase-cell-name">Productization</p>
+        <p class="phase-cell-attr">Al-Basir · Seeing what is there</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">LLM dependency removed</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Platform built — pipeline native</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">First paying operator</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="4">
+        <p class="phase-cell-num">04</p>
+        <p class="phase-cell-name">Distribution</p>
+        <p class="phase-cell-attr">Ar-Razzaq · Provision without presence</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Platform open without relationship</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Revenue independent of founder time</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Community of operators forming</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ATLAS ══ -->
+  <div class="product-row at" aria-label="Atlas journey">
+    <div class="product-label">
+      <div>
+        <div class="product-symbol" aria-hidden="true">◎</div>
+        <p class="product-name">Atlas</p>
+        <p class="product-phase-current">Prototype</p>
+      </div>
+      <div class="product-progress-wrap">
+        <p class="product-progress-label">Phase 1</p>
+        <div class="product-progress-bar">
+          <div class="product-progress-fill at-fill" style="width:85%"></div>
+        </div>
+        <p class="product-pct">86% complete</p>
+        <a href="/atlas/journey/" style="font-family:var(--mono);font-size:1.0rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(184,144,80,0.5);text-decoration:none;margin-top:0.5rem;display:block;transition:color 0.2s;" onmouseover="this.style.color='rgba(184,144,80,0.9)'" onmouseout="this.style.color='rgba(184,144,80,0.5)'">Full journey →</a>
+      </div>
+    </div>
+    <div class="product-phases">
+      <div class="phase-cell current" data-p="1">
+        <p class="phase-cell-num">01 <span class="now-dot" aria-label="current phase"></span></p>
+        <p class="phase-cell-name">Prototype</p>
+        <p class="phase-cell-attr">Functional · Pre-market validation</p>
+        <ul class="phase-milestones">
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Seven federal APIs connected</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Six scoring dimensions live</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Spiritual intentionality layer built</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">MapLibre mapping interface</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Next.js 14 App Router scaffolded</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Validation with real users initiated</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="2">
+        <p class="phase-cell-num">02</p>
+        <p class="phase-cell-name">Validation</p>
+        <p class="phase-cell-attr">Real decisions · Real calibration</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">First assessments with real users</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Confidence levels calibrated</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Feedback loop established</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="3">
+        <p class="phase-cell-num">03</p>
+        <p class="phase-cell-name">Product</p>
+        <p class="phase-cell-attr">No GIS background required</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Onboarding tested with non-GIS users</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">First paying user on platform</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="4">
+        <p class="phase-cell-num">04</p>
+        <p class="phase-cell-name">Scale</p>
+        <p class="phase-cell-attr">The standard for intentional land intelligence</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Integrated into professional workflows</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">API available for partners</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Field standard established</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MOONTRANCE ══ -->
+  <div class="product-row mt" aria-label="Moontrance journey">
+    <div class="product-label">
+      <div>
+        <div class="product-symbol" aria-hidden="true">◐</div>
+        <p class="product-name">Moontrance</p>
+        <p class="product-phase-current">Foundation</p>
+      </div>
+      <div class="product-progress-wrap">
+        <p class="product-progress-label">Phase 1</p>
+        <div class="product-progress-bar">
+          <div class="product-progress-fill mt-fill" style="width:75%"></div>
+        </div>
+        <p class="product-pct">75% complete</p>
+        <a href="/moontrance/journey/" style="font-family:var(--mono);font-size:1.0rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(184,144,80,0.5);text-decoration:none;margin-top:0.5rem;display:block;transition:color 0.2s;" onmouseover="this.style.color='rgba(184,144,80,0.9)'" onmouseout="this.style.color='rgba(184,144,80,0.5)'">Full journey →</a>
+      </div>
+    </div>
+    <div class="product-phases">
+      <div class="phase-cell current" data-p="1">
+        <p class="phase-cell-num">01 <span class="now-dot" aria-label="current phase"></span></p>
+        <p class="phase-cell-name">Foundation</p>
+        <p class="phase-cell-attr">Vision before land</p>
+        <ul class="phase-milestones">
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Vision fully documented</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">All four framework pillars complete</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Offer economics modelled</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Target corridors mapped</span></li>
+          <li class="pm done"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Hospitality design documented</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Founding members search active</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="2">
+        <p class="phase-cell-num">02</p>
+        <p class="phase-cell-name">Acquisition</p>
+        <p class="phase-cell-attr">The right land · Framework meets reality</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Active search across six channels</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Municipal pre-check protocol run</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Land acquired — title deed</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="3">
+        <p class="phase-cell-num">03</p>
+        <p class="phase-cell-name">Activation</p>
+        <p class="phase-cell-attr">Building what was designed</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Infrastructure and hospitality built</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Prayer spaces structural from day one</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Soft opening — founding members</span></li>
+        </ul>
+      </div>
+      <div class="phase-cell future" data-p="4">
+        <p class="phase-cell-num">04</p>
+        <p class="phase-cell-name">Open</p>
+        <p class="phase-cell-attr">The destination receives</p>
+        <ul class="phase-milestones">
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">All five experiences live &amp; bookable</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Stewardship model active</span></li>
+          <li class="pm"><span class="pm-dot" aria-hidden="true"></span><span class="pm-text">Frameworks open to other builders</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-col">
+    <p class="footer-product">BBOS</p>
+    <p class="footer-summary"><strong>88%</strong> through Phase 1 · System Diagnostic complete · Validation underway</p>
+  </div>
+  <div class="footer-col">
+    <p class="footer-product">Moontrance</p>
+    <p class="footer-summary"><strong>75%</strong> through Phase 1 · Four frameworks complete · Founding members search active</p>
+  </div>
+  <div class="footer-col">
+    <p class="footer-product">Atlas</p>
+    <p class="footer-summary"><strong>85%</strong> through Phase 1 · Seven APIs live · Pre-market validation initiated</p>
+  </div>
+</footer>
+
+<button class="present-btn" onclick="togglePresent()" aria-label="Toggle presentation mode">Present</button>
+
+<script>
+function togglePresent(){
+  const el=document.documentElement;
+  if(!document.fullscreenElement){
+    el.requestFullscreen().catch(()=>{});
+    document.querySelector('.present-btn').textContent='Exit';
+  } else {
+    document.exitFullscreen();
+    document.querySelector('.present-btn').textContent='Present';
+  }
+}
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement) document.querySelector('.present-btn').textContent='Present';
+});
+</script>
+
+
+<script>
+
+</script>
+
+<script>
+/* Page exit fade — body opacity only, cannot block interaction */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a');
+  if (!a) return;
+  var href = a.getAttribute('href');
+  if (!href) return;
+  if (href.startsWith('http') || href.startsWith('//') ||
+      href.startsWith('#') || href.startsWith('mailto') ||
+      a.target === '_blank') return;
+  e.preventDefault();
+  document.body.style.transition = 'opacity 0.25s ease';
+  document.body.style.opacity = '0';
+  setTimeout(function(){ window.location.href = href; }, 260);
+});
+window.addEventListener('pageshow', function(e){
+  if (e.persisted){
+    document.body.style.transition = 'none';
+    document.body.style.opacity = '1';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OGDEN — Structured Service. Rooted Intention.</title>
+<meta name="description" content="The vision behind OGDEN — why we build tools rooted in Islamic intention for land, business, and community.">
+<meta property="og:title" content="OGDEN — Vision">
+<meta property="og:description" content="The vision behind OGDEN — why we build tools rooted in Islamic intention for land, business, and community.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent:       #b89050;
+  --accent-light: #cca866;
+  --accent-muted: #9d7a40;
+  --ink:        #0a0906;
+  --char:       #111009;
+  --parchment:  #f0ebe0;
+  --bone:       #d8d0bf;
+  --dust:       #8a8070;
+  --line:       rgba(184,144,80,0.18);
+  --line-soft:  rgba(240,235,224,0.06);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono:  'DM Mono', monospace;
+  --sans:  'Instrument Sans', system-ui, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-height:1.6;overflow-x:hidden;}
+
+.skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--parchment);color:var(--ink);padding:0.6rem 1.25rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-decoration:none;border-radius:2px;}
+.skip-nav:focus{top:0.75rem;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
+
+.bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.topo-layer{position:absolute;inset:0;opacity:0.048;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cdefs%3E%3CradialGradient id='rg' cx='45%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23b89050' stop-opacity='1'/%3E%3Cstop offset='100%25' stop-color='%23b89050' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cellipse cx='360' cy='320' rx='280' ry='220' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='165' ry='125' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='70' ry='50' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='200' cy='500' rx='130' ry='100' fill='none' stroke='url(%23rg)' stroke-width='0.8' opacity='0.4'/%3E%3Cellipse cx='600' cy='180' rx='100' ry='75' fill='none' stroke='url(%23rg)' stroke-width='0.7' opacity='0.35'/%3E%3C/svg%3E");background-size:75vw 75vw;background-position:55% 35%;background-repeat:no-repeat;}
+.grain-layer{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.55;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;padding:0 2.5rem;height:48px;background:rgba(10,9,6,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft);}
+.nav-brand{font-family:var(--mono);font-size:0.875rem;font-weight:400;letter-spacing:0.16em;color:var(--parchment);text-decoration:none;text-transform:uppercase;flex-shrink:0;}
+.nav-div{width:1px;height:18px;background:rgba(240,235,224,0.12);margin:0 1.5rem;flex-shrink:0;}
+.nav-sections{display:flex;align-items:center;gap:1.4rem;list-style:none;margin-left:auto;}
+.nav-sections a{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent;transition:color 0.2s,border-color 0.2s;}
+.nav-sections a:hover{color:var(--bone);}
+.nav-sections a.sec-active{color:var(--parchment);border-color:var(--accent);}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:1px solid rgba(240,235,224,0.15);border-radius:2px;cursor:pointer;padding:6px;flex-shrink:0;}
+.nav-toggle span{display:block;width:100%;height:1.5px;background:var(--parchment);border-radius:1px;transition:transform 0.25s ease,opacity 0.2s ease;transform-origin:center;}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.nav-drawer{display:none;position:fixed;inset:0;z-index:99;background:#111009;flex-direction:column;justify-content:flex-start;min-height:100vh;padding:5rem 2rem 2.5rem;transform:translateY(-100%);transition:transform 0.35s ease;pointer-events:none;}
+.nav-drawer.open{transform:translateY(0);pointer-events:all;}
+.nav-drawer-links{list-style:none;display:flex;flex-direction:column;border-top:1px solid rgba(240,235,224,0.06);}
+.nav-drawer-links li{border-bottom:1px solid rgba(240,235,224,0.06);}
+.nav-drawer-links a{display:block;padding:1.1rem 0;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--bone);text-decoration:none;transition:color 0.2s;}
+.nav-drawer-links a:hover{color:var(--accent-light);}
+.nav-drawer-cta{display:block;margin-top:2rem;padding:1rem;text-align:center;background:transparent;border:1px solid rgba(184,144,80,0.35);border-radius:3px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-light);text-decoration:none;transition:background 0.2s,border-color 0.2s;}
+.nav-drawer-cta:hover{background:rgba(184,144,80,0.1);border-color:rgba(184,144,80,0.6);}
+
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem 5rem;text-align:center;}
+.hero-eyebrow{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dust);margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.8s ease 0.15s forwards;}
+.hero-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,6vw,5rem);line-height:1.1;letter-spacing:-0.01em;color:var(--parchment);max-width:820px;margin-bottom:2.25rem;opacity:0;animation:fadeUp 0.9s ease 0.3s forwards;}
+.hero-body{display:flex;flex-direction:column;gap:1rem;max-width:600px;margin-bottom:3.75rem;opacity:0;animation:fadeUp 0.9s ease 0.45s forwards;}
+.hero-body p{font-family:var(--sans);font-size:clamp(1rem,1.8vw,1.1rem);font-weight:300;color:var(--bone);line-height:1.85;}
+.hero-body p em{font-style:italic;color:var(--accent-light);font-family:var(--serif);}
+.hero-body .hero-turn{font-family:var(--serif);font-size:clamp(1rem,1.8vw,1.12rem);font-weight:300;font-style:italic;color:#b4b3b2;line-height:1.8;padding-top:0.5rem;}
+.hero-rule{width:1px;height:36px;background:linear-gradient(to bottom,transparent,rgba(184,144,80,0.3),transparent);margin:0 auto 1.75rem;opacity:0;animation:fadeIn 0.8s ease 0.75s forwards;}
+
+.pathways{display:flex;flex-direction:row;gap:0.8rem;width:100%;max-width:760px;opacity:0;animation:fadeUp 0.9s ease 0.88s forwards;}
+.pathway{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;min-height:160px;flex:1;box-sizing:border-box;gap:1.5rem;padding:1.25rem 1.4rem;background:rgba(10,9,6,0.58);backdrop-filter:blur(10px);border:1px solid rgba(184,144,80,0.14);border-radius:3px;text-decoration:none;transition:background 0.3s,border-color 0.3s;overflow:hidden;}
+.pathway::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 140% 120% at 50% 120%,rgba(184,144,80,0.07) 0%,transparent 60%);opacity:0;transition:opacity 0.35s;}
+.pathway::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);transform:scaleY(0);transition:transform 0.4s;transform-origin:center;}
+.pathway:hover{background:rgba(18,16,11,0.82);border-color:rgba(184,144,80,0.3);}
+.pathway:hover::before{opacity:1;}
+.pathway:hover::after{transform:scaleY(1);}
+.pathway:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.pathway-body{flex:1;min-width:0;text-align:left;}
+.pathway-header{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:0.45rem;}
+.pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color 0.2s;display:block;text-align:center;}
+.pathway:hover .pathway-title{color:#fff;}
+.pathway-tag{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
+.pathway:hover .pathway-tag{color:var(--accent-light);}
+.pathway-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;transition:color 0.2s;text-align:center;}
+.pathway:hover .pathway-desc{color:rgba(216,208,191,0.9);}
+.pathway-arrow{display:none;}
+.pathway.arrow-right:hover .pathway-arrow{color:var(--accent-light);transform:translateX(4px);}
+.pathway.arrow-down:hover .pathway-arrow{color:var(--accent-light);transform:translateY(4px);}
+
+.section{position:relative;z-index:1;padding:clamp(4rem,8vw,8rem) 2rem;}
+.section-inner{max-width:820px;margin:0 auto;}
+.section-inner--wide{max-width:900px;margin:0 auto;}
+.sec-eyebrow{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--dust);text-align:center;margin-bottom:1.4rem;}
+.sec-rule{width:32px;height:1px;background:rgba(184,144,80,0.35);margin:0 auto 3rem;}
+.sec-headline{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4vw,3.2rem);line-height:1.18;color:var(--parchment);text-align:center;margin-bottom:1.75rem;letter-spacing:0.01em;}
+.sec-headline em{font-style:italic;color:var(--accent-light);}
+.sec-body{font-family:var(--sans);font-size:1rem;font-weight:300;color:#acacaa;line-height:1.85;text-align:center;max-width:620px;margin:0 auto;}
+
+.num-list{list-style:none;margin-top:4.5rem;}
+.num-item{display:grid;grid-template-columns:72px 1fr;gap:0;padding:2.5rem 0;position:relative;opacity:0;transform:translateY(14px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.num-item::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:1px;background:rgba(240,235,224,0.14);}
+.num-item.visible{opacity:1;transform:translateY(0);}
+.num-index{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.08em;color:var(--accent-muted);padding-top:0.25rem;padding-left:2rem;}
+.num-title{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--parchment);margin-bottom:0.6rem;line-height:1.3;}
+.num-text{font-family:var(--sans);font-size:0.9rem;font-weight:300;color:#a09f9e;line-height:1.82;}
+.num-item.no-title .num-text{color:#acacaa;}
+
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:4rem;}
+.product-card{position:relative;display:flex;flex-direction:column;padding:2rem 1.75rem 1.75rem;background:rgba(10,9,6,0.5);border:1px solid rgba(184,144,80,0.14);border-radius:3px;text-decoration:none;transition:background 0.3s,border-color 0.3s;overflow:hidden;}
+.product-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);transform:scaleY(0);transition:transform 0.4s;transform-origin:center;}
+.product-card:hover{background:rgba(18,16,11,0.78);border-color:rgba(184,144,80,0.32);}
+.product-card:hover::after{transform:scaleY(1);}
+.product-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.product-status{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.25rem;}
+.product-status-badge{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent-muted);border:1px solid rgba(184,144,80,0.2);padding:0.22rem 0.6rem;border-radius:2px;white-space:nowrap;}
+.product-status-badge.live{color:rgba(120,180,120,0.85);border-color:rgba(120,180,120,0.25);}
+.product-name{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--parchment);margin-bottom:0.6rem;line-height:1.2;transition:color 0.2s;}
+.product-card:hover .product-name{color:#fff;}
+.product-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#a09f9e;line-height:1.75;flex:1;margin-bottom:1.5rem;transition:color 0.2s;}
+.product-card:hover .product-desc{color:#b4b3b2;}
+.product-link{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-muted);display:flex;align-items:center;gap:0.4rem;transition:color 0.2s,gap 0.2s;}
+.product-card:hover .product-link{color:var(--accent-light);gap:0.7rem;}
+
+.sep{position:relative;z-index:1;height:1px;background:rgba(240,235,224,0.05);max-width:820px;margin:0 auto;}
+
+.cta-section{position:relative;z-index:1;padding:clamp(5rem,8vw,9rem) 2rem clamp(5rem,8vw,10rem);text-align:center;}
+.cta-inner{max-width:580px;margin:0 auto;}
+.cta-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3.2rem);line-height:1.15;color:var(--parchment);margin-bottom:1.5rem;}
+.cta-headline em{font-style:italic;color:var(--accent-light);}
+.cta-sub{font-family:var(--sans);font-size:clamp(1rem,1.4vw,1.1rem);font-weight:300;color:#a09f9e;line-height:1.8;margin-bottom:3rem;}
+.cta-btn{display:inline-flex;align-items:center;gap:0.75rem;padding:1rem 2.5rem;background:transparent;border:1px solid rgba(184,144,80,0.4);border-radius:3px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-light);text-decoration:none;transition:background 0.3s,border-color 0.3s,color 0.3s;}
+.cta-btn:hover{background:rgba(184,144,80,0.1);border-color:rgba(184,144,80,0.7);color:var(--parchment);}
+.cta-btn-arrow{transition:transform 0.25s;}
+.cta-btn:hover .cta-btn-arrow{transform:translateX(4px);}
+
+footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(240,235,224,0.05);}
+.footer-mark{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.12em;text-transform:uppercase;color:#8e8e8b;}
+.footer-line{font-family:var(--serif);font-style:italic;font-size:1rem;color:#969693;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;opacity:1!important;transform:none!important;}.nav-drawer{transition:none;}.nav-toggle span{transition:none;}}
+@media(max-width:900px){.products-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto;}}
+@media(max-width:680px){.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}}
+
+/* ── PAGE TRANSITION VEIL ── */
+@keyframes body-fade-in{from{opacity:0}to{opacity:1}}
+body{animation:body-fade-in 0.5s ease 0.05s both;}
+</style>
+</head>
+<body>
+
+<div class="bg-fixed" aria-hidden="true">
+  <div class="topo-layer"></div>
+  <div class="grain-layer"></div>
+</div>
+
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<header>
+<nav class="nav" aria-label="Site navigation">
+  <a href="/" class="nav-brand">OGDEN</a>
+  <div class="nav-div" aria-hidden="true"></div>
+  <ul class="nav-sections">
+    <li><a href="#who"      data-sec="who">Who</a></li>
+    <li><a href="#why"      data-sec="why">Why</a></li>
+    <li><a href="#what"     data-sec="what">What</a></li>
+    <li><a href="#how" data-sec="how">How</a></li>
+    <li><a href="#connect"  data-sec="connect">Connect</a></li>
+  </ul>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open navigation menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+</header>
+
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <ul class="nav-drawer-links">
+    <li><a href="#who">Who</a></li>
+    <li><a href="#why">Why</a></li>
+    <li><a href="#what">What</a></li>
+    <li><a href="#how">How</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <a href="#how" class="nav-drawer-cta">Into the Work →</a>
+</div>
+
+<main id="main-content">
+
+<!-- ══ HERO ══ -->
+<section class="hero" aria-labelledby="hero-h1">
+  <p class="hero-eyebrow">Structured Service &nbsp;&middot;&nbsp; Rooted Intention</p>
+
+  <h1 class="hero-headline" id="hero-h1">
+    Many of us built lives that don&rsquo;t fit<br>who we actually are.
+  </h1>
+
+  <div class="hero-body">
+    <p>The way we were taught to build, buy, and belong was built for someone else&rsquo;s priorities.</p>
+    <p class="hero-turn">OGDEN was built for a different set.</p>
+  </div>
+
+  <div class="hero-rule" aria-hidden="true"></div>
+
+  <nav class="pathways" aria-label="Choose your entry point">
+    <a href="#who" class="pathway arrow-down">
+      <div class="pathway-body">
+        <span class="pathway-tag">The Story</span>
+        <div class="pathway-header">
+          <span class="pathway-title">Is This for Me?</span>
+        </div>
+        <p class="pathway-desc">
+          Who we&rsquo;re for, why we exist, and what we&rsquo;re striving for.
+        </p>
+      </div>
+      <span class="pathway-arrow" aria-hidden="true">↓</span>
+    </a>
+
+    <a href="#how" class="pathway arrow-right">
+      <div class="pathway-body">
+        <span class="pathway-tag">The How</span>
+        <div class="pathway-header">
+          <span class="pathway-title">Into the Work</span>
+        </div>
+        <p class="pathway-desc">
+          Atlas, Moontrance, and BBOS &mdash; three expressions of one intention.
+        </p>
+      </div>
+      <span class="pathway-arrow" aria-hidden="true">→</span>
+    </a>
+  </nav>
+</section>
+
+<!-- ══ WHO ══ -->
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="who" aria-labelledby="who-h">
+  <div class="section-inner">
+    <p class="sec-eyebrow reveal">Who this is for</p>
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="who-h">
+      You want to build with purpose.<br>Own with intention.<br>Belong to something <em>real</em>.
+    </h2>
+    <p class="sec-body reveal">
+      The frameworks you&rsquo;ve been working with were designed for someone else&rsquo;s priorities.
+      OGDEN is for those who have felt that gap &mdash; and decided to build something different.
+    </p>
+  </div>
+</section>
+
+<!-- ══ WHY ══ -->
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="why" aria-labelledby="why-h">
+  <div class="section-inner">
+    <p class="sec-eyebrow reveal">Why OGDEN exists</p>
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="why-h">
+      Structured service.<br><em>Rooted intention.</em>
+    </h2>
+    <p class="sec-body reveal">
+      OGDEN is a structured understanding of ways to serve Allah SWT &mdash;
+      shaped by lived experience, natural inclination, and a conviction that
+      the tools Muslim families, builders, and communities need
+      have not yet been built for them.
+      Everything here begins from that conviction and works outward.
+    </p>
+
+    <ul class="num-list" aria-label="What OGDEN is built on">
+      <li class="num-item no-title">
+        <span class="num-index">01</span>
+        <p class="num-text">Community does not happen by proximity. It requires intention, design, and the courage to build something that doesn&rsquo;t yet exist. The Muslim communities most worth belonging to are the ones being built right now by people who decided to stop waiting for them.</p>
+      </li>
+      <li class="num-item no-title">
+        <span class="num-index">02</span>
+        <p class="num-text">Business is not separate from worship. The way a transaction is structured, the way a client is treated, the way profit is understood &mdash; all of it either reflects a set of values or quietly contradicts them. Our team builds operating systems for those who want their work to reflect theirs.</p>
+      </li>
+      <li class="num-item no-title">
+        <span class="num-index">03</span>
+        <p class="num-text">Land is not an investment vehicle. It is a trust &mdash; something given to be cared for, to be made productive, to carry signs of the Creator for those who come to stand on it. Our team builds tools for people who believe that.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ WHAT ══ -->
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="what" aria-labelledby="what-h">
+  <div class="section-inner">
+    <p class="sec-eyebrow reveal">What OGDEN is</p>
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="what-h">
+      Three domains. One intention.<br><em>All of it fully alive.</em>
+    </h2>
+    <p class="sec-body reveal">
+      OGDEN is a name that came from a place &mdash; an oak valley.
+      Something rooted. Something specific.
+      Everything built under it carries that same quality:
+      grounded in a particular person&rsquo;s God-given inclinations,
+      expressed through structured service,
+      offered to communities that need it.
+      Three products. Each one complete. Each one a different
+      expression of the same underlying intention.
+    </p>
+  </div>
+</section>
+
+<!-- ══ THE WORK / PRODUCTS ══ -->
+<div class="sep" aria-hidden="true"></div>
+<section class="section" id="how" aria-labelledby="products-h">
+  <div class="section-inner--wide">
+    <p class="sec-eyebrow reveal">The work, fully realised</p>
+    <div class="sec-rule reveal" aria-hidden="true"></div>
+    <h2 class="sec-headline reveal" id="products-h">
+      Three expressions<br>of <em>one intention.</em>
+    </h2>
+    <p class="sec-body reveal">
+      Each product addresses a different dimension of the same question:
+      how do we build, own, and operate in ways that are worthy of what we believe?
+    </p>
+
+    <div class="products-grid">
+
+      <!-- BBOS -->
+      <a href="https://hub.ogden.ag/bbos/" class="product-card reveal">
+        <div class="product-status">
+          <span class="product-status-badge live">Live</span>
+          <span class="product-status-badge">Business Operating System</span>
+        </div>
+        <p class="product-name">BBOS</p>
+        <p class="product-desc">The Barakah Business Operating System &mdash; a complete, productised framework for running a business as an act of worship. From intake through optimisation, every stage structured and guided.</p>
+        <span class="product-link">Enter BBOS <span aria-hidden="true">→</span></span>
+      </a>
+
+      <!-- ATLAS -->
+      <a href="https://hub.ogden.ag/atlas/" class="product-card reveal">
+        <div class="product-status">
+          <span class="product-status-badge live">Live</span>
+          <span class="product-status-badge">Land Intelligence</span>
+        </div>
+        <p class="product-name">Atlas</p>
+        <p class="product-desc">A fully operational land intelligence and design system. Know the land before you ask anything of it &mdash; soil, water, zoning, ecology, and design potential all mapped before the decision is made.</p>
+        <span class="product-link">Enter Atlas <span aria-hidden="true">→</span></span>
+      </a>
+
+      <!-- MOONTRANCE -->
+      <a href="https://hub.ogden.ag/moontrance/" class="product-card reveal">
+        <div class="product-status">
+          <span class="product-status-badge live">Live</span>
+          <span class="product-status-badge">Faith-Rooted Destination</span>
+        </div>
+        <p class="product-name">Moontrance</p>
+        <p class="product-desc">A faith-rooted land destination in Halton Hills, Ontario &mdash; open for guided visits, workshops, and overnight stays. A place to stand in nature and remember why it matters.</p>
+        <span class="product-link">Visit Moontrance <span aria-hidden="true">→</span></span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSING CTA ══ -->
+<div class="sep" aria-hidden="true"></div>
+<section class="cta-section" id="connect" aria-labelledby="cta-h">
+  <div class="cta-inner">
+    <h2 class="cta-headline reveal" id="cta-h">
+      If this resonates,<br><em>you are who this is for.</em>
+    </h2>
+    <p class="cta-sub reveal">
+      OGDEN exists for those who want their land, their business, and their community
+      to reflect what they actually believe.
+      Three products. One ecosystem. Built for a different set of priorities.
+    </p>
+    <a href="https://hub.ogden.ag/moontrance/connect/" class="cta-btn reveal">
+      Get in Touch
+      <span class="cta-btn-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-mark">OGDEN &mdash; From an oak valley</div>
+  <div class="footer-line">Structured service. Rooted intention.</div>
+  <div class="footer-mark">hub.ogden.ag</div>
+</footer>
+
+<script>
+const toggle=document.querySelector('.nav-toggle');
+const drawer=document.getElementById('nav-drawer');
+if(toggle&&drawer){
+  const drawerLinks=Array.from(drawer.querySelectorAll('a'));
+  let _sy=0;
+  function openDrawer(){
+    _sy=window.scrollY;
+    document.body.style.position='fixed';
+    document.body.style.top='-'+_sy+'px';
+    document.body.style.width='100%';
+    drawer.classList.add('open');
+    toggle.setAttribute('aria-expanded','true');
+    toggle.setAttribute('aria-label','Close navigation menu');
+    if(drawerLinks[0])setTimeout(()=>drawerLinks[0].focus(),50);
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-label','Open navigation menu');
+    document.body.style.position='';
+    document.body.style.top='';
+    document.body.style.width='';
+    window.scrollTo(0,_sy);
+    toggle.focus();
+  }
+  function addTap(el,fn){
+    el.addEventListener('click',fn);
+    el.addEventListener('touchend',function(e){e.preventDefault();fn();},{passive:false});
+  }
+  addTap(toggle,()=>drawer.classList.contains('open')?closeDrawer():openDrawer());
+  drawerLinks.forEach(a=>addTap(a,closeDrawer));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer();});
+  drawer.addEventListener('keydown',e=>{
+    if(e.key!=='Tab')return;
+    const f=Array.from(drawer.querySelectorAll('a,button'));
+    if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus();}
+    else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}
+  });
+}
+
+const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const l=e.target.closest('.num-list');l?setTimeout(()=>e.target.classList.add('visible'),Array.from(l.children).indexOf(e.target)*90):e.target.classList.add('visible');obs.unobserve(e.target);});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.num-item').forEach(el=>obs.observe(el));
+
+const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySelector(`.nav-sections a[data-sec="${e.target.id}"]`);if(l)l.classList.toggle('sec-active',e.isIntersecting);});},{threshold:0.25});
+['who','why','what','how','connect'].forEach(id=>{const el=document.getElementById(id);if(el)secObs.observe(el);});
+</script>
+
+<script>
+
+</script>
+
+<script>
+/* Page exit fade — body opacity only, cannot block interaction */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a');
+  if (!a) return;
+  var href = a.getAttribute('href');
+  if (!href) return;
+  if (href.startsWith('http') || href.startsWith('//') ||
+      href.startsWith('#') || href.startsWith('mailto') ||
+      a.target === '_blank') return;
+  e.preventDefault();
+  document.body.style.transition = 'opacity 0.25s ease';
+  document.body.style.opacity = '0';
+  setTimeout(function(){ window.location.href = href; }, 260);
+});
+window.addEventListener('pageshow', function(e){
+  if (e.persisted){
+    document.body.style.transition = 'none';
+    document.body.style.opacity = '1';
+  }
+});
+</script>
+</body>
+</html>
