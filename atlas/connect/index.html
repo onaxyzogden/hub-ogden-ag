@@ -42,6 +42,7 @@ body::before{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;o
 
 .skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--parchment);color:var(--char);padding:.5rem 1rem;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-decoration:none;border-radius:2px;}
 .skip-nav:focus{top:.75rem;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 :focus-visible{outline:1.5px solid var(--terra-lt);outline-offset:4px;border-radius:2px;}
 
 /* ── NAV ── */
@@ -214,7 +215,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">02</span>
       <p class="q-label">Where should we reach you?</p>
       <span class="q-sub">We respond personally &mdash; not with an automated sequence.</span>
-      <label for="email" class="skip-nav">Email address</label>
+      <label for="email" class="sr-only">Email address</label>
       <input type="text" id="email" name="email" class="field" placeholder="you@yourdomain.com" autocomplete="off" inputmode="email" required>
     </div>
 
@@ -255,7 +256,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">05</span>
       <p class="q-label">What region are you searching in?</p>
       <span class="q-sub">General is fine &mdash; province, corridor, or distance from a city.</span>
-      <label for="region" class="skip-nav">Search region</label>
+      <label for="region" class="sr-only">Search region</label>
       <input type="text" id="region" name="region" class="field" placeholder="e.g. Ontario &mdash; within 90 min of Toronto" autocomplete="off">
     </div>
 
@@ -270,7 +271,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">06</span>
       <p class="q-label">What is your biggest uncertainty right now?</p>
       <span class="q-sub">The thing you most need answered before you can move forward with confidence. This is what Atlas is built to help with.</span>
-      <label for="uncertainty" class="skip-nav">Biggest uncertainty</label>
+      <label for="uncertainty" class="sr-only">Biggest uncertainty</label>
       <textarea id="uncertainty" name="uncertainty" class="field field-ta" placeholder="e.g. I don&rsquo;t know if the soil can support what I want to grow. I can&rsquo;t tell if the zoning allows what I&rsquo;m planning. I&rsquo;ve seen 15 parcels and can&rsquo;t compare them objectively."></textarea>
     </div>
 
@@ -279,7 +280,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">07</span>
       <p class="q-label">Anything else we should know?</p>
       <span class="q-sub">Optional &mdash; what didn&rsquo;t fit above.</span>
-      <label for="other_notes" class="skip-nav">Anything else</label>
+      <label for="other_notes" class="sr-only">Anything else</label>
       <textarea id="other_notes" name="other_notes" class="field field-ta" style="min-height:85px;" placeholder="The vision, the timeline, what matters most."></textarea>
     </div>
 

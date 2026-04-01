@@ -49,6 +49,7 @@ body::before{
 
 .skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--parchment);color:var(--char);padding:.5rem 1rem;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-decoration:none;border-radius:2px;}
 .skip-nav:focus{top:.75rem;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 :focus-visible{outline:1.5px solid var(--gold);outline-offset:4px;border-radius:2px;}
 
 /* ── NAV ── */
@@ -364,7 +365,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">02</span>
       <p class="q-label">Where should we reach you?</p>
       <span class="q-sub">We respond personally, not with an automated sequence.</span>
-      <label for="email" class="skip-nav">Email address</label>
+      <label for="email" class="sr-only">Email address</label>
       <input type="text" name="_trap" style="display:none;position:absolute;left:-9999px;" tabindex="-1" aria-hidden="true" autocomplete="off">
       <input type="text" id="email" name="email" class="field" placeholder="you@yourdomain.com" autocomplete="off" inputmode="email" required>
     </div>
@@ -374,7 +375,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">03</span>
       <p class="q-label">What are you building or running?</p>
       <span class="q-sub">A short description — we'll ask more in the conversation.</span>
-      <label for="what_you_do" class="skip-nav">What you are building or running</label>
+      <label for="what_you_do" class="sr-only">What you are building or running</label>
       <input type="text" id="what_you_do" name="what_you_do" class="field" placeholder="e.g. a consulting practice, a creative studio, a service business" required>
     </div>
 
@@ -383,7 +384,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">04</span>
       <p class="q-label">Where are you right now?</p>
       <span class="q-sub">Choose what's closest to true — including "I'm not sure".</span>
-      <label for="stage" class="skip-nav">Where you are right now</label>
+      <label for="stage" class="sr-only">Where you are right now</label>
       <select id="stage" name="stage" class="field field-select" required>
         <option value="" disabled selected>Select what's closest to true</option>
         <option value="idea">I have an idea but haven't started yet</option>
@@ -407,7 +408,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">05</span>
       <p class="q-label">What has building this cost you —<br>honestly?</p>
       <span class="q-sub">Optional. But this is the question BBOS was built to answer. If something is pulling at you, this is the place to name it.</span>
-      <label for="what_cost" class="skip-nav">What building this has cost you</label>
+      <label for="what_cost" class="sr-only">What building this has cost you</label>
       <textarea id="what_cost" name="what_cost" class="field field-ta" placeholder="Time, presence, something harder to name — whatever is true."></textarea>
     </div>
 
@@ -416,7 +417,7 @@ body{animation:body-in .55s ease .05s both;}
       <span class="q-num">06</span>
       <p class="q-label">What brought you here?</p>
       <span class="q-sub">A line from the page, a feeling, a recommendation. Whatever it was.</span>
-      <label for="what_pulled" class="skip-nav">What brought you here</label>
+      <label for="what_pulled" class="sr-only">What brought you here</label>
       <textarea id="what_pulled" name="what_pulled" class="field field-ta" style="min-height:90px;" placeholder="Whatever is true."></textarea>
     </div>
 
