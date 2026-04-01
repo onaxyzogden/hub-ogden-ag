@@ -3,320 +3,487 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stay Connected — Moontrance Collective</title>
-<meta name="description" content="Stay connected with the Moontrance Collective — join our newsletter, tell us what interests you, or send us a message.">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>Begin a Conversation — Moontrance</title>
+<meta name="description" content="Whether you want to visit, participate in a season, or stay close as the vision unfolds — tell us where you are.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root { --bg-deep: #0a0a08; --bg-card: #161612; --bg-card-hover: #1c1c17; --green: #5a9469; --green-light: #7db68c; --green-mid: #4a8058; --green-dim: #3d6b4a; --cream: #e8e0d0; --cream-dim: #b8ae9e; --text-primary: #e8e0d0; --text-secondary: #b8ae9e; --text-muted: #8a7e70; --focus-ring: #7db68c; --error: #c47a7a; --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', monospace; }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--green-dim) var(--bg-deep); }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } .section-content { opacity: 1 !important; transform: none !important; } }
-body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
-body { opacity: 0; animation: pageIn 0.6s ease forwards; }
-body.page-leaving { animation: pageOut 0.4s ease forwards; }
-@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes pageOut { from { opacity: 1; } to { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { body { animation: none; opacity: 1; } body.page-leaving { animation: none; } }
+:root {
+  --char:       #0e0c09;
+  --char-warm:  #131008;
+  --parchment:  #f0ebe0;
+  --bone:       #cfc9b8;
+  --dust:       #7a7060;
+  --faint:      rgba(240,235,224,0.38);
+  --moss:       #4a5f42;
+  --moss-lt:    #5a7250;
+  --moss-muted: #3a4a35;
+  --moss-dim:   rgba(74,95,66,0.12);
+  --moss-line:  rgba(74,95,66,0.28);
+  --field-bg:   rgba(240,235,224,0.04);
+  --field-bdr:  rgba(240,235,224,0.1);
+  --field-focus:rgba(74,95,66,0.45);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono:  'DM Mono', monospace;
+  --sans:  'Instrument Sans', system-ui, sans-serif;
+}
 
-.skip-link { position: absolute; top: -100%; left: 16px; padding: 12px 24px; background: var(--green-light); color: var(--bg-deep); font-family: var(--sans); font-weight: 500; font-size: 0.9rem; text-decoration: none; z-index: 10060; border-radius: 2px; }
-.skip-link:focus { top: 16px; }
-:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:18px;}
+body{
+  background:var(--char);
+  color:var(--parchment);
+  font-family:var(--sans);
+  line-height:1.6;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 75% 55% at 20% 15%, rgba(74,95,66,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 75%, rgba(74,95,66,0.04) 0%, transparent 50%);
+}
+body::before{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.45;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
 
-.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 10050; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 52px; background: rgba(10, 10, 8, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(106, 101, 94, 0.2); }
-.site-header-left { display: flex; align-items: center; gap: 16px; }
-.site-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream); text-decoration: none; transition: color 0.3s ease; }
-.site-logo:hover { color: var(--green-light); }
-.site-header-sep { width: 1px; height: 16px; background: rgba(106, 101, 94, 0.4); }
-.site-header-link { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
-.site-header-link:hover { color: var(--cream); }
-.site-header-link.project-active { color: var(--cream); }
-@media (max-width: 640px) { .site-header-left { gap: 10px; } .site-header-link { display: none; } }
+.skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--parchment);color:var(--char);padding:.5rem 1rem;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-decoration:none;border-radius:2px;}
+.skip-nav:focus{top:.75rem;}
+:focus-visible{outline:1.5px solid var(--moss-lt);outline-offset:4px;border-radius:2px;}
 
-.page-content { max-width: 680px; margin: 0 auto; padding: 120px 24px 80px; }
-.section-divider { width: 60px; height: 1px; background: var(--green-mid); margin: 0 auto 2.5rem; }
-.section-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 2rem; text-align: center; }
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:44px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(14,12,9,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(240,235,224,.05);}
+.nav-id{display:flex;align-items:center;gap:.5rem;}
+.nav-mark{font-family:var(--mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dust);}
+.nav-sep{color:rgba(240,235,224,.2);font-size:.65rem;}
+.nav-prod{font-family:var(--mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(74,95,66,.65);}
+.nav-back{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:.35rem;}
+.nav-back:hover{color:var(--moss-lt);}
 
-.hero-area { text-align: center; margin-bottom: 4rem; }
-.hero-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 1.5rem; }
-.hero-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.2; color: var(--green-light); margin-bottom: 1.25rem; }
-.hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 520px; margin: 0 auto; }
-.heading { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 300; line-height: 1.6; text-align: center; color: var(--cream); margin-bottom: 2rem; }
+/* ── WRAPPER ── */
+.wrapper{max-width:620px;margin:0 auto;padding:calc(44px + 6rem) 2rem 8rem;position:relative;z-index:1;}
 
-/* FORM */
-.interest-group { margin-bottom: 2.5rem; }
-.interest-group-label { font-family: var(--serif); font-size: 1.1rem; color: var(--cream); margin-bottom: 1rem; }
-.checkbox-grid { display: flex; flex-direction: column; gap: 10px; }
-.checkbox-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; border: 1px solid #6a655e; border-radius: 2px; background: var(--bg-card); cursor: pointer; transition: all 0.3s ease; }
-.checkbox-item:hover { border-color: var(--green-dim); background: var(--bg-card-hover); }
-.checkbox-item.selected { border-color: var(--green-mid); background: rgba(90, 148, 105, 0.08); }
-.checkbox-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; min-width: 20px; border: 1px solid #6a655e; border-radius: 2px; background: transparent; cursor: pointer; position: relative; margin-top: 2px; transition: all 0.2s ease; }
-.checkbox-item input[type="checkbox"]:checked { background: var(--green-mid); border-color: var(--green-light); }
-.checkbox-item input[type="checkbox"]:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--cream); font-size: 0.75rem; font-weight: 700; }
-.checkbox-item input[type="checkbox"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.checkbox-label { font-size: 0.95rem; color: var(--cream); line-height: 1.4; }
-.checkbox-desc { font-size: 0.88rem; color: var(--text-secondary); margin-top: 2px; line-height: 1.5; }
+/* ── OPENING ── */
+.opening{margin-bottom:5rem;text-align:center;}
+.opening-dua{margin-bottom:2rem;opacity:0;animation:rise .7s ease .05s forwards;}
+.dua-arabic{display:block;font-family:var(--serif);font-size:1.3rem;color:var(--moss-lt);direction:rtl;text-align:right;line-height:2.1;margin-bottom:.35rem;}
+.dua-trans{display:block;font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--bone);line-height:1.7;margin-bottom:.25rem;text-align:right;}
+.dua-source{display:block;font-family:var(--mono);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);text-align:right;}
+.opening-rule{width:1px;height:48px;background:linear-gradient(to bottom,transparent,rgba(74,95,66,.35),transparent);margin:0 auto 2rem;opacity:0;animation:fadeIn .8s ease .25s forwards;}
+.opening-stamp{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(74,95,66,.55);border:1px solid var(--moss-line);padding:.3rem .8rem;border-radius:2px;margin-bottom:2.5rem;opacity:0;animation:rise .7s ease .3s forwards;}
+.opening-h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.2rem,4.5vw,3.4rem);line-height:1.12;color:var(--parchment);margin-bottom:1.25rem;opacity:0;animation:rise .8s ease .42s forwards;}
+.opening-h1 em{font-style:italic;color:var(--moss-lt);}
+.opening-sub{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--bone);line-height:1.8;max-width:460px;margin:0 auto;opacity:0;animation:rise .8s ease .54s forwards;}
 
-.form-field { margin-bottom: 1.25rem; }
-.form-field label { display: block; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
-.form-field input, .form-field textarea { width: 100%; padding: 12px 16px; background: var(--bg-card); border: 1px solid #6a655e; border-radius: 2px; color: var(--text-primary); font-family: var(--sans); font-size: 0.95rem; font-weight: 300; line-height: 1.6; transition: border-color 0.3s ease; }
-.form-field input:focus, .form-field textarea:focus { border-color: var(--green-mid); outline: none; }
-.form-field input::placeholder, .form-field textarea::placeholder { color: var(--text-muted); }
-.form-field textarea { min-height: 100px; resize: vertical; }
-.form-field .field-error { font-size: 0.8rem; color: var(--error); margin-top: 4px; display: none; }
-.form-field .field-error.show { display: block; }
-.form-field .required { color: var(--error); }
+/* ── FORM CONVERSATION ── */
+.block{margin:4.5rem 0;opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+.block.in{opacity:1;transform:translateY(0);}
 
-.submit-row { display: flex; align-items: center; gap: 16px; margin-top: 2rem; flex-wrap: wrap; }
-.submit-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; border: 1px solid var(--green-light); border-radius: 2px; background: transparent; color: var(--green-light); font-family: var(--serif); font-size: 1.05rem; font-weight: 400; cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden; }
-.submit-btn::before { content: ''; position: absolute; inset: 0; background: var(--green-light); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0; }
-.submit-btn:hover { color: var(--bg-deep); }
-.submit-btn:hover::before { transform: scaleX(1); }
-.submit-btn:disabled { opacity: 0.5; cursor: wait; }
-.submit-btn:disabled::before { transform: scaleX(0); }
-.submit-btn span { position: relative; z-index: 1; }
-.submit-note { font-size: 0.88rem; color: var(--text-muted); }
+.q-num{font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(74,95,66,.5);margin-bottom:.55rem;display:block;}
+.q-label{font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--parchment);line-height:1.3;margin-bottom:.25rem;}
+.q-sub{font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--dust);line-height:1.65;margin-bottom:1.1rem;display:block;}
 
-/* SUCCESS STATE */
-.success-msg { display: none; text-align: center; padding: 3rem 0; }
-.success-msg.show { display: block; }
-.success-icon { font-size: 2rem; margin-bottom: 1rem; }
-.success-title { font-family: var(--serif); font-size: 1.5rem; color: var(--green-light); margin-bottom: 0.75rem; }
-.success-body { font-size: 0.95rem; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.7; }
+/* underline fields */
+.field{width:100%;background:transparent;border:none;border-bottom:1px solid var(--field-bdr);padding:.7rem .1rem;font-family:var(--sans);font-size:.95rem;color:var(--parchment);line-height:1.5;transition:border-color .25s;border-radius:0;appearance:none;-webkit-appearance:none;}
+.field::placeholder{color:rgba(240,235,224,.18);}
+.field:focus{outline:none;border-bottom-color:var(--moss-lt);}
 
-/* DIVIDER BETWEEN FORMS */
-.form-divider { width: 100%; height: 1px; background: #2a2720; margin: 3rem 0; }
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
 
-.footer { text-align: center; padding: 80px 24px 60px; border-top: 1px solid #1a1815; }
-.footer-arabic { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.8; color: var(--green-light); margin-bottom: 16px; direction: rtl; }
-.footer-transliteration { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--green-mid); margin-bottom: 8px; }
-.footer-translation { font-family: var(--sans); font-size: 0.9rem; font-weight: 300; color: var(--text-secondary); margin-bottom: 40px; }
-.footer-divider { width: 40px; height: 1px; background: var(--green-mid); margin: 0 auto 40px; }
-.footer-credit { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
+/* boxed textarea */
+.field-ta{resize:none;min-height:105px;background:rgba(240,235,224,.03);border:1px solid var(--field-bdr);border-radius:2px;padding:.8rem .9rem;transition:border-color .25s;}
+.field-ta:focus{border-color:rgba(74,95,66,.45);}
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 640px) { .page-content { padding: 90px 20px 60px; } .checkbox-item { padding: 12px 14px; } }
+/* path selector */
+.path-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:.25rem;}
+.path-btn{padding:1rem .75rem;background:transparent;border:1px solid var(--field-bdr);border-radius:3px;cursor:pointer;text-align:center;transition:background .2s,border-color .2s;display:flex;flex-direction:column;align-items:center;gap:.4rem;}
+.path-btn:hover{background:var(--moss-dim);border-color:var(--moss-line);}
+.path-btn.selected{background:var(--moss-dim);border-color:var(--moss-lt);}
+.path-btn-symbol{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--moss-lt);opacity:.7;}
+.path-btn-label{font-family:var(--serif);font-size:1rem;color:var(--parchment);}
+.path-btn-sub{font-family:var(--serif);font-style:italic;font-size:.75rem;color:var(--dust);line-height:1.5;}
+.path-btn.selected .path-btn-symbol{opacity:1;}
+.path-btn.selected .path-btn-label{color:#fff;}
+
+/* stage selector */
+.field-select{background:transparent;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%237a7060'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .2rem center;cursor:pointer;}
+.field-select option{background:#131008;color:var(--parchment);}
+
+/* ── DIVIDER ── */
+.hr{width:1px;height:48px;background:linear-gradient(to bottom,transparent,rgba(74,95,66,.28),transparent);margin:0 auto;}
+
+/* ── INTEGRITY NOTE ── */
+.integrity{margin:4rem 0;padding:1.5rem 0;border-top:1px solid rgba(240,235,224,.06);border-bottom:1px solid rgba(240,235,224,.06);opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+.integrity.in{opacity:1;transform:translateY(0);}
+.integrity-text{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--dust);line-height:1.85;text-align:center;}
+
+/* ── WHAT HAPPENS ── */
+.what-happens{margin:3.5rem 0;opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+.what-happens.in{opacity:1;transform:translateY(0);}
+.wh-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(74,95,66,.5);margin-bottom:1.1rem;display:block;}
+.wh-list{list-style:none;}
+.wh-list li{display:grid;grid-template-columns:1.5rem 1fr;gap:.6rem;padding:.6rem 0;border-bottom:1px solid rgba(240,235,224,.05);font-size:.875rem;color:var(--faint);line-height:1.65;}
+.wh-list li:last-child{border-bottom:none;}
+.wh-list li::before{content:'—';font-family:var(--mono);font-size:.7rem;color:rgba(74,95,66,.45);padding-top:.15rem;}
+
+/* ── SUBMIT ── */
+.submit-wrap{margin-top:3.5rem;text-align:center;opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+.submit-wrap.in{opacity:1;transform:translateY(0);}
+.submit-btn{display:inline-flex;align-items:center;gap:.85rem;padding:1.1rem 3rem;background:transparent;border:1px solid var(--moss-line);border-radius:2px;font-family:var(--mono);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--moss-lt);cursor:pointer;transition:background .3s,border-color .3s,color .3s,letter-spacing .3s;}
+.submit-btn:hover{background:rgba(74,95,66,.1);border-color:rgba(74,95,66,.6);color:var(--parchment);letter-spacing:.24em;}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;letter-spacing:.2em;}
+.submit-note{margin-top:1.25rem;font-family:var(--serif);font-style:italic;font-size:.82rem;color:var(--dust);line-height:1.6;}
+
+/* ── SUCCESS ── */
+.success{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:55vh;padding:4rem 1rem;}
+.success-mark{font-family:var(--mono);font-size:1.1rem;color:rgba(74,95,66,.6);margin-bottom:2rem;display:block;}
+.success-h{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3rem);color:var(--parchment);line-height:1.15;margin-bottom:1.2rem;}
+.success-h em{font-style:italic;color:var(--moss-lt);}
+.success-body{font-size:.9rem;color:var(--faint);line-height:1.85;max-width:420px;margin-bottom:2.5rem;}
+.success-dua{font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--dust);border-top:1px solid rgba(240,235,224,.06);padding-top:2rem;max-width:440px;line-height:1.8;}
+.success-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:2rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(74,95,66,.55);text-decoration:none;border-bottom:1px solid rgba(74,95,66,.2);padding-bottom:2px;transition:color .2s,border-color .2s;}
+.success-link:hover{color:var(--moss-lt);border-color:rgba(74,95,66,.5);}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid rgba(240,235,224,.04);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;position:relative;z-index:1;}
+.ft-mark{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,235,224,.22);}
+.ft-line{font-family:var(--serif);font-style:italic;font-size:.82rem;color:rgba(240,235,224,.22);}
+
+/* ── ANIMATIONS ── */
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+@media(max-width:600px){
+  .wrapper{padding:calc(44px + 4rem) 1.25rem 6rem;}
+  .field-row{grid-template-columns:1fr;gap:1.25rem;}
+  .path-grid{grid-template-columns:1fr;}
+  .dua-arabic{font-size:1.1rem;}
+  .dua-trans,.dua-source{text-align:left;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
+  .block,.integrity,.what-happens,.submit-wrap{opacity:1;transform:none;}
+}
+
+@keyframes body-in{from{opacity:0}to{opacity:1}}
+body{animation:body-in .55s ease .05s both;}
+
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.25rem;}
+.choice-btn{padding:.85rem 1rem;background:transparent;border:1px solid var(--field-bdr);border-radius:3px;cursor:pointer;text-align:left;transition:background .2s,border-color .2s;font-family:var(--sans);font-size:.875rem;color:rgba(240,235,224,.6);line-height:1.4;}
+.choice-btn:hover{background:var(--moss-dim);border-color:var(--moss-line);color:var(--parchment);}
+.choice-btn.selected{background:var(--moss-dim);border-color:var(--moss-lt);color:var(--parchment);}
 </style>
 </head>
 <body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
 
-<header class="site-header" role="banner">
-  <div class="site-header-left">
-    <a class="site-logo" href="/">OGDEN</a>
-    <span class="site-header-sep" aria-hidden="true"></span>
-    <a class="site-header-link" href="/">Home</a>
-    <a class="site-header-link" href="/bbos/">BBOS</a>
-    <a class="site-header-link project-active" href="/moontrance/">Moontrance</a>
-    <a class="site-header-link" href="/atlas/">Atlas</a>
-  </div>
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
+<header>
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-id">
+      <span class="nav-mark">OGDEN</span>
+      <span class="nav-sep" aria-hidden="true">·</span>
+      <span class="nav-prod">Moontrance</span>
+    </div>
+    <a href="/moontrance/" class="nav-back">← Moontrance</a>
+  </nav>
 </header>
 
 <main id="main-content">
-  <div class="page-content">
+<div class="wrapper">
 
-    <div class="hero-area">
-      <p class="hero-tag">Moontrance · Connect</p>
-      <h1 class="hero-title">We're Glad You're Here</h1>
-      <p class="hero-sub">Moontrance is still being shaped. If something resonated, the best next step is to stay connected — and to tell us what drew you here.</p>
+  <!-- OPENING -->
+  <div class="opening">
+    <div class="opening-dua" role="note">
+      <span class="dua-arabic" lang="ar" dir="rtl">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</span>
+      <span class="dua-trans">&ldquo;Our Lord, grant us from among our spouses and offspring the comfort of our eyes, and make us a leader for the righteous.&rdquo;</span>
+      <span class="dua-source">Surah Al-Furq&amacr;n &middot; 25:74</span>
     </div>
+    <div class="opening-rule" aria-hidden="true"></div>
+    <span class="opening-stamp">&#9700; &nbsp; Begin a Conversation</span>
+    <h1 class="opening-h1">Something is<br>calling you <em>here.</em></h1>
+    <p class="opening-sub">
+      Tell us what it is — and where you are.
+      We read every submission personally and respond the same way.
+    </p>
+  </div>
 
-    <!-- ═══ NEWSLETTER + INTERESTS ═══ -->
-    <div id="subscribe-wrap">
-      <p class="section-tag">Stay connected</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
-      <h2 class="heading">Check anything that resonates. Nothing is a commitment.</h2>
+  <form id="mt-form" novalidate>
 
-      <div class="interest-group">
-        <p class="interest-group-label">What draws you here?</p>
-        <div class="checkbox-grid">
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-visits" value="visits">
-            <div><span class="checkbox-label">Visiting the land</span><p class="checkbox-desc">Guided tours, family land days, overnight stays, or just spending time in nature.</p></div>
-          </label>
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-workshops" value="workshops">
-            <div><span class="checkbox-label">Workshops and learning</span><p class="checkbox-desc">Seasonal sessions on sustainable living, food systems, stewardship, and hands-on education.</p></div>
-          </label>
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-community" value="community">
-            <div><span class="checkbox-label">Community and stewardship</span><p class="checkbox-desc">The values behind the work — covenant, shura, Waqf, and what it means to build something that lasts.</p></div>
-          </label>
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-founding" value="founding">
-            <div><span class="checkbox-label">Founding membership</span><p class="checkbox-desc">You're interested in being part of the community from the ground up.</p></div>
-          </label>
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-skills" value="skills">
-            <div><span class="checkbox-label">Skills and expertise</span><p class="checkbox-desc">Farming, education, construction, design, hospitality, Islamic education, or something else entirely.</p></div>
-          </label>
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-support" value="support">
-            <div><span class="checkbox-label">Financial support or sadaqah</span><p class="checkbox-desc">Contributing financially — ongoing support, one-time contribution, or Waqf-oriented giving.</p></div>
-          </label>
-          <label class="checkbox-item" onclick="this.classList.toggle('selected')">
-            <input type="checkbox" id="int-bbos" value="bbos">
-            <div><span class="checkbox-label">BBOS — the business framework</span><p class="checkbox-desc">The operating system behind the ecosystem — how the work is structured and governed.</p></div>
-          </label>
+    <!-- Q1 — Name -->
+    <div class="block" id="b1">
+      <span class="q-num">01</span>
+      <p class="q-label">Who are you?</p>
+      <span class="q-sub">Your name — the one you&rsquo;d use in a real conversation.</span>
+      <div class="field-row">
+        <div>
+          <label for="fname" style="font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dust);display:block;margin-bottom:.5rem;">First name <span style="color:rgba(74,95,66,.6);">*</span></label>
+          <input type="text" id="fname" name="fname" class="field" placeholder="Mariam" autocomplete="given-name" required>
+        </div>
+        <div>
+          <label for="lname" style="font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dust);display:block;margin-bottom:.5rem;">Last name</label>
+          <input type="text" id="lname" name="lname" class="field" placeholder="Al-Rashid" autocomplete="family-name">
         </div>
       </div>
-
-      <div class="form-field">
-        <label for="sub-name">Your name <span class="required">*</span></label>
-        <input type="text" id="sub-name" placeholder="First name is enough" autocomplete="given-name">
-        <p class="field-error" id="e-sub-name">Please enter your name.</p>
-      </div>
-      <div class="form-field">
-        <label for="sub-email">Email address <span class="required">*</span></label>
-        <input type="email" id="sub-email" placeholder="So we can stay in touch" autocomplete="email">
-        <p class="field-error" id="e-sub-email">A valid email address is required.</p>
-      </div>
-
-      <div class="submit-row">
-        <button type="button" class="submit-btn" id="sub-btn" onclick="submitSubscribe()"><span>Join the List</span></button>
-        <span class="submit-note">No spam. Just honest updates when there's something worth sharing.</span>
-      </div>
     </div>
 
-    <div class="success-msg" id="subscribe-success" role="status">
-      <p class="success-icon">🌿</p>
-      <p class="success-title">You're on the list.</p>
-      <p class="success-body">Thank you — we'll be in touch when there's something worth sharing. Watch for a quiet email from the Moontrance Collective.</p>
+    <!-- Q2 — Email -->
+    <div class="block" id="b2">
+      <span class="q-num">02</span>
+      <p class="q-label">Where should we reach you?</p>
+      <span class="q-sub">We respond personally — not with a sequence.</span>
+      <label for="email" class="skip-nav">Email address</label>
+      <input type="email" id="email" name="email" class="field" placeholder="you@yourdomain.com" autocomplete="email" required>
     </div>
 
-    <div class="form-divider"></div>
+    <div class="hr" aria-hidden="true"></div>
 
-    <!-- ═══ CONTACT MESSAGE ═══ -->
-    <div id="contact-wrap">
-      <p class="section-tag">Or send a message</p>
-      <div class="section-divider" role="presentation" aria-hidden="true"></div>
-      <h2 class="heading">Questions, ideas, or just a hello.</h2>
-
-      <div class="form-field">
-        <label for="ct-name">Your name <span class="required">*</span></label>
-        <input type="text" id="ct-name" placeholder="Full name" autocomplete="name">
-        <p class="field-error" id="e-ct-name">Please enter your name.</p>
+    <!-- Q3 — What's calling you -->
+    <div class="block" id="b3">
+      <span class="q-num">03</span>
+      <p class="q-label">What is calling you?</p>
+      <span class="q-sub">Choose the one that feels closest to true — you can tell us more below.</span>
+      <div class="path-grid" role="group" aria-label="Choose your path">
+        <button type="button" class="path-btn" data-path="collective" aria-pressed="false">
+          <span class="path-btn-symbol">&#9700;</span>
+          <span class="path-btn-label">The Collective</span>
+          <span class="path-btn-sub">I want to visit, attend, or experience the land</span>
+        </button>
+        <button type="button" class="path-btn" data-path="community" aria-pressed="false">
+          <span class="path-btn-symbol">&#9700;</span>
+          <span class="path-btn-label">The Community</span>
+          <span class="path-btn-sub">Something about the intentional community is pulling at me</span>
+        </button>
+        <button type="button" class="path-btn" data-path="other" aria-pressed="false">
+          <span class="path-btn-symbol">&#9700;</span>
+          <span class="path-btn-label">Something else</span>
+          <span class="path-btn-sub">I want to invest, partner, or I&rsquo;m not sure yet</span>
+        </button>
       </div>
-      <div class="form-field">
-        <label for="ct-email">Email address <span class="required">*</span></label>
-        <input type="email" id="ct-email" placeholder="you@example.com" autocomplete="email">
-        <p class="field-error" id="e-ct-email">A valid email address is required.</p>
-      </div>
-      <div class="form-field">
-        <label for="ct-subject">Subject</label>
-        <select id="ct-subject" style="width:100%;padding:12px 16px;background:var(--bg-card);border:1px solid #6a655e;border-radius:2px;color:var(--text-primary);font-family:var(--sans);font-size:0.95rem;font-weight:300;">
-          <option value="">— Select a topic —</option>
-          <option value="visit">Planning a visit</option>
-          <option value="group">Group or school booking</option>
-          <option value="collaboration">Collaboration or partnership</option>
-          <option value="land">Agritourism land / acquisition</option>
-          <option value="bbos">BBOS framework</option>
-          <option value="other">Something else</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label for="ct-message">Message <span class="required">*</span></label>
-        <textarea id="ct-message" placeholder="Tell us what's on your mind…"></textarea>
-        <p class="field-error" id="e-ct-message">Please write a short message.</p>
-      </div>
-
-      <div class="submit-row">
-        <button type="button" class="submit-btn" id="ct-btn" onclick="submitContact()"><span>Send Message</span></button>
-        <span class="submit-note">We read every message and reply personally.</span>
-      </div>
+      <input type="hidden" id="path-value" name="path" value="">
     </div>
 
-    <div class="success-msg" id="contact-success" role="status">
-      <p class="success-icon">✦</p>
-      <p class="success-title">Message received.</p>
-      <p class="success-body">Thank you for reaching out. We read every message personally and will reply within a few days.</p>
+    <!-- Q4 — Where you are -->
+    <div class="block" id="b4">
+      <span class="q-num">04</span>
+      <p class="q-label">Where are you right now?</p>
+      <span class="q-sub">Select all that apply.</span>
+      <div class="choice-grid" role="group" aria-label="Where you are right now">
+        <button type="button" class="choice-btn" data-stage="exploring" aria-pressed="false">I&rsquo;m exploring &mdash; something about this resonates</button>
+        <button type="button" class="choice-btn" data-stage="ready" aria-pressed="false">I&rsquo;m ready &mdash; I want a concrete next step</button>
+        <button type="button" class="choice-btn" data-stage="family" aria-pressed="false">I&rsquo;m thinking about what this means for my family</button>
+        <button type="button" class="choice-btn" data-stage="founding" aria-pressed="false">I want to be part of building this from the beginning</button>
+        <button type="button" class="choice-btn" data-stage="invest" aria-pressed="false">I&rsquo;m interested in investing or partnering</button>
+        <button type="button" class="choice-btn" data-stage="unsure" aria-pressed="false">I&rsquo;m not sure &mdash; something just brought me here</button>
+      </div>
+      <input type="hidden" id="stage-value" name="stage" value="">
     </div>
 
+    <!-- Q5 — What's pulling you -->
+    <div class="block" id="b5">
+      <span class="q-num">05</span>
+      <p class="q-label">What brought you here?</p>
+      <span class="q-sub">A line from the page, a feeling, a season of life — whatever is true. This one is optional but we read it closely.</span>
+      <label for="what_pulled" class="skip-nav">What brought you here</label>
+      <textarea id="what_pulled" name="what_pulled" class="field field-ta" placeholder="Whatever it is — we&rsquo;re genuinely glad you&rsquo;re here."></textarea>
+    </div>
+
+    <!-- Q6 — Family -->
+    <div class="block" id="b6">
+      <span class="q-num">06</span>
+      <p class="q-label">Are you coming with family?</p>
+      <span class="q-sub">Select all that apply &mdash; helps us understand what this conversation might look like.</span>
+      <div class="choice-grid" role="group" aria-label="Family situation">
+        <button type="button" class="choice-btn" data-family="solo" aria-pressed="false">Just me for now</button>
+        <button type="button" class="choice-btn" data-family="partner" aria-pressed="false">Me and my partner</button>
+        <button type="button" class="choice-btn" data-family="young_children" aria-pressed="false">With young children</button>
+        <button type="button" class="choice-btn" data-family="older_children" aria-pressed="false">With older children or teenagers</button>
+        <button type="button" class="choice-btn" data-family="extended" aria-pressed="false">Extended family or a group</button>
+        <button type="button" class="choice-btn" data-family="unsure" aria-pressed="false">Not sure yet</button>
+      </div>
+      <input type="hidden" id="family-value" name="family" value="">
+    </div>
+
+    <!-- INTEGRITY NOTE -->
+    <div class="integrity" id="integrity-block">
+      <p class="integrity-text">
+        There is no wrong answer here.<br>
+        You do not need to know exactly what you want.<br>
+        You only need to have felt something worth following.
+      </p>
+    </div>
+
+    <!-- WHAT HAPPENS -->
+    <div class="what-happens" id="what-block">
+      <span class="wh-label">What happens after you submit</span>
+      <ul class="wh-list">
+        <li>A member of the Moontrance team reads your submission personally</li>
+        <li>We respond within a few days with something real — not an automated sequence</li>
+        <li>If you chose The Collective, we&rsquo;ll share what&rsquo;s available and when</li>
+        <li>If you chose The Community, we&rsquo;ll have a longer conversation about seasonal participation</li>
+        <li>If you&rsquo;re not sure — that&rsquo;s completely fine. We&rsquo;ll find out together.</li>
+      </ul>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap" id="submit-wrap">
+      <button type="submit" class="submit-btn" id="submit-btn">
+        &#9700; &nbsp; Begin the Conversation
+        <span aria-hidden="true">&rarr;</span>
+      </button>
+      <p class="submit-note">We&rsquo;re genuinely glad you&rsquo;re here.</p>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success" id="success-state" role="status" aria-live="polite">
+    <span class="success-mark">&#9700;</span>
+    <h2 class="success-h">Received.<br><em>We&rsquo;ll be in touch.</em></h2>
+    <p class="success-body">
+      A member of the team will read what you&rsquo;ve shared and respond personally.
+      Give us a few days. In the meantime &mdash; the land is being searched for,
+      the vision is ready, and you are already part of what this becomes.
+    </p>
+    <p class="success-dua">
+      &ldquo;Our Lord, grant us from among our spouses and offspring
+      the comfort of our eyes, and make us a leader for the righteous.&rdquo;<br>
+      <span style="font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-top:.5rem;color:rgba(74,95,66,.5);">Al-Furq&amacr;n 25:74</span>
+    </p>
+    <a href="/moontrance/" class="success-link">
+      Back to Moontrance <span aria-hidden="true">&rarr;</span>
+    </a>
   </div>
+
+</div>
 </main>
 
-<!-- HADITH -->
-<div style="text-align:center; padding: 80px 24px 0;">
-  <p style="font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.8; color: var(--cream); direction: rtl; margin-bottom: 20px;" lang="ar">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
-  <p style="font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--cream-dim); max-width: 540px; margin: 0 auto 12px; line-height: 1.7;">"When a person dies, their deeds come to an end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them."</p>
-  <p style="font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-muted);">Sahih Muslim · 1631</p>
-</div>
-
-<footer class="footer" role="contentinfo">
-  <p class="footer-arabic" lang="ar" aria-label="Bismillah in Arabic script">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
-  <p class="footer-transliteration" lang="ar-Latn">Bismillāhi r-Raḥmāni r-Raḥīm</p>
-  <p class="footer-translation">In the name of God, the Most Gracious, the Most Merciful</p>
-  <div class="footer-divider" role="presentation" aria-hidden="true"></div>
-  <p class="footer-credit">Built with intention · Guided by divine names</p>
+<footer>
+  <div class="ft-mark">&#9700; &nbsp; Moontrance &mdash; OGDEN</div>
+  <div class="ft-line">Faith. Land. Creation. Ontario.</div>
+  <div class="ft-mark">hub.ogden.ag</div>
 </footer>
 
 <script>
-'use strict';
+// ── PATH SELECTION ──
+const pathBtns = document.querySelectorAll('.path-btn');
+const pathValue = document.getElementById('path-value');
 
-const CONNECT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxFq3VxKhWETUdSb8c-T2YPW7QxeYPxKhtoLjBQrMheiPwtjkVqLmh0VdwUq5-nz-FbCQ/exec';
+function updatePathValue() {
+  const selected = [...pathBtns].filter(b => b.classList.contains('selected')).map(b => b.dataset.path);
+  pathValue.value = selected.join(',');
+}
+pathBtns.forEach(btn => {
+  function toggle() {
+    const isSelected = btn.classList.contains('selected');
+    btn.classList.toggle('selected', !isSelected);
+    btn.setAttribute('aria-pressed', String(!isSelected));
+    updatePathValue();
+  }
+  btn.addEventListener('click', toggle);
+  btn.addEventListener('touchend', e => { e.preventDefault(); toggle(); }, { passive: false });
+});
 
-function showErr(id, show) { const el = document.getElementById(id); if (el) el.classList.toggle('show', show); }
-function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+// ── SCROLL REVEALS ──
+const revealEls = [
+  ...document.querySelectorAll('.block'),
+  document.getElementById('integrity-block'),
+  document.getElementById('what-block'),
+  document.getElementById('submit-wrap'),
+];
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => { if (el) obs.observe(el); });
 
-async function submitSubscribe() {
-  const name = document.getElementById('sub-name').value.trim();
-  const email = document.getElementById('sub-email').value.trim();
-  let ok = true;
-  showErr('e-sub-name', !name); if (!name) ok = false;
-  showErr('e-sub-email', !validEmail(email)); if (!validEmail(email)) ok = false;
-  if (!ok) return;
+// ── CHOICE GRIDS (stage + family) ──
+function wireChoiceGrid(selector, hiddenId) {
+  const btns = document.querySelectorAll(selector);
+  const hidden = document.getElementById(hiddenId);
+  function updateHidden() {
+    hidden.value = [...btns].filter(b => b.classList.contains('selected')).map(b => b.dataset[Object.keys(b.dataset)[0]]).join(',');
+  }
+  btns.forEach(btn => {
+    function toggle() {
+      btn.classList.toggle('selected');
+      btn.setAttribute('aria-pressed', String(btn.classList.contains('selected')));
+      updateHidden();
+    }
+    btn.addEventListener('click', toggle);
+    btn.addEventListener('touchend', e => { e.preventDefault(); toggle(); }, { passive: false });
+  });
+}
+wireChoiceGrid('[data-stage]', 'stage-value');
+wireChoiceGrid('[data-family]', 'family-value');
 
-  const btn = document.getElementById('sub-btn');
-  btn.disabled = true;
-  btn.querySelector('span').textContent = 'Sending…';
+// ── FORM SUBMISSION ──
+const form      = document.getElementById('mt-form');
+const submitBtn = document.getElementById('submit-btn');
+const successEl = document.getElementById('success-state');
 
-  const interests = ['int-visits','int-workshops','int-community','int-founding','int-skills','int-support','int-bbos']
-    .filter(id => document.getElementById(id)?.checked)
-    .map(id => document.getElementById(id).value)
-    .join(', ') || 'not specified';
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const stage = document.getElementById('stage-value').value;
+
+  // Focus first empty required field
+  if (!fname) { document.getElementById('fname').focus(); return; }
+  if (!email) { document.getElementById('email').focus(); return; }
+  // stage is optional multi-select, no hard validation
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span style="opacity:.6;letter-spacing:.2em;font-size:.78rem;font-family:var(--mono);">Sending&hellip;</span>';
+
+  const payload = {
+    thread:      'moontrance',
+    fname,
+    lname:       document.getElementById('lname').value.trim(),
+    email,
+    path:        pathValue.value,
+    stage:       document.getElementById('stage-value').value,
+    what_pulled: document.getElementById('what_pulled').value.trim(),
+    family:      document.getElementById('family-value').value,
+  };
 
   try {
-    await fetch(CONNECT_ENDPOINT, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ formType: 'newsletter', name, email, interests })
+    await fetch('https://hub.ogden.ag/connect/moontrance/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
-  } catch(e) { console.warn('Subscribe send error:', e); }
+  } catch(_) {}
 
-  document.getElementById('subscribe-wrap').style.display = 'none';
-  document.getElementById('subscribe-success').classList.add('show');
-}
+  // Fade out form, show success
+  form.style.transition = 'opacity .4s ease';
+  form.style.opacity = '0';
+  setTimeout(() => {
+    form.style.display = 'none';
+    successEl.style.display = 'flex';
+    successEl.style.opacity = '0';
+    successEl.style.transition = 'opacity .5s ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => { successEl.style.opacity = '1'; }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    successEl.focus();
+  }, 420);
+});
 
-async function submitContact() {
-  const name = document.getElementById('ct-name').value.trim();
-  const email = document.getElementById('ct-email').value.trim();
-  const message = document.getElementById('ct-message').value.trim();
-  let ok = true;
-  showErr('e-ct-name', !name); if (!name) ok = false;
-  showErr('e-ct-email', !validEmail(email)); if (!validEmail(email)) ok = false;
-  showErr('e-ct-message', message.length < 10); if (message.length < 10) ok = false;
-  if (!ok) return;
+// ── NAV BACK ──
+document.querySelector('.nav-back')?.addEventListener('touchend', e => {
+  e.preventDefault(); window.location.href = '/moontrance/';
+}, { passive: false });
 
-  const btn = document.getElementById('ct-btn');
-  btn.disabled = true;
-  btn.querySelector('span').textContent = 'Sending…';
-
-  const subject = document.getElementById('ct-subject').value || 'not specified';
-
-  try {
-    await fetch(CONNECT_ENDPOINT, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ formType: 'contact', name, email, subject, message })
-    });
-  } catch(e) { console.warn('Contact send error:', e); }
-
-  document.getElementById('contact-wrap').style.display = 'none';
-  document.getElementById('contact-success').classList.add('show');
-}
-
-// Page transitions
-document.addEventListener('click', function(e) { const link = e.target.closest('a[href]'); if (!link) return; const href = link.getAttribute('href'); if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.classList.contains('skip-link')) return; if (e.metaKey || e.ctrlKey || e.shiftKey) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; e.preventDefault(); document.body.classList.add('page-leaving'); setTimeout(function() { window.location.href = href; }, 400); });
+// ── EXIT FADE ──
+document.addEventListener('click', function(e) {
+  var a = e.target.closest('a');
+  if (!a) return;
+  var href = a.getAttribute('href');
+  if (!href || href.startsWith('http') || href.startsWith('//') || href.startsWith('#') || href.startsWith('mailto') || a.target === '_blank') return;
+  e.preventDefault();
+  document.body.style.transition = 'opacity 0.25s ease';
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = href; }, 260);
+});
+window.addEventListener('pageshow', e => {
+  if (e.persisted) { document.body.style.transition = 'none'; document.body.style.opacity = '1'; }
+});
 </script>
 </body>
 </html>
