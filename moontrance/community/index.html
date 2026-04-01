@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Moontrance Community — An Intentional Muslim Life on Land</title>
-<meta name="description" content="The Moontrance Community — an intentional Muslim life on land, forming slowly around shared values.">
-<meta property="og:title" content="The Moontrance Community — An Intentional Muslim Life on Land">
-<meta property="og:description" content="The Moontrance Community — an intentional Muslim life on land, forming slowly around shared values.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -18,13 +14,13 @@
   --dust:       #d4c9b5;
   --mid:        #3d3830;
   --soft:       #6b6158;
-  --faint:      #635b54;
-  --amber:      #b89050;
-  --amber-light:#d4aa66;
-  --amber-muted:#7a5d2a;
+  --faint:      #7a7068;
+  --amber:      #4a5f42;
+  --amber-light:#5a7250;
+  --amber-muted:#3a4a35;
   --earth:      #a0745a;
   --deep:       #1a1714;
-  --line:       rgba(184,144,80,0.2);
+  --line:       rgba(74,95,66,0.2);
   --line-soft:  rgba(14,13,11,0.08);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --mono:  'DM Mono', monospace;
@@ -65,11 +61,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* ── HERO ── */
 .hero{min-height:100vh;padding-top:52px;position:relative;overflow:hidden;display:grid;grid-template-rows:1fr auto;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 15% 45%,rgba(184,144,80,0.07) 0%,transparent 60%);}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 15% 45%,rgba(74,95,66,0.07) 0%,transparent 60%);}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%);}
 .hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1280px;margin:0 auto;padding:5rem 3rem 4rem;}
 .hero-left{max-width:560px;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:2rem;padding:0.4rem 0.85rem;border:1px solid var(--line);border-radius:2px;background:rgba(184,144,80,0.05);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:2rem;padding:0.4rem 0.85rem;border:1px solid var(--line);border-radius:2px;background:rgba(74,95,66,0.05);}
 .hero-eyebrow span{color:var(--amber);}
 .hero-dua{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--soft);line-height:1.8;margin-bottom:2.5rem;padding-left:1.25rem;border-left:2px solid var(--line);}
 .hero-dua-arabic{display:block;font-size:1.5rem;font-style:normal;color:var(--amber-muted);line-height:2;text-align:right;margin-bottom:0.25rem;direction:rtl;}
@@ -78,8 +74,8 @@ h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,4.5vw,4rem);l
 h1 em{font-style:italic;color:var(--amber-muted);}
 .hero-sub{font-size:1.05rem;color:var(--mid);line-height:1.8;margin-bottom:1rem;}
 .hero-sub strong{color:var(--ink);font-weight:600;}
-.hero-distinction{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--soft);margin-bottom:2.5rem;padding:1rem 1.25rem;background:rgba(184,144,80,0.06);border-left:3px solid var(--amber);line-height:1.8;}
-.hero-state-box{margin-bottom:2rem;padding:0.9rem 1.25rem;border:1px solid var(--line);border-left:3px solid var(--amber-muted);border-radius:2px;background:rgba(184,144,80,0.05);}
+.hero-distinction{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--soft);margin-bottom:2.5rem;padding:1rem 1.25rem;background:rgba(74,95,66,0.06);border-left:3px solid var(--amber);line-height:1.8;}
+.hero-state-box{margin-bottom:2rem;padding:0.9rem 1.25rem;border:1px solid var(--line);border-left:3px solid var(--amber-muted);border-radius:2px;background:rgba(74,95,66,0.05);}
 .hero-state-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.4rem;}
 .hero-state-text{font-size:0.875rem;color:var(--soft);line-height:1.65;}
 .hero-actions{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
@@ -97,12 +93,12 @@ h1 em{font-style:italic;color:var(--amber-muted);}
 .season-list{padding:0;}
 .season-row{padding:1.25rem 1.5rem;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:90px 1fr;gap:1rem;align-items:start;cursor:pointer;transition:background 0.15s;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;}
 .season-row:last-child{border-bottom:none;}
-.season-row:hover{background:rgba(184,144,80,0.07);}
+.season-row:hover{background:rgba(74,95,66,0.07);}
 .season-row:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;}
 .season-name{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);padding-top:0.1rem;}
 .season-desc{font-size:0.875rem;color:var(--mid);line-height:1.6;text-align:left;}
 .season-desc strong{color:var(--ink);font-weight:600;}
-.community-notice{padding:0.9rem 1.5rem;background:rgba(184,144,80,0.07);border-top:1px solid rgba(184,144,80,0.15);font-family:var(--serif);font-style:italic;font-size:0.88rem;color:var(--amber-muted);line-height:1.65;text-align:center;}
+.community-notice{padding:0.9rem 1.5rem;background:rgba(74,95,66,0.07);border-top:1px solid rgba(74,95,66,0.15);font-family:var(--serif);font-style:italic;font-size:0.88rem;color:var(--amber-muted);line-height:1.65;text-align:center;}
 
 /* ── SEASON DRAWER ── */
 .drawer-overlay{position:fixed;inset:0;z-index:300;background:rgba(14,13,11,0.35);opacity:0;pointer-events:none;transition:opacity 0.3s ease;backdrop-filter:blur(2px);}
@@ -125,15 +121,15 @@ h1 em{font-style:italic;color:var(--amber-muted);}
 .sd-label{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.85rem;display:flex;align-items:center;gap:0.6rem;}
 .sd-label::after{content:'';flex:1;height:1px;background:var(--line);}
 .sd-prose{font-size:0.875rem;color:var(--mid);line-height:1.8;}
-.sd-ayah{padding:1.25rem 1.5rem;background:rgba(184,144,80,0.07);border:1px solid var(--line);border-radius:3px;text-align:center;}
+.sd-ayah{padding:1.25rem 1.5rem;background:rgba(74,95,66,0.07);border:1px solid var(--line);border-radius:3px;text-align:center;}
 .sd-ayah-arabic{font-family:var(--serif);font-size:1.25rem;color:var(--amber-muted);direction:rtl;display:block;line-height:2;margin-bottom:0.4rem;}
 .sd-ayah-trans{font-family:var(--serif);font-style:italic;font-size:0.9rem;color:var(--mid);display:block;line-height:1.65;margin-bottom:0.5rem;}
-.sd-ayah-source{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.1em;color:var(--faint);}
+.sd-ayah-source{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;color:var(--faint);}
 .sd-tasks{list-style:none;display:flex;flex-direction:column;gap:0.45rem;}
 .sd-task{display:grid;grid-template-columns:10px 1fr;gap:0.6rem;align-items:baseline;}
 .sd-task-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);opacity:0.7;margin-top:5px;flex-shrink:0;}
 .sd-task-text{font-size:0.875rem;color:var(--mid);line-height:1.55;}
-.sd-note{padding:1rem 1.25rem;border-left:3px solid var(--amber);background:rgba(184,144,80,0.05);border-radius:3px;font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}
+.sd-note{padding:1rem 1.25rem;border-left:3px solid var(--amber);background:rgba(74,95,66,0.05);border-radius:3px;font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}
 
 /* ── SHARED SECTION ── */
 .section{padding:6rem 3rem;max-width:1280px;margin:0 auto;}
@@ -152,19 +148,19 @@ h2 em{font-style:italic;color:var(--amber-muted);}
 .dark-section{background:var(--ink);color:var(--parchment);padding:0;}
 .dark-inner{max-width:1280px;margin:0 auto;padding:6rem 3rem;}
 .dark-section .section-label{color:var(--amber-light);}
-.dark-section .section-label::after{background:rgba(184,144,80,0.2);}
+.dark-section .section-label::after{background:rgba(74,95,66,0.2);}
 .dark-section h2{color:var(--parchment);}
 .dark-section h2 em{color:var(--amber-light);}
 .dark-intro{max-width:680px;font-size:1.05rem;color:rgba(245,240,232,0.75);line-height:1.9;margin-bottom:3.5rem;}
 .dark-intro strong{color:var(--parchment);font-weight:500;}
-.dark-quote{padding:1.5rem 2rem;border:1px solid rgba(184,144,80,0.25);border-radius:3px;background:rgba(184,144,80,0.06);margin-bottom:3.5rem;max-width:700px;font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--amber-light);line-height:1.85;}
-.dark-quote cite{display:block;margin-top:0.75rem;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(184,144,80,0.55);font-style:normal;}
+.dark-quote{padding:1.5rem 2rem;border:1px solid rgba(74,95,66,0.25);border-radius:3px;background:rgba(74,95,66,0.06);margin-bottom:3.5rem;max-width:700px;font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--amber-light);line-height:1.85;}
+.dark-quote cite{display:block;margin-top:0.75rem;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(74,95,66,0.55);font-style:normal;}
 .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
 .value-cell{padding:1.75rem 1.5rem;background:rgba(14,13,11,0.6);transition:background 0.2s;}
-.value-cell:hover{background:rgba(184,144,80,0.08);}
+.value-cell:hover{background:rgba(74,95,66,0.08);}
 .value-arabic{font-family:var(--serif);font-size:1.4rem;color:var(--amber-light);direction:rtl;margin-bottom:0.3rem;line-height:1.6;}
 .value-name{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--parchment);margin-bottom:0.15rem;}
-.value-trans{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:rgba(184,144,80,0.7);margin-bottom:0.5rem;}
+.value-trans{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:rgba(74,95,66,0.7);margin-bottom:0.5rem;}
 .value-meaning{font-size:0.82rem;color:rgba(245,240,232,0.68);line-height:1.55;}
 
 /* ── PARTICIPATION ── */
@@ -182,7 +178,7 @@ h2 em{font-style:italic;color:var(--amber-muted);}
 .ask-card{padding:1.5rem;border:1px solid var(--dust);border-radius:3px;background:var(--bone);}
 .ask-card::before{content:'';display:block;width:3px;height:100%;background:var(--amber);position:absolute;left:0;top:0;border-radius:3px 0 0 3px;}
 .ask-card{position:relative;}
-.ask-label{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;}
+.ask-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;}
 .ask-text{font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--mid);line-height:1.75;}
 
 /* ── TOWARD RESIDENCY ── */
@@ -194,7 +190,7 @@ h2 em{font-style:italic;color:var(--amber-muted);}
 .residency-prose strong{color:var(--ink);}
 .residency-prose em{font-family:var(--serif);font-style:italic;color:var(--amber-muted);}
 .honest-box{margin-top:2.5rem;padding:1.25rem 1.5rem;border:1px solid var(--line);border-left:3px solid var(--amber-muted);border-radius:3px;background:var(--parchment);}
-.honest-label{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;}
+.honest-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.5rem;}
 .honest-text{font-size:0.875rem;color:var(--soft);line-height:1.7;}
 
 /* ── INVITATION ── */
@@ -243,6 +239,7 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
 }
 
 /* ── PAGE TRANSITION VEIL ── */
+}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
 body{animation:body-fade-in 0.5s ease 0.05s both;}
 </style>
@@ -314,7 +311,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
         <span class="hero-dua-arabic" lang="ar" dir="rtl">وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا</span>
         <span class="hero-dua-trans">Wa-tasimu bi-ḥabli llāhi jamīʿan wa-lā tafarraqū</span>
         Hold fast, all of you together, to the rope of Allah — and do not be divided.
-        <span style="display:block;margin-top:0.4rem;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.1em;color:var(--faint);">Qur'an · Āl 'Imrān 3:103</span>
+        <span style="display:block;margin-top:0.4rem;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;color:var(--faint);">Qur'an · Āl 'Imrān 3:103</span>
       </div>
 
       <h1>A community rooted<br>in land, <em>faith,</em><br>and deliberate life.</h1>
@@ -517,7 +514,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
           <p class="honest-text">The residency model is designed and documented. The land that would hold it has not yet been acquired. The community is in its earliest conversations. If you are thinking about this in terms of a timeline for your family — the honest answer is that the first seasonal participants are the people who will, in part, determine that timeline. The people who show up now are not waiting for the community to form. They are forming it.</p>
         </div>
         <div style="margin-top:1.25rem;padding:1.25rem 1.5rem;border:1px solid var(--dust);border-radius:3px;background:var(--parchment);">
-          <p style="font-family:var(--mono);font-size:1.0rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.6rem;">The sequence</p>
+          <p style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.6rem;">The sequence</p>
           <div style="font-size:0.875rem;color:var(--mid);line-height:2;display:flex;flex-direction:column;gap:0;">
             <span>1 &nbsp;·&nbsp; Land acquired</span>
             <span>2 &nbsp;·&nbsp; Collective experiences open</span>
@@ -525,7 +522,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
             <span>4 &nbsp;·&nbsp; Community foundation established</span>
             <span>5 &nbsp;·&nbsp; Residency model activated</span>
           </div>
-          <a href="/moontrance/journey/" style="display:block;margin-top:1.25rem;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber-muted);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;width:fit-content;">Follow the full journey →</a>
+          <a href="/moontrance/journey/" style="display:block;margin-top:1.25rem;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber-muted);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;width:fit-content;">Follow the full journey →</a>
         </div>
       </div>
     </div>

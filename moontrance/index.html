@@ -3,181 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moontrance — OGDEN</title>
-<meta name="description" content="Moontrance — a faith-rooted land destination in Ontario for guided visits, workshops, and overnight stays.">
-<meta property="og:title" content="Moontrance — OGDEN">
-<meta property="og:description" content="Moontrance — a faith-rooted land destination in Ontario for guided visits, workshops, and overnight stays.">
-<meta property="og:type" content="website">
+<title>Moontrance — A Faith-Rooted Land Destination</title>
+<meta name="description" content="A faith-rooted land destination for Muslim families. The Collective and the Community — designed before the land, ready for it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --accent:       #b89050;
-  --accent-light: #cca866;
-  --accent-muted: #9d7a40;
   --ink:        #0a0906;
   --char:       #111009;
   --parchment:  #f0ebe0;
   --bone:       #d8d0bf;
   --dust:       #8a8070;
-  --line:       rgba(184,144,80,0.18);
+  --terra:      #4a5f42;
+  --terra-lt:   #5a7250;
+  --terra-muted:#3a4a35;
+  --terra-dim:  rgba(74,95,66,0.15);
+  --terra-line: rgba(74,95,66,0.25);
   --line-soft:  rgba(240,235,224,0.06);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --mono:  'DM Mono', monospace;
   --sans:  'Instrument Sans', system-ui, sans-serif;
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-height:1.6;overflow-x:hidden;}
-
-.skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--parchment);color:var(--ink);padding:0.6rem 1.25rem;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-decoration:none;border-radius:2px;}
-.skip-nav:focus{top:0.75rem;}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
-
-.bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;}
-.topo-layer{position:absolute;inset:0;opacity:0.048;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cdefs%3E%3CradialGradient id='rg' cx='45%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23b89050' stop-opacity='1'/%3E%3Cstop offset='100%25' stop-color='%23b89050' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cellipse cx='360' cy='320' rx='280' ry='220' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='165' ry='125' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='360' cy='320' rx='70' ry='50' fill='none' stroke='url(%23rg)' stroke-width='1'/%3E%3Cellipse cx='200' cy='500' rx='130' ry='100' fill='none' stroke='url(%23rg)' stroke-width='0.8' opacity='0.5'/%3E%3C/svg%3E");background-size:75vw 75vw;background-position:60% 30%;background-repeat:no-repeat;}
-.grain-layer{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.55;}
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 50% at 60% 25%, rgba(74,95,66,0.06) 0%, transparent 60%);}
+.skip-nav{position:absolute;top:-999px;left:1rem;z-index:9999;background:var(--parchment);color:var(--ink);padding:.6rem 1.25rem;font-family:var(--mono);font-size:.875rem;letter-spacing:.1em;text-decoration:none;border-radius:2px;}
+.skip-nav:focus{top:.75rem;}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px;border-radius:2px;}
 
 /* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;padding:0 2.5rem;height:48px;background:rgba(10,9,6,0.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft);}
-.nav-brand{font-family:var(--mono);font-size:0.875rem;font-weight:400;letter-spacing:0.16em;color:var(--parchment);text-decoration:none;text-transform:uppercase;flex-shrink:0;}
-.nav-div{width:1px;height:18px;background:rgba(240,235,224,0.12);margin:0 1.5rem;flex-shrink:0;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;padding:0 2.5rem;height:48px;background:rgba(10,9,6,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft);}
+.nav-brand{font-family:var(--mono);font-size:.875rem;font-weight:400;letter-spacing:.16em;color:var(--parchment);text-decoration:none;text-transform:uppercase;flex-shrink:0;}
+.nav-div{width:1px;height:18px;background:rgba(240,235,224,.12);margin:0 1.5rem;flex-shrink:0;}
 .nav-products{display:flex;align-items:center;gap:1.4rem;list-style:none;flex-shrink:0;}
-.nav-products a{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color 0.2s;}
+.nav-products a{font-family:var(--mono);font-size:.875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color .2s;}
 .nav-products a:hover{color:var(--bone);}
-.nav-products a.nav-active{color:var(--parchment);font-weight:500;}
-.nav-div2{width:1px;height:18px;background:rgba(240,235,224,0.08);margin:0 1.5rem;flex-shrink:0;}
-.nav-sections{display:flex;align-items:center;gap:1.4rem;list-style:none;margin-left:auto;}
-.nav-sections a{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent;transition:color 0.2s,border-color 0.2s;}
-.nav-sections a:hover{color:var(--bone);}
-.nav-sections a.sec-active{color:var(--parchment);border-color:var(--accent);}
-
-/* ── HAMBURGER ── */
-.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:1px solid rgba(240,235,224,0.15);border-radius:2px;cursor:pointer;padding:6px;flex-shrink:0;}
-.nav-toggle span{display:block;width:100%;height:1.5px;background:var(--parchment);border-radius:1px;transition:transform 0.25s ease,opacity 0.2s ease;transform-origin:center;}
+.nav-products a.active{color:var(--parchment);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:1.4rem;}
+.nav-right a{font-family:var(--mono);font-size:.875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dust);text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;}
+.nav-right a:hover{color:var(--bone);}
+.nav-right a.sec-active{color:var(--parchment);border-color:var(--terra);}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:1px solid rgba(240,235,224,.15);border-radius:2px;cursor:pointer;padding:6px;flex-shrink:0;}
+.nav-toggle span{display:block;width:100%;height:1.5px;background:var(--parchment);border-radius:1px;transition:transform .25s,opacity .2s;transform-origin:center;}
 .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
 .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0);}
 .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
-.nav-drawer{display:none;position:fixed;inset:0;z-index:99;background:#111009;flex-direction:column;justify-content:flex-start;min-height:100vh;padding:5rem 2rem 2.5rem;transform:translateY(-100%);transition:transform 0.35s ease;pointer-events:none;}
+.nav-drawer{display:none;position:fixed;inset:0;z-index:199;background:#111009;flex-direction:column;justify-content:flex-start;min-height:100vh;padding:5rem 2rem 2.5rem;transform:translateY(-100%);transition:transform .35s ease;pointer-events:none;}
 .nav-drawer.open{transform:translateY(0);pointer-events:all;}
-.nav-drawer-links{list-style:none;display:flex;flex-direction:column;border-top:1px solid rgba(240,235,224,0.06);}
-.nav-drawer-links li{border-bottom:1px solid rgba(240,235,224,0.06);}
-.nav-drawer-links a{display:block;padding:1.1rem 0;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--bone);text-decoration:none;transition:color 0.2s;}
-.nav-drawer-links a:hover{color:var(--accent-light);}
-.nav-drawer-cta{display:block;margin-top:2rem;padding:1rem;text-align:center;background:transparent;border:1px solid rgba(184,144,80,0.35);border-radius:3px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-light);text-decoration:none;transition:background 0.2s,border-color 0.2s;}
-.nav-drawer-cta:hover{background:rgba(184,144,80,0.1);border-color:rgba(184,144,80,0.6);}
+.nav-drawer-links{list-style:none;display:flex;flex-direction:column;border-top:1px solid rgba(240,235,224,.06);}
+.nav-drawer-links li{border-bottom:1px solid rgba(240,235,224,.06);}
+.nav-drawer-links a{display:block;padding:1.1rem 0;font-family:var(--mono);font-size:.875rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bone);text-decoration:none;transition:color .2s;}
+.nav-drawer-links a:hover{color:var(--terra-lt);}
+.nav-drawer-cta{display:block;margin-top:2rem;padding:1rem;text-align:center;background:transparent;border:1px solid var(--terra-line);border-radius:3px;font-family:var(--mono);font-size:.875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-lt);text-decoration:none;transition:background .2s;}
+.nav-drawer-cta:hover{background:rgba(74,95,66,.1);}
 
 /* ── HERO ── */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem 5rem;}
-.hero-eyebrow{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dust);margin-bottom:2.25rem;opacity:0;animation:fadeUp 0.8s ease 0.15s forwards;}
-.hero-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,6.5vw,5.25rem);line-height:1.08;letter-spacing:-0.01em;text-align:center;color:var(--parchment);max-width:820px;margin-bottom:2rem;opacity:0;animation:fadeUp 0.9s ease 0.3s forwards;}
-.hero-sub{font-family:var(--sans);font-size:clamp(1rem,1.8vw,1.15rem);font-weight:300;color:var(--bone);line-height:1.8;text-align:center;max-width:560px;margin-bottom:2.25rem;opacity:0;animation:fadeUp 0.9s ease 0.45s forwards;}
-.hero-sub em{font-style:italic;color:var(--accent-light);font-family:var(--serif);}
-.hero-rule{width:1px;height:36px;background:linear-gradient(to bottom,transparent,rgba(184,144,80,0.3),transparent);margin:0 auto 1.75rem;opacity:0;animation:fadeIn 0.8s ease 0.7s forwards;}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem 5rem;text-align:center;}
+.hero-hadith{margin-bottom:2.5rem;padding:1.1rem 1.5rem;border-left:2px solid var(--terra-line);opacity:0;animation:fadeUp .8s ease .1s forwards;text-align:left;max-width:600px;}
+.hero-hadith-text{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--bone);line-height:1.8;margin-bottom:.35rem;display:block;}
+.hero-hadith-source{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);display:block;}
+.hero-eyebrow{font-family:var(--mono);font-size:.875rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dust);margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s ease .2s forwards;}
+.hero-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,6vw,5rem);line-height:1.1;letter-spacing:-.01em;color:var(--parchment);max-width:820px;margin-bottom:1.75rem;opacity:0;animation:fadeUp .9s ease .32s forwards;}
+.hero-headline em{font-style:italic;color:var(--terra-lt);}
+.hero-sub{font-family:var(--sans);font-size:clamp(1rem,1.8vw,1.1rem);font-weight:300;color:var(--bone);line-height:1.85;max-width:560px;margin-bottom:1rem;opacity:0;animation:fadeUp .9s ease .44s forwards;}
+.hero-state{font-family:var(--mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(74,95,66,.6);margin-bottom:3.5rem;opacity:0;animation:fadeUp .9s ease .52s forwards;display:flex;align-items:center;justify-content:center;gap:.5rem;}
+.hero-state-dot{width:5px;height:5px;border-radius:50%;background:var(--terra);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.hero-rule{width:1px;height:36px;background:linear-gradient(to bottom,transparent,rgba(74,95,66,.4),transparent);margin:0 auto 1.75rem;opacity:0;animation:fadeIn .8s ease .75s forwards;}
 
 /* ── PATHWAYS ── */
-.pathways{display:flex;flex-direction:column;gap:0.8rem;width:100%;max-width:580px;opacity:0;animation:fadeUp 0.9s ease 0.82s forwards;}
-.pathway{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;min-height:160px;flex:1;box-sizing:border-box;gap:1.5rem;padding:1.25rem 1.4rem;background:rgba(10,9,6,0.58);backdrop-filter:blur(10px);border:1px solid rgba(184,144,80,0.14);border-radius:3px;text-decoration:none;transition:background 0.3s,border-color 0.3s;overflow:hidden;}
-.pathway::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 140% 120% at 50% 120%,rgba(184,144,80,0.07) 0%,transparent 60%);opacity:0;transition:opacity 0.35s;}
-.pathway::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);transform:scaleY(0);transition:transform 0.4s;transform-origin:center;}
-.pathway:hover{background:rgba(18,16,11,0.82);border-color:rgba(184,144,80,0.3);}
-.pathway:hover::before{opacity:1;}
+.pathways{display:flex;flex-direction:row;gap:.8rem;width:100%;max-width:760px;opacity:0;animation:fadeUp .9s ease .88s forwards;}
+.pathway{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;min-height:160px;flex:1;box-sizing:border-box;padding:1.25rem 1.4rem;background:rgba(10,9,6,.55);backdrop-filter:blur(10px);border:1px solid rgba(74,95,66,.18);border-radius:3px;text-decoration:none;transition:background .3s,border-color .3s;overflow:hidden;}
+.pathway::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--terra),transparent);transform:scaleY(0);transition:transform .4s;transform-origin:center;}
+.pathway:hover{background:rgba(18,16,11,.82);border-color:rgba(74,95,66,.42);}
 .pathway:hover::after{transform:scaleY(1);}
-.pathway:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.pathway:focus-visible{outline:2px solid var(--terra);outline-offset:2px;}
 .pathway-body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;}
-.pathway-header{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:0.45rem;}
-.pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color 0.2s;display:block;text-align:center;}
+.pathway-tag{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra-lt);margin-bottom:.5rem;white-space:nowrap;text-align:center;}
+.pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color .2s;display:block;text-align:center;}
 .pathway:hover .pathway-title{color:#fff;}
-.pathway-tag{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
-.pathway:hover .pathway-tag{color:var(--accent-light);}
-.pathway-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;transition:color 0.2s;text-align:center;}
-.pathway:hover .pathway-desc{color:rgba(216,208,191,0.9);}
-.pathway-arrow{display:none;}
-.pathway.arrow-right:hover .pathway-arrow{color:var(--accent-light);transform:translateX(4px);}
-.pathway.arrow-down:hover .pathway-arrow{color:var(--accent-light);transform:translateY(4px);}
+.pathway-desc{font-family:var(--sans);font-size:.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;text-align:center;margin-top:.45rem;}
+.pathway:hover .pathway-desc{color:rgba(216,208,191,.9);}
 
-/* ── SHARED SECTION ── */
+/* ── SHARED ── */
 .section{position:relative;z-index:1;padding:clamp(4rem,8vw,8rem) 2rem;}
 .section-inner{max-width:820px;margin:0 auto;}
-.section-inner--wide{max-width:780px;margin:0 auto;}
-.sec-eyebrow{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--dust);text-align:center;margin-bottom:1.4rem;}
-.sec-rule{width:32px;height:1px;background:rgba(184,144,80,0.35);margin:0 auto 3rem;}
-.sec-headline{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4vw,3.2rem);line-height:1.18;color:var(--parchment);text-align:center;margin-bottom:1.75rem;letter-spacing:0.01em;}
-.sec-headline em{font-style:italic;color:var(--accent-light);}
-.sec-subheadline{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.18;color:var(--parchment);text-align:center;margin-bottom:1.75rem;letter-spacing:0.01em;}
-.sec-subheadline em{font-style:italic;color:var(--accent-light);}
-.sec-body{font-family:var(--sans);font-size:1rem;font-weight:300;color:#acacaa;line-height:1.85;text-align:center;max-width:620px;margin:0 auto;}
+.section-inner--wide{max-width:920px;margin:0 auto;}
+.sep{position:relative;z-index:1;height:1px;background:rgba(240,235,224,.05);max-width:820px;margin:0 auto;}
+.sec-eyebrow{font-family:var(--mono);font-size:.875rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dust);text-align:center;margin-bottom:1.4rem;}
+.sec-rule{width:32px;height:1px;background:rgba(74,95,66,.45);margin:0 auto 3rem;}
+.sec-headline{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4vw,3.2rem);line-height:1.18;color:var(--parchment);text-align:center;margin-bottom:1.75rem;letter-spacing:.01em;}
+.sec-headline em{font-style:italic;color:var(--terra-lt);}
+.sec-body{font-family:var(--sans);font-size:1rem;font-weight:300;color:#acacaa;line-height:1.85;text-align:center;max-width:640px;margin:0 auto;}
+.sec-body strong{color:var(--bone);font-weight:400;}
 
 /* ── NUMBERED LIST ── */
 .num-list{list-style:none;margin-top:4.5rem;}
-.num-item{display:grid;grid-template-columns:72px 1fr;gap:0;padding:2.5rem 0;position:relative;opacity:0;transform:translateY(14px);transition:opacity 0.55s ease,transform 0.55s ease;}
-.num-item::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:1px;background:rgba(240,235,224,0.14);}
+.num-item{display:grid;grid-template-columns:72px 1fr;gap:0;padding:2.5rem 0;position:relative;opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease;}
+.num-item::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:1px;background:rgba(74,95,66,.2);}
 .num-item.visible{opacity:1;transform:translateY(0);}
-.num-index{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.08em;color:var(--accent-muted);padding-top:0.25rem;padding-left:2rem;}
-.num-title{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--parchment);margin-bottom:0.6rem;line-height:1.3;}
-.num-text{font-family:var(--sans);font-size:0.9rem;font-weight:300;color:#a09f9e;line-height:1.82;}
+.num-index{font-family:var(--mono);font-size:.875rem;letter-spacing:.08em;color:var(--terra-lt);padding-top:.25rem;padding-left:2rem;opacity:.7;}
+.num-title{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--parchment);margin-bottom:.6rem;line-height:1.3;}
+.num-text{font-family:var(--sans);font-size:.9rem;font-weight:300;color:#a09f9e;line-height:1.82;}
 .num-item.no-title .num-text{color:#acacaa;}
 
-/* ── SEPARATOR ── */
-.sep{position:relative;z-index:1;height:1px;background:rgba(240,235,224,0.05);max-width:820px;margin:0 auto;}
+/* ── TWO OFFERINGS ── */
+.offerings{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:4rem;}
+.offering{padding:2rem 1.75rem;background:rgba(10,9,6,.5);border:1px solid rgba(74,95,66,.16);border-radius:3px;text-decoration:none;display:flex;flex-direction:column;gap:1rem;transition:background .3s,border-color .3s;position:relative;overflow:hidden;}
+.offering::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--terra),transparent);transform:scaleY(0);transition:transform .4s;transform-origin:center;}
+.offering:hover{background:rgba(18,16,11,.75);border-color:rgba(74,95,66,.38);}
+.offering:hover::after{transform:scaleY(1);}
+.offering:focus-visible{outline:2px solid var(--terra);outline-offset:2px;}
+.offering-symbol{font-family:var(--mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra-lt);opacity:.7;}
+.offering-title{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--parchment);line-height:1.2;transition:color .2s;}
+.offering:hover .offering-title{color:#fff;}
+.offering-tagline{font-family:var(--serif);font-style:italic;font-size:.95rem;color:rgba(240,235,224,.5);line-height:1.6;}
+.offering-desc{font-family:var(--sans);font-size:.875rem;font-weight:300;color:#a09f9e;line-height:1.75;flex:1;}
+.offering:hover .offering-desc{color:rgba(216,208,191,.9);}
+.offering-link{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-muted);display:flex;align-items:center;gap:.4rem;transition:color .2s,gap .2s;margin-top:.5rem;}
+.offering:hover .offering-link{color:var(--terra-lt);gap:.7rem;}
 
-/* ── THREE PATHS ── */
-.paths-section{position:relative;z-index:1;padding:8rem 2rem;}
-.paths-inner{max-width:680px;margin:0 auto;}
-.paths-grid{display:flex;flex-direction:column;gap:1rem;margin-top:3.5rem;}
-.path-card{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.75rem 2rem;background:rgba(10,9,6,0.45);border:1px solid rgba(184,144,80,0.16);border-radius:3px;text-decoration:none;transition:background 0.3s,border-color 0.3s;position:relative;overflow:hidden;}
-.path-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);transform:scaleY(0);transition:transform 0.4s;transform-origin:center;}
-.path-card:hover{background:rgba(18,16,11,0.75);border-color:rgba(184,144,80,0.35);}
-.path-card:hover::after{transform:scaleY(1);}
-.path-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-.path-body{flex:1;min-width:0;}
-.path-label{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.4rem;transition:color 0.2s;}
-.path-card:hover .path-label{color:var(--accent-light);}
-.path-title{font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--parchment);margin-bottom:0.35rem;line-height:1.2;transition:color 0.2s;}
-.path-card:hover .path-title{color:#fff;}
-.path-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:rgba(216,208,191,0.6);line-height:1.6;transition:color 0.2s;}
-.path-card:hover .path-desc{color:rgba(216,208,191,0.85);}
-.path-arrow{font-family:var(--mono);font-size:0.9rem;color:rgba(184,144,80,0.3);flex-shrink:0;transition:color 0.25s,transform 0.25s;}
-.path-card:hover .path-arrow{color:var(--accent-light);transform:translateX(4px);}
+/* ── THRESHOLD BLOCK ── */
+.threshold-block{margin-top:4rem;padding:2rem 2.5rem;border:1px solid var(--terra-line);border-radius:3px;background:rgba(74,95,66,.04);}
+.threshold-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--terra-lt);opacity:.7;margin-bottom:.9rem;display:block;}
+.threshold-text{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--bone);line-height:1.85;}
+.threshold-text strong{font-style:normal;color:var(--parchment);font-weight:400;}
 
-/* ── CROSS-LINK ── */
-.crosslink{position:relative;z-index:1;padding:3rem 2rem;border-top:1px solid rgba(240,235,224,0.05);border-bottom:1px solid rgba(240,235,224,0.05);}
-.crosslink-inner{max-width:540px;margin:0 auto;}
-.crosslink-label{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--dust);margin-bottom:0.75rem;}
-.crosslink-card{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.4rem;background:rgba(10,9,6,0.45);border:1px solid rgba(184,144,80,0.14);border-radius:3px;text-decoration:none;transition:border-color 0.2s,background 0.2s;gap:1.5rem;}
-.crosslink-card:hover{background:rgba(18,16,11,0.7);border-color:rgba(184,144,80,0.3);}
-.crosslink-title{font-family:var(--serif);font-size:1.05rem;font-weight:400;color:var(--parchment);margin-bottom:0.2rem;}
-.crosslink-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#a09f9e;line-height:1.55;}
-.crosslink-arrow{font-family:var(--mono);font-size:0.9rem;color:rgba(184,144,80,0.35);flex-shrink:0;transition:color 0.2s,transform 0.2s;}
-.crosslink-card:hover .crosslink-arrow{color:var(--accent-light);transform:translateX(3px);}
+/* ── CTA ── */
+.cta-section{position:relative;z-index:1;padding:clamp(5rem,8vw,9rem) 2rem clamp(5rem,8vw,10rem);text-align:center;}
+.cta-inner{max-width:580px;margin:0 auto;}
+.cta-headline{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3.2rem);line-height:1.15;color:var(--parchment);margin-bottom:1.5rem;}
+.cta-headline em{font-style:italic;color:var(--terra-lt);}
+.cta-sub{font-family:var(--sans);font-size:clamp(1rem,1.4vw,1.1rem);font-weight:300;color:#a09f9e;line-height:1.8;margin-bottom:3rem;}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;}
+.cta-btn{display:inline-flex;align-items:center;gap:.75rem;padding:1rem 2.5rem;background:transparent;border:1px solid var(--terra-line);border-radius:3px;font-family:var(--mono);font-size:.875rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra-lt);text-decoration:none;transition:background .3s,border-color .3s,color .3s;}
+.cta-btn:hover{background:rgba(74,95,66,.1);border-color:rgba(74,95,66,.55);color:var(--parchment);}
+.cta-btn-arrow{transition:transform .25s;}
+.cta-btn:hover .cta-btn-arrow{transform:translateX(4px);}
+.cta-btn-ghost{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dust);text-decoration:none;padding-bottom:2px;border-bottom:1px solid rgba(240,235,224,.1);transition:color .2s,border-color .2s;}
+.cta-btn-ghost:visited{color:var(--dust)!important;}
+.cta-btn-ghost:hover{color:var(--bone);border-color:rgba(240,235,224,.28);}
 
 /* ── FOOTER ── */
-footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(240,235,224,0.05);}
-.footer-mark{font-family:var(--mono);font-size:0.875rem;letter-spacing:0.11em;text-transform:uppercase;color:#969693;}
-.footer-mark span{color:var(--accent-muted);}
+footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(240,235,224,.05);}
+.footer-mark{font-family:var(--mono);font-size:.875rem;letter-spacing:.12em;text-transform:uppercase;color:#8e8e8b;}
+.footer-mark span{color:var(--terra-muted);}
 .footer-line{font-family:var(--serif);font-style:italic;font-size:1rem;color:#969693;}
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;opacity:1!important;transform:none!important;}.nav-drawer{transition:none;}.nav-toggle span{transition:none;}}
-@media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.5rem;}.section,.paths-section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;opacity:1!important;transform:none!important;}.nav-drawer{transition:none;}.hero-state-dot{animation:none;}}
+@media(max-width:900px){.offerings{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto;}.nav-right{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}}
+@media(max-width:680px){.pathways{flex-direction:column;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}}
 
-/* ── PAGE TRANSITION VEIL ── */
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
-body{animation:body-fade-in 0.5s ease 0.05s both;}
+body{animation:body-fade-in .5s ease .05s both;}
+
+.mt-hadith{margin-bottom:2.5rem;padding:1.1rem 1.5rem;border-left:2px solid rgba(74,95,66,0.35);opacity:0;animation:fadeUp .8s ease .1s forwards;text-align:left;max-width:600px;}
+.mt-hadith-text{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--bone);line-height:1.8;margin-bottom:.35rem;display:block;}
+.mt-hadith-source{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);display:block;}
+.why-hadith{margin:3rem auto 0;max-width:640px;padding:1.5rem 2rem;border-left:2px solid rgba(74,95,66,0.3);background:rgba(74,95,66,0.04);}
+.why-hadith-text{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--bone);line-height:1.8;margin-bottom:.5rem;}
+.why-hadith-source{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);}
+.how-ayah{margin-bottom:2.5rem;padding:1.25rem 1.75rem;border:1px solid rgba(74,95,66,0.2);border-radius:3px;background:rgba(74,95,66,0.04);}
+.how-ayah-arabic{display:block;font-family:var(--serif);font-size:1.25rem;color:var(--terra-lt);direction:rtl;text-align:right;line-height:2.1;margin-bottom:.4rem;}
+.how-ayah-trans{display:block;font-family:var(--serif);font-style:italic;font-size:.92rem;color:var(--bone);line-height:1.75;margin-bottom:.3rem;}
+.how-ayah-source{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);}
+.cta-ayah{margin-bottom:2.5rem;}
+.cta-ayah-arabic{display:block;font-family:var(--serif);font-size:1.2rem;color:var(--terra-lt);direction:rtl;line-height:2;margin-bottom:.4rem;}
+.cta-ayah-trans{display:block;font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--bone);line-height:1.75;margin-bottom:.3rem;}
+.cta-ayah-source{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);}
 </style>
 </head>
 <body>
-
-<div class="bg-fixed" aria-hidden="true">
-  <div class="topo-layer"></div>
-  <div class="grain-layer"></div>
-</div>
 
 <a class="skip-nav" href="#main-content">Skip to main content</a>
 
@@ -185,20 +191,18 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <nav class="nav" aria-label="Site navigation">
   <a href="/" class="nav-brand">OGDEN</a>
   <div class="nav-div" aria-hidden="true"></div>
-  <ul class="nav-products">
+  <ul class="nav-products" role="list">
     <li><a href="/">Home</a></li>
     <li><a href="/bbos/">BBOS</a></li>
-    <li><a href="/moontrance/" class="nav-active" aria-current="page">Moontrance</a></li>
     <li><a href="/atlas/">Atlas</a></li>
+    <li><a href="/moontrance/" class="active">Moontrance</a></li>
   </ul>
-  <div class="nav-div2" aria-hidden="true"></div>
-  <ul class="nav-sections">
-    <li><a href="#problem"  data-sec="problem">Problem</a></li>
-    <li><a href="#threshold"  data-sec="threshold">Threshold</a></li>
-    <li><a href="#solution" data-sec="solution">Solution</a></li>
-    <li><a href="#explore"  data-sec="explore">Explore</a></li>
-    <li><a href="#connect"  data-sec="connect">Connect</a></li>
-  </ul>
+  <nav class="nav-right" aria-label="Page sections">
+    <a href="#why" data-sec="why">Why</a>
+    <a href="#what" data-sec="what">What</a>
+    <a href="#how" data-sec="how">How</a>
+    <a href="/moontrance/collective/solution/">The Collective &rarr;</a>
+  </nav>
   <button class="nav-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open navigation menu">
     <span></span><span></span><span></span>
   </button>
@@ -206,298 +210,248 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 </header>
 
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
-  <ul class="nav-drawer-links">
-    <li><a href="#problem">Problem</a></li>
-    <li><a href="#threshold">Threshold</a></li>
-    <li><a href="#solution">Solution</a></li>
-    <li><a href="#explore">Explore</a></li>
-    <li><a href="#connect">Connect</a></li>
+  <ul class="nav-drawer-links" role="list">
+    <li><a href="/">Home</a></li>
+    <li><a href="/bbos/">BBOS</a></li>
+    <li><a href="/atlas/">Atlas</a></li>
+    <li><a href="#why">Why Moontrance</a></li>
+    <li><a href="#what">What it is</a></li>
     <li><a href="/moontrance/collective/solution/">The Collective</a></li>
     <li><a href="/moontrance/community/">The Community</a></li>
   </ul>
-  <a href="/moontrance/collective/solution/" class="nav-drawer-cta">Get in Touch →</a>
+  <a href="/moontrance/collective/solution/" class="nav-drawer-cta">&#9700; &nbsp; The Collective &rarr;</a>
 </div>
 
 <main id="main-content">
 
-<!-- ══ HERO ══ -->
+<!-- HERO -->
 <section class="hero" aria-labelledby="hero-h1">
-  <p class="hero-eyebrow">Faith &middot; Land &middot; Creation &middot; Ontario</p>
+
+  <div class="hero-hadith" role="note">
+    <span class="hero-hadith-text">&ldquo;There is none amongst the Muslims who plants a tree or sows seeds, and then a bird, a person, or an animal eats from it, but it is regarded as a charitable gift for him.&rdquo;</span>
+    <span class="hero-hadith-source">The Messenger of Allah &nbsp;&#65018;&nbsp; &middot;&nbsp; Sahih al-Bukh&amacr;r&imacr; &amp; Muslim</span>
+  </div>
+
+  <p class="hero-eyebrow">&#9700; &nbsp; Moontrance &nbsp;&middot;&nbsp; Faith &middot; Land &middot; Creation &middot; Ontario</p>
+
   <h1 class="hero-headline" id="hero-h1">
-    A place to stand on Earth<br>and remember why it matters
+    A place to stand on earth<br>and remember <em>why it matters.</em>
   </h1>
+
   <p class="hero-sub">
-    The way we were taught to build, buy, and belong was built on assumptions
-    that don&rsquo;t hold &mdash; not for how we actually want to live.
-    Moontrance is being built on <em>different assumptions</em>.
-    The vision is complete. The land search is active.
+    Moontrance is a faith-rooted land destination for Muslim families &mdash;
+    designed from the ground up so that beauty, hospitality, and Islamic values
+    work together, not against each other.
+    Two expressions of one intention: The Collective and The Community.
   </p>
+
+  <p class="hero-state">
+    <span class="hero-state-dot" aria-hidden="true"></span>
+    Vision Complete &nbsp;&middot;&nbsp; Land Search Active &nbsp;&middot;&nbsp; GTA &amp; Halton Region
+  </p>
+
   <div class="hero-rule" aria-hidden="true"></div>
 
   <nav class="pathways" aria-label="Choose your entry point">
-    <a href="#problem" class="pathway arrow-down">
+    <a href="#why" class="pathway">
       <div class="pathway-body">
         <span class="pathway-tag">The Story</span>
-        <div class="pathway-header">
-          <span class="pathway-title">I&rsquo;m New Here</span>
-        </div>
-        <p class="pathway-desc">
-          Who we&rsquo;re for, why we exist, and what we&rsquo;re striving for.
-        </p>
+        <span class="pathway-title">Is This for Me?</span>
+        <p class="pathway-desc">Why Moontrance exists, what it&rsquo;s building toward, and who it was designed for.</p>
       </div>
-      <span class="pathway-arrow" aria-hidden="true">↓</span>
     </a>
-
-    <a href="/moontrance/collective/solution/" class="pathway arrow-right">
+    <a href="/moontrance/collective/solution/" class="pathway">
       <div class="pathway-body">
-        <span class="pathway-tag">Investors &amp; Partners</span>
-        <div class="pathway-header">
-          <span class="pathway-title">Get in Touch</span>
-        </div>
-        <p class="pathway-desc">
-          You want to be part of building this. Let&rsquo;s have a real conversation.
-        </p>
+        <span class="pathway-tag">The How</span>
+        <span class="pathway-title">The Collective</span>
+        <p class="pathway-desc">Five faith-designed experiences. The full system &mdash; what it is and how to be part of it.</p>
       </div>
-      <span class="pathway-arrow" aria-hidden="true">→</span>
     </a>
   </nav>
 </section>
 
-<!-- ══ PROBLEM ══ -->
+<!-- WHY -->
 <div class="sep" aria-hidden="true"></div>
-<section class="section" id="problem" aria-labelledby="prob-h">
+<section class="section" id="why" aria-labelledby="why-h">
   <div class="section-inner">
-    <p class="sec-eyebrow reveal">What usually happens instead</p>
+    <p class="sec-eyebrow reveal">Why Moontrance exists</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
-    <h2 class="sec-headline reveal" id="prob-h">
-      The desire to live closer to the earth is real.<br>The path to doing it isn&rsquo;t clear.
-    </h2>
-    <ul class="num-list" aria-label="Common obstacles">
-
-      <li class="num-item no-title">
-        <span class="num-index">01</span>
-        <p class="num-text">You feel the pull toward land &mdash; toward space where prayer is unhurried, where your children grow up connected to creation, where the rhythms of the day reflect your values. But the vision stays exactly that. A vision. The practical path from here to there doesn&rsquo;t exist.</p>
-      </li>
-
-      <li class="num-item no-title">
-        <span class="num-index">02</span>
-        <p class="num-text">Muslim families in Ontario have nowhere to go that doesn&rsquo;t require filtering, negotiating, or compromising. The options are either secular or functional. Beautiful and faith-aligned have never existed in the same place at the same time.</p>
-      </li>
-
-      <li class="num-item no-title">
-        <span class="num-index">03</span>
-        <p class="num-text">Investors and partners who want to fund something meaningful struggle to find projects that are both economically rigorous and spiritually grounded. Most faith-based land projects arrive without a real framework. They run on hope and run out of road.</p>
-      </li>
-
-      <li class="num-item no-title">
-        <span class="num-index">04</span>
-        <p class="num-text">Muslim entrepreneurs inspired to build something similar have no model to follow. The frameworks &mdash; for land acquisition, offer design, hospitality, and regenerative stewardship &mdash; don&rsquo;t exist in one place. Each builder starts from scratch and most never start at all.</p>
-      </li>
-
-    </ul>
-  </div>
-</section>
-
-<!-- ══ THRESHOLD ══ -->
-<div class="sep" aria-hidden="true"></div>
-<section class="section" id="threshold" aria-labelledby="thresh-h">
-  <div class="section-inner">
-    <p class="sec-eyebrow reveal">The question that built this</p>
-    <div class="sec-rule reveal" aria-hidden="true"></div>
-    <h2 class="sec-headline reveal" id="thresh-h">
-      What if someone built the framework<br>before they found <em>the land</em>?
+    <h2 class="sec-headline reveal" id="why-h">
+      The desire to live closer to the earth is real.<br>
+      The path to doing it <em>isn&rsquo;t clear.</em>
     </h2>
     <p class="sec-body reveal">
-      Most land projects begin with a property and improvise the vision afterward.
-      Moontrance began the other way. The vision, the frameworks, the economic models,
-      the design principles, the hospitality philosophy &mdash; all of it was built first,
-      in detail, before a single acre was acquired.
-      When the right land is found, nothing will be figured out on the fly.
-      The land will simply be activated by a system that is already ready for it.
+      Muslim families in Ontario feel the pull toward land &mdash; toward space where prayer is unhurried,
+      where children grow up connected to creation, where the rhythms of the day reflect their values.
+      <strong>The vision is present. The practical path from here to there does not exist.</strong>
     </p>
+
+    <div class="why-hadith reveal" role="note">
+      <p class="why-hadith-text">&ldquo;The example of a good companion is like a perfume merchant &mdash; even if he gives you nothing, you benefit from his presence. And the example of a bad companion is like the bellows &mdash; even if it does not burn you, the smoke reaches you.&rdquo;</p>
+      <p class="why-hadith-source">The Messenger of Allah &nbsp;&#65018;&nbsp; &middot;&nbsp; Sahih Muslim</p>
+    </div>
+    <ul class="num-list" aria-label="What is missing">
+      <li class="num-item no-title">
+        <span class="num-index">01</span>
+        <p class="num-text">There is nowhere to go that does not require filtering, negotiating, or compromising. The existing options are either secular or functional. Beautiful and faith-aligned have never existed in the same place at the same time &mdash; not in Ontario, not designed from the ground up for our community.</p>
+      </li>
+      <li class="num-item no-title">
+        <span class="num-index">02</span>
+        <p class="num-text">Children grow up in environments that do not model what they are being taught. The tarbiyah of daily proximity to believing adults, productive land, and the signs of creation in ordinary view &mdash; this is what the suburbs quietly take away, day by day.</p>
+        <div style="margin-top:1.25rem;padding:.9rem 1.25rem;border-left:2px solid rgba(74,95,66,0.28);background:rgba(74,95,66,0.04);grid-column:1/-1;">
+          <p style="font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--bone);line-height:1.75;margin-bottom:.3rem;">&ldquo;Every child is born upon fitrah. It is his parents who make him a Jew, a Christian, or a Magian.&rdquo;</p>
+          <p style="font-family:var(--mono);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);">Sahih al-Bukh&amacr;r&imacr;</p>
+        </div>
+      </li>
+      <li class="num-item no-title">
+        <span class="num-index">03</span>
+        <p class="num-text">The communities most worth belonging to are the ones that have to be built. And almost no one builds them &mdash; not because the desire is absent, but because the framework for how to begin does not exist. Most faith-based land projects arrive without a real model. They run on hope and run out of road.</p>
+      </li>
+      <li class="num-item no-title">
+        <span class="num-index">04</span>
+        <p class="num-text">Land is most often treated as an investment &mdash; acquired for return, held as asset, valued by the acre. But land that is meant to give beyond your lifetime requires a different relationship with it from the beginning. One rooted in stewardship, not ownership. That relationship has to be designed in &mdash; it cannot be added afterward.</p>
+      </li>
+    </ul>
+
+    <div class="threshold-block reveal">
+      <span class="threshold-label">What built this</span>
+      <p class="threshold-text">Most land projects begin with a property and improvise the plan afterward. Moontrance began the other way. <strong>The vision, the hospitality design, the community model, the economic frameworks</strong> &mdash; all of it was built first, in detail, before a single acre was acquired. When the right land is found, nothing will be figured out on the fly. The land will simply be activated by a system that is ready for it.</p>
+    </div>
   </div>
 </section>
 
-<!-- ══ SOLUTION ══ -->
+<!-- WHAT -->
 <div class="sep" aria-hidden="true"></div>
-<section class="section" id="solution" aria-labelledby="sol-h">
-  <div class="section-inner">
+<section class="section" id="what" aria-labelledby="what-h">
+  <div class="section-inner--wide">
     <p class="sec-eyebrow reveal">What Moontrance is</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
-    <h2 class="sec-headline reveal" id="sol-h">
-      A fully designed vision<br>in search of <em>the right land</em>.
+    <h2 class="sec-headline reveal" id="what-h">
+      Two expressions.<br><em>One intention.</em>
     </h2>
     <p class="sec-body reveal">
-      Moontrance is a faith-rooted land destination for Muslim families, homesteaders,
-      regenerative farmers, and community builders &mdash; designed from the ground up
-      so that beauty, hospitality, and Islamic values work together, not against each other.
-      The acquisition frameworks, offer economics, hospitality design, and community model
-      are complete. The land search is active. Ontario&rsquo;s rural corridors within
-      90 minutes of Toronto are the target.
+      Moontrance is not one thing. It is two &mdash; designed to serve different depths of the same longing.
+      The Collective is where people encounter the vision.
+      The Community is where some of them decide to live it.
     </p>
+
+    <div class="offerings reveal" role="list" aria-label="Two Moontrance offerings">
+
+      <a href="/moontrance/collective/solution/" class="offering" role="listitem">
+        <span class="offering-symbol">&#9700; &nbsp; The Collective</span>
+        <p class="offering-title">Five Faith-Designed<br>Experiences</p>
+        <p class="offering-tagline">Beauty and Islamic values working together, not against each other.</p>
+        <p class="offering-desc">Guided walks through land read as creation. Seasonal workshops where the earth teaches. Overnight stays designed around salah, silence, and the quality of light at fajr. Farm-to-iftar gatherings. Homeschool immersions. Five experiences &mdash; each one designed from the ground up, none of them adapted from a secular model.</p>
+        <span class="offering-link">Explore The Collective <span aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a href="/moontrance/community/" class="offering" role="listitem">
+        <span class="offering-symbol">&#9700; &nbsp; The Community</span>
+        <p class="offering-title">An Intentional<br>Muslim Life on Land</p>
+        <p class="offering-tagline">Not a membership programme. A way of life forming slowly, on purpose.</p>
+        <p class="offering-desc">Jama&lsquo;ah. Khilāfah. The tarbiyah of children surrounded by believing adults on working land. The community begins with seasonal participation &mdash; showing up for the land and for each other, season after season, until belonging is established in the most honest way: through sustained presence and shared work.</p>
+        <span class="offering-link">The Community &rarr;</span>
+      </a>
+
+    </div>
   </div>
 </section>
 
-<!-- ══ EXPLORE ══ -->
+<!-- HOW -->
 <div class="sep" aria-hidden="true"></div>
-<section class="section" id="explore" aria-labelledby="exp-h">
-  <div class="section-inner--wide">
-    <p class="sec-eyebrow reveal">Moontrance &middot; The Frameworks</p>
+<section class="section" id="how" aria-labelledby="how-h">
+  <div class="section-inner">
+    <p class="sec-eyebrow reveal">How it unfolds</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
-    <h2 class="sec-headline reveal" id="exp-h">Nothing Left to Improvise.</h2>
+    <h2 class="sec-headline reveal" id="how-h">
+      Built before the land.<br><em>Ready for it.</em>
+    </h2>
     <p class="sec-body reveal">
-      Four interlocking frameworks covering every dimension of what it takes
-      to find, evaluate, activate, and sustain a faith-rooted land destination.
-      Built before the land, so the land can be activated the moment it&rsquo;s found.
+      The frameworks are complete. The land search is active in the GTA and Halton region corridors within 90 minutes of Toronto. What follows the land is already designed and waiting.
     </p>
 
-    <div style="margin-top:14rem;">
-      <p class="sec-eyebrow reveal">From search to open day</p>
-      <div class="sec-rule reveal" aria-hidden="true"></div>
-      <h3 class="sec-subheadline reveal">
-        Four stages. Fully mapped.<br>Waiting only for the land.
-      </h3>
+    <div class="how-ayah reveal" role="note">
+      <span class="how-ayah-arabic" lang="ar" dir="rtl">وَالسَّابِقُونَ الْأَوَّلُونَ مِنَ الْمُهَاجِرِينَ وَالْأَنصَارِ وَالَّذِينَ اتَّبَعُوهُم بِإِحْسَانٍ رَّضِيَ اللَّهُ عَنْهُمْ وَرَضُوا عَنْهُ</span>
+      <span class="how-ayah-trans">&ldquo;And the first forerunners among the Muhajirin and the Ansar and those who followed them with good conduct &mdash; Allah is pleased with them and they are pleased with Him.&rdquo;</span>
+      <span class="how-ayah-source">Surah At-Tawbah &nbsp;&middot;&nbsp; 9:100</span>
     </div>
-
-    <ul class="num-list" style="margin-top:3.5rem;" aria-label="Moontrance frameworks">
-
+    <ul class="num-list" aria-label="Moontrance sequence">
       <li class="num-item">
         <span class="num-index">01</span>
         <div>
-          <p class="num-title">Land Acquisition</p>
-          <p class="num-text">A six-channel search strategy across MLS, off-market, direct outreach, and rural networks. Seven key parcel characteristics. Municipal pre-check protocol. Target corridors within 90 minutes of Toronto mapped and ranked. No site visit until the data says go.</p>
+          <p class="num-title">Founding Members</p>
+          <p class="num-text">The people who feel the pull before the land exists. Founding members are the first to say yes to the vision &mdash; not as investors, but as the community that will shape what Moontrance becomes. Their early presence influences the land search, the design priorities, and the pace of everything that follows.</p>
         </div>
       </li>
-
       <li class="num-item">
         <span class="num-index">02</span>
         <div>
-          <p class="num-title">Offer Economics</p>
-          <p class="num-text">Three Phase 1 offer stacks &mdash; guided visits, seasonal workshops, and overnight stays &mdash; with full pricing architecture, guest capacity models, and revenue ranges from conservative to optimistic. The numbers exist before the land does.</p>
+          <p class="num-title">Land Acquired</p>
+          <p class="num-text">A six-channel search strategy. Seven key parcel characteristics. Municipal pre-check protocol. Target corridors mapped and ranked. The Atlas assessment engine evaluates candidates against Moontrance&rsquo;s specific requirements &mdash; including Spiritual Intentionality scoring. No site visit until the data says go.</p>
         </div>
       </li>
-
       <li class="num-item">
         <span class="num-index">03</span>
         <div>
-          <p class="num-title">Hospitality &amp; Community Design</p>
-          <p class="num-text">Halal standards structural, not requested. Prayer spaces, salah-paced rhythms, and modesty-conscious design built into the layout from the beginning. Family, individual, and group pathways each fully scoped. The Moontrance Collective experience designed in full.</p>
+          <p class="num-title">The Collective Opens</p>
+          <p class="num-text">Five experiences activate in phased sequence. Each one launches as a complete, uncompromised offering. Three Phase 1 offer stacks with full pricing architecture, guest capacity models, and revenue ranges already built. No improvisation. No beta states.</p>
         </div>
       </li>
-
       <li class="num-item">
         <span class="num-index">04</span>
         <div>
-          <p class="num-title">Regenerative Stewardship</p>
-          <p class="num-text">Land as trust, not asset. Homesteading, regenerative farming, faith-rooted outdoor education, and community gathering designed as integrated systems &mdash; not separate ventures bolted together. The land serves the vision. The vision serves the community.</p>
+          <p class="num-title">Community Foundation</p>
+          <p class="num-text">The community forms around the land and its rhythms. Planting Faith. Carrying Through. Reckoning. Stillness &mdash; four seasons of showing up. Trust built through sustained presence and shared work. The residency model activates when the foundation is laid &mdash; not before.</p>
         </div>
       </li>
-
     </ul>
   </div>
 </section>
 
-<!-- ══ THREE PATHS ══ -->
+<!-- CTA -->
 <div class="sep" aria-hidden="true"></div>
-<section class="paths-section" id="connect" aria-labelledby="paths-h">
-  <div class="paths-inner">
-    <p class="sec-eyebrow reveal">Where do you fit?</p>
-    <div class="sec-rule reveal" aria-hidden="true"></div>
-    <h2 class="sec-headline reveal" id="paths-h">
-      Three ways to be<br><em>part of this.</em>
+<section class="cta-section" id="connect" aria-labelledby="cta-h">
+  <div class="cta-inner">
+    <div class="cta-ayah reveal" role="note">
+      <span class="cta-ayah-arabic" lang="ar" dir="rtl">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</span>
+      <span class="cta-ayah-trans">&ldquo;Our Lord, grant us from among our spouses and offspring the comfort of our eyes, and make us a leader for the righteous.&rdquo;</span>
+      <span class="cta-ayah-source">Surah Al-Furq&amacr;n &nbsp;&middot;&nbsp; 25:74</span>
+    </div>
+    <h2 class="cta-headline reveal" id="cta-h">
+      If this is calling you &mdash;<br><em>we&rsquo;d like to know you.</em>
     </h2>
-    <p class="sec-body reveal" style="margin-bottom:0;">
-      Moontrance is at the stage where the right people matter more than the right timing.
-      Wherever you&rsquo;re coming from, there is a place for you here.
+    <p class="cta-sub reveal">
+      Whether you want to visit, to participate in a season, to invest, or simply to stay close
+      as the vision unfolds &mdash; tell us where you are. There is a door here for each of those.
     </p>
-
-    <div class="paths-grid">
-
-      <a href="/moontrance/collective/solution/" class="path-card">
-        <div class="path-body">
-          <p class="path-label">For investors &amp; partners</p>
-          <p class="path-title">Get in Touch</p>
-          <p class="path-desc">You see the vision, you understand the frameworks, and you want to explore what a partnership looks like. Let&rsquo;s have a real conversation.</p>
-        </div>
-        <span class="path-arrow" aria-hidden="true">→</span>
+    <div class="cta-actions reveal">
+      <a href="/moontrance/connect/" class="cta-btn">
+        &#9700; &nbsp; Begin a Conversation
+        <span class="cta-btn-arrow" aria-hidden="true">&rarr;</span>
       </a>
-
-      <a href="/moontrance/collective/solution/" class="path-card">
-        <div class="path-body">
-          <p class="path-label">For those following the journey</p>
-          <p class="path-title">Follow the Journey</p>
-          <p class="path-desc">You&rsquo;re not ready to invest, but you want to stay close as the land search unfolds and the vision becomes real. We&rsquo;ll keep you with us.</p>
-        </div>
-        <span class="path-arrow" aria-hidden="true">→</span>
-      </a>
-
-      <a href="/moontrance/journey/" class="path-card">
-        <div class="path-body">
-          <p class="path-label">For Muslim builders</p>
-          <p class="path-title">Explore the Frameworks</p>
-          <p class="path-desc">You&rsquo;re inspired to build something similar. The acquisition frameworks, offer economics, and design principles are available for you to learn from and build on.</p>
-        </div>
-        <span class="path-arrow" aria-hidden="true">→</span>
-      </a>
-
     </div>
   </div>
 </section>
-
-<!-- ══ CROSS-LINK ══ -->
-<div class="crosslink">
-  <div class="crosslink-inner">
-    <p class="crosslink-label">Also in Moontrance</p>
-    <a href="/moontrance/collective/solution/" class="crosslink-card">
-      <div>
-        <p class="crosslink-title">The Moontrance Collective</p>
-        <p class="crosslink-desc">The destination experience in full — what Moontrance will offer families, learners, and seekers when the land is found.</p>
-      </div>
-      <span class="crosslink-arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
-</div>
 
 </main>
 
 <footer>
-  <div class="footer-mark">OGDEN &middot; Moontrance</div>
-  <div class="footer-line">The vision is complete. The land is next.</div>
-  <div class="footer-mark">Powered by <span>Claude</span></div>
+  <div class="footer-mark"><span>&#9700;</span> &nbsp; Moontrance &mdash; OGDEN</div>
+  <div class="footer-line">Faith. Land. Creation. Ontario.</div>
+  <div class="footer-mark">hub.ogden.ag</div>
 </footer>
 
 <script>
-const toggle=document.querySelector('.nav-toggle');
-const drawer=document.getElementById('nav-drawer');
-if(toggle&&drawer){
-  const drawerLinks=Array.from(drawer.querySelectorAll('a'));
-  let _sy=0;
-  function openDrawer(){
-    _sy=window.scrollY;
-    document.body.style.position='fixed';
-    document.body.style.top='-'+_sy+'px';
-    document.body.style.width='100%';
-    drawer.classList.add('open');
-    toggle.setAttribute('aria-expanded','true');
-    toggle.setAttribute('aria-label','Close navigation menu');
-    if(drawerLinks[0])setTimeout(()=>drawerLinks[0].focus(),50);
-  }
-  function closeDrawer(){
-    drawer.classList.remove('open');
-    toggle.setAttribute('aria-expanded','false');
-    toggle.setAttribute('aria-label','Open navigation menu');
-    document.body.style.position='';
-    document.body.style.top='';
-    document.body.style.width='';
-    window.scrollTo(0,_sy);
-    toggle.focus();
-  }
-  function addTap(el,fn){
-    el.addEventListener('click',fn);
-    el.addEventListener('touchend',function(e){e.preventDefault();fn();},{passive:false});
-  }
+const toggle = document.querySelector('.nav-toggle');
+const drawer = document.getElementById('nav-drawer');
+if (toggle && drawer) {
+  const dLinks = Array.from(drawer.querySelectorAll('a'));
+  let _sy = 0;
+  function openDrawer(){ _sy=window.scrollY; document.body.style.position='fixed'; document.body.style.top='-'+_sy+'px'; document.body.style.width='100%'; drawer.classList.add('open'); toggle.setAttribute('aria-expanded','true'); toggle.setAttribute('aria-label','Close navigation menu'); if(dLinks[0])setTimeout(()=>dLinks[0].focus(),50); }
+  function closeDrawer(){ drawer.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); toggle.setAttribute('aria-label','Open navigation menu'); document.body.style.position=''; document.body.style.top=''; document.body.style.width=''; window.scrollTo(0,_sy); toggle.focus(); }
+  function addTap(el,fn){ el.addEventListener('click',fn); el.addEventListener('touchend',e=>{e.preventDefault();fn();},{passive:false}); }
   addTap(toggle,()=>drawer.classList.contains('open')?closeDrawer():openDrawer());
-  drawerLinks.forEach(a=>addTap(a,closeDrawer));
+  dLinks.forEach(a=>addTap(a,closeDrawer));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer();});
   drawer.addEventListener('keydown',e=>{
     if(e.key!=='Tab')return;
@@ -506,38 +460,35 @@ if(toggle&&drawer){
     else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}
   });
 }
-
-const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const l=e.target.closest('.num-list');l?setTimeout(()=>e.target.classList.add('visible'),Array.from(l.children).indexOf(e.target)*90):e.target.classList.add('visible');obs.unobserve(e.target);});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal,.num-item').forEach(el=>obs.observe(el));
-
-const secObs=new IntersectionObserver(e=>{e.forEach(e=>{const l=document.querySelector(`.nav-sections a[data-sec="${e.target.id}"]`);if(l)l.classList.toggle('sec-active',e.isIntersecting);});},{threshold:0.3});
-['problem','threshold','solution','explore','connect'].forEach(id=>{const el=document.getElementById(id);if(el)secObs.observe(el);});
-</script>
-
-<script>
-
-</script>
-
-<script>
-/* Page exit fade — body opacity only, cannot block interaction */
-document.addEventListener('click', function(e){
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const list = e.target.closest('.num-list');
+    if (list) { const idx = Array.from(list.children).indexOf(e.target); setTimeout(() => e.target.classList.add('visible'), idx * 90); }
+    else { e.target.classList.add('visible'); }
+    obs.unobserve(e.target);
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .num-item').forEach(el => obs.observe(el));
+const secObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const link = document.querySelector('.nav-right a[data-sec="'+e.target.id+'"]');
+    if (link) link.classList.toggle('sec-active', e.isIntersecting);
+  });
+}, { threshold: 0.25 });
+['why','what','how'].forEach(id => { const el = document.getElementById(id); if(el) secObs.observe(el); });
+document.addEventListener('click', function(e) {
   var a = e.target.closest('a');
   if (!a) return;
   var href = a.getAttribute('href');
-  if (!href) return;
-  if (href.startsWith('http') || href.startsWith('//') ||
-      href.startsWith('#') || href.startsWith('mailto') ||
-      a.target === '_blank') return;
+  if (!href || href.startsWith('http') || href.startsWith('//') || href.startsWith('#') || href.startsWith('mailto') || a.target === '_blank') return;
   e.preventDefault();
   document.body.style.transition = 'opacity 0.25s ease';
   document.body.style.opacity = '0';
-  setTimeout(function(){ window.location.href = href; }, 260);
+  setTimeout(function() { window.location.href = href; }, 260);
 });
-window.addEventListener('pageshow', function(e){
-  if (e.persisted){
-    document.body.style.transition = 'none';
-    document.body.style.opacity = '1';
-  }
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) { document.body.style.transition = 'none'; document.body.style.opacity = '1'; }
 });
 </script>
 </body>

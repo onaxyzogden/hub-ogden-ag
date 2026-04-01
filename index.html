@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OGDEN — Structured Service. Rooted Intention.</title>
-<meta name="description" content="OGDEN builds tools for people who believe land is a trust, business is worship, and community requires courage. Three products, one intention.">
-<meta property="og:title" content="OGDEN — Structured Service. Rooted Intention.">
-<meta property="og:description" content="OGDEN builds tools for people who believe land is a trust, business is worship, and community requires courage. Three products, one intention.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -90,7 +86,7 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .pathway-header{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:0.45rem;}
 .pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color 0.2s;display:block;text-align:center;}
 .pathway:hover .pathway-title{color:#fff;}
-.pathway-tag{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
+.pathway-tag{display:block;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
 .pathway:hover .pathway-tag{color:var(--accent-light);}
 .pathway-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;transition:color 0.2s;text-align:center;}
 .pathway:hover .pathway-desc{color:rgba(216,208,191,0.9);}
@@ -164,8 +160,14 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 @media(max-width:680px){.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}}
 
 /* ── PAGE TRANSITION VEIL ── */
+}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
 body{animation:body-fade-in 0.5s ease 0.05s both;}
+
+.hadith-block{margin:2.5rem auto 0;max-width:680px;padding:1.75rem 2rem;border:1px solid rgba(184,144,80,0.18);border-left:3px solid rgba(184,144,80,0.45);border-radius:3px;background:rgba(184,144,80,0.04);}
+.hadith-arabic{font-family:var(--serif);font-size:1.3rem;color:var(--accent-light);direction:rtl;text-align:right;line-height:2.2;margin-bottom:1rem;display:block;}
+.hadith-trans{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--bone);line-height:1.8;margin-bottom:0.75rem;display:block;}
+.hadith-source{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);display:block;}
 </style>
 </head>
 <body>
@@ -195,7 +197,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 </header>
 
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
-  <ul class="nav-drawer-links">
+  <ul class="nav-drawer-links" role="list">
     <li><a href="#who">Who</a></li>
     <li><a href="#why">Why</a></li>
     <li><a href="#what">What</a></li>
@@ -243,7 +245,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
           <span class="pathway-title">Into the Work</span>
         </div>
         <p class="pathway-desc">
-          BBOS, Atlas, and Moontrance &mdash; three expressions of one intention.
+          Atlas, Moontrance, and BBOS &mdash; three expressions of one intention.
         </p>
       </div>
       <span class="pathway-arrow" aria-hidden="true">→</span>
@@ -276,26 +278,42 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
     <h2 class="sec-headline reveal" id="why-h">
       Structured service.<br><em>Rooted intention.</em>
     </h2>
-    <p class="sec-body reveal">
-      OGDEN is a structured understanding of ways to serve Allah SWT &mdash;
-      shaped by lived experience, natural inclination, and a conviction that
-      the tools Muslim families, builders, and communities need
+
+    <div class="hadith-block reveal" role="note">
+      <p class="hadith-arabic" lang="ar" dir="rtl">إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ: إِلَّا مِنْ صَدَقَةٍ جَارِيَةٍ، أَوْ عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ</p>
+      <p class="hadith-trans">&ldquo;When a man dies, his deeds come to an end except for three: a ceaseless charity, a knowledge which is beneficial, or a virtuous descendant who prays for him.&rdquo;</p>
+      <p class="hadith-source">The Messenger of Allah ﷺ &nbsp;&middot;&nbsp; Sahih Muslim</p>
+    </div>
+
+    <p class="sec-body reveal" style="margin-top:2.5rem;">
+      OGDEN was built as a structured response to this hadith &mdash;
+      three expressions of the three deeds that outlast a life.
+      Not as a programme, but as a conviction that the tools
+      Muslim families, builders, and communities need
       have not yet been built for them.
-      Everything here begins from that conviction and works outward.
     </p>
 
     <ul class="num-list" aria-label="What OGDEN is built on">
-      <li class="num-item no-title">
+      <li class="num-item">
         <span class="num-index">01</span>
-        <p class="num-text">Land is not an investment vehicle. It is a trust &mdash; something given to be cared for, to be made productive, to carry signs of the Creator for those who come to stand on it. Our team builds tools for people who believe that.</p>
+        <div>
+          <p class="num-title">&lsquo;Ilm Nafi&rsquo; &nbsp;&middot;&nbsp; Knowledge that is beneficial</p>
+          <p class="num-text">Business is not separate from worship. But almost no system exists that treats them as one. BBOS is a nine-stage operating system for running a business as an act of ibadah &mdash; knowledge structured, passed on, and built to outlast the operator who first used it.</p>
+        </div>
       </li>
-      <li class="num-item no-title">
+      <li class="num-item">
         <span class="num-index">02</span>
-        <p class="num-text">Business is not separate from worship. The way a transaction is structured, the way a client is treated, the way profit is understood &mdash; all of it either reflects a set of values or quietly contradicts them. Our team builds operating systems for those who want their work to reflect theirs.</p>
+        <div>
+          <p class="num-title">Sadaqah Jariyah &nbsp;&middot;&nbsp; A ceaseless charity</p>
+          <p class="num-text">Land is not an investment vehicle. It is a trust &mdash; something given to be cared for, made productive, carrying signs of the Creator for those who come after. The Atlas is built for people who want to know the land before they ask anything of it.</p>
+        </div>
       </li>
-      <li class="num-item no-title">
+      <li class="num-item">
         <span class="num-index">03</span>
-        <p class="num-text">Community does not happen by proximity. It requires intention, design, and the courage to build something that doesn&rsquo;t yet exist. The Muslim communities most worth belonging to are the ones being built right now by people who decided to stop waiting for them.</p>
+        <div>
+          <p class="num-title">Walad Salih &amp; &lsquo;Ilm Nafi&rsquo; &nbsp;&middot;&nbsp; The community that teaches and prays</p>
+          <p class="num-text">Community does not happen by proximity. It requires intention, design, and courage. Moontrance is a faith-rooted land destination &mdash; designed for the tarbiyah of children surrounded by believing adults, and for adults who need the land to remember what they already know. It carries both: the knowledge the land teaches, and the generation it raises.</p>
+        </div>
       </li>
     </ul>
   </div>
@@ -338,17 +356,6 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 
     <div class="products-grid">
 
-      <!-- BBOS -->
-      <a href="https://hub.ogden.ag/bbos/" class="product-card reveal">
-        <div class="product-status">
-          <span class="product-status-badge live">Live</span>
-          <span class="product-status-badge">Business Operating System</span>
-        </div>
-        <p class="product-name">BBOS</p>
-        <p class="product-desc">The Barakah Business Operating System &mdash; a complete, productised framework for running a business as an act of worship. From intake through optimisation, every stage structured and guided.</p>
-        <span class="product-link">Enter BBOS <span aria-hidden="true">→</span></span>
-      </a>
-
       <!-- ATLAS -->
       <a href="https://hub.ogden.ag/atlas/" class="product-card reveal">
         <div class="product-status">
@@ -369,6 +376,17 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
         <p class="product-name">Moontrance</p>
         <p class="product-desc">A faith-rooted land destination in Ontario &mdash; fully designed, actively searching for founding members and the right land. A place to stand in nature and remember why it matters.</p>
         <span class="product-link">Explore Moontrance <span aria-hidden="true">→</span></span>
+      </a>
+
+      <!-- BBOS -->
+      <a href="https://hub.ogden.ag/bbos/" class="product-card reveal">
+        <div class="product-status">
+          <span class="product-status-badge">LLM Instruction Set</span>
+          <span class="product-status-badge">Market Validation</span>
+        </div>
+        <p class="product-name">BBOS</p>
+        <p class="product-desc">The Barakah Business Operating System &mdash; a structured framework for running a business as an act of worship. Currently operating as a custom LLM instruction set while the market is validated.</p>
+        <span class="product-link">Explore BBOS <span aria-hidden="true">→</span></span>
       </a>
 
     </div>

@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BBOS — Barakah Business Operating System</title>
-<meta name="description" content="The Barakah Business Operating System — a nine-stage framework for running a business as an act of worship, governed by the divine attributes.">
-<meta property="og:title" content="BBOS — Barakah Business Operating System">
-<meta property="og:description" content="The Barakah Business Operating System — a nine-stage framework for running a business as an act of worship, governed by the divine attributes.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -84,7 +80,7 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .pathway-header{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:0.45rem;}
 .pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color 0.2s;display:block;text-align:center;}
 .pathway:hover .pathway-title{color:#fff;}
-.pathway-tag{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
+.pathway-tag{display:block;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
 .pathway:hover .pathway-tag{color:var(--accent-light);}
 .pathway-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;transition:color 0.2s;text-align:center;}
 .pathway:hover .pathway-desc{color:rgba(216,208,191,0.9);}
@@ -156,6 +152,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 @media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.stage-grid{grid-template-columns:1fr;}.num-item{padding-left:1.25rem;}}
 
 /* ── PAGE TRANSITION VEIL ── */
+}
 .cta-btn-secondary{display:inline-flex;align-items:center;gap:0.75rem;padding:0.85rem 2rem;background:transparent;border:1px solid rgba(240,235,224,0.2);border-radius:3px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,235,224,0.6)!important;text-decoration:none;transition:border-color 0.3s,color 0.3s;}
 .cta-btn-secondary:hover{border-color:rgba(184,144,80,0.5);color:var(--accent-light);}.cta-btn-secondary:visited{color:rgba(240,235,224,0.6)!important;text-decoration:none;}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
@@ -164,7 +161,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 .hero-ayah{margin-bottom:2.5rem;padding:1.25rem 1.5rem;border-left:3px solid rgba(184,144,80,0.4);opacity:0;animation:fadeUp 0.8s ease 0.2s forwards;}
 .hero-ayah-arabic{display:block;font-family:var(--serif);font-size:1.5rem;color:var(--accent-light);direction:rtl;text-align:right;line-height:2;margin-bottom:0.35rem;}
 .hero-ayah-trans{display:block;font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--bone);line-height:1.7;margin-bottom:0.25rem;}
-.hero-ayah-source{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);}
+.hero-ayah-source{display:block;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);}
 </style>
 </head>
 <body>
@@ -180,11 +177,11 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <nav class="nav" aria-label="Site navigation">
   <a href="/" class="nav-brand">OGDEN</a>
   <div class="nav-div" aria-hidden="true"></div>
-  <ul class="nav-products">
+  <ul class="nav-products" role="list">
     <li><a href="/">Home</a></li>
-    <li><a href="/bbos/" class="nav-active" aria-current="page">BBOS</a></li>
-    <li><a href="/moontrance/">Moontrance</a></li>
+    <li><a href="/bbos/">BBOS</a></li>
     <li><a href="/atlas/">Atlas</a></li>
+    <li><a href="/moontrance/">Moontrance</a></li>
   </ul>
   <div class="nav-div2" aria-hidden="true"></div>
   <ul class="nav-sections">
@@ -201,7 +198,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 </header>
 
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
-  <ul class="nav-drawer-links">
+  <ul class="nav-drawer-links" role="list">
     <li><a href="#problem">Problem</a></li>
     <li><a href="#threshold">Threshold</a></li>
     <li><a href="#solution">Solution</a></li>
@@ -225,18 +222,11 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
     This is what that forgetting looks like<br>in the ordinary life of <em>a man building a business.</em>
   </h1>
   <p class="hero-sub">
-    Adam was given a covenant and he forgot. That is the condition we inherited &mdash;
-    not rebellion, but forgetting. And the whisper that follows forgetting is always the same:
-    <em>you are not enough, so you must become enough.</em>
-    A man who forgets that Allah is Al-Razzaq becomes the razzaq in his own mind.
-    His worth becomes what he produces. His right to rest becomes something he must earn.
-    And slowly &mdash; not in a dramatic collapse but in a quiet disappearance &mdash;
-    the business becomes the measure of everything.
-    His wife stops reaching. His children learn not to ask.
-    He is present in the house and absent from the people who live in it.
-    BBOS was built from inside that experience. Not to fix the man &mdash;
-    but to give remembrance a structure to live in,
-    so there is something left of him when he comes home.
+    Not a dramatic collapse. A quiet disappearance — into the work, into the role,
+    into the weight of being the one who provides. Until the work is all there is.
+    And even inside a family that loves him, he doesn&rsquo;t know why he feels so alone.
+    BBOS was built from inside that experience. It is a system that holds the business —
+    so there is something left of you when you come home.
   </p>
   <div class="hero-rule" aria-hidden="true"></div>
 
@@ -273,28 +263,28 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <div class="sep" aria-hidden="true"></div>
 <section class="section" id="problem" aria-labelledby="prob-h">
   <div class="section-inner">
-    <p class="sec-eyebrow reveal">The cost no one talks about</p>
+    <p class="sec-eyebrow reveal">What usually happens instead</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
     <h2 class="sec-headline reveal" id="prob-h">
-      You can have rizq without barakah &mdash;<br><em>wealth that never becomes enough.</em>
+      When a man forgets Allah is Al-Razzaq —<br><em>he becomes the razzaq in his own mind.</em>
     </h2>
 
-    <ul class="num-list" aria-label="The cost of forgetting">
+    <ul class="num-list" aria-label="Common problems BBOS addresses">
       <li class="num-item no-title">
         <span class="num-index">01</span>
-        <p class="num-text">He fuses his identity with his function. His worth becomes conditional on output. 53% of men report that no one really knows them &mdash; not because they are hidden, but because there is nothing left outside the role to be known. The business does not just consume his time. It consumes his selfhood. What remains is a performance of confidence over a growing emptiness.</p>
+        <p class="num-text">His worth becomes conditional on what he produces. His right to rest becomes something he has to earn. The business stops being a means and becomes the measure of everything — his identity, his value, his claim on love.</p>
       </li>
       <li class="num-item no-title">
         <span class="num-index">02</span>
-        <p class="num-text">She stopped asking &mdash; not because she stopped caring, but because his capacity to hear her disappeared into the work. Her reaching began to feel like pressure on the only thing holding the world together, so she learned to carry alone. 69% of divorces are initiated by women. Her silence is not peace. It is a woman who has begun grieving the marriage while still inside it.</p>
+        <p class="num-text">His wife&rsquo;s reaching feels like pressure on the only thing holding the world together. His children learn quietly not to bother him. He is present in the house and absent from the people who live in it. This is not a failure of love. It is what happens when one person carries what was never meant to be carried alone.</p>
       </li>
       <li class="num-item no-title">
         <span class="num-index">03</span>
-        <p class="num-text">The children reorganized around his absence. They did not act out &mdash; they became easy. Good grades, no trouble, no demands. The child does not think &ldquo;my father has a provider identity crisis.&rdquo; The child thinks: I am not enough to pull him into the room. And no one notices, because the easy child is the one nobody worries about.</p>
+        <p class="num-text">This wound is widespread. It is deeply Islamic in its diagnosis. And almost nothing exists that addresses it at the root — before the divorce, before the breakdown, before the man himself understands what has happened to him.</p>
       </li>
       <li class="num-item no-title">
         <span class="num-index">04</span>
-        <p class="num-text">This wound is not a time-management problem. It is not a work-life balance failure. It is what the Quran diagnosed fourteen centuries ago: a man who forgot Allah forgot himself &mdash; and everyone around him absorbed the cost. The remedy is not productivity advice. The remedy is remembrance. And remembrance, like salah, like zakat, like every act of worship Islam has given us, needs a structure to live in.</p>
+        <p class="num-text">The remedy is remembrance. And remembrance — like salah, like zakat, like every act of worship Islam has ever given us — needs a structure to live in. Dunya is a function of deen. BBOS is a function of business. A means to an end — not the end itself.</p>
       </li>
     </ul>
   </div>
@@ -304,24 +294,19 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <div class="sep" aria-hidden="true"></div>
 <section class="section" id="threshold" aria-labelledby="thresh-h">
   <div class="section-inner">
-    <p class="sec-eyebrow reveal">The question underneath</p>
+    <p class="sec-eyebrow reveal">The question that built this</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
     <h2 class="sec-headline reveal" id="thresh-h">
-      What if the goal was never maximum rizq &mdash;<br><em>but maximum barakah within your rizq?</em>
+      What if the structure of your business<br>was built to <em>please Allah SWT</em>?
     </h2>
     <p class="sec-body reveal">
-      Barakah is not a metaphor. It is what Allah does with what He gives.
-      Rizq with barakah stretches beyond logic &mdash;
-      modest income that covers everything, a small business that holds a family together,
-      work that leaves a man whole at the end of the day.
-      Rizq without barakah is the opposite &mdash;
-      technically successful, spiritually bankrupt, never enough no matter how much comes in.
-      BBOS is built on a simple premise: if the structure of your business
-      is governed by the qualities of Allah &mdash;
-      honesty before strategy, taqwa before growth, gratitude before optimisation &mdash;
-      then barakah has somewhere to land.
-      Not Islamic branding on a secular framework.
-      A system built from the ground on different assumptions.
+      Not a motivational layer added on top of standard business practice.
+      Not Islamic branding applied to a secular framework.
+      A system built from the beginning on different assumptions &mdash;
+      where every stage, every decision point, every transition
+      is governed by a quality of Allah SWT,
+      and asks something of your honesty before it asks anything of your strategy.
+      That system exists. It is called BBOS.
     </p>
   </div>
 </section>
@@ -333,20 +318,17 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
     <p class="sec-eyebrow reveal">What BBOS is</p>
     <div class="sec-rule reveal" aria-hidden="true"></div>
     <h2 class="sec-headline reveal" id="sol-h">
-      A remembrance system <em>built as</em> a business tool.
+      A covenant system <em>and</em> a workflow tool.
     </h2>
     <p class="sec-body reveal">
-      Nine stages from intake to optimisation.
-      Each governed by a divine attribute &mdash; not as decoration, but as a decision-making constraint.
-      Al-Haqq governs qualification: is this work honest?
-      Al-Adl governs the offer: is this exchange just?
-      Ash-Shakur governs delivery: did you give more than was owed?
-      The system spans what most tools split apart &mdash;
-      internal operations and client pipeline &mdash;
-      because the question of whether your business is costing you more than revenue
-      cannot be answered by a project board.
-      It requires a structure that asks something of your honesty at every stage.
-      BBOS is that structure. A functioning web app. Ready to run.
+      Most business tools answer one question. Internal operating systems like EOS help you
+      run your company well. Pipeline tools like HoneyBook help you get and serve clients.
+      Almost nothing spans both — and nothing asks whether the business you&rsquo;re building
+      is costing you something that matters more than revenue.
+      BBOS spans that gap by design. Nine stages, one continuous system,
+      governed by the divine attributes — from foundation and qualification
+      through outreach and delivery to retention and optimisation.
+      A functioning web app. Ready to run.
     </p>
   </div>
 </section>
@@ -433,13 +415,11 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <section class="cta-section" id="connect" aria-labelledby="cta-h">
   <div class="cta-inner">
     <h2 class="cta-headline reveal" id="cta-h">
-      Built for the man who wants to come home whole &mdash;<br><em>and the family waiting for him to.</em>
+      Built for operators who believe<br><em>the work itself is ibadah.</em>
     </h2>
     <p class="cta-sub reveal">
-      BBOS is a functioning system. Nine stages, governed by the divine attributes,
-      designed so the business serves the life &mdash; not the other way around.
-      If you are building something and you feel the cost of it in places no one sees,
-      the system is ready.
+      BBOS is a functioning web app. Nine stages, fully tooled, governed by the divine attributes.
+      If you want to run a pipeline built on honest foundation, the system is ready.
     </p>
     <a href="https://hub.ogden.ag/bbos/connect/" class="cta-btn reveal">
       Request Access
@@ -452,7 +432,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 
 <footer>
   <div class="footer-mark">OGDEN &middot; BBOS</div>
-  <div class="footer-line">A remembrance system built as a business tool. Nine stages, one continuous system.</div>
+  <div class="footer-line">A covenant system and a workflow tool. Nine stages, one continuous system.</div>
   <div class="footer-mark">hub.ogden.ag</div>
 </footer>
 

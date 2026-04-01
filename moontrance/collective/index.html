@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Moontrance Collective — OGDEN</title>
-<meta name="description" content="The Moontrance Collective — five designed experiences for Muslim families rooted in land, faith, and intention.">
-<meta property="og:title" content="The Moontrance Collective — OGDEN">
-<meta property="og:description" content="The Moontrance Collective — five designed experiences for Muslim families rooted in land, faith, and intention.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -84,7 +80,7 @@ body{background:var(--char);color:var(--parchment);font-family:var(--sans);line-
 .pathway-header{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:0.45rem;}
 .pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color 0.2s;display:block;text-align:center;}
 .pathway:hover .pathway-title{color:#fff;}
-.pathway-tag{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
+.pathway-tag{display:block;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}
 .pathway:hover .pathway-tag{color:var(--accent-light);}
 .pathway-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;transition:color 0.2s;text-align:center;}
 .pathway:hover .pathway-desc{color:rgba(216,208,191,0.9);}
@@ -151,6 +147,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 @media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer.open{display:flex;}.hero-headline{font-size:2.5rem;}.section{padding:5rem 1.5rem;}.num-item{padding-left:1.25rem;}.cta-buttons{width:100%;}.cta-btn,.cta-btn-secondary{width:100%;justify-content:center;}}
 
 /* ── PAGE TRANSITION VEIL ── */
+}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
 body{animation:body-fade-in 0.5s ease 0.05s both;}
 </style>
@@ -168,11 +165,11 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <nav class="nav" aria-label="Site navigation">
   <a href="/" class="nav-brand">OGDEN</a>
   <div class="nav-div" aria-hidden="true"></div>
-  <ul class="nav-products">
+  <ul class="nav-products" role="list">
     <li><a href="/">Home</a></li>
     <li><a href="/bbos/">BBOS</a></li>
-    <li><a href="/moontrance/" class="nav-active" aria-current="page">Moontrance</a></li>
     <li><a href="/atlas/">Atlas</a></li>
+    <li><a href="/moontrance/">Moontrance</a></li>
   </ul>
   <div class="nav-div2" aria-hidden="true"></div>
   <ul class="nav-sections">
@@ -190,7 +187,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 </header>
 
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
-  <ul class="nav-drawer-links">
+  <ul class="nav-drawer-links" role="list">
     <li><a href="#problem">Problem</a></li>
     <li><a href="#threshold">Threshold</a></li>
     <li><a href="#solution">Solution</a></li>

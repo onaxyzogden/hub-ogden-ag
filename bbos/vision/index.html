@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BBOS — Barakah Business Operating System</title>
-<meta name="description" content="The vision behind BBOS — why a business operating system needs to be built on remembrance.">
-<meta property="og:title" content="BBOS — Vision">
-<meta property="og:description" content="The vision behind BBOS — why a business operating system needs to be built on remembrance.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -51,7 +47,7 @@
 .pathway:hover{background:rgba(18,16,11,0.82);border-color:rgba(184,144,80,0.3);}.pathway:hover::before{opacity:1;}.pathway:hover::after{transform:scaleY(1);}
 .pathway-body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;}.pathway-header{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:0.45rem;}
 .pathway-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--parchment);transition:color 0.2s;display:block;text-align:center;}.pathway:hover .pathway-title{color:#fff;}
-.pathway-tag{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}.pathway:hover .pathway-tag{color:var(--accent-light);}
+.pathway-tag{display:block;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-muted);margin-bottom:0.5rem;white-space:nowrap;transition:color 0.2s;text-align:center;}.pathway:hover .pathway-tag{color:var(--accent-light);}
 .pathway-desc{font-family:var(--sans);font-size:0.875rem;font-weight:300;color:#b4b3b2;line-height:1.65;transition:color 0.2s;text-align:center;}.pathway:hover .pathway-desc{color:rgba(216,208,191,0.9);}
 .pathway-arrow{display:none;}
 .pathway.arrow-right:hover .pathway-arrow{color:var(--accent-light);transform:translateX(4px);}.pathway.arrow-down:hover .pathway-arrow{color:var(--accent-light);transform:translateY(4px);}
@@ -96,6 +92,7 @@ footer{position:relative;z-index:1;padding:2rem 2.5rem;display:flex;align-items:
 @media(max-width:680px){.nav-div,.nav-div2,.nav-products,.nav-sections{display:none;}.nav-toggle{display:flex;}.nav-drawer{display:flex;}.hero-headline{font-size:2.4rem;}.section{padding:5rem 1.5rem;}.stage-grid{grid-template-columns:1fr;}.num-item{padding-left:1.25rem;}}
 
 /* ── PAGE TRANSITION VEIL ── */
+}
 .cta-btn-secondary{display:inline-flex;align-items:center;gap:0.75rem;padding:0.85rem 2rem;background:transparent;border:1px solid rgba(240,235,224,0.2);border-radius:3px;font-family:var(--mono);font-size:0.875rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,235,224,0.6)!important;text-decoration:none;transition:border-color 0.3s,color 0.3s;}
 .cta-btn-secondary:hover{border-color:rgba(184,144,80,0.5);color:var(--accent-light);}.cta-btn-secondary:visited{color:rgba(240,235,224,0.6)!important;text-decoration:none;}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
@@ -104,7 +101,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 .hero-ayah{margin-bottom:2.5rem;padding:1.25rem 1.5rem;border-left:3px solid rgba(184,144,80,0.4);opacity:0;animation:fadeUp 0.8s ease 0.2s forwards;}
 .hero-ayah-arabic{display:block;font-family:var(--serif);font-size:1.5rem;color:var(--accent-light);direction:rtl;text-align:right;line-height:2;margin-bottom:0.35rem;}
 .hero-ayah-trans{display:block;font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--bone);line-height:1.7;margin-bottom:0.25rem;}
-.hero-ayah-source{display:block;font-family:var(--mono);font-size:1.0rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);}
+.hero-ayah-source{display:block;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);}
 </style>
 </head>
 <body>
@@ -116,11 +113,11 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 <nav class="nav" aria-label="Site navigation">
   <a href="/" class="nav-brand">OGDEN</a>
   <div class="nav-div" aria-hidden="true"></div>
-  <ul class="nav-products">
+  <ul class="nav-products" role="list">
     <li><a href="/">Home</a></li>
-    <li><a href="/bbos/" class="nav-active" aria-current="page">BBOS</a></li>
-    <li><a href="/moontrance/">Moontrance</a></li>
+    <li><a href="/bbos/">BBOS</a></li>
     <li><a href="/atlas/">Atlas</a></li>
+    <li><a href="/moontrance/">Moontrance</a></li>
   </ul>
   <div class="nav-div2" aria-hidden="true"></div>
   <ul class="nav-sections">
@@ -137,7 +134,7 @@ body{animation:body-fade-in 0.5s ease 0.05s both;}
 </header>
 
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
-  <ul class="nav-drawer-links">
+  <ul class="nav-drawer-links" role="list">
     <li><a href="#problem">Problem</a></li>
     <li><a href="#threshold">Threshold</a></li>
     <li><a href="#solution">Solution</a></li>

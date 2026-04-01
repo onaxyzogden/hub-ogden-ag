@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Moontrance Collective — Five Designed Experiences</title>
-<meta name="description" content="Five designed experiences at Moontrance — from wilderness immersion to culinary gathering.">
-<meta property="og:title" content="The Moontrance Collective — Five Designed Experiences">
-<meta property="og:description" content="Five designed experiences at Moontrance — from wilderness immersion to culinary gathering.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -18,7 +14,7 @@
   --dust:       #d4c9b5;
   --mid:        #3d3830;
   --soft:       #6b6158;
-  --faint:      #635b54;
+  --faint:      #7a7068;
   --amber:      #b89050;
   --amber-light:#d4aa66;
   --amber-muted:#7a5d2a;
@@ -109,7 +105,7 @@ h1 em{font-style:italic;color:var(--amber-muted);}
 .exp-info{}
 .exp-name{font-family:var(--sans);font-size:0.875rem;font-weight:500;color:var(--ink);margin-bottom:0.1rem;}
 .exp-format{font-family:var(--serif);font-style:italic;font-size:0.78rem;color:var(--faint);}
-.exp-tier{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.55rem;border-radius:2px;flex-shrink:0;white-space:nowrap;min-width:46px;text-align:center;}
+.exp-tier{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.55rem;border-radius:2px;flex-shrink:0;white-space:nowrap;min-width:46px;text-align:center;}
 .tier-visit{background:rgba(184,144,80,0.12);color:var(--amber-muted);}
 .tier-stay{background:rgba(160,116,90,0.15);color:var(--earth);}
 .land-notice{padding:0.85rem 1.5rem;background:rgba(184,144,80,0.07);border-top:1px solid rgba(184,144,80,0.15);display:flex;align-items:flex-start;gap:0.6rem;}
@@ -149,14 +145,14 @@ h1 em{font-style:italic;color:var(--amber-muted);}
 .exp-details{border:1px solid var(--dust);border-radius:3px;overflow:hidden;}
 .exp-detail-row{display:grid;grid-template-columns:110px 1fr;border-bottom:1px solid var(--line-soft);}
 .exp-detail-row:last-child{border-bottom:none;}
-.exp-detail-key{padding:0.75rem 1rem;background:rgba(14,13,11,0.03);border-right:1px solid var(--line-soft);font-family:var(--mono);font-size:1.0rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);display:flex;align-items:center;}
+.exp-detail-key{padding:0.75rem 1rem;background:rgba(14,13,11,0.03);border-right:1px solid var(--line-soft);font-family:var(--mono);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);display:flex;align-items:center;}
 .exp-detail-val{padding:0.75rem 1rem;font-size:0.875rem;color:var(--mid);line-height:1.5;display:flex;align-items:center;}
 .built-in-list{list-style:none;display:flex;flex-direction:column;gap:0.45rem;}
 .built-in-item{display:grid;grid-template-columns:10px 1fr;gap:0.6rem;align-items:baseline;}
 .built-in-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);opacity:0.8;margin-top:5px;flex-shrink:0;}
 .built-in-text{font-size:0.875rem;color:var(--mid);line-height:1.5;}
 .exp-status-box{padding:0.9rem 1rem;border:1px solid var(--line);border-left:3px solid var(--amber-muted);border-radius:3px;background:rgba(184,144,80,0.05);}
-.exp-status-label{font-family:var(--mono);font-size:1.0rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.4rem;}
+.exp-status-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber-muted);margin-bottom:0.4rem;}
 .exp-status-text{font-size:0.82rem;color:var(--soft);line-height:1.55;}
 
 /* ── SECTIONS ── */
@@ -270,6 +266,7 @@ footer{background:var(--deep);padding:2.5rem 3rem;display:flex;align-items:cente
 }
 
 /* ── PAGE TRANSITION VEIL ── */
+}
 @keyframes body-fade-in{from{opacity:0}to{opacity:1}}
 body{animation:body-fade-in 0.5s ease 0.05s both;}
 </style>
